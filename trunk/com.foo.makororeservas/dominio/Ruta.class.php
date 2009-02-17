@@ -66,12 +66,12 @@ class Rutaclass {
     }
 
     public function getGeneraIVA() {
-        return $this->generarIVA;
+        return $this->generaIVA;
     }
 
     public function setGeneraIVA($generaIVA) {
         if (is_bool($generaIVA)) {
-            $this->generarIVA = $generaIVA;
+            $this->generaIVA = $generaIVA;
         }
     }
 
