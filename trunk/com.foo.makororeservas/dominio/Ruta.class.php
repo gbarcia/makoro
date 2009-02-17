@@ -11,7 +11,7 @@ class Rutaclass {
     private $tiempo;
     private $abreviaturaSalida;
     private $abreviaturaLlegada;
-    private $generarIVA;
+    private $generaIVA;
 
     public function getId() {
         return $this->id;
@@ -65,12 +65,14 @@ class Rutaclass {
         $this->abreviaturaLlegada = strtoupper($abreviaturaLlegada);
     }
 
-    public function getGenerarIVA() {
+    public function getGeneraIVA() {
         return $this->generarIVA;
     }
 
-    public function setGenerarIVA($generarIVA) {
-        $this->generarIVA = $generarIVA;
+    public function setGeneraIVA($generaIVA) {
+        if (is_bool($generaIVA)) {
+            $this->generarIVA = $generaIVA;
+        }
     }
 
 }
