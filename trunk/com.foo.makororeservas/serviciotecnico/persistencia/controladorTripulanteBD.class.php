@@ -111,7 +111,7 @@ class controladorTripulanteBDclass {
  */
     function consultarPersonal() {
         $resultado = false;
-        $query = "﻿SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo
+        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo
                   FROM PERSONAL p,TIPO_CARGO tp
                   WHERE p.TIPO_CARGO_id = tp.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
