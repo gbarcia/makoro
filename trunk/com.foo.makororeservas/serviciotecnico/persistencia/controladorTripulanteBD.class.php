@@ -64,7 +64,7 @@ class controladorTripulanteBDclass {
  * @param <Integer> $cedula
  * @param <String> $cargo
  * @param <double> $tarifa
- * @return <boolean> existe o no la operacion
+ * @return <recurso> registros de la consulta
  */
     function consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $tarifa){
         $resultado = false;
@@ -76,7 +76,7 @@ class controladorTripulanteBDclass {
                   AND r.id = v.RUTA_id
                   AND tc.id = vp.cargo
                   AND vp.cargo =$cargo
-                  AND v.fecha BETWEEN '" . $fechaini . "' AND '" . $fechafin . "'"; 
+                  AND v.fecha BETWEEN '" . $fechaini . "' AND '" . $fechafin . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -87,7 +87,7 @@ class controladorTripulanteBDclass {
  * @param <Date> $fechafin
  * @param <Integer> $cedula
  * @param <Integer> $cargo
- * @return <boolean> existe o no la operacion
+ * @return <recurso> registros de la consulta
  */
 
     function consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula, $cargo){
@@ -102,6 +102,18 @@ class controladorTripulanteBDclass {
                   AND tc.id = vp.cargo
                   AND vp.cargo =$cargo
                   AND v.fecha BETWEEN '" . $fechaini . "' AND '" . $fechafin . "'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+/**
+ * Metodo para consultar todo el personal registrado en la base de datos
+ * @return <type>
+ */
+    function consultarPersonal() {
+        $resultado = false;
+        $query = "﻿SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo
+                  FROM PERSONAL p,TIPO_CARGO tp
+                  WHERE p.TIPO_CARGO_id = tp.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
