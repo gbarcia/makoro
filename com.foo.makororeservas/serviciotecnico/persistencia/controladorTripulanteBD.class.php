@@ -56,7 +56,16 @@ class controladorTripulanteBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
-
+/**
+ * Metodo para consultar el pago del personal dependiendo de su fecha inicio,
+ * fecha fin, cedula, cargo y tarifa
+ * @param <Date> $fechaini
+ * @param <Date> $fechafin
+ * @param <Integer> $cedula
+ * @param <String> $cargo
+ * @param <double> $tarifa
+ * @return <boolean> existe o no la operacion
+ */
     function consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $tarifa){
         $resultado = false;
         $query = "SELECT p.cedula cedula , p.nombre nombre, p.apellido apellido, SUM(r.tiempo*$tarifa)monto, tc.cargo
@@ -71,6 +80,7 @@ class controladorTripulanteBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
 
 }
 ?>
