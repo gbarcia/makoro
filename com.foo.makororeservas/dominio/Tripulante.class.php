@@ -14,6 +14,8 @@ class Tripulanteclass {
 
     private $sexo;
 
+    private $telefono;
+
     private $estado;
 
     private $ciudad;
@@ -58,7 +60,17 @@ class Tripulanteclass {
     public function setSexo($sexo) {
         if (($sexo == 'M') || ($sexo == 'F') ||($sexo == 'm') || ($sexo == 'f'))
         $this->sexo = strtoupper($sexo);
+
     }
+    public function getTelefono() {
+        return $this->telefono;
+    }
+
+    public function setTelefono($telefono) {
+        if (is_integer($telefono))
+        $this->telefono = $telefono;
+    }
+
 
     public function getEstado() {
         return $this->estado;
