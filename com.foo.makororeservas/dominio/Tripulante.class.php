@@ -67,7 +67,6 @@ class Tripulanteclass {
     }
 
     public function setTelefono($telefono) {
-        if (is_integer($telefono))
         $this->telefono = $telefono;
     }
 
