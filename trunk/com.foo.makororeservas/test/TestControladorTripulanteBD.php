@@ -34,7 +34,7 @@ $controlPrueba = new controladorTripulanteBDclass();
 //$row = mysql_fetch_array($resultado);
 //print $row[monto];
 
-echo '<table>';
+echo '<table border=1>';
 echo '<tr>';
 echo '<th>cedula</th>';
 echo '<th>nombre</th>';
@@ -43,10 +43,11 @@ echo '<th>sitio Salida</th>';
 echo '<th>sitio Llegada</th>';
 echo '<th>tiempo</th>';
 echo '<th>matricula avion</th>';
-echo '<th>cago</th>';
+echo '<th>cargo</th>';
 echo '</tr>';
-$resultado = $controlPrueba->consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $sueldo);
-    while (!($row = mysql_fetch_array($resultado))) {
+$resultado = $controlPrueba->consultarDetallesPagoPersonal($fechaInicio, $fechaFin, $cedula, $cargo);
+    while (($row = mysql_fetch_array($resultado))) {
+        print "aca";
     echo '<tr>';
     echo '<td>' . $row['cedula'] . '</td>';
     echo '<td>' . $row['nombre'] . '</td>';
@@ -58,6 +59,5 @@ $resultado = $controlPrueba->consultarDetallesPagoPersonal($fechaini, $fechafin,
     echo '<td>' . $row['cargo'] . '</td>';
     echo '</tr>';
 }
-mysql_free_result($resultado);
 echo '</table>';
 ?>
