@@ -86,12 +86,11 @@ class controladorTripulanteBDclass {
  * @param <Date> $fechaini
  * @param <Date> $fechafin
  * @param <Integer> $cedula
- * @param <String> $cargo
- * @param <double> $sueldo
+ * @param <Integer> $cargo
  * @return <boolean> existe o no la operacion
  */
 
-    function consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $sueldo){
+    function consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula, $cargo){
         $resultado = false;
         $query = "SELECT p.cedula, p.nombre, p.apellido, r.sitioSalida, r.sitioLlegada,
                          r.tiempo, v.AVION_matricula, tc.cargo
