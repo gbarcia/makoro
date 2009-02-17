@@ -29,8 +29,8 @@ $controlPrueba = new controladorTripulanteBDclass();
 //$resultado = $controlPrueba->agregarPersonal($tripulante);
 //$resultado = $controlPrueba->editarPersonal($tripulante);
 $resultado = $controlPrueba->consultarTotalPagoPersonal($fechaInicio, $fechaFin, $cedula, $cargo, $tarifa);
-
-print $resultado;
+$row = mysql_fetch_array($resultado);
+print $row[monto];
 
 
 
