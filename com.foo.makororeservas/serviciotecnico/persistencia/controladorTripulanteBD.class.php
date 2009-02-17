@@ -58,7 +58,7 @@ class controladorTripulanteBDclass {
     }
 /**
  * Metodo para consultar el pago del personal dependiendo de su fecha inicio,
- * fecha fin, cedula, cargo y tarifa
+ * fecha fin, cedula, cargo y tarifa en un rango de tiempo
  * @param <Date> $fechaini
  * @param <Date> $fechafin
  * @param <Integer> $cedula
@@ -80,7 +80,30 @@ class controladorTripulanteBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+/**
+ * Metodo para consultar en detalle el pago del personal en un rango de tiempo
+ * fecha fin, cedula, cargo y tarifa
+ * @param <Date> $fechaini
+ * @param <Date> $fechafin
+ * @param <Integer> $cedula
+ * @param <String> $cargo
+ * @param <double> $sueldo
+ * @return <boolean> existe o no la operacion
+ */
 
-
+    function consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $sueldo){
+        $resultado = false;
+        $query = "SELECT ﻿p.cedula, p.nombre, p.apellido, r.sitioSalida, r.sitioLlegada, r.tiempo, v.AVION_matricula, tc.cargo
+                  FROM PERSONAL p, VUELO_PERSONAL vp, VUELO v, RUTA r, TIPO_CARGO tc
+                  WHERE p.cedula = vp.PERSONAL_cedula
+                  AND p.cedula = '".$cedula."'
+                  AND v.id = vp.VUELO_id
+                  AND r.id = v.RUTA_id
+                  AND tc.id = vp.cargo
+                  AND vp.cargo =$cargo
+                  AND v.fecha BETWEEN '" . $fechaini . "' AND '" . $fechafin . "'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
