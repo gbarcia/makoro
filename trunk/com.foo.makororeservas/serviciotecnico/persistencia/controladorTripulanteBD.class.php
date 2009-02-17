@@ -55,7 +55,22 @@ class controladorTripulanteBDclass {
                    WHERE p.cedula = '".$tripulante->getCedula()."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
+    }
 
+    function consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $tarifa){
+        $resultado = false;
+        $query = "﻿SELECT p.cedula cedula , p.nombre nombre, p.apellido apellido, SUM(r.tiempo*100)monto, tc.cargo
+                  FROM PERSONAL p, VUELO_PERSONAL vp, VUELO v, RUTA r, TIPO_CARGO tc
+                  WHERE p.cedula = vp.PERSONAL_cedula
+                  AND p.cedula = '".$cedula."'
+                  AND v.id = vp.VUELO_id
+                  AND r.id = v.RUTA_id
+                  AND tc.id = vp.cargo
+                  AND vp.cargo =$cargo
+                  AND v.fecha BETWEEN '" . $fechaini . "' AND '" . $fechafin . "'";
+       // print $query;   
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
     }
 
 }
