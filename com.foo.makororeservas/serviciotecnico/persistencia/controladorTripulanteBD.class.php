@@ -7,23 +7,39 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Tripul
  * @author gerardobarcia
  */
 class controladorTripulanteBDclass {
-    
+
     private $transaccion;
 
     function __construct() {
         $this->transaccion = new TransaccionBDclass();
     }
-
+/**
+ * Metodo para agregar un personal en la Base de Datos
+ * @param <TRIPULANTE> $tripulante objeto tripulante agregar
+ * @return <boolean> exito o no en la operacion
+ */
     function agregarPersonal($tripulante){
         $resultado = false;
         $query = "INSERT INTO PERSONAL (cedula,nombre,apellido,sexo,telefono,estado," .
         "ciudad,direccion,habilitado,TIPO_CARGO_id) VALUES ('".$tripulante->getCedula()."',
-        '".$tripulante->getNombre()."','".$tripulante->getApellido()."','".$tripulante->getSexo()."',
-        '".$tripulante->getTelefono()."','".$tripulante->getEstado()."','".$tripulante->getCiudad()."',
-        '".$tripulante->getDireccion()."','".$tripulante->getHabilitado()."','".$tripulante->getCargo()."')";
+                                                            '".$tripulante->getNombre()."',
+                                                            '".$tripulante->getApellido()."',
+                                                            '".$tripulante->getSexo()."',
+                                                            '".$tripulante->getTelefono()."',
+                                                            '".$tripulante->getEstado()."',
+                                                            '".$tripulante->getCiudad()."',
+                                                            '".$tripulante->getDireccion()."',
+                                                            '".$tripulante->getHabilitado()."',
+                                                            '".$tripulante->getCargo()."')";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+/**
+* Metodo para editar un personal en la Base de Datos
+* @param <TRIPULANTE> $tripulante objeto tripulante a editar
+* @return <boolean> existe o no en la operacion
+*/
 
     function editarPersonal($tripulante){
         $resultado = false;
