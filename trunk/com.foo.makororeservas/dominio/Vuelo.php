@@ -2,7 +2,7 @@
 
 /**
  * Description of Vuelo
- *
+ * 
  * @author Diana Uribe
  */
 class Vuelo {
