@@ -17,7 +17,7 @@ class Vuelo {
     }
 
     public function setId($id) {
-        if (is_integer($id)) {
+        if (is_numeric($id)) {
             $this->id = $id;
         }
     }
@@ -43,7 +43,7 @@ class Vuelo {
     }
 
     public function setRutaId($rutaId) {
-        if (is_integer($rutaId)) {
+        if (is_numeric($rutaId)) {
             $this->rutaId = $rutaId;
         }
     }

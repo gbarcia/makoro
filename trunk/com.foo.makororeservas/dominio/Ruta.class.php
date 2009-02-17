@@ -18,7 +18,7 @@ class Rutaclass {
     }
 
     public function setId($id) {
-        if (is_integer($id)){
+        if (is_numeric($id)){
             $this->id = $id;
         }
     }
@@ -44,7 +44,7 @@ class Rutaclass {
     }
 
     public function setTiempo($tiempo) {
-        if (is_float($tiempo)) {
+        if (is_numeric($tiempo)) {
             $this->tiempo = $tiempo;
         }
     }
@@ -70,7 +70,7 @@ class Rutaclass {
     }
 
     public function setGeneraIVA($generaIVA) {
-        if (is_bool($generaIVA)) {
+        if (is_numeric($generaIVA)) {
             $this->generaIVA = $generaIVA;
         }
     }
