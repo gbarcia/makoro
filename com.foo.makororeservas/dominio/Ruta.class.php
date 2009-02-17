@@ -74,6 +74,5 @@ class Rutaclass {
             $this->generaIVA = $generaIVA;
         }
     }
-
 }
 ?>
