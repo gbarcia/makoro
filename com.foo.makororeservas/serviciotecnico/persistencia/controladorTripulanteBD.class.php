@@ -59,7 +59,7 @@ class controladorTripulanteBDclass {
 
     function consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $tarifa){
         $resultado = false;
-        $query = "﻿SELECT p.cedula cedula , p.nombre nombre, p.apellido apellido, SUM(r.tiempo*100)monto, tc.cargo
+        $query = "﻿SELECT p.cedula cedula , p.nombre nombre, p.apellido apellido, SUM(r.tiempo*$tarifa)monto, tc.cargo
                   FROM PERSONAL p, VUELO_PERSONAL vp, VUELO v, RUTA r, TIPO_CARGO tc
                   WHERE p.cedula = vp.PERSONAL_cedula
                   AND p.cedula = '".$cedula."'
