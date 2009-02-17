@@ -31,9 +31,9 @@ class Tripulanteclass {
     }
 
     public function setCedula($cedula) {
-        if (is_integer($cedula)){
+        if (is_numeric($cedula))
             $this->cedula = $cedula;
-        }
+      
     }
 
     public function getNombre() {
