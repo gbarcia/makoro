@@ -8,6 +8,6 @@ $tabla = $controlBD->consultarTodoPersonal();
 
 foreach ($tabla as $variable) {
 
-    print $variable->getCedula();
+    print $variable->getHabilitado();
 }
 ?>
