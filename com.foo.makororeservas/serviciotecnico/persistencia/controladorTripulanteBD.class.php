@@ -107,7 +107,7 @@ class controladorTripulanteBDclass {
     }
 /**
  * Metodo para consultar todo el personal registrado en la base de datos
- * @return <type>
+ * @return <recurso> registro de todo el personal en la base de datos
  */
     function consultarPersonal() {
         $resultado = false;
@@ -117,5 +117,19 @@ class controladorTripulanteBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function consultarPersonaCedulaNombreApellido ($busqueda) {
+        $resultado = false;
+        $query = "﻿SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo
+                  FROM PERSONAL p,TIPO_CARGO tp
+                  WHERE (p.nombre LIKE '%'".$busqueda."'%'
+                  OR p.apellido LIKE '%'".$busqueda."'%'
+                  OR p.cedula = '".$busqueda."')
+                  AND p.TIPO_CARGO_id = tp.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+
 }
 ?>

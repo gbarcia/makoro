@@ -19,11 +19,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Tripul
 //$tripulante->setHabilitado(true);
 //$tripulante->setCargo(1);
 
-$cedula = 11232444;
-$fechaInicio = '2009-02-01';
-$fechaFin = '2009-03-31';
-$cargo = 1;
-$tarifa = 100;
+//$cedula = 11232444;
+//$fechaInicio = '2009-02-01';
+//$fechaFin = '2009-03-31';
+//$cargo = 1;
+//$tarifa = 100;
+
+$busqueda = 'J';
 
 $controlPrueba = new controladorTripulanteBDclass();
 //$resultado = $controlPrueba->agregarPersonal($tripulante);
@@ -47,7 +49,7 @@ echo '<th>direccion</th>';
 echo '<th>habilitado</th>';
 echo '<th>cargo</th>';
 echo '</tr>';
-$resultado = $controlPrueba->consultarPersonal();
+$resultado = $controlPrueba->consultarPersonaCedulaNombreApellido($busqueda);
     while (($row = mysql_fetch_array($resultado))) {
     echo '<tr>';
     echo '<td>' . $row['cedula'] . '</td>';
@@ -59,7 +61,7 @@ $resultado = $controlPrueba->consultarPersonal();
     echo '<td>' . $row['ciudad'] . '</td>';
     echo '<td>' . $row['direccion'] . '</td>';
     echo '<td>' . $row['habilitado'] . '</td>';
-    echo '<td>' . $row['TIPO_CARGO_id'] . '</td>';
+    echo '<td>' . $row['cargo'] . '</td>';
     echo '</tr>';
 }
 echo '</table>';
