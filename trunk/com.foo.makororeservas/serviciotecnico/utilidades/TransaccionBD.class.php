@@ -21,6 +21,7 @@ class TransaccionBDclass {
     function realizarTransaccion($query) {
        $link = $this->conexion->conectarBaseDatos();
        $result = mysql_query($query,$link);
+       if (!$result)die(mysql_error());
        $this->conexion->cerrarConexion();
        return $result;
     }
