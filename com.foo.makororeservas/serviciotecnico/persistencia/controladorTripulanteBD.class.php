@@ -67,8 +67,7 @@ class controladorTripulanteBDclass {
                   AND r.id = v.RUTA_id
                   AND tc.id = vp.cargo
                   AND vp.cargo =$cargo
-                  AND v.fecha BETWEEN '" . $fechaini . "' AND '" . $fechafin . "'";
-       // print $query;   
+                  AND v.fecha BETWEEN '" . $fechaini . "' AND '" . $fechafin . "'"; 
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
