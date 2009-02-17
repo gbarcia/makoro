@@ -21,7 +21,9 @@ class TipoCargoclass {
     }
 
     public function setId($id) {
-        $this->id = $id;
+        if (is_numeric($id)) {
+            $this->id = $id;
+        }
     }
 
     public function getCargo() {

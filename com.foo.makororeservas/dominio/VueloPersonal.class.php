@@ -15,7 +15,7 @@ class VueloPersonalclass {
     }
 
     public function setVueloId($vueloId) {
-        if (is_integer($vueloId)) {
+        if (is_numeric($vueloId)) {
             $this->vueloId = $vueloId;
         }
     }
@@ -25,7 +25,7 @@ class VueloPersonalclass {
     }
 
     public function setPersonalCedula($personalCedula) {
-        if (is_integer($personalCedula)) {
+        if (is_numeric($personalCedula)) {
             $this->personalCedula = $personalCedula;
         }
     }
@@ -35,7 +35,7 @@ class VueloPersonalclass {
     }
 
     public function setCargo($cargo) {
-        if (is_integer($cargo)) {
+        if (is_numeric($cargo)) {
             $this->cargo = $cargo;
         }
     }

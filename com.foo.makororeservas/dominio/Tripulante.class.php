@@ -33,7 +33,6 @@ class Tripulanteclass {
     public function setCedula($cedula) {
         if (is_numeric($cedula))
             $this->cedula = $cedula;
-      
     }
 
     public function getNombre() {
@@ -100,7 +99,7 @@ class Tripulanteclass {
     }
 
     public function setHabilitado($habilitado) {
-        if (is_bool($habilitado))
+        if (is_numeric($habilitado))
         $this->habilitado = $habilitado;
     }
 
