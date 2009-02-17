@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTipoCargoBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTripulanteBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Tripulante.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Vuelo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Ruta.class.php';
@@ -80,11 +80,11 @@ class ControlTripulanteLogicaclass {
  * @return <Coleccion> coleccion de objeto tripulante
  */
     function consultarTodoPersonal(){
-        $resultado[];
+        $resultado = new ArrayObject();
         $recurso = $this->controlBD->consultarPersonal();
         while ($row = mysql_fetch_array($recurso)) {
             $tripulante = new Tripulanteclass();
-            $tripulante->setCedula($row[cedula]);
+            $tripulante->setCedula($row['cedula']);
             $tripulante->setNombre($row[nombre]);
             $tripulante->setApellido($row[apellido]);
             $tripulante->setSexo($row[sexo]);
@@ -95,9 +95,9 @@ class ControlTripulanteLogicaclass {
             $tripulante->setHabilitado($row[habilitado]);
             $tripulante->setCargo($row[cargo]);
 
-            $resultado[] = $tripulante;
+            $resultado->append($tripulante);
         }
-        return ($resultado[]);
+        return $resultado;
     }
 
 }
