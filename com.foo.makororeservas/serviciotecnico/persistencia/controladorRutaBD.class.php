@@ -15,8 +15,8 @@ class controladorRutaBDclass {
 
     /**
      * Metodo para agregar una nueva ruta
-     * @param <RUTA> $ruta
-     * @return <boolean>
+     * @param <RUTA> $ruta la ruta a agregar
+     * @return <boolean> resultado de la operacion
      */
     function agregarRuta($ruta){
         $resultado = false;
@@ -32,6 +32,11 @@ class controladorRutaBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para editar una ruta dado su id
+     * @param <RUTA> $ruta la ruta a editar
+     * @return <boolean> resultado de la operacion
+     */
     function editarRuta($ruta){
         $resultado = false;
         $query = "UPDATE RUTA r
@@ -42,10 +47,30 @@ class controladorRutaBDclass {
                      "r.abreviaturaLlegada = '" . mysql_real_escape_string($ruta->getAbreviaturaLlegada()) . "',".
                      "r.generaIVA = " . $ruta->getGeneraIVA() . " ".
                   "WHERE r.id = " . $ruta->getId() ;
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 
+    /**
+     * Metodo para consultar todas las rutas
+     * @return <recurso> todas las rutas de la base de datos
+     */
+    function consultarRutas(){
+        $query = "SELECT * FROM RUTA r";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para consultar una ruta por su id
+     * @param <int> $id el identificador de la ruta
+     * @return <RUTA> la ruta del identificador seleccionado
+     */
+    function consultarRutaID($id){
+        $query = "SELECT * FROM RUTA r
+                 WHERE r.id = '" . $id . "'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
