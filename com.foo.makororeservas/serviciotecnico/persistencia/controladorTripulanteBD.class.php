@@ -90,7 +90,7 @@ class controladorTripulanteBDclass {
  * @return <recurso> registros de la consulta
  */
 
-    function consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula, $cargo){
+    function consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula){
         $resultado = false;
         $query = "SELECT p.cedula, p.nombre, p.apellido, r.sitioSalida, r.sitioLlegada,
                          r.tiempo, v.AVION_matricula, tc.cargo
@@ -100,7 +100,6 @@ class controladorTripulanteBDclass {
                   AND v.id = vp.VUELO_id
                   AND r.id = v.RUTA_id
                   AND tc.id = vp.cargo
-                  AND vp.cargo =$cargo
                   AND v.fecha BETWEEN '" . mysql_real_escape_string($fechaini) . "' AND '" . mysql_real_escape_string($fechafin) . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;

@@ -99,6 +99,27 @@ class ControlTripulanteLogicaclass {
         }
         return $resultado;
     }
-
+/**
+ * Metodo para consultar el detalle del pago de los tripulantes
+ * @param <Date> $fechaini
+ * @param <Date> $fechafin
+ * @param <Integer> $cedula
+ * @return <recurso> recurso de objeto tripulante con el detalle del pago
+ */
+    function consultarDetallePago($fechaini, $fechafin, $cedula){
+        $recurso = false;
+        $recurso = $this->controlBD->consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula);
+        return $recurso;
+    }
+/**
+ * Metodo para consultar a un tripulante segun busqueda
+ * @param <String, Integer> $busqueda
+ * @return <recurso> recurso de objeto tripulante
+ */
+    function consultarTripulanteCedulaNombreApellido ($busqueda){
+        $recurso = false;
+        $recurso = $this->controlBD->consultarPersonaCedulaNombreApellido($busqueda);
+        return $recurso;
+    }
 }
 ?>
