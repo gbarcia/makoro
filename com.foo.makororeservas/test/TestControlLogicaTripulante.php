@@ -7,6 +7,4 @@ $controlBD = new ControlTripulanteLogicaclass();
 $resultado = $controlBD->consultarMontoTotal("", "", 1);
 
 print $resultado;
-
-
 ?>
