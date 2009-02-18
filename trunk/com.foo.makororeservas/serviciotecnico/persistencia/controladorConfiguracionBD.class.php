@@ -20,13 +20,7 @@ class controladorConfiguracionBDclass {
      * @return <boolean>
      */
     function agregarConfiguracion($configuracion){
-        $resultado = false;
-        $query = "INSERT INTO CONFIGURACION(sueldoPiloto, sueldoCopiloto, sobrecargo)
-                  VALUES (".$configuracion->getSueldoPiloto().",
-                          ".$configuracion->getSueldoCopiloto().",
-                          ".$configuracion->getSobrecargo().")";
-        $resultado = $this->transaccion->realizarTransaccion($query);
-        return $resultado;
+       
     }
 
     /**
@@ -34,13 +28,7 @@ class controladorConfiguracionBDclass {
      * @param <boolean> $configuracion
      */
     function editarConfiguracion($configuracion){
-        $resultado = false;
-        $query = "UPDATE CONFIGURACION c SET c.sueldoPiloto = ".$configuracion->getSueldoPiloto().",
-                                        c.sueldoCopiloto = ".$configuracion->getSueldoCopiloto().",
-                                        c.sobrecargo = ".$configuracion->getSobrecargo()."
-                   WHERE c.id = ".$configuracion->getId();
-        $resultado = $this->transaccion->realizarTransaccion($query);
-        return $resultado;
+        
     }
 
     /**

@@ -13,6 +13,8 @@ class TipoCargoclass {
 
     private $descripcion;
 
+    private $sueldo;
+
     function __construct() {
     }
 
@@ -42,5 +44,13 @@ class TipoCargoclass {
         $this->descripcion = strtoupper($descripcion);
     }
 
+    public function getSueldo() {
+        return $this->sueldo;
+    }
+
+    public function setSueldo($sueldo) {
+        if (is_numeric($sueldo)) 
+        $this->sueldo = $sueldo;
+    }
 }
 ?>
