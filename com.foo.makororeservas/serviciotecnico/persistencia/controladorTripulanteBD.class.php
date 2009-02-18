@@ -76,6 +76,7 @@ class controladorTripulanteBDclass {
                   AND r.id = v.RUTA_id
                   AND tc.id = vp.cargo
                   AND vp.cargo =$cargo
+                  AND p.habilitado = true
                   AND v.fecha BETWEEN '" . mysql_real_escape_string($fechaini) . "' AND '" . mysql_real_escape_string($fechafin) . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -100,6 +101,7 @@ class controladorTripulanteBDclass {
                   AND v.id = vp.VUELO_id
                   AND r.id = v.RUTA_id
                   AND tc.id = vp.cargo
+                  AND p.habilitado = true
                   AND v.fecha BETWEEN '" . mysql_real_escape_string($fechaini) . "' AND '" . mysql_real_escape_string($fechafin) . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
