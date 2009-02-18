@@ -4,10 +4,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Tripul
 
 $controlBD = new ControlTripulanteLogicaclass();
 
-$tabla = $controlBD->consultarTodoPersonal();
+$resultado = $controlBD->consultarMontoTotal("", "", 1);
 
-foreach ($tabla as $variable) {
+print $resultado;
 
-    print $variable->getHabilitado();
-}
+
 ?>
