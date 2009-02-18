@@ -5,6 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Vuelo.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Ruta.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/TipoCargo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloPersonal.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorConfiguracionBD.class.php';
 /**
  * Description of ControlTripulanteLogicaclass
  *  Manejo de la logica de la gestion de la tripulacion
@@ -116,10 +117,29 @@ class ControlTripulanteLogicaclass {
  * @param <String, Integer> $busqueda
  * @return <recurso> recurso de objeto tripulante
  */
-    function consultarTripulanteCedulaNombreApellido ($busqueda){
+    function consultarTripulanteCedulaNombreApellido($busqueda){
         $recurso = false;
         $recurso = $this->controlBD->consultarPersonaCedulaNombreApellido($busqueda);
         return $recurso;
+    }
+/**
+ * Metodo para consultar el pago total del tripulante
+ * @param <Date> $fechaini
+ * @param <Date> $fechafin
+ * @param <Integer> $cedula
+ * @return <total> suma total del pago tripulante
+ */
+    function consultarMontoTotal($fechaini, $fechafin, $cedula){
+        $controlConfiguracion = new controladorConfiguracionBDclass();
+        $result = $controlConfiguracion->consultarConfiguracion();
+        $row = mysql_fetch_array($result);
+        $tarifaPiloto = $row[sueldoPiloto];
+        $tarifaCopiloto = $row[sueldoCopiloto];
+        $primeraSuma = $this->controlBD->consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, 1, $tarifaPiloto);
+        $segundaSuma = $this->controlBD->consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, 2, $tarifaCopiloto);
+        $total = $primeraSuma + $segundaSuma;
+
+        return ($total);
     }
 }
 ?>
