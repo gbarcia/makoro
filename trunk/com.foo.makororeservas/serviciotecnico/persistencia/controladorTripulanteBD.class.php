@@ -78,8 +78,9 @@ class controladorTripulanteBDclass {
                   AND vp.cargo =$cargo
                   AND p.habilitado = true
                   AND v.fecha BETWEEN '" . mysql_real_escape_string($fechaini) . "' AND '" . mysql_real_escape_string($fechafin) . "'";
-        $resultado = $this->transaccion->realizarTransaccion($query);
-        return $resultado;
+        $recurso = $this->transaccion->realizarTransaccion($query);
+        $resultado = mysql_fetch_array($recurso);
+        return $resultado[monto];
     }
 /**
  * Metodo para consultar en detalle el pago del personal en un rango de tiempo
