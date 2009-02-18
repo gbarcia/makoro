@@ -26,6 +26,8 @@ class Tripulanteclass {
 
     private $cargo;
 
+    private $sueldo;
+
     public function getCedula() {
         return $this->cedula;
     }
@@ -110,6 +112,14 @@ class Tripulanteclass {
     public function setCargo($cargo) {
         $this->cargo = strtoupper($cargo);
     }
+    
+    public function getSueldo() {
+        return $this->sueldo;
+    }
 
+    public function setSueldo($sueldo) {
+        if (is_numeric($sueldo))
+        $this->sueldo = $sueldo;
+    }
 }
 ?>

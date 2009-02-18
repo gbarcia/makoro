@@ -136,5 +136,19 @@ class controladorTripulanteBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+/**
+ * Metodo para consultar un personal en detalle por su cedula
+ * @param <Integer> $cedula numero de cedula del personal a consultar
+ */
+    function consultarPersonalCedula ($cedula) {
+        $resultado = false;
+        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo
+                  FROM PERSONAL p,TIPO_CARGO tp
+                  WHERE p.cedula = $cedula
+                  AND p.TIPO_CARGO_id = tp.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>

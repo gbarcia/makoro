@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Vuelo.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Ruta.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/TipoCargo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloPersonal.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorConfiguracionBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTipoCargoBD.class.php';
 /**
  * Description of ControlTripulanteLogicaclass
  *  Manejo de la logica de la gestion de la tripulacion
@@ -130,15 +130,15 @@ class ControlTripulanteLogicaclass {
  * @return <total> suma total del pago tripulante
  */
     function consultarMontoTotal($fechaini, $fechafin, $cedula){
-        $controlConfiguracion = new controladorConfiguracionBDclass();
-        $result = $controlConfiguracion->consultarConfiguracion();
-        $row = mysql_fetch_array($result);
-        $tarifaPiloto = $row[sueldoPiloto];
-        $tarifaCopiloto = $row[sueldoCopiloto];
-        $primeraSuma = $this->controlBD->consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, 1, $tarifaPiloto);
-        $segundaSuma = $this->controlBD->consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, 2, $tarifaCopiloto);
-        $total = $primeraSuma + $segundaSuma;
-
+        $controlTipoCargo = new controladorTipoCargoBDclass();
+        $recursoTripulante = $this->controlBD->consultarPersonalCedula($cedula);
+        $rowTripulante = mysql_fetch_array($recursoTripulante);
+        $idCargo = $rowTripulante[TIPO_CARGO_id];
+        $tarifaPiloto = $controlTipoCargo->obtenerSueldoTipoCargo(1);
+        $tarifaCopiloto = $controlTipoCargo->obtenerSueldoTipoCargo(2);
+        $SumaPiloto = $this->controlBD->consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, 1, $tarifaPiloto);
+        $SumaCopiloto = $this->controlBD->consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, 2, $tarifaCopiloto);
+        $total = $SumaPiloto + $SumaCopiloto;
         return ($total);
     }
 }
