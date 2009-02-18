@@ -5,23 +5,13 @@
  * @author Diana Uribe
  */
 class Rutaclass {
-    private $id;
+
     private $sitioSalida;
     private $sitioLlegada;
     private $tiempo;
     private $abreviaturaSalida;
     private $abreviaturaLlegada;
     private $generaIVA;
-
-    public function getId() {
-        return $this->id;
-    }
-
-    public function setId($id) {
-        if (is_numeric($id)){
-            $this->id = $id;
-        }
-    }
 
     public function getSitioSalida() {
         return $this->sitioSalida;
