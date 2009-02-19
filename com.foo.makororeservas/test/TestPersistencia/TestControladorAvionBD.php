@@ -13,6 +13,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 //print("\$Agrego = ". $resultado);
 
 
+
 //$avion = new Avionclass();
 //$avion->setMatricula('YV 333T');
 //$avion->setAsientos(33);
@@ -22,20 +23,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 //$resultado = $controlPrueba->editarAvion($avion);
 //echo $resultado;
 
-$controlPrueba = new controladorAvionBDclass();
-echo '<table border=1>';
-echo '<tr>';
-echo '<th>Matricula</th>';
-echo '<th>Asientos</th>';
-echo '<th>Habilitado</th>';
-echo '</tr>';
-$resultado = $controlPrueba->consultarAviones();
-    while (($row = mysql_fetch_array($resultado))) {
-    echo '<tr>';
-    echo '<td>' . $row['matricula'] . '</td>';
-    echo '<td>' . $row['asientos'] . '</td>';
-    echo '<td>' . $row['habilitado'] . '</td>';
-    echo '</tr>';
-}
-echo '</table>';
+
+
+//$controlPrueba = new controladorAvionBDclass();
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>Matricula</th>';
+//echo '<th>Asientos</th>';
+//echo '<th>Habilitado</th>';
+//echo '</tr>';
+//$resultado = $controlPrueba->consultarAviones();
+//    while (($row = mysql_fetch_array($resultado))) {
+//    echo '<tr>';
+//    echo '<td>' . $row['matricula'] . '</td>';
+//    echo '<td>' . $row['asientos'] . '</td>';
+//    echo '<td>' . $row['habilitado'] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
 ?>
