@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 
 //$avion = new Avionclass();
 //$avion->setMatricula('YV 333T');
-//$avion->getAsientos(50);
+//$avion->setAsientos(50);
 //$avion->setHabilitado(1);
 //
 //$controlPrueba = new controladorAvionBDclass();
@@ -15,7 +15,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 
 $avion = new Avionclass();
 $avion->setMatricula('YV 333T');
-$avion->getAsientos(33);
+$avion->setAsientos(33);
 $avion->setHabilitado(0);
 
 $controlPrueba = new controladorAvionBDclass();
