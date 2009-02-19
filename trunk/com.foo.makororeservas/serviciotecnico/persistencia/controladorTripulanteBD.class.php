@@ -126,12 +126,12 @@ class controladorTripulanteBDclass {
  */
     function consultarPersonaCedulaNombreApellido ($busqueda) {
         $resultado = false;
-        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo, tp.sueldo
+        $query = "SELECT CONCAT (p.cedula,' ',p.nombre,' ',p.apellido) dato
                   FROM PERSONAL p,TIPO_CARGO tp
-                  WHERE (p.nombre LIKE '%".$busqueda."%'
-                  OR p.apellido LIKE '%".$busqueda."%'
-                  OR p.cedula = '".$busqueda."')
-                  AND p.TIPO_CARGO_id = tp.id";
+                  WHERE (p.nombre LIKE '".$busqueda."%'
+                  OR p.apellido LIKE '".$busqueda."%'
+                  OR p.cedula LIKE '".$busqueda."%')
+                  AND p.TIPO_CARGO_id = tp.id LIMIT 0,5";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
