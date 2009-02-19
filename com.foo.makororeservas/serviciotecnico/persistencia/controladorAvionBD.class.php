@@ -40,6 +40,16 @@ class controladorAvionBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+/**
+ * Metodo para consultar todos los aviones de la base de datos
+ * @return <Coleccion> todos los aviones
+ */
+    function consultarAviones(){
+        $resultado = false;
+        $query = "SELECT * FROM AVION";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
 
