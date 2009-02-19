@@ -19,7 +19,7 @@ $avion->setAsientos(33);
 $avion->setHabilitado(0);
 
 $controlPrueba = new controladorAvionBDclass();
-$resultado = $controlPrueba->agregarAvion($avion);
+$resultado = $controlPrueba->editarAvion($avion);
 echo $resultado;
 
 ?>
