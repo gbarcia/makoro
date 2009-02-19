@@ -56,7 +56,7 @@ function mostrarEmpleados(){
     $resultado.= '<th>Sueldo</th>';
     $resultado.= '<th>Habilitado</th>';
     $resultado.= '</tr>';
-    $recurso = $controlLogica->consul
+    //$recurso = $controlLogica->consul
     foreach ($recurso as $row) {
         $resultado.= '<tr>';
         $resultado.= '<td>' . $row->getCedula(). '</td>';
