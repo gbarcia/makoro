@@ -14,7 +14,7 @@ class controladorAvionBDclass {
         $this->transaccion = new TransaccionBDclass();
     }
 /**
- * Metodo para agregar un avion en la Base de Datos
+ * Metodo para agregar un avion en la base de datos
  * @param <AVION> $avion
  * @return <boolean> existe o no la operacion
  */
@@ -26,6 +26,19 @@ class controladorAvionBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
 
+    }
+/**
+ * Metodo para modificar los datos del avion en la base de datos
+ * @param <AVION> $avion
+ * @return <boolean> resultado de la operacion
+ */
+    function editarAvion($avion){
+    $resultado = false;
+    $query = "UPDATE AVION a SET a.asientos = '".$avion->getAsientos()."',
+                                 a.habilitado = '".$avion->getHabilitado()."'
+              WHERE a.matricula = '".$avion->getMatricula()."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
     }
 }
 ?>
