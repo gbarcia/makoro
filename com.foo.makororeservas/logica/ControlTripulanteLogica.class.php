@@ -160,7 +160,7 @@ class ControlTripulanteLogicaclass {
                 $tripulante->setApellido($operacionInfo[apellido]);
                 $tripulante->setCargo ($operacionInfo[cargo]);
                 $tripulante->setSueldo($operacionInfo[sueldo]);
-                $Objeto = new PagoNominaTripulacionclass($recurso,$total, $tripulante);
+                $Objeto = new PagoNominaTripulacionclass($recurso,$total,$tripulante);
                 $coleccionResultado ->append($Objeto);
             }
         }
