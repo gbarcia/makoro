@@ -2,7 +2,7 @@
 
 /**
  * Description of Avionclass
- *
+ * Clase para manejar la informacion de los aviones del sistema
  * @author Diana Uribe
  */
 class Avionclass {
@@ -15,7 +15,7 @@ class Avionclass {
     }
 
     public function setMatricula($matricula) {
-        $this->matricula = $matricula;
+        $this->matricula = strtoupper($matricula);
     }
 
     public function getAsientos() {
