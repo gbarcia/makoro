@@ -30,7 +30,6 @@ class controladorTripulanteBDclass {
                                                             '". $tripulante->getCiudad()."',
                                                             '". $tripulante->getDireccion()."',
                                                             TRUE,'".$tripulante->getCargo()."')";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
