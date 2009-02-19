@@ -6,6 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Ruta.c
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/TipoCargo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloPersonal.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTipoCargoBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/PagoNominaTripulacion.class.php';
 /**
  * Description of ControlTripulanteLogicaclass
  *  Manejo de la logica de la gestion de la tripulacion
@@ -28,11 +29,10 @@ class ControlTripulanteLogicaclass {
  * @param <String> $estado
  * @param <String> $ciudad
  * @param <String> $direccion
- * @param <boolean> $habilitado
  * @param <Integer> $cargo
  * @return <boolean> resultado de la operacion
  */
-    function nuevoTripulante($cedula, $nombre, $apellido, $sexo, $telefono, $estado, $ciudad, $direccion, $habilitado, $cargo){
+    function nuevoTripulante($cedula, $nombre, $apellido, $sexo, $telefono, $estado, $ciudad, $direccion,$cargo){
         $tripulante = new Tripulanteclass();
         $tripulante->setCedula($cedula);
         $tripulante->setNombre($nombre);
@@ -40,10 +40,9 @@ class ControlTripulanteLogicaclass {
         $tripulante->setSexo($sexo);
         $tripulante->setTelefono($telefono);
         $tripulante->setEstado($estado);
+        $tripulante->setCiudad($ciudad);
         $tripulante->setCargo($cargo);
         $tripulante->setDireccion($direccion);
-        $tripulante->setHabilitado($habilitado);
-        $tripulante->setCargo($cargo);
         $resultado = $this->controlBD->agregarPersonal($tripulante);
 
         return ($resultado);
@@ -61,19 +60,19 @@ class ControlTripulanteLogicaclass {
  * @param <Integer> $cargo
  * @return <boolean> resultado de la operacion
  */
-    function actualizarTripulante($nombre, $apellido, $sexo, $telefono, $estado, $ciudad, $direccion, $habilitado, $cargo){
+    function actualizarTripulante($cedula, $nombre, $apellido, $sexo, $telefono, $estado, $ciudad, $direccion, $habilitado, $cargo){
         $tripulante = new Tripulanteclass();
+        $tripulante->setCedula($cedula);
         $tripulante->setNombre($nombre);
         $tripulante->setApellido($apellido);
         $tripulante->setSexo($sexo);
         $tripulante->setTelefono($telefono);
         $tripulante->setEstado($estado);
-        $tripulante->setCargo($cargo);
+        $tripulante->setCiudad($ciudad);
         $tripulante->setDireccion($direccion);
         $tripulante->setHabilitado($habilitado);
         $tripulante->setCargo($cargo);
         $resultado = $this->controlBD->editarPersonal($tripulante);
-
         return ($resultado);
     }
 /**
@@ -91,10 +90,11 @@ class ControlTripulanteLogicaclass {
             $tripulante->setSexo($row[sexo]);
             $tripulante->setTelefono($row[telefono]);
             $tripulante->setEstado($row[estado]);
-            $tripulante->setCargo($row[cargo]);
+            $tripulante->setCiudad($row[ciudad]);
             $tripulante->setDireccion($row[direccion]);
             $tripulante->setHabilitado($row[habilitado]);
             $tripulante->setCargo($row[cargo]);
+            $tripulante->setSueldo($row[sueldo]);
 
             $resultado->append($tripulante);
         }
@@ -131,15 +131,41 @@ class ControlTripulanteLogicaclass {
  */
     function consultarMontoTotal($fechaini, $fechafin, $cedula){
         $controlTipoCargo = new controladorTipoCargoBDclass();
-        $recursoTripulante = $this->controlBD->consultarPersonalCedula($cedula);
-        $rowTripulante = mysql_fetch_array($recursoTripulante);
-        $idCargo = $rowTripulante[TIPO_CARGO_id];
         $tarifaPiloto = $controlTipoCargo->obtenerSueldoTipoCargo(1);
         $tarifaCopiloto = $controlTipoCargo->obtenerSueldoTipoCargo(2);
         $SumaPiloto = $this->controlBD->consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, 1, $tarifaPiloto);
         $SumaCopiloto = $this->controlBD->consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, 2, $tarifaCopiloto);
         $total = $SumaPiloto + $SumaCopiloto;
-        return ($total);
+        return (round($total, 2));
+    }
+
+/**
+ * Metodo para consultar todos los tripulantes con el pago total, segun sus rutas
+ * @param <Date> $fechaini
+ * @param <Date> $fechafin
+ * @return <Coleccion> coleccion de tripulantes con los detalles y pago
+ */
+    function consultarSueldoNominaTripulantesDetalles ($fechaini, $fechafin){
+        $coleccionPersonal = $this->consultarTodoPersonal();
+        $coleccionResultado = new ArrayObject();
+        foreach ($coleccionPersonal as $var) {
+            $recurso = $this->consultarDetallePago($fechaini, $fechafin, $var->getCedula());
+            $total   = $this->consultarMontoTotal($fechaini, $fechafin, $var->getCedula());
+            $recursoInfo = $this->controlBD->consultarPersonalCedula($var->getCedula());
+            $operacionInfo = mysql_fetch_array($recursoInfo);
+            $tripulante = new Tripulanteclass ();
+            if ($total != 0) {
+                $tripulante->setCedula ($operacionInfo[cedula]);
+                $tripulante->setNombre($operacionInfo[nombre]);
+                $tripulante->setApellido($operacionInfo[apellido]);
+                $tripulante->setCargo ($operacionInfo[cargo]);
+                $tripulante->setSueldo($operacionInfo[sueldo]);
+                $Objeto = new PagoNominaTripulacionclass($recurso,$total, $tripulante);
+                $coleccionResultado ->append($Objeto);
+            }
+        }
+
+        return $coleccionResultado;
     }
 }
 ?>

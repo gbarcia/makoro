@@ -21,9 +21,9 @@ class controladorTipoCargoBDclass {
     function agregarTipoCargo($tipoCargo){
         $resultado = false;
         $query = "INSERT INTO `TIPO_CARGO` (`cargo`, `descripcion`, `sueldo`)".
-                 "VALUES ('" . mysql_real_escape_string($tipoCargo->getCargo()) . "',
-                          '" . mysql_real_escape_string($tipoCargo->getDescripcion()) . "'
-                          '" . mysql_real_escape_string($tipoCargo->getSueldo()) . "')";
+                 "VALUES ('" . $tipoCargo->getCargo() . "',
+                          '" . $tipoCargo->getDescripcion() . "'
+                          '" . $tipoCargo->getSueldo() . "')";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -37,12 +37,19 @@ class controladorTipoCargoBDclass {
         $sueldo;
         $query = "SELECT sueldo FROM TIPO_CARGO WHERE id = $idCargo";
         $sueldo = $this->transaccion->realizarTransaccion($query);
-        return $sueldo[sueldo];
+        $operacion = mysql_fetch_array($sueldo);
+        return $operacion[sueldo];
     }
 
-    function actualizarSueldoTipoCargo ($idCargo , $sueldo) {
+    /**
+     * Metodo para actualizar el sueldo de un cargo
+     * @param <Integer> $idCargo el id del cargo a modificar
+     * @param <Float> $nuevoSueldo el nuevo sueldo del cargo
+     * @return <Boolean> resultado de la operacion
+     */
+    function actualizarSueldoTipoCargo ($idCargo , $nuevoSueldo) {
         $resultado;
-        $query = "UPDATE TIPO_CARGO SET sueldo = $sueldo WHERE id = $idCargo";
+        $query = "UPDATE TIPO_CARGO SET sueldo = $nuevoSueldo WHERE id = $idCargo";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
