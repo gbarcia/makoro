@@ -128,9 +128,7 @@ class controladorTripulanteBDclass {
         $resultado = false;
         $query = "SELECT CONCAT (p.cedula,' ',p.nombre,' ',p.apellido) dato
                   FROM PERSONAL p,TIPO_CARGO tp
-                  WHERE (p.nombre LIKE '".$busqueda."%'
-                  OR p.apellido LIKE '".$busqueda."%'
-                  OR p.cedula LIKE '".$busqueda."%')
+                  WHERE CONCAT (p.cedula) LIKE '%".$busqueda."%'
                   AND p.TIPO_CARGO_id = tp.id LIMIT 0,5";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
