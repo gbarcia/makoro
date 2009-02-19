@@ -10,7 +10,7 @@ $avion->setHabilitado(1);
 
 $controlPrueba = new controladorAvionBDclass();
 $resultado = $controlPrueba->agregarAvion($avion);
-print("\$Agrego = ". $resultado);
+echo $resultado;
 
 
 ?>
