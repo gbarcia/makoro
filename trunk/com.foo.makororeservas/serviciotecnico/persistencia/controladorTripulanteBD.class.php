@@ -21,16 +21,16 @@ class controladorTripulanteBDclass {
     function agregarPersonal($tripulante){
         $resultado = false;
         $query = "INSERT INTO PERSONAL (cedula,nombre,apellido,sexo,telefono,estado," .
-        "ciudad,direccion,habilitado,TIPO_CARGO_id) VALUES ('".mysql_real_escape_string($tripulante->getCedula())."',
-                                                            '".mysql_real_escape_string($tripulante->getNombre())."',
-                                                            '".mysql_real_escape_string($tripulante->getApellido())."',
-                                                            '".mysql_real_escape_string($tripulante->getSexo())."',
-                                                            '".mysql_real_escape_string($tripulante->getTelefono())."',
-                                                            '".mysql_real_escape_string($tripulante->getEstado())."',
-                                                            '".mysql_real_escape_string($tripulante->getCiudad())."',
-                                                            '".mysql_real_escape_string($tripulante->getDireccion())."',
-                                                            '".mysql_real_escape_string($tripulante->getHabilitado())."',
-                                                            '".mysql_real_escape_string($tripulante->getCargo())."')";
+        "ciudad,direccion,habilitado,TIPO_CARGO_id) VALUES ('". $tripulante->getCedula() ."',
+                                                            '". $tripulante->getNombre() ."',
+                                                            '". $tripulante->getApellido()."',
+                                                            '". $tripulante->getSexo()."',
+                                                            '". $tripulante->getTelefono()."',
+                                                            '". $tripulante->getEstado()."',
+                                                            '". $tripulante->getCiudad()."',
+                                                            '". $tripulante->getDireccion()."',
+                                                            TRUE,'".$tripulante->getCargo()."')";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -43,16 +43,16 @@ class controladorTripulanteBDclass {
 
     function editarPersonal($tripulante){
         $resultado = false;
-        $query = "UPDATE PERSONAL p SET p.nombre = '".mysql_real_escape_string($tripulante->getNombre())."',
-                                        p.apellido = '".mysql_real_escape_string($tripulante->getApellido())."',
-                                        p.sexo = '".mysql_real_escape_string($tripulante->getSexo())."',
-                                        p.telefono = '".mysql_real_escape_string($tripulante->getTelefono())."',
-                                        p.estado = '".mysql_real_escape_string($tripulante->getEstado())."',
-                                        p.ciudad = '".mysql_real_escape_string($tripulante->getCiudad())."',
-                                        p.direccion = '".mysql_real_escape_string($tripulante->getDireccion())."',
-                                        p.habilitado = '".mysql_real_escape_string($tripulante->getHabilitado())."',
-                                        p.TIPO_CARGO_id = '".mysql_real_escape_string($tripulante->getCargo())."'
-                   WHERE p.cedula = '".mysql_real_escape_string($tripulante->getCedula())."'";
+        $query = "UPDATE PERSONAL p SET p.nombre = '".$tripulante->getNombre()."',
+                                        p.apellido = '".$tripulante->getApellido()."',
+                                        p.sexo = '".$tripulante->getSexo()."',
+                                        p.telefono = '".$tripulante->getTelefono()."',
+                                        p.estado = '".$tripulante->getEstado()."',
+                                        p.ciudad = '".$tripulante->getCiudad()."',
+                                        p.direccion = '".$tripulante->getDireccion()."',
+                                        p.habilitado = '".$tripulante->getHabilitado()."',
+                                        p.TIPO_CARGO_id = '".$tripulante->getCargo()."'
+                   WHERE p.cedula = '".$tripulante->getCedula()."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -71,13 +71,13 @@ class controladorTripulanteBDclass {
         $query = "SELECT p.cedula cedula , p.nombre nombre, p.apellido apellido, SUM(r.tiempo*$tarifa)monto, tc.cargo
                   FROM PERSONAL p, VUELO_PERSONAL vp, VUELO v, RUTA r, TIPO_CARGO tc
                   WHERE p.cedula = vp.PERSONAL_cedula
-                  AND p.cedula = '".mysql_real_escape_string($cedula)."'
+                  AND p.cedula = '".$cedula."'
                   AND v.id = vp.VUELO_id
                   AND r.id = v.RUTA_id
                   AND tc.id = vp.cargo
                   AND vp.cargo =$cargo
-                  AND p.habilitado = true
-                  AND v.fecha BETWEEN '" . mysql_real_escape_string($fechaini) . "' AND '" . mysql_real_escape_string($fechafin) . "'";
+                  AND p.habilitado = 1
+                  AND v.fecha BETWEEN '" . $fechaini . "' AND '" . $fechafin . "'";
         $recurso = $this->transaccion->realizarTransaccion($query);
         $resultado = mysql_fetch_array($recurso);
         return $resultado[monto];
@@ -98,12 +98,12 @@ class controladorTripulanteBDclass {
                          r.tiempo, v.AVION_matricula, tc.cargo
                   FROM PERSONAL p, VUELO_PERSONAL vp, VUELO v, RUTA r, TIPO_CARGO tc
                   WHERE p.cedula = vp.PERSONAL_cedula
-                  AND p.cedula = '".mysql_real_escape_string($cedula)."'
+                  AND p.cedula = '".$cedula."'
                   AND v.id = vp.VUELO_id
                   AND r.id = v.RUTA_id
                   AND tc.id = vp.cargo
-                  AND p.habilitado = true
-                  AND v.fecha BETWEEN '" . mysql_real_escape_string($fechaini) . "' AND '" . mysql_real_escape_string($fechafin) . "'";
+                  AND p.habilitado = 1
+                  AND v.fecha BETWEEN '" . $fechaini . "' AND '" .$fechafin. "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -113,7 +113,7 @@ class controladorTripulanteBDclass {
  */
     function consultarPersonal() {
         $resultado = false;
-        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo
+        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo, tp.sueldo
                   FROM PERSONAL p,TIPO_CARGO tp
                   WHERE p.TIPO_CARGO_id = tp.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
@@ -127,11 +127,11 @@ class controladorTripulanteBDclass {
  */
     function consultarPersonaCedulaNombreApellido ($busqueda) {
         $resultado = false;
-        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo
+        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo, tp.sueldo
                   FROM PERSONAL p,TIPO_CARGO tp
-                  WHERE (p.nombre LIKE '%".mysql_real_escape_string($busqueda)."%'
-                  OR p.apellido LIKE '%".mysql_real_escape_string($busqueda)."%'
-                  OR p.cedula = '".mysql_real_escape_string($busqueda)."')
+                  WHERE (p.nombre LIKE '%".$busqueda."%'
+                  OR p.apellido LIKE '%".$busqueda."%'
+                  OR p.cedula = '".$busqueda."')
                   AND p.TIPO_CARGO_id = tp.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -143,7 +143,7 @@ class controladorTripulanteBDclass {
  */
     function consultarPersonalCedula ($cedula) {
         $resultado = false;
-        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo
+        $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo, tp.sueldo
                   FROM PERSONAL p,TIPO_CARGO tp
                   WHERE p.cedula = $cedula
                   AND p.TIPO_CARGO_id = tp.id";
