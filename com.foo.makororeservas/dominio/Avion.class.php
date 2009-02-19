@@ -37,7 +37,5 @@ class Avionclass {
             $this->habilitado = $habilitado;
         }
     }
-
-
 }
 ?>
