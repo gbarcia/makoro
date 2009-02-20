@@ -60,6 +60,7 @@ class controladorClienteAgenciaBDclass {
      * @return <recurso>
      */
     function consultarClienteAgenciaRifNombre ($busqueda) {
+        $resultado = false;
         $query = "SELECT CONCAT(ca.rif,' ',ca.nombre,), ca.rif,ca.nombre
                   FROM CLIENTE_AGENCIA ca
                   WHERE (ca.nombre LIKE '".$busqueda."%'
@@ -73,6 +74,7 @@ class controladorClienteAgenciaBDclass {
      * @return <coleccion>
      */
     function consultarClienteAgenciaConMasVuelos(){
+       $resultado = false;
        $query = "SELECT ca.rif,ca.nombre,ca.telefono,ca.estado,ca.ciudad,ca.direccion,
                         ca.porcentajeComision,COUNT(r.CLIENTE_AGENCIA_rif) as cnt
                  FROM CLIENTE_AGENCIA ca, VUELO v, VUELO_RESERVA vr, RESERVA r
@@ -100,6 +102,7 @@ class controladorClienteAgenciaBDclass {
      * @return <coleccion>
      */
     function consultarClientesAgenciasVuelosDescendente(){
+        $resultado = false;
         $query = "SELECT ca.rif,ca.nombre,ca.telefono,ca.estado,ca.ciudad,ca.direccion,
                          ca.porcentajeComision,COUNT(r.CLIENTE_AGENCIA_rif) as cnt
                   FROM CLIENTE_AGENCIA ca, VUELO v, VUELO_RESERVA vr, RESERVA r, PASAJERO p
@@ -118,6 +121,7 @@ class controladorClienteAgenciaBDclass {
  * @return <coleccion> clientes agencias sin pagar
  */
     function consultarClientesAgenciasPorPagar(){
+        $resultado = false;
         $query = "SELECT ca.rif,ca.nombre,ca.telefono,ca.estado,ca.ciudad,
                          ca.direccion,ca.porcentajeComision
                   FROM CLIENTE_PARTICULAR ca, RESERVA r
