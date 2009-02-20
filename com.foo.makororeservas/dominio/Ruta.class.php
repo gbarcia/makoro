@@ -11,6 +11,7 @@ class Rutaclass {
     private $tiempo;
     private $abreviaturaSalida;
     private $abreviaturaLlegada;
+    private $costo;
     private $generaIVA;
 
     public function getSitioSalida() {
@@ -53,6 +54,15 @@ class Rutaclass {
 
     public function setAbreviaturaLlegada($abreviaturaLlegada) {
         $this->abreviaturaLlegada = strtoupper($abreviaturaLlegada);
+    }
+
+    public function getCosto() {
+        return $this->costo;
+    }
+
+    public function setCosto($costo) {
+        if(is_numeric($costo))
+        $this->costo = $costo;
     }
 
     public function getGeneraIVA() {

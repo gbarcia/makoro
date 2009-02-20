@@ -55,7 +55,7 @@ class controladorClienteParticularBDclass {
 
     function consultarClienteParticularCedulaNombreApellido ($busqueda) {
         $resultado = false;
-        $query = "SELECT CONCAT(cp.cedula,' ',cp.nombre,' ',cp.apellido)
+        $query = "SELECT CONCAT(cp.cedula,' ',cp.nombre,' ',cp.apellido), cp.cedula,cp.nombre,cp.apellido
                   FROM CLIENTE_PARTICULAR cp
                   WHERE (cp.nombre LIKE '".$busqueda."%'
                   OR cp.apellido LIKE '".$busqueda."%'

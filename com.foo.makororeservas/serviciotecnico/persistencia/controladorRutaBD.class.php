@@ -21,12 +21,13 @@ class controladorRutaBDclass {
     function agregarRuta($ruta){
         $resultado = false;
         $query = "INSERT INTO RUTA(sitioSalida, sitioLlegada, tiempo,
-                                   abreviaturaSalida, abreviaturaLlegada, generaIVA)
+                                   abreviaturaSalida, abreviaturaLlegada, costo,generaIVA)
                   VALUES('" . mysql_real_escape_string($ruta->getSitioSalida()) . "',
                          '" . mysql_real_escape_string($ruta->getSitioLlegada()) . "',
                           " . $ruta->getTiempo() . ",
                          '" . mysql_real_escape_string($ruta->getAbreviaturaSalida()) . "',
                          '" . mysql_real_escape_string($ruta->getAbreviaturaLlegada()) . "',
+                         '" . mysql_real_escape_string($ruta->getCosto()) . "',
                           " . $ruta->getGeneraIVA() . ")";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -43,6 +44,7 @@ class controladorRutaBDclass {
                   SET r.tiempo = " . $ruta->getTiempo() . ",".
                      "r.abreviaturaSalida = '" . mysql_real_escape_string($ruta->getAbreviaturaSalida()) . "',".
                      "r.abreviaturaLlegada = '" . mysql_real_escape_string($ruta->getAbreviaturaLlegada()) . "',".
+                     "r.costo = '" . mysql_real_escape_string($ruta->getCosto()) . "',".
                      "r.generaIVA = " . $ruta->getGeneraIVA() . " ".
                   "WHERE r.sitioSalida = '" . mysql_real_escape_string($ruta->getSitioSalida()) . "' AND ".
                         "r.sitioLlegada = '" . mysql_real_escape_string($ruta->getSitioLlegada()) . "'";
