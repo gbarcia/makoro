@@ -9,6 +9,7 @@ $ruta->setSitioLlegada('MAIQUETIA');
 $ruta->setAbreviaturaSalida('MER');
 $ruta->setAbreviaturaLlegada('MAI');
 $ruta->setTiempo(1);
+$ruta->setCosto(800.0);
 $ruta->setGeneraIVA(1);
 
 $controlPrueba = new controladorRutaBDclass();
@@ -26,6 +27,7 @@ $result = $controlPrueba->consultarRutaID("LOS ROQUES","MAIQUETIA");
     <td>Abreviatura Salida</td>
     <td>Abreviatura Llegada</td>
     <td>Tiempo</td>
+    <td>Costo</td>
     <td>Genera IVA</td>
 </tr>
 <?php
@@ -37,6 +39,7 @@ $result = $controlPrueba->consultarRutaID("LOS ROQUES","MAIQUETIA");
             <td><?php echo $array['abreviaturaSalida'] ?></td>
             <td><?php echo $array['abreviaturaLlegada'] ?></td>
             <td><?php echo $array['tiempo'] ?></td>
+            <td><?php echo $array['costo'] ?></td>
             <td><?php echo $array['generaIVA'] ?></td>
         </tr>
         <?php
@@ -45,4 +48,5 @@ $result = $controlPrueba->consultarRutaID("LOS ROQUES","MAIQUETIA");
 </table>
 
 <?php
+
 ?>
