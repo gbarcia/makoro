@@ -62,7 +62,6 @@ class controladorClienteParticularBDclass {
      * @return <recurso>
      */
     function consultarClienteParticularCedulaNombreApellido ($busqueda) {
-        $resultado = false;
         $query = "SELECT CONCAT(cp.cedula,' ',cp.nombre,' ',cp.apellido), cp.cedula,cp.nombre,cp.apellido
                   FROM CLIENTE_PARTICULAR cp
                   WHERE (cp.nombre LIKE '".$busqueda."%'
@@ -71,6 +70,52 @@ class controladorClienteParticularBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
-    
+
+    /**
+     * Metodo para consultar el cliente particular con mas vuelos
+     * @return <coleccion>
+     */
+    function consultarClienteParticularConMasVuelos(){
+       $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.telefono,cp.estado,cp.ciudad,cp.direccion,COUNT(r.CLIENTE_PARTICULAR_cedula) as cnt
+                 FROM CLIENTE_PARTICULAR cp, VUELO v, VUELO_RESERVA vr, RESERVA r, PASAJERO p
+                 WHERE v.id=vr.VUELO_id
+                 AND r.id=vr.RESERVA_id
+                 AND r.PASAJERO_id = p.id
+                 AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
+                 AND r.estado = 'PA'
+                 GROUP BY r.CLIENTE_PARTICULAR_cedula
+                 HAVING cnt = (SELECT MAX(a.cnt)
+                               FROM (SELECT COUNT(r.CLIENTE_PARTICULAR_cedula) as cnt
+                                     FROM CLIENTE_PARTICULAR cp, VUELO v, VUELO_RESERVA vr, RESERVA r, PASAJERO p
+                                     WHERE v.id=vr.VUELO_id
+                                     AND r.id=vr.RESERVA_id
+                                     AND r.PASAJERO_id = p.id
+                                     AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
+                                     AND r.estado = 'PA'
+                                     GROUP BY r.CLIENTE_PARTICULAR_cedula)
+                               as a)";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para consultar clientes particulares que hayan realizado
+     * mas vuelos, en orden descendente
+     * @return <coleccion>
+     */
+    function consultarClientesParticularesVuelosDescendente(){
+        $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.telefono,cp.estado,
+                         cp.ciudad,cp.direccion,COUNT(r.CLIENTE_PARTICULAR_cedula) as cnt
+                  FROM CLIENTE_PARTICULAR cp, VUELO v, VUELO_RESERVA vr, RESERVA r, PASAJERO p
+                  WHERE v.id=vr.VUELO_id
+                  AND r.id=vr.RESERVA_id
+                  AND r.PASAJERO_id = p.id
+                  AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
+                  AND r.estado = 'PA'
+                  GROUP BY r.CLIENTE_PARTICULAR_cedula
+                  ORDER BY cnt desc";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
