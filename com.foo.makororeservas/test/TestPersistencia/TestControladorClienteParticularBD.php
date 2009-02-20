@@ -31,21 +31,49 @@ $clienteParticular = new ClienteParticularclass();
 //echo $resultado;
 //
 
+//$controlPrueba = new controladorClienteParticularBDclass();
+//$busqueda = 'A';
+//
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>cedula</th>';
+//echo '<th>nombre</th>';
+//echo '<th>apellido</th>';
+//echo '</tr>';
+//$resultado = $controlPrueba->consultarClienteParticularCedulaNombreApellido($busqueda);
+//    while ($row = mysql_fetch_array($resultado)) {
+//    echo '<tr>';
+//    echo '<td>' . $row['cedula'] . '</td>';
+//    echo '<td>' . $row['nombre'] . '</td>';
+//    echo '<td>' . $row['apellido'] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+
 $controlPrueba = new controladorClienteParticularBDclass();
-$busqueda = 'A';
 
 echo '<table border=1>';
 echo '<tr>';
 echo '<th>cedula</th>';
 echo '<th>nombre</th>';
 echo '<th>apellido</th>';
+echo '<th>telefono</th>';
+echo '<th>estado</th>';
+echo '<th>ciudad</th>';
+echo '<th>direccion</th>';
+echo '<th>Cantidad de vuelos</th>';
 echo '</tr>';
-$resultado = $controlPrueba->consultarClienteParticularCedulaNombreApellido($busqueda);
+$resultado = $controlPrueba->consultarClientesParticularesVuelosDescendente();
     while ($row = mysql_fetch_array($resultado)) {
     echo '<tr>';
     echo '<td>' . $row['cedula'] . '</td>';
     echo '<td>' . $row['nombre'] . '</td>';
     echo '<td>' . $row['apellido'] . '</td>';
+    echo '<td>' . $row['telefono'] . '</td>';
+    echo '<td>' . $row['estado'] . '</td>';
+    echo '<td>' . $row['ciudad'] . '</td>';
+    echo '<td>' . $row['direccion'] . '</td>';
+    echo '<td>' . $row[cnt] . '</td>';
     echo '</tr>';
 }
 echo '</table>';
