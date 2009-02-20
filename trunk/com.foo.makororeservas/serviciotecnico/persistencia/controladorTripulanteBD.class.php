@@ -8,8 +8,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Tripul
  */
 class controladorTripulanteBDclass {
 
+/*Variable del objeto para realizar las transacciones*/
     private $transaccion;
 
+/**
+ * Constructor que inicia un objeto para la trasanccion con la base de datos
+ */
     function __construct() {
         $this->transaccion = new TransaccionBDclass();
     }

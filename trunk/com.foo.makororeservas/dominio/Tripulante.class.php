@@ -34,7 +34,7 @@ class Tripulanteclass {
 
     public function setCedula($cedula) {
         if (is_numeric($cedula))
-            $this->cedula = $cedula;
+        $this->cedula = $cedula;
     }
 
     public function getNombre() {
@@ -101,8 +101,18 @@ class Tripulanteclass {
     }
 
     public function setHabilitado($habilitado) {
-        if (is_numeric($habilitado))
-        $this->habilitado = $habilitado;
+        if (is_numeric($habilitado)) {
+            $this->habilitado = $habilitado;
+        }
+    }
+
+    public function setHabilitadoString ($habilitado) {
+        if ($habilitado == 1) {
+            $this->habilitado = "SI";
+        }
+        else if ($habilitado == 0) {
+            $this->habilitado = "NO";
+        }
     }
 
     public function getCargo() {
@@ -112,7 +122,7 @@ class Tripulanteclass {
     public function setCargo($cargo) {
         $this->cargo = strtoupper($cargo);
     }
-    
+
     public function getSueldo() {
         return $this->sueldo;
     }
