@@ -9,6 +9,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Client
 class controladorClienteParticularBDclass {
     private $transaccion;
 
+    /**
+     * Constructor de la clase
+     */
     function __construct() {
         $this->transaccion = new TransaccionBDclass();
     }
@@ -53,6 +56,11 @@ class controladorClienteParticularBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo que consulta los clientes particulares por su cedula, nombre o apellido
+     * @param <string> $busqueda la busqueda que se desea realizar
+     * @return <recurso>
+     */
     function consultarClienteParticularCedulaNombreApellido ($busqueda) {
         $resultado = false;
         $query = "SELECT CONCAT(cp.cedula,' ',cp.nombre,' ',cp.apellido), cp.cedula,cp.nombre,cp.apellido
@@ -60,7 +68,6 @@ class controladorClienteParticularBDclass {
                   WHERE (cp.nombre LIKE '".$busqueda."%'
                   OR cp.apellido LIKE '".$busqueda."%'
                   OR cp.cedula LIKE '".$busqueda."%') LIMIT 0,5";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
