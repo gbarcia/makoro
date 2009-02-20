@@ -32,7 +32,7 @@ $clienteParticular = new ClienteParticularclass();
 //
 
 $controlPrueba = new controladorClienteParticularBDclass();
-$busqueda = 'D';
+$busqueda = 'A';
 
 echo '<table border=1>';
 echo '<tr>';
