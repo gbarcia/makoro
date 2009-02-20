@@ -15,17 +15,22 @@ class Conexionclass {
         $this->configuracion = new ConfiguracionBDclass();
     }
 /**
- *
+ *Metodo para conctar con la base de datos
  * @return <Conexion> la conexion con la base de datos
  */
     function conectarBaseDatos () {
         $this->conexion = mysql_connect ($this->configuracion->getDatabaseURL(),
-                                   $this->configuracion->getDatabaseUserName(),
-                                   $this->configuracion->getDatabasePWord());
-        mysql_select_db ($this->configuracion->getDatabaseName());
+            $this->configuracion->getDatabaseUserName(),
+            $this->configuracion->getDatabasePWord());
+        $result = mysql_select_db ($this->configuracion->getDatabaseName());
+        if (!$result) {
+            die ("<script>location.href='ErrorBD.php'</script>");
+        }
         return $this->conexion;
     }
-
+/**
+ * Metodo para cerrar la conexion con la base de datos
+ */
     function cerrarConexion () {
         mysql_close($this->conexion);
     }

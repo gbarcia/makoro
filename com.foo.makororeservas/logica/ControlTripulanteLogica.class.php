@@ -92,7 +92,7 @@ class ControlTripulanteLogicaclass {
             $tripulante->setEstado($row[estado]);
             $tripulante->setCiudad($row[ciudad]);
             $tripulante->setDireccion($row[direccion]);
-            $tripulante->setHabilitado($row[habilitado]);
+            $tripulante->setHabilitadoString($row[habilitado]);
             $tripulante->setCargo($row[cargo]);
             $tripulante->setSueldo($row[sueldo]);
 
