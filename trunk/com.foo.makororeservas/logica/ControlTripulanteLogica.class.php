@@ -79,9 +79,9 @@ class ControlTripulanteLogicaclass {
  * Metodo para consultar todos los tripulantes del sistema
  * @return <Coleccion> coleccion de objeto tripulante
  */
-    function consultarTodoPersonal(){
+    function consultarTodoPersonal($habilitado){
         $resultado = new ArrayObject();
-        $recurso = $this->controlBD->consultarPersonal();
+        $recurso = $this->controlBD->consultarPersonal($habilitado);
         while ($row = mysql_fetch_array($recurso)) {
             $tripulante = new Tripulanteclass();
             $tripulante->setCedula($row['cedula']);
