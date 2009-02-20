@@ -7,8 +7,8 @@ function autoSugerir($busqueda){
     $controlLogica = new ControlTripulanteLogicaclass();
     $recurso = $controlLogica->consultarTripulanteCedulaNombreApellido($busqueda);
     $numFilas = mysql_num_rows($recurso);
-    $resultado = '<table border=1>';
-    $resultado.= '<tr>';
+    $resultado = '<table class="tabla">';
+    $resultado.= '<tr class="titulo">';
     $resultado.= '<th>Cedula</th>';
     $resultado.= '<th>Nombre</th>';
     $resultado.= '<th>Apellido</th>';
@@ -23,8 +23,13 @@ function autoSugerir($busqueda){
     $resultado.= '</tr>';
     if (isset($busqueda) && $busqueda != "") {
         if ($numFilas > 0){
+            $color = false;
             while ($row = mysql_fetch_array($recurso)) {
-                $resultado.= '<tr>';
+                if ($color){
+                    $resultado.= '<tr class="r0">';
+                } else {
+                    $resultado.= '<tr class="r1">';
+                }
                 $resultado.= '<td>' . $row[cedula]. '</td>';
                 $resultado.= '<td>' . $row[nombre]. '</td>';
                 $resultado.= '<td>' . $row[apellido]. '</td>';
@@ -37,6 +42,7 @@ function autoSugerir($busqueda){
                 $resultado.= '<td>' . $row[sueldo]. '</td>';
                 $resultado.= '<td>' . $row[habilitado]. '</td>';
                 $resultado.= '</tr>';
+                $color = !$color;
             }
         }
         else {
