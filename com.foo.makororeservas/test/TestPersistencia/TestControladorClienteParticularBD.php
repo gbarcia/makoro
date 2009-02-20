@@ -61,8 +61,9 @@ echo '<th>telefono</th>';
 echo '<th>estado</th>';
 echo '<th>ciudad</th>';
 echo '<th>direccion</th>';
+echo '<th>fecha</th>';
 echo '</tr>';
-$resultado = $controlPrueba->consultarClientesParticularesPorPagar();
+$resultado = $controlPrueba->consultarClientesParticularesPorPagar('2009-01-01','2009-12-31');
     while ($row = mysql_fetch_array($resultado)) {
     echo '<tr>';
     echo '<td>' . $row['cedula'] . '</td>';
@@ -72,6 +73,7 @@ $resultado = $controlPrueba->consultarClientesParticularesPorPagar();
     echo '<td>' . $row['estado'] . '</td>';
     echo '<td>' . $row['ciudad'] . '</td>';
     echo '<td>' . $row['direccion'] . '</td>';
+    echo '<td>' . $row['fecha'] . '</td>';
     echo '</tr>';
 }
 echo '</table>';
