@@ -40,11 +40,11 @@ function autoSugerir($busqueda){
             }
         }
         else {
-                $resultado = 'No hay coincidencias con su busqueda ';
+            $resultado = 'No hay coincidencias con su busqueda ';
         }
     }
     else {
-        $recurso = $controlLogica->consultarTodoPersonal();
+        $recurso = $controlLogica->consultarTodoPersonal(TRUE);
         foreach ($recurso as $row) {
             $resultado.= '<tr>';
             $resultado.= '<td>' . $row->getCedula(). '</td>';
@@ -75,7 +75,7 @@ function autosugerirInicio () {
     echo '<th>nombre</th>';
     echo '<th>apellido</th>';
     echo '<th>sexo</th>';
-    echo '<th>telefono Llegada</th>';
+    echo '<th>telefono </th>';
     echo '<th>estado</th>';
     echo '<th>ciudad</th>';
     echo '<th>direccion</th>';
@@ -83,7 +83,7 @@ function autosugerirInicio () {
     echo '<th>cargo</th>';
     echo '<th>sueldo</th>';
     echo '</tr>';
-    $resultado = $controlLogica->consultarTodoPersonal();
+    $resultado = $controlLogica->consultarTodoPersonal(TRUE);
     foreach ($resultado as $row) {
         echo '<tr>';
         echo '<td>' . $row->getCedula(). '</td>';
@@ -101,5 +101,84 @@ function autosugerirInicio () {
     }
 
     echo '</table>';
+}
+
+function inabilitado ($ina) {
+    if ($ina == "true") {
+        $resultado = "";
+        $objResponse = new xajaxResponse();
+        $resultado = '<table border=1>';
+        $resultado.= '<tr>';
+        $resultado.= '<th>Cedula</th>';
+        $resultado.= '<th>Nombre</th>';
+        $resultado.= '<th>Apellido</th>';
+        $resultado.= '<th>Sexo</th>';
+        $resultado.= '<th>Telefono</th>';
+        $resultado.= '<th>Estado</th>';
+        $resultado.= '<th>Ciudad</th>';
+        $resultado.= '<th>Direccion</th>';
+        $resultado.= '<th>Cargo</th>';
+        $resultado.= '<th>Sueldo</th>';
+        $resultado.= '<th>Habilitado</th>';
+        $resultado.= '</tr>';
+        $controlLogica = new ControlTripulanteLogicaclass();
+        $recurso = $controlLogica->consultarTodoPersonal(FALSE);
+        foreach ($recurso as $row) {
+            $resultado.= '<tr>';
+            $resultado.= '<td>' . $row->getCedula(). '</td>';
+            $resultado.= '<td>' . $row->getNombre(). '</td>';
+            $resultado.= '<td>' . $row->getApellido(). '</td>';
+            $resultado.= '<td>' . $row->getSexo(). '</td>';
+            $resultado.= '<td>' . $row->getTelefono() . '</td>';
+            $resultado.= '<td>' . $row->getEstado(). '</td>';
+            $resultado.= '<td>' . $row->getCiudad(). '</td>';
+            $resultado.= '<td>' . $row->getDireccion(). '</td>';
+            $resultado.= '<td>' . $row->getHabilitado(). '</td>';
+            $resultado.= '<td>' . $row->getCargo(). '</td>';
+            $resultado.= '<td>' . $row->getSueldo(). '</td>';
+            $resultado.= '</tr>';
+        }
+        $resultado.= '</table>';
+        $objResponse->addAssign("gestionTripulante", "innerHTML", $resultado);
+
+    }
+    else  {
+        $resultado = "";
+        $objResponse = new xajaxResponse();
+        $resultado = '<table border=1>';
+        $resultado.= '<tr>';
+        $resultado.= '<th>Cedula</th>';
+        $resultado.= '<th>Nombre</th>';
+        $resultado.= '<th>Apellido</th>';
+        $resultado.= '<th>Sexo</th>';
+        $resultado.= '<th>Telefono</th>';
+        $resultado.= '<th>Estado</th>';
+        $resultado.= '<th>Ciudad</th>';
+        $resultado.= '<th>Direccion</th>';
+        $resultado.= '<th>Cargo</th>';
+        $resultado.= '<th>Sueldo</th>';
+        $resultado.= '<th>Habilitado</th>';
+        $resultado.= '</tr>';
+        $controlLogica = new ControlTripulanteLogicaclass();
+        $recurso = $controlLogica->consultarTodoPersonal(TRUE);
+        foreach ($recurso as $row) {
+            $resultado.= '<tr>';
+            $resultado.= '<td>' . $row->getCedula(). '</td>';
+            $resultado.= '<td>' . $row->getNombre(). '</td>';
+            $resultado.= '<td>' . $row->getApellido(). '</td>';
+            $resultado.= '<td>' . $row->getSexo(). '</td>';
+            $resultado.= '<td>' . $row->getTelefono() . '</td>';
+            $resultado.= '<td>' . $row->getEstado(). '</td>';
+            $resultado.= '<td>' . $row->getCiudad(). '</td>';
+            $resultado.= '<td>' . $row->getDireccion(). '</td>';
+            $resultado.= '<td>' . $row->getHabilitado(). '</td>';
+            $resultado.= '<td>' . $row->getCargo(). '</td>';
+            $resultado.= '<td>' . $row->getSueldo(). '</td>';
+            $resultado.= '</tr>';
+        }
+        $resultado.= '</table>';
+        $objResponse->addAssign("gestionTripulante", "innerHTML", $resultado);
+    }
+    return $objResponse;
 }
 ?>

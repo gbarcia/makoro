@@ -110,11 +110,16 @@ class controladorTripulanteBDclass {
  * Metodo para consultar todo el personal registrado en la base de datos
  * @return <recurso> registro de todo el personal en la base de datos
  */
-    function consultarPersonal() {
+    function consultarPersonal($habilitado) {
         $resultado = false;
         $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo, tp.sueldo
                   FROM PERSONAL p,TIPO_CARGO tp
                   WHERE p.TIPO_CARGO_id = tp.id";
+                  if ($habilitado)
+                  $query .= " AND p.habilitado = 1";
+                  else
+                  $query .= " AND p.habilitado = 0";
+                  $query .= " ORDER BY p.apellido, p.nombre";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -129,7 +134,8 @@ class controladorTripulanteBDclass {
         $query = "SELECT p.cedula,p.nombre,p.apellido,p.sexo,p.telefono,p.estado,p.ciudad,p.direccion,p.habilitado, tp.cargo, tp.sueldo
                   FROM PERSONAL p,TIPO_CARGO tp
                   WHERE p.cedula LIKE '".$busqueda."%'
-                  AND p.TIPO_CARGO_id = tp.id LIMIT 0,5";
+                  AND p.TIPO_CARGO_id = tp.id
+                  AND p.habilitado = 1 ORDER BY p.apellido, p.nombre";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
