@@ -71,17 +71,17 @@ function autosugerirInicio () {
     $controlLogica = new ControlTripulanteLogicaclass();
     echo '<table border=1>';
     echo '<tr>';
-    echo '<th>cedula</th>';
-    echo '<th>nombre</th>';
-    echo '<th>apellido</th>';
-    echo '<th>sexo</th>';
-    echo '<th>telefono </th>';
-    echo '<th>estado</th>';
-    echo '<th>ciudad</th>';
-    echo '<th>direccion</th>';
-    echo '<th>habilitado</th>';
-    echo '<th>cargo</th>';
-    echo '<th>sueldo</th>';
+    echo '<th>Cedula</th>';
+    echo '<th>Nombre</th>';
+    echo '<th>Apellido</th>';
+    echo '<th>Sexo</th>';
+    echo '<th>Telefono </th>';
+    echo '<th>Estado</th>';
+    echo '<th>Ciudad</th>';
+    echo '<th>Direccion</th>';
+    echo '<th>Habilitado</th>';
+    echo '<th>Cargo</th>';
+    echo '<th>Sueldo</th>';
     echo '</tr>';
     $resultado = $controlLogica->consultarTodoPersonal(TRUE);
     foreach ($resultado as $row) {
@@ -171,9 +171,9 @@ function inabilitado ($ina) {
             $resultado.= '<td>' . $row->getEstado(). '</td>';
             $resultado.= '<td>' . $row->getCiudad(). '</td>';
             $resultado.= '<td>' . $row->getDireccion(). '</td>';
-            $resultado.= '<td>' . $row->getHabilitado(). '</td>';
             $resultado.= '<td>' . $row->getCargo(). '</td>';
             $resultado.= '<td>' . $row->getSueldo(). '</td>';
+            $resultado.= '<td>' . $row->getHabilitado(). '</td>';
             $resultado.= '</tr>';
         }
         $resultado.= '</table>';
