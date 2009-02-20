@@ -61,9 +61,8 @@ echo '<th>telefono</th>';
 echo '<th>estado</th>';
 echo '<th>ciudad</th>';
 echo '<th>direccion</th>';
-echo '<th>Cantidad de vuelos</th>';
 echo '</tr>';
-$resultado = $controlPrueba->consultarClientesParticularesVuelosDescendente();
+$resultado = $controlPrueba->consultarClientesParticularesPorPagar();
     while ($row = mysql_fetch_array($resultado)) {
     echo '<tr>';
     echo '<td>' . $row['cedula'] . '</td>';
@@ -73,7 +72,6 @@ $resultado = $controlPrueba->consultarClientesParticularesVuelosDescendente();
     echo '<td>' . $row['estado'] . '</td>';
     echo '<td>' . $row['ciudad'] . '</td>';
     echo '<td>' . $row['direccion'] . '</td>';
-    echo '<td>' . $row[cnt] . '</td>';
     echo '</tr>';
 }
 echo '</table>';

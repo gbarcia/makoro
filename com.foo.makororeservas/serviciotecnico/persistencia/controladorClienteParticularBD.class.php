@@ -117,5 +117,15 @@ class controladorClienteParticularBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function consultarClientesParticularesPorPagar(){
+        $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.telefono,cp.estado,
+                         cp.ciudad,cp.direccion
+                  FROM CLIENTE_PARTICULAR cp, RESERVA r
+                  WHERE r.CLIENTE_PARTICULAR_cedula = cp.cedula
+                  AND   r.estado = 'PP'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
