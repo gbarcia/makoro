@@ -1,6 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlTripulanteLogica.class.php';
 
+/**
+ * Metodo xajax para autosugerir un tipulante
+ * @param <type> $busqueda
+ * @return <type> objeto de respuesta xjax
+ */
 function autoSugerir($busqueda){
     $objResponse = new xajaxResponse();
     $resultado = "";
@@ -73,7 +78,12 @@ function autoSugerir($busqueda){
     return $objResponse;
 }
 
-function autosugerirInicio () {
+/**
+ * Metodo para el inicio de la pagina
+ * @param <type> $reg1
+ * @param <type> $tamPag
+ */
+function autosugerirInicio ($reg1,$tamPag) {
     $controlLogica = new ControlTripulanteLogicaclass();
     echo '<table border=1>';
     echo '<tr>';
@@ -90,25 +100,70 @@ function autosugerirInicio () {
     echo '<th>Sueldo</th>';
     echo '</tr>';
     $resultado = $controlLogica->consultarTodoPersonal(TRUE);
-    foreach ($resultado as $row) {
+    $tamanoArreglo = sizeof($resultado);
+    for ($i=$reg1; $i<min($reg1+$tamPag, $tamanoArreglo); $i++) {
         echo '<tr>';
-        echo '<td>' . $row->getCedula(). '</td>';
-        echo '<td>' . $row->getNombre(). '</td>';
-        echo '<td>' . $row->getApellido(). '</td>';
-        echo '<td>' . $row->getSexo(). '</td>';
-        echo '<td>' . $row->getTelefono() . '</td>';
-        echo '<td>' . $row->getEstado(). '</td>';
-        echo '<td>' . $row->getCiudad(). '</td>';
-        echo '<td>' . $row->getDireccion(). '</td>';
-        echo '<td>' . $row->getHabilitado(). '</td>';
-        echo '<td>' . $row->getCargo(). '</td>';
-        echo '<td>' . $row->getSueldo(). '</td>';
+        echo '<td>' . $resultado[$i]->getCedula(). '</td>';
+        echo '<td>' . $resultado[$i]->getNombre(). '</td>';
+        echo '<td>' . $resultado[$i]->getApellido(). '</td>';
+        echo '<td>' . $resultado[$i]->getSexo(). '</td>';
+        echo '<td>' . $resultado[$i]->getTelefono() . '</td>';
+        echo '<td>' . $resultado[$i]->getEstado(). '</td>';
+        echo '<td>' . $resultado[$i]->getCiudad(). '</td>';
+        echo '<td>' . $resultado[$i]->getDireccion(). '</td>';
+        echo '<td>' . $resultado[$i]->getHabilitado(). '</td>';
+        echo '<td>' . $resultado[$i]->getCargo(). '</td>';
+        echo '<td>' . $resultado[$i]->getSueldo(). '</td>';
         echo '</tr>';
     }
 
     echo '</table>';
 }
 
+/**
+ * Metodo para consultar el numero total de los empleados de vuelo registrados en el sistema
+ * @return <type>
+ */
+function consultarNumeroTotalPersonal () {
+    $controlLogica = new ControlTripulanteLogicaclass();
+    $resultado = $controlLogica->consultarTodoPersonal(TRUE);
+    $tamanoArreglo = sizeof($resultado);
+    return $tamanoArreglo;
+}
+
+/**
+ * Funcion pa mostrar los links de la paginacion
+ * @param <type> $actual
+ * @param <type> $total
+ * @param <type> $por_pagina
+ * @param <type> $enlace
+ * @return <type>
+ */
+function paginar($actual, $total, $por_pagina, $enlace) {
+  $total_paginas = ceil($total/$por_pagina);
+  $anterior = $actual - 1;
+  $posterior = $actual + 1;
+  if ($actual>1)
+    $texto = "<a href=\"$enlace$anterior\">&laquo;</a> ";
+  else
+    $texto = "<b>&laquo;</b> ";
+  for ($i=1; $i<$actual; $i++)
+    $texto .= "<a href=\"$enlace$i\">$i</a> ";
+  $texto .= "<b>$actual</b> ";
+  for ($i=$actual+1; $i<=$total_paginas; $i++)
+    $texto .= "<a href=\"$enlace$i\">$i</a> ";
+  if ($actual<$total_paginas)
+    $texto .= "<a href=\"$enlace$posterior\">&raquo;</a>";
+  else
+    $texto .= "<b>&raquo;</b>";
+  return $texto;
+    }
+
+/**
+ * Funcion con xjax para consultar todo el personal inhabilitado
+ * @param <type> $ina
+ * @return <type>
+ */
 function inabilitado ($ina) {
     if ($ina == "true") {
         $resultado = "";
