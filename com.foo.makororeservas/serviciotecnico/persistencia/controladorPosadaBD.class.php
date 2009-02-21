@@ -26,7 +26,6 @@ class controladorPosadaBDclass {
         $posada->getApellidoEncargado() . "','" .
         $posada->getTelefono() . "')";
         $resultado = $this->transaccion->realizarTransaccion($query);
-        echo $query;
         return $resultado;
     }
 
@@ -39,11 +38,10 @@ class controladorPosadaBDclass {
         $resultado = false;
         $query = "UPDATE POSADA SET nombrePosada = '" . $posada->getNombrePosada() . "'," .
                                    "nombreEncargado = '" . $posada->getNombreEncargado() . "'," .
-                                   "apellidoEncargado = '" . $posada->getNombrePosada()."',".
-                                   "telefono = '" . $posada->getNombrePosada()."' ".
+                                   "apellidoEncargado = '" . $posada->getApellidoEncargado()."',".
+                                   "telefono = '" . $posada->getTelefono()."' ".
                  "WHERE id = " . $posada->getId();
         $resultado = $this->transaccion->realizarTransaccion($query);
-        echo $query;
         return $resultado;
     }
 
