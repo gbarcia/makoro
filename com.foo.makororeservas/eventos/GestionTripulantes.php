@@ -85,8 +85,8 @@ function autoSugerir($busqueda){
  */
 function autosugerirInicio ($reg1,$tamPag) {
     $controlLogica = new ControlTripulanteLogicaclass();
-    echo '<table border=1>';
-    echo '<tr>';
+    echo '<table class="tabla">';
+    echo '<tr class="titulo">';
     echo '<th>Cedula</th>';
     echo '<th>Nombre</th>';
     echo '<th>Apellido</th>';
@@ -101,8 +101,13 @@ function autosugerirInicio ($reg1,$tamPag) {
     echo '</tr>';
     $resultado = $controlLogica->consultarTodoPersonal(TRUE);
     $tamanoArreglo = sizeof($resultado);
+    $color = false;
     for ($i=$reg1; $i<min($reg1+$tamPag, $tamanoArreglo); $i++) {
-        echo '<tr>';
+        if ($color){
+                    echo '<tr class="r0">';
+                } else {
+                    echo '<tr class="r1">';
+                }
         echo '<td>' . $resultado[$i]->getCedula(). '</td>';
         echo '<td>' . $resultado[$i]->getNombre(). '</td>';
         echo '<td>' . $resultado[$i]->getApellido(). '</td>';
@@ -115,6 +120,7 @@ function autosugerirInicio ($reg1,$tamPag) {
         echo '<td>' . $resultado[$i]->getCargo(). '</td>';
         echo '<td>' . $resultado[$i]->getSueldo(). '</td>';
         echo '</tr>';
+        $color = !$color;
     }
 
     echo '</table>';
@@ -168,8 +174,8 @@ function inabilitado ($ina) {
     if ($ina == "true") {
         $resultado = "";
         $objResponse = new xajaxResponse();
-        $resultado = '<table border=1>';
-        $resultado.= '<tr>';
+        $resultado = '<table class="tabla">';
+        $resultado.= '<tr class = "titulo">';
         $resultado.= '<th>Cedula</th>';
         $resultado.= '<th>Nombre</th>';
         $resultado.= '<th>Apellido</th>';
@@ -184,8 +190,13 @@ function inabilitado ($ina) {
         $resultado.= '</tr>';
         $controlLogica = new ControlTripulanteLogicaclass();
         $recurso = $controlLogica->consultarTodoPersonal(FALSE);
+        $color = false;
         foreach ($recurso as $row) {
-            $resultado.= '<tr>';
+            if ($color){
+                    $resultado.= '<tr class="r0">';
+                } else {
+                    $resultado.= '<tr class="r1">';
+                }
             $resultado.= '<td>' . $row->getCedula(). '</td>';
             $resultado.= '<td>' . $row->getNombre(). '</td>';
             $resultado.= '<td>' . $row->getApellido(). '</td>';
@@ -198,6 +209,7 @@ function inabilitado ($ina) {
             $resultado.= '<td>' . $row->getCargo(). '</td>';
             $resultado.= '<td>' . $row->getSueldo(). '</td>';
             $resultado.= '</tr>';
+            $color = !$color;
         }
         $resultado.= '</table>';
         $objResponse->addAssign("gestionTripulante", "innerHTML", $resultado);
@@ -206,8 +218,8 @@ function inabilitado ($ina) {
     else  {
         $resultado = "";
         $objResponse = new xajaxResponse();
-        $resultado = '<table border=1>';
-        $resultado.= '<tr>';
+        $resultado = '<table class="tabla">';
+        $resultado.= '<tr class = "titulo">';
         $resultado.= '<th>Cedula</th>';
         $resultado.= '<th>Nombre</th>';
         $resultado.= '<th>Apellido</th>';
@@ -222,8 +234,13 @@ function inabilitado ($ina) {
         $resultado.= '</tr>';
         $controlLogica = new ControlTripulanteLogicaclass();
         $recurso = $controlLogica->consultarTodoPersonal(TRUE);
+        $color = false;
         foreach ($recurso as $row) {
-            $resultado.= '<tr>';
+            if ($color){
+                    $resultado.= '<tr class="r0">';
+                } else {
+                    $resultado.= '<tr class="r1">';
+                }
             $resultado.= '<td>' . $row->getCedula(). '</td>';
             $resultado.= '<td>' . $row->getNombre(). '</td>';
             $resultado.= '<td>' . $row->getApellido(). '</td>';
@@ -236,6 +253,7 @@ function inabilitado ($ina) {
             $resultado.= '<td>' . $row->getSueldo(). '</td>';
             $resultado.= '<td>' . $row->getHabilitado(). '</td>';
             $resultado.= '</tr>';
+            $color = !$color;
         }
         $resultado.= '</table>';
         $objResponse->addAssign("gestionTripulante", "innerHTML", $resultado);
