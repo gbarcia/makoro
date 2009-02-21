@@ -30,7 +30,7 @@ class controladorClienteAgenciaBDclass {
                           '".$clienteAgencia->getDireccion()."',
                           '".$clienteAgencia->getEstado()."',
                           '".$clienteAgencia->getCiudad()."',
-                          ".$clienteAgencia->getPorcentajeComision().")";
+                          '".$clienteAgencia->getPorcentajeComision()."')";
         echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
 //        echo $resultado;
@@ -122,13 +122,14 @@ class controladorClienteAgenciaBDclass {
  * Metodo para consultar clientes agencias que no faltan por pagar
  * @return <coleccion> clientes agencias sin pagar
  */
-    function consultarClientesAgenciasPorPagar(){
+    function consultarClientesAgenciasPorPagar($fechaInicio, $fechaFin){
         $resultado = false;
         $query = "SELECT ca.rif,ca.nombre,ca.telefono,ca.estado,ca.ciudad,
-                         ca.direccion,ca.porcentajeComision
-                  FROM CLIENTE_PARTICULAR ca, RESERVA r
+                         ca.direccion,ca.porcentajeComision,r.fecha
+                  FROM CLIENTE_AGENCIA ca, RESERVA r
                   WHERE r.CLIENTE_AGENCIA_rif = ca.rif
-                  AND   r.estado = 'PP'";
+                  AND   r.estado = 'PA'
+                  AND   r.fecha BETWEEN '" . $fechaInicio . "' AND '" . $fechaFin . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

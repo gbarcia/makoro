@@ -67,9 +67,8 @@ class ClienteAgenciaclass {
     }
 
     public function setPorcentajeComision($porcentajeComision) {
-        if (is_numeric($porcentajeComision)){
+        if (is_numeric($porcentajeComision))
             $this->porcentajeComision = $porcentajeComision;
-        }
     }
 }
 ?>
