@@ -67,22 +67,16 @@ $controlPrueba = new controladorPasajeroBDclass();
 //echo '<tr>';
 //echo '<th>Nombre</th>';
 //echo '<th>Apellido</th>';
-//echo '<th>Sexo</th>';
 //echo '<th>Cedula</th>';
 //echo '<th>Pasaporte</th>';
-//echo '<th>Nacionalidad</th>';
-//echo '<th>Tipo Pasajero</th>';
 //echo '</tr>';
 //$resultado = $controlPrueba->consultarPasajeroNombreApellidoCedulaPasaporte($busqueda);
 //    while ($row = mysql_fetch_array($resultado)) {
 //    echo '<tr>';
 //    echo '<td>' . $row['nombre'] . '</td>';
 //    echo '<td>' . $row['apellido'] . '</td>';
-//    echo '<td>' . $row['sexo'] . '</td>';
 //    echo '<td>' . $row['cedula'] . '</td>';
 //    echo '<td>' . $row['pasaporte'] . '</td>';
-//    echo '<td>' . $row['nacionalidad'] . '</td>';
-//    echo '<td>' . $row['tipoPasajeroId'] . '</td>';
 //    echo '</tr>';
 //}
 //echo '</table>';
