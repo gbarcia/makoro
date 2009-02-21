@@ -6,13 +6,21 @@
  */
 class ClienteParticularclass {
     private $cedula;
+
     private $nombre;
+
     private $apellido;
+
     private $sexo;
+
     private $fechaNacimiento;
+
     private $telefono;
+
     private $estado;
+
     private $ciudad;
+    
     private $direccion;
 
     public function getCedula() {
