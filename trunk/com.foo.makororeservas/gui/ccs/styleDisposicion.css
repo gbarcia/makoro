@@ -1,0 +1,24 @@
+/* 
+    Document   : styleDisposicion
+    Created on : Feb 21, 2009, 12:38:51 AM
+    Author     : jonathan
+    Description:
+        Disposicion de los div el la interfaz
+*/
+@charset "utf-8";
+.izq {
+	float: left;
+	width: 50%;
+}
+.der {
+	float: right;
+	width: 50%;
+}
+.filtros {
+	background-color: #CCCCCC;
+	border: 1px solid #000000;
+    margin-bottom:10px;
+}
+.tablaResultado {
+    margin-bottom:10px;
+}
