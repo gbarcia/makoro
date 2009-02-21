@@ -23,7 +23,7 @@ class TransaccionBDclass {
     }
 
 /**
- *
+ * Metodo para realizar una transaccion con la bd
  * @param <String> $query query a enviar
  * @return <Recurso> resultado del query
  */

@@ -67,7 +67,7 @@ class controladorTripulanteBDclass {
  * @param <Integer> $cedula
  * @param <String> $cargo
  * @param <double> $tarifa
- * @return <recurso> registros de la consulta
+ * @return <double> monto total
  */
     function consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $tarifa){
         $resultado = false;
@@ -91,7 +91,6 @@ class controladorTripulanteBDclass {
  * @param <Date> $fechaini
  * @param <Date> $fechafin
  * @param <Integer> $cedula
- * @param <Integer> $cargo
  * @return <recurso> registros de la consulta
  */
 
@@ -112,6 +111,7 @@ class controladorTripulanteBDclass {
     }
 /**
  * Metodo para consultar todo el personal registrado en la base de datos
+ * @param <boolean> $habilitado true para ver los que estan habilitados, false los que no
  * @return <recurso> registro de todo el personal en la base de datos
  */
     function consultarPersonal($habilitado) {
@@ -147,6 +147,7 @@ class controladorTripulanteBDclass {
 /**
  * Metodo para consultar un personal en detalle por su cedula
  * @param <Integer> $cedula numero de cedula del personal a consultar
+ * @return <recurso> el recurso de la consulta
  */
     function consultarPersonalCedula ($cedula) {
         $resultado = false;
