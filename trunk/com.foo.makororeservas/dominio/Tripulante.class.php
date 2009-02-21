@@ -99,6 +99,15 @@ class Tripulanteclass {
     public function getHabilitado() {
         return $this->habilitado;
     }
+    
+    public function getHabilitadoString() {
+        if ($this->habilitado == 1) {
+            return "SI";
+        }
+        else if ($this->habilitado == 0) {
+            return "NO";
+        }
+    }
 
     public function setHabilitado($habilitado) {
         if (is_numeric($habilitado)) {
