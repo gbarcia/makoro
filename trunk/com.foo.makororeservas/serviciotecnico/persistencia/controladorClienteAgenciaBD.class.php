@@ -23,15 +23,17 @@ class controladorClienteAgenciaBDclass {
      */
     function agregarClienteAgencia($clienteAgencia){
         $resultado = false;
-        $query = "INSERT INTO CLIENTE_AGENCIA (rif,nombre,telefono,estado,ciudad,porcentajeComision)
-                  VALUES ('".$clienteAgencia->getRif()."',
+        $query = "INSERT INTO CLIENTE_AGENCIA (rif,nombre,telefono,direccion,estado,ciudad,porcentajeComision)
+                  VALUES('".$clienteAgencia->getRif()."',
                           '".$clienteAgencia->getNombre()."',
                           '".$clienteAgencia->getTelefono()."',
                           '".$clienteAgencia->getDireccion()."',
                           '".$clienteAgencia->getEstado()."',
                           '".$clienteAgencia->getCiudad()."',
-                          '".$clienteAgencia->getPorcentajeComision()."')";
+                          ".$clienteAgencia->getPorcentajeComision().")";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
+//        echo $resultado;
         return $resultado;
     }
 
@@ -61,7 +63,7 @@ class controladorClienteAgenciaBDclass {
      */
     function consultarClienteAgenciaRifNombre ($busqueda) {
         $resultado = false;
-        $query = "SELECT CONCAT(ca.rif,' ',ca.nombre,), ca.rif,ca.nombre
+        $query = "SELECT CONCAT(ca.rif,' ',ca.nombre), ca.rif,ca.nombre
                   FROM CLIENTE_AGENCIA ca
                   WHERE (ca.nombre LIKE '".$busqueda."%'
                   OR ca.rif LIKE '".$busqueda."%') LIMIT 0,5";
