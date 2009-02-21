@@ -62,7 +62,10 @@ class controladorClienteParticularBDclass {
      * @return <recurso>
      */
     function consultarClienteParticularCedulaNombreApellido ($busqueda) {
-        $query = "SELECT CONCAT(cp.cedula,' ',cp.nombre,' ',cp.apellido), cp.cedula,cp.nombre,cp.apellido
+        $query = "SELECT CONCAT(cp.cedula,' ',cp.nombre,' ',cp.apellido), 
+                                cp.cedula,cp.nombre,cp.apellido,cp.sexo,
+                                cp.fechaNacimiento,cp.telefono,cp.estado,
+                                cp.ciudad,cp.direccion
                   FROM CLIENTE_PARTICULAR cp
                   WHERE (cp.nombre LIKE '".$busqueda."%'
                   OR cp.apellido LIKE '".$busqueda."%'
@@ -76,8 +79,11 @@ class controladorClienteParticularBDclass {
      * @return <coleccion>
      */
     function consultarClienteParticularConMasVuelos(){
-       $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.telefono,cp.estado,cp.ciudad,cp.direccion,COUNT(r.CLIENTE_PARTICULAR_cedula) as cnt
-                 FROM CLIENTE_PARTICULAR cp, VUELO v, VUELO_RESERVA vr, RESERVA r, PASAJERO p
+       $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.sexo,cp.fechaNacimiento,
+                        cp.telefono,cp.estado,cp.ciudad,cp.direccion,
+                        COUNT(r.CLIENTE_PARTICULAR_cedula) as cnt
+                 FROM CLIENTE_PARTICULAR cp, VUELO v, VUELO_RESERVA vr,
+                      RESERVA r, PASAJERO p
                  WHERE v.id=vr.VUELO_id
                  AND r.id=vr.RESERVA_id
                  AND r.PASAJERO_id = p.id
@@ -104,9 +110,11 @@ class controladorClienteParticularBDclass {
      * @return <coleccion>
      */
     function consultarClientesParticularesVuelosDescendente(){
-        $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.telefono,cp.estado,
-                         cp.ciudad,cp.direccion,COUNT(r.CLIENTE_PARTICULAR_cedula) as cnt
-                  FROM CLIENTE_PARTICULAR cp, VUELO v, VUELO_RESERVA vr, RESERVA r, PASAJERO p
+        $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.sexo,cp.fechaNacimiento,
+                         cp.telefono,cp.estado,cp.ciudad,cp.direccion,
+                         COUNT(r.CLIENTE_PARTICULAR_cedula) as cnt
+                  FROM CLIENTE_PARTICULAR cp, VUELO v, VUELO_RESERVA vr, RESERVA r,
+                       PASAJERO p
                   WHERE v.id=vr.VUELO_id
                   AND r.id=vr.RESERVA_id
                   AND r.PASAJERO_id = p.id
@@ -119,8 +127,8 @@ class controladorClienteParticularBDclass {
     }
 
     function consultarClientesParticularesPorPagar($fechaInicio,$fechaFin){
-       $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.telefono,cp.estado,
-                         cp.ciudad,cp.direccion,r.fecha
+       $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.sexo,cp.fechaNacimiento,
+                        cp.telefono,cp.estado,cp.ciudad,cp.direccion,r.fecha
                   FROM CLIENTE_PARTICULAR cp, RESERVA r
                   WHERE r.CLIENTE_PARTICULAR_cedula = cp.cedula
                   AND   r.estado = 'PP'
