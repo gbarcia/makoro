@@ -128,7 +128,7 @@ class controladorClienteAgenciaBDclass {
                          ca.direccion,ca.porcentajeComision,r.fecha
                   FROM CLIENTE_AGENCIA ca, RESERVA r
                   WHERE r.CLIENTE_AGENCIA_rif = ca.rif
-                  AND   r.estado = 'PA'
+                  AND   r.estado = 'PP'
                   AND   r.fecha BETWEEN '" . $fechaInicio . "' AND '" . $fechaFin . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;

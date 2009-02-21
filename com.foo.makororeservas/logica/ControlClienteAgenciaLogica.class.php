@@ -49,7 +49,7 @@ class ControlClienteAgenciaLogicaclass {
  * @param <String> $porcentajeComision
  * @return <boolean> resultado de la operacion
  */
-    function actualizarTripulante($rif, $nombre, $telefono, $direccion, $estado, $ciudad, $porcentajeComision){
+    function actualizarClienteAgencia($rif, $nombre, $telefono, $direccion, $estado, $ciudad, $porcentajeComision){
         $clienteAgencia = new ClienteAgenciaclass();
         $clienteAgencia->setRif($rif);
         $clienteAgencia->setNombre($nombre);
