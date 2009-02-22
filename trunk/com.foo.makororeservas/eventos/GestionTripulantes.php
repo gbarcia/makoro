@@ -25,9 +25,10 @@ function autoSugerir($busqueda){
     $resultado.= '<th>CIUDAD</th>';
     $resultado.= '<th>DIRECCION</th>';
     $resultado.= '<th>CARGO</th>';
-    $resultado.= '<th>SUELDO</th>';
+    $resultado.= '<th>TARIFA/HORA</th>';
     $resultado.= '<th>HABILITADO</th>';
     $resultado.= '<th>EDITAR</th>';
+    $resultado.= '<th>MARCAR</th>';
     $resultado.= '</tr>';
     if (isset($busqueda) && $busqueda != "") {
         if ($numFilas > 0){
@@ -47,7 +48,7 @@ function autoSugerir($busqueda){
                 $resultado.= '<td>' . $row[ciudad]. '</td>';
                 $resultado.= '<td>' . $row[direccion]. '</td>';
                 $resultado.= '<td>' . $row[cargo]. '</td>';
-                $resultado.= '<td>' . $row[sueldo]. '</td>';
+                $resultado.= '<td>' . $row[sueldo]. " BS".'</td>';
                 $resultado.= '<td>' . $row[habilitado]. '</td>';
                 $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[cedula].')"/></td>';
                 $resultado.= '</tr>';
@@ -74,9 +75,9 @@ function autoSugerir($busqueda){
             $resultado.= '<td>' . $row->getEstado(). '</td>';
             $resultado.= '<td>' . $row->getCiudad(). '</td>';
             $resultado.= '<td>' . $row->getDireccion(). '</td>';
-            $resultado.= '<td>' . $row->getHabilitadoString(). '</td>';
             $resultado.= '<td>' . $row->getCargo(). '</td>';
             $resultado.= '<td>' . $row->getSueldo(). '</td>';
+            $resultado.= '<td>' . $row->getHabilitadoString(). '</td>';
             $resultado.='<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row->getCedula().')"/></td>';
             $resultado.= '</tr>';
             $color = !$color;
@@ -105,10 +106,10 @@ function autosugerirInicio ($reg1,$tamPag) {
     echo '<th>ESTADO</th>';
     echo '<th>CIUDAD</th>';
     echo '<th>DIRECCION</th>';
-    echo '<th>HABIITADO</th>';
     echo '<th>CARGO</th>';
     echo '<th>SUELDO</th>';
-     echo '<th>EDITAR</th>';
+    echo '<th>HABIITADO</th>';
+    echo '<th>EDITAR</th>';
     echo '</tr>';
     $resultado = $controlLogica->consultarTodoPersonal(TRUE);
     $tamanoArreglo = sizeof($resultado);
@@ -127,9 +128,9 @@ function autosugerirInicio ($reg1,$tamPag) {
         echo '<td>' . $resultado[$i]->getEstado(). '</td>';
         echo '<td>' . $resultado[$i]->getCiudad(). '</td>';
         echo '<td>' . $resultado[$i]->getDireccion(). '</td>';
-        echo '<td>' . $resultado[$i]->getHabilitadoString(). '</td>';
         echo '<td>' . $resultado[$i]->getCargo(). '</td>';
         echo '<td>' . $resultado[$i]->getSueldo(). '</td>';
+        echo '<td>' . $resultado[$i]->getHabilitadoString(). '</td>';
         echo '<form id="formulario">';
         echo '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$resultado[$i]->getCedula().')"/></td>';
         echo '</form>';
