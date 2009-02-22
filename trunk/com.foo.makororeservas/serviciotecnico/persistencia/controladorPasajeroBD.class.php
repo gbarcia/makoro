@@ -22,12 +22,12 @@ class controladorPasajeroBDclass {
  */
     function agregarPasajero($pasajero){
         $resultado = false;
-        $query = "INSERT INTO PASAJERO (nombre,apellido,sexo,cedula,pasaporte
+        $query = "INSERT INTO PASAJERO (nombre,apellido,sexo,cedula,pasaporte,
                                         nacionalidad,TIPO_PASAJERO_id)
                   VALUES ('".$pasajero->getNombre()."',
                           '".$pasajero->getApellido()."',
                           '".$pasajero->getSexo()."',
-                          '".$pasajero->getCedula()."',
+                           ".$pasajero->getCedula().",
                           '".$pasajero->getPasaporte()."',
                           '".$pasajero->getNacionalidad()."',
                           '".$pasajero->getTipoPasajeroId()."')";
@@ -44,7 +44,7 @@ class controladorPasajeroBDclass {
         $resultado = false;
         $query = "UPDATE PASAJERO p SET p.nombre = '".$pasajero->getNombre()."',
                                         p.apellido = '".$pasajero->getApellido()."',
-                                        p.cedula = '".$pasajero->getCedula()."',
+                                        p.cedula = ".$pasajero->getCedula().",
                                         p.pasaporte = '".$pasajero->getPasaporte()."',
                                         p.nacionalidad = '".$pasajero->getNacionalidad()."',
                                         p.TIPO_PASAJERO_id = '".$pasajero->getTipoPasajeroId()."'
@@ -60,9 +60,10 @@ class controladorPasajeroBDclass {
  */
     function consultarPasajeros() {
         $resultado = false;
-        $query = "SELECT p.id,p.nombre,p.apellido,p.cedula,p.pasaporte,p.nacionalidad,p.TIPO_PASAJERO_id
+        $query = "SELECT *
                   FROM PASAJERO";
         $resultado = $this->transaccion->realizarTransaccion($query);
+        echo $query;
         return $resultado;
     }
 
