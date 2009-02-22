@@ -36,7 +36,7 @@ class controladorTipoPasajeroBDclass {
  */
     function consultarTipoPasajero(){
         $resultado = false;
-        $query = "SELECT id FROM TIPO_PASAJERO";
+        $query = "SELECT * FROM TIPO_PASAJERO";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

@@ -80,9 +80,7 @@ class Pasajeroclass {
     }
 
     public function setTipoPasajeroId($tipoPasajeroId) {
-        if (is_numeric($tipoPasajeroId)) {
-            $this->tipoPasajeroId = $tipoPasajeroId;
-        }
+        $this->tipoPasajeroId = strtoupper($tipoPasajeroId);
     }
 }
 ?>

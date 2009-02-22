@@ -12,7 +12,7 @@ $pasajeroprueba = new Pasajeroclass();
 
 
 ///* ACTUALIZAR PASAJERO */
-//$resultado = $controlBD->actualizarPasajero(16,"Andy", "Lopez", "M", 83456765, "D-1987654","Colombiano", "ADL");
+//$resultado = $controlBD->actualizarPasajero(16,"Andy", "Lopez", 83456765, "D-1987654","Colombiano", "ADL");
 //echo $resultado;
 ///*---------------------------*/
 
@@ -37,7 +37,7 @@ $pasajeroprueba = new Pasajeroclass();
 //    echo '<td>' . $row[cedula] . '</td>';
 //    echo '<td>' . $row[pasaporte]. '</td>';
 //    echo '<td>' . $row[nacionalidad]. '</td>';
-//    echo '<td>' . $row[tipoPasajeroId]. '</td>';
+//    echo '<td>' . $row[TIPO_PASAJERO_id]. '</td>';
 //    echo '</tr>';
 //}
 //echo '</table>';
@@ -57,7 +57,7 @@ $pasajeroprueba = new Pasajeroclass();
 //    echo '<tr>';
 //    echo '<td>' . $row[nombre]. '</td>';
 //    echo '<td>' . $row[apellido]. '</td>';
-//    echo '<td>' . $row['cedula']. '</td>';
+//    echo '<td>' . $row[cedula]. '</td>';
 //    echo '<td>' . $row[pasaporte]. '</td>';
 //    echo '</tr>';
 //}
@@ -65,7 +65,7 @@ $pasajeroprueba = new Pasajeroclass();
 //echo '</table>';
 ///*---------------------------------------------------------*/
 
-
+//
 ///* BUSCAR PASAJERO CON VIAJES REALIZADOS */
 //$fechaini = '2009-02-01';
 //$fechafin = '2009-02-10';
@@ -85,7 +85,7 @@ $pasajeroprueba = new Pasajeroclass();
 //$resultado = $controlBD->busquedaPasajerosConViajesRealizados($fechaini, $fechafin);
 //    while ($row = mysql_fetch_array($resultado)) {
 //    echo '<tr>';
-//    echo '<td>' . $row['cedula'] . '</td>';
+//    echo '<td>' . $row[cedula] . '</td>';
 //    echo '<td>' . $row[pasaporte] . '</td>';
 //    echo '<td>' . $row[nombre] . '</td>';
 //    echo '<td>' . $row[apellido] . '</td>';
