@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTipoCargoBD.class.php';
 /**
  * Metodo xajax para autosugerir un tipulante
- * @param <type> $busqueda
+ * @param <type> $busqueda la busqueda a realizar y comparar con el sistema
  * @return <type> objeto de respuesta xjax
  */
 function autoSugerir($busqueda){
@@ -31,7 +31,7 @@ function autoSugerir($busqueda){
     $resultado.= '<th>MARCAR</th>';
     $resultado.= '</tr>';
     if (isset($busqueda)) {
-        if ($numFilas > 0){
+        if ($numFilas > 0){ //Si hay coincidencias
             $color = false;
             while ($row = mysql_fetch_array($recurso)) {
                 if ($color){
@@ -57,11 +57,11 @@ function autoSugerir($busqueda){
                 $color = !$color;
             }
         }
-        else {
+        else { // si no hay coincidencias
             $resultado = 'No hay coincidencias con su busqueda ';
         }
     }
-    else {
+    else { // retorno o borrar datos
         $recurso = $controlLogica->consultarTodoPersonal(TRUE);
         foreach ($recurso as $row) {
             if ($color){
@@ -94,9 +94,9 @@ function autoSugerir($busqueda){
 }
 
 /**
- * Metodo para el inicio de la pagina
- * @param <type> $reg1
- * @param <type> $tamPag
+ * Metodo para el inicio de la pagina cargar todo el personal
+ * @param <variable de paginacion> $reg1
+ * @param <Integer> $tamPag resultados mostrados por pagina
  */
 function autosugerirInicio ($reg1,$tamPag) {
     $controlLogica = new ControlTripulanteLogicaclass();
@@ -146,7 +146,7 @@ function autosugerirInicio ($reg1,$tamPag) {
 
 /**
  * Metodo para consultar el numero total de los empleados de vuelo registrados en el sistema
- * @return <type>
+ * @return <Integer> el numero total de empleados
  */
 function consultarNumeroTotalPersonal () {
     $controlLogica = new ControlTripulanteLogicaclass();
@@ -157,11 +157,11 @@ function consultarNumeroTotalPersonal () {
 
 /**
  * Funcion pa mostrar los links de la paginacion
- * @param <type> $actual
- * @param <type> $total
- * @param <type> $por_pagina
- * @param <type> $enlace
- * @return <type>
+ * @param <type> $actual pagina actua
+ * @param <type> $total total de datos a mostrar
+ * @param <type> $por_pagina registros a mostrar por pagina
+ * @param <type> $enlace el enlace a donde sera llevada la pagina
+ * @return <String> texto con la paginacion
  */
 function paginar($actual, $total, $por_pagina, $enlace) {
     $total_paginas = ceil($total/$por_pagina);
@@ -184,9 +184,10 @@ function paginar($actual, $total, $por_pagina, $enlace) {
 }
 
 /**
- * Funcion con xjax para consultar todo el personal inhabilitado
- * @param <type> $ina
- * @return <type>
+ * Funcion con xjax para consultar todo el personal inhabilitado y regresar
+ * a consultar los habilitados
+ * @param <boolean> $ina 0 para mostrar todos los inhabilitados y 1 los habilitados
+ * @return <xajaxObjeto> respuesta del servidor
  */
 function inabilitado ($ina) {
     if ($ina == "true") {
@@ -239,7 +240,7 @@ function inabilitado ($ina) {
         $objResponse->addAssign("BotonEliminar", "innerHTML", $boton);
 
     }
-    else  {
+    else  { // los habilitados
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
@@ -290,7 +291,10 @@ function inabilitado ($ina) {
     }
     return $objResponse;
 }
-
+/**
+ * Metodo para cerrar la ventana de los formularios
+ * @return <ajaxResponse> objeto de respuesta para modificar el div
+ */
 function cerrarVentanaEditar() {
     $resultado = "";
     $objResponse = new xajaxResponse();
@@ -298,7 +302,12 @@ function cerrarVentanaEditar() {
     $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
     return $objResponse;
 }
-
+/**
+ * Metodo para construir el formulario de editar con los datos ya cargados del
+ * tripulante seleccionado
+ * @param <Integer> $cedula cedula del tripulante
+ * @return <xjaxResponse>  respuesta del servidor
+ */
 function editar($cedula) {
     $base = new controladorTripulanteBDclass();
     $controlTipoCargo = new controladorTipoCargoBDclass();
@@ -470,7 +479,7 @@ function actualizarTablaPrinicipal () {
 function procesarUpdate ($datos) {
     $respuesta = "";
     $controlTripulante = new ControlTripulanteLogicaclass();
-        $objResponse = new xajaxResponse();
+    $objResponse = new xajaxResponse();
     $objResponse->addConfirmCommands(6, "Esta seguro de editar ".$datos[cedula]." ?");
     $resultado = $controlTripulante->actualizarTripulante(  $datos['cedula'],
         $datos['nombre'],
@@ -512,7 +521,11 @@ function eliminarTripulante($listaTripulantes) {
     $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
     return $objResponse;
 }
-
+/**
+ * Metodo para habilitar un tripulante ya borrado o inhabilitado
+ * @param <Array> $listaTripulantes
+ * @return <ajaxResponse> respuesta del servidor
+ */
 function habilitarTripulante($listaTripulantes) {
     $respuesta ="";
     $controlTripulante = new controladorTripulanteBDclass();
@@ -527,17 +540,26 @@ function habilitarTripulante($listaTripulantes) {
     $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
     return $objResponse;
 }
-
+/**
+ * Metodo para generar el boton par habilitar los tripulantes
+ * @return <String> html para generar el boton
+ */
 function crearBotonHabilitarTripulante () {
     $boton = '<input type="button" name="button3" id="button3" value="HABLITAR SELECCION" onclick="xajax_habilitarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
     return $boton;
 }
-
+/**
+ * Metodo para generar el boton para inhabilitar tripulantes
+ * @return <String> html para generar el boton
+ */
 function crearBotonInhabilitarTripulante () {
     $boton = '<input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" onclick="xajax_eliminarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
     return $boton;
 }
-
+/**
+ * Meotodo para construir el formulario para agregar un tripulante
+ * @return <String> html para generar el formulario
+ */
 function generarCrearNuevoTripulante () {
     $contenido = "";
     $contenido ='<form id="formNuevoTripulante">
@@ -620,19 +642,28 @@ function generarCrearNuevoTripulante () {
 </form>';
     return $contenido;
 }
-
+/**
+ * Metodo para hacer aparecer al inicio el formulario para agregar un tripulate
+ */
 function nuevoTripulanteInicio() {
     $contenido = generarCrearNuevoTripulante();
     echo $contenido;
 }
 
+/**
+ * Metodo para hacer aparacer el formulario de agregar nuevo tripulante
+ * @return <xajaxResponse> respuesta del servidor
+ */
 function desplegarNuevoTripulante(){
     $respuesta = generarCrearNuevoTripulante();
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", $respuesta);
     return $objResponse;
 }
-
+/**
+ * Metodo para generar un formulario para agregar un nuevo cargo
+ * @return <String> html para crear el formulario
+ */
 function generarFormularioNuevoCargo(){
     $contenido = '<form name="form1" method="post" action="">
   <table cellpadding="2" cellspacing="1">
@@ -671,7 +702,10 @@ function generarFormularioNuevoCargo(){
 </form>';
     return $contenido;
 }
-
+/**
+ * Metodo para presentar el formulario para agregar un nuevo cargo
+ * @return <xajaxResponse> respuesta del servidor
+ */
 function desplegarNuevoCargo(){
     $respuesta = generarFormularioNuevoCargo();
     $objResponse = new xajaxResponse();
