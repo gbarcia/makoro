@@ -291,11 +291,12 @@ function inabilitado ($ina) {
     return $objResponse;
 }
 
-function cerrarVentanaEditar () {
+function cerrarVentanaEditar() {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", $resultado);
     $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+    return $objResponse;
 }
 
 function editar($cedula) {
@@ -310,7 +311,7 @@ function editar($cedula) {
       <td>EDITAR TRIPULANTE</td>
       <td><div align="right">
         <label>
-        <input type="submit" name="cerrar" id="cerrar" value="X" accesskey="X" onclick = xajax_cerrarVentanaEditar()/>
+        <input type="button" name="botonCerrar" id="botonCerrar" value="X" onclick="xajax_cerrarVentanaEditar()">
         </label>
       </div></td>
     </tr>
