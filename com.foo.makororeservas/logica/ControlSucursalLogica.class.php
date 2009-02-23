@@ -100,11 +100,23 @@ class ControlSucursalLogicaclass {
      * @param <int> $idSucursal El id de la sucursal a consultar
      * @param <Date> $fechaInicio La fecha de inicio a consultar
      * @param <Date> $fechaFin La fecha de fin a cosultar
-     * @return <recurso> las ventas realizadas por una sucursal en el intervalo indicado
+     * @return <recurso> Las ventas realizadas por una sucursal en el intervalo indicado
      */
     function consultarVentasSucursal($idSucursal,$fechaInicio,$fechaFin){
         $recurso = $this->controlBD->consultarVentasSucursal($idSucursal, $fechaInicio, $fechaFin);
         return $recurso;
     }
+
+    /**
+     * Metodo para consultar la sucursal que ha vendido mas en el sistema
+     * @param <Date> $fechaInicio La fecha de inicio a consultar
+     * @param <Date> $fechaFin La fecha de fin a cosultar
+     * @return <recurso> La sucursal que ha vendido mas en el sistema
+     */
+    function consultarSucursalMasVentas($fechaInicio,$fechaFin){
+        $recurso = $this->controlBD->consultarSucursalMasVentas($fechaInicio, $fechaFin);
+        return $recurso;
+    }
+
 }
 ?>
