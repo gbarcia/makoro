@@ -119,5 +119,25 @@ class controladorSucursalBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    /**
+     * Metodo para consultar la sucursal que ha vendido mas en la base de datos
+     * @param <Date> $fechaInicio La fecha de inicio a consultar
+     * @param <Date> $fechaFin La fecha de fin a consultar
+     * @return <Coleccion> La sucursal que ha vendido mas
+     */
+    function consultarSucursalMasVentas($fechaInicio,$fechaFin){
+        $query = "SELECT s.id as sucursal,s.nombre as nombre, m.tipo as tipo, SUM(p.monto) as monto
+                  FROM SUCURSAL s, RESERVA r, PAGO p, MONEDA m
+                  WHERE s.id = r.SUCURSAL_id
+                  AND r.estado = 'PA'
+                  AND p.id = r.PAGO_id
+                  AND r.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'
+                  AND m.id = p.MONEDA_id
+                  GROUP BY(s.id)
+                  ORDER BY p.monto desc";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>

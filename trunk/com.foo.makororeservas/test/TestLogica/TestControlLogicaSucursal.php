@@ -126,22 +126,45 @@ $sucursalTest = new Sucursalclass();
 /**
  * Las ventas realizadas por una sucursal en un rango de fecha
  */
-$idSucursal = 1;
+//$idSucursal = 1;
+//$fechaInicio = '2009-02-01';
+//$fechaFin = '2009-03-31';
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>sucursal</th>';
+//echo '<th>nombre</th>';
+//echo '<th>fecha</th>';
+//echo '<th>monto</th>';
+//echo '</tr>';
+//$resultado = $controlTest->consultarVentasSucursal($idSucursal, $fechaInicio, $fechaFin);
+//while ($row = mysql_fetch_array($resultado)) {
+//    echo '<tr>';
+//    echo '<td>' . $row[sucursal] . '</td>';
+//    echo '<td>' . $row[nombre] . '</td>';
+//    echo '<td>' . $row[fecha] . '</td>';
+//    echo '<td>' . $row[monto] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+
+/**
+ * La sucursal que vendio mas
+ */
 $fechaInicio = '2009-02-01';
-$fechaFin = '2009-04-31';
+$fechaFin = '2009-03-31';
 echo '<table border=1>';
 echo '<tr>';
 echo '<th>sucursal</th>';
 echo '<th>nombre</th>';
-echo '<th>fecha</th>';
+echo '<th>tipo</th>';
 echo '<th>monto</th>';
 echo '</tr>';
-$resultado = $controlTest->consultarVentasSucursal($idSucursal, $fechaInicio, $fechaFin);
+$resultado = $controlTest->consultarSucursalMasVentas($fechaInicio, $fechaFin);
 while ($row = mysql_fetch_array($resultado)) {
     echo '<tr>';
     echo '<td>' . $row[sucursal] . '</td>';
     echo '<td>' . $row[nombre] . '</td>';
-    echo '<td>' . $row[fecha] . '</td>';
+    echo '<td>' . $row[tipo] . '</td>';
     echo '<td>' . $row[monto] . '</td>';
     echo '</tr>';
 }
