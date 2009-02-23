@@ -470,6 +470,8 @@ function actualizarTablaPrinicipal () {
 function procesarUpdate ($datos) {
     $respuesta = "";
     $controlTripulante = new ControlTripulanteLogicaclass();
+        $objResponse = new xajaxResponse();
+    $objResponse->addConfirmCommands(6, "Esta seguro de editar ".$datos[cedula]." ?");
     $resultado = $controlTripulante->actualizarTripulante(  $datos['cedula'],
         $datos['nombre'],
         $datos['apellido'],
@@ -480,7 +482,6 @@ function procesarUpdate ($datos) {
         $datos['direccion'],
         $datos['habilitado'],
         $datos['cargo']);
-    $objResponse = new xajaxResponse();
     if ($resultado) {
         $respuesta = "Tripulante ".$datos[cedula]." actualizado con exito";
     }
@@ -501,6 +502,7 @@ function eliminarTripulante($listaTripulantes) {
     $respuesta ="";
     $controlTripulante = new controladorTripulanteBDclass();
     $objResponse = new xajaxResponse();
+    $objResponse->addConfirmCommands(6, "Esta seguro de inhabilitar la seleccion?");
     foreach ($listaTripulantes[tripulantes] as $trip) {
         $controlTripulante->inhabilitarHabilitarTripulante($trip, 0);
     }
@@ -515,6 +517,7 @@ function habilitarTripulante($listaTripulantes) {
     $respuesta ="";
     $controlTripulante = new controladorTripulanteBDclass();
     $objResponse = new xajaxResponse();
+    $objResponse->addConfirmCommands(6, "Esta seguro de habilitar la seleccion?");
     foreach ($listaTripulantes[tripulantes] as $trip) {
         $controlTripulante->inhabilitarHabilitarTripulante($trip, 1);
     }
