@@ -118,5 +118,17 @@ class ControlSucursalLogicaclass {
         return $recurso;
     }
 
+    /**
+     * Metodo para consultar el ejecutivo que ha vendido mas en una sucursal, en el sistema
+     * @param <int> $idSucursal La sucursal a consultar
+     * @param <Date> $fechaInicio La fecha de inicio a consultar
+     * @param <Date> $fechaFin La fecha de fin a consultar
+     * @return <recurso> El ejecutivo que ha vendido mas en una sucursal
+     */
+    function consultarEncargadoMasVenta($idSucursal,$fechaInicio,$fechaFin){
+        $recurso = $this->controlBD->consultarEncargadoMasVenta($idSucursal, $fechaInicio, $fechaFin);
+        return $recurso;
+    }
+
 }
 ?>
