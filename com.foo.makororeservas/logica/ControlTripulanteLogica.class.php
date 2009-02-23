@@ -146,7 +146,7 @@ class ControlTripulanteLogicaclass {
  * @return <Coleccion> coleccion de tripulantes con los detalles y pago
  */
     function consultarSueldoNominaTripulantesDetalles ($fechaini, $fechafin){
-        $coleccionPersonal = $this->consultarTodoPersonal();
+        $coleccionPersonal = $this->consultarTodoPersonal(TRUE);
         $coleccionResultado = new ArrayObject();
         foreach ($coleccionPersonal as $var) {
             $recurso = $this->consultarDetallePago($fechaini, $fechafin, $var->getCedula());

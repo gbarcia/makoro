@@ -53,5 +53,15 @@ class controladorTipoCargoBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+    /**
+     * Metodo para obtener todos los tipos de cargo de la base de datos
+     * @return <recurso> Recurso con todos los tipos de cargo
+     */
+    function obtenerTodosLosTiposCargo () {
+        $resultado;
+        $query = "SELECT id,cargo FROM TIPO_CARGO";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
