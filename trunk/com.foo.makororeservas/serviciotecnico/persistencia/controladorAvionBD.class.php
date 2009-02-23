@@ -33,8 +33,8 @@ class controladorAvionBDclass {
  * @return <boolean> resultado de la operacion
  */
     function editarAvion($avion){
-    $resultado = false;
-    $query = "UPDATE AVION a SET a.asientos = '".$avion->getAsientos()."',
+        $resultado = false;
+        $query = "UPDATE AVION a SET a.asientos = '".$avion->getAsientos()."',
                                  a.habilitado = '".$avion->getHabilitado()."'
               WHERE a.matricula = '".$avion->getMatricula()."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
