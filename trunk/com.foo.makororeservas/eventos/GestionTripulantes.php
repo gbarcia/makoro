@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlTripulanteLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/ControladorTripulanteBD.class.php';
-
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/ControladorTipoCargoBD.class.php';
 /**
  * Metodo xajax para autosugerir un tipulante
  * @param <type> $busqueda
@@ -14,7 +14,8 @@ function autoSugerir($busqueda){
     $controlLogica = new ControlTripulanteLogicaclass();
     $recurso = $controlLogica->consultarTripulanteCedulaNombreApellido($busqueda);
     $numFilas = mysql_num_rows($recurso);
-    $resultado = '<table class="tabla">';
+    $resultado = '<form id="formularioEditarMarcar">';
+    $resultado.= '<table class="tabla">';
     $resultado.= '<tr class="titulo">';
     $resultado.= '<th>CEDULA</th>';
     $resultado.= '<th>NOMBRE</th>';
@@ -23,14 +24,13 @@ function autoSugerir($busqueda){
     $resultado.= '<th>TELEFONO</th>';
     $resultado.= '<th>ESTADO</th>';
     $resultado.= '<th>CIUDAD</th>';
-    $resultado.= '<th>DIRECCION</th>';
     $resultado.= '<th>CARGO</th>';
     $resultado.= '<th>TARIFA/HORA</th>';
     $resultado.= '<th>HABILITADO</th>';
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '<th>MARCAR</th>';
     $resultado.= '</tr>';
-    if (isset($busqueda) && $busqueda != "") {
+    if (isset($busqueda)) {
         if ($numFilas > 0){
             $color = false;
             while ($row = mysql_fetch_array($recurso)) {
@@ -39,6 +39,8 @@ function autoSugerir($busqueda){
                 } else {
                     $resultado.= '<tr class="r1">';
                 }
+                $tripulanteMay = new Tripulanteclass();
+                $tripulanteMay->setHabilitadoString($row[habilitado]);
                 $resultado.= '<td>' . $row[cedula]. '</td>';
                 $resultado.= '<td>' . $row[nombre]. '</td>';
                 $resultado.= '<td>' . $row[apellido]. '</td>';
@@ -46,11 +48,11 @@ function autoSugerir($busqueda){
                 $resultado.= '<td>' . $row[telefono] . '</td>';
                 $resultado.= '<td>' . $row[estado]. '</td>';
                 $resultado.= '<td>' . $row[ciudad]. '</td>';
-                $resultado.= '<td>' . $row[direccion]. '</td>';
                 $resultado.= '<td>' . $row[cargo]. '</td>';
                 $resultado.= '<td>' . $row[sueldo]. " BS".'</td>';
-                $resultado.= '<td>' . $row[habilitado]. '</td>';
+                $resultado.= '<td>' . $tripulanteMay->getHabilitado(). '</td>';
                 $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[cedula].')"/></td>';
+                $resultado.= '<td><input type="checkbox" name="tripulantes[]" value="'.$row[cedula].'"></td>';
                 $resultado.= '</tr>';
                 $color = !$color;
             }
@@ -79,12 +81,14 @@ function autoSugerir($busqueda){
             $resultado.= '<td>' . $row->getSueldo(). '</td>';
             $resultado.= '<td>' . $row->getHabilitadoString(). '</td>';
             $resultado.='<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row->getCedula().')"/></td>';
+            $resultado.= '<td><input type="checkbox" name="tripulantes[]" value="'.$row->getCedula().'"></td>';
             $resultado.= '</tr>';
             $color = !$color;
         }
     }
     $resultado.= '</table>';
-    $objResponse->addAssign("gestionTripulante", "innerHTML", $resultado);
+    $resultado.= '</form>';
+    $objResponse->addAssign("gestionTripulante", "innerHTML", "$resultado");
 
     return $objResponse;
 }
@@ -96,6 +100,7 @@ function autoSugerir($busqueda){
  */
 function autosugerirInicio ($reg1,$tamPag) {
     $controlLogica = new ControlTripulanteLogicaclass();
+    echo '<form id="formularioEditarMarcar">';
     echo '<table class="tabla">';
     echo '<tr class="titulo">';
     echo '<th>CEDULA</th>';
@@ -105,11 +110,11 @@ function autosugerirInicio ($reg1,$tamPag) {
     echo '<th>TELEFONO</th>';
     echo '<th>ESTADO</th>';
     echo '<th>CIUDAD</th>';
-    echo '<th>DIRECCION</th>';
     echo '<th>CARGO</th>';
-    echo '<th>SUELDO</th>';
+    echo '<th>TARIFA/HORA</th>';
     echo '<th>HABIITADO</th>';
     echo '<th>EDITAR</th>';
+    echo '<th>MARCAR</th>';
     echo '</tr>';
     $resultado = $controlLogica->consultarTodoPersonal(TRUE);
     $tamanoArreglo = sizeof($resultado);
@@ -127,17 +132,15 @@ function autosugerirInicio ($reg1,$tamPag) {
         echo '<td>' . $resultado[$i]->getTelefono() . '</td>';
         echo '<td>' . $resultado[$i]->getEstado(). '</td>';
         echo '<td>' . $resultado[$i]->getCiudad(). '</td>';
-        echo '<td>' . $resultado[$i]->getDireccion(). '</td>';
         echo '<td>' . $resultado[$i]->getCargo(). '</td>';
-        echo '<td>' . $resultado[$i]->getSueldo(). '</td>';
-        echo '<td>' . $resultado[$i]->getHabilitadoString(). '</td>';
-        echo '<form id="formulario">';
+        echo '<td>' . $resultado[$i]->getSueldo(). ' BS'. '</td>';
+        echo '<td>' . $resultado[$i]->getHabilitado(). '</td>';
         echo '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$resultado[$i]->getCedula().')"/></td>';
-        echo '</form>';
+        echo '<td><input type="checkbox" name="tripulantes[]" value="'. $resultado[$i]->getCedula().'"></td>';
         echo '</tr>';
         $color = !$color;
     }
-
+    echo '</form>';
     echo '</table>';
 }
 
@@ -189,19 +192,21 @@ function inabilitado ($ina) {
     if ($ina == "true") {
         $resultado = "";
         $objResponse = new xajaxResponse();
-        $resultado = '<table class="tabla">';
+        $resultado = '<form id="formularioEditarMarcar">';
+        $resultado.= '<table class="tabla">';
         $resultado.= '<tr class = "titulo">';
-        $resultado.= '<th>Cedula</th>';
-        $resultado.= '<th>Nombre</th>';
-        $resultado.= '<th>Apellido</th>';
-        $resultado.= '<th>Sexo</th>';
-        $resultado.= '<th>Telefono</th>';
-        $resultado.= '<th>Estado</th>';
-        $resultado.= '<th>Ciudad</th>';
-        $resultado.= '<th>Direccion</th>';
-        $resultado.= '<th>Cargo</th>';
-        $resultado.= '<th>Sueldo</th>';
-        $resultado.= '<th>Habilitado</th>';
+        $resultado.= '<th>CEDULA</th>';
+        $resultado.= '<th>NOMBRE</th>';
+        $resultado.= '<th>APELLIDO</th>';
+        $resultado.= '<th>SEXO</th>';
+        $resultado.= '<th>TELEFONO</th>';
+        $resultado.= '<th>ESTADO</th>';
+        $resultado.= '<th>CIUDAD</th>';
+        $resultado.= '<th>CARGO</th>';
+        $resultado.= '<th>TARIFA/HORA</th>';
+        $resultado.= '<th>HABILITADO</th>';
+        $resultado.= '<th>EDITAR</th>';
+        $resultado.= '<th>MARCAR</th>';
         $resultado.= '</tr>';
         $controlLogica = new ControlTripulanteLogicaclass();
         $recurso = $controlLogica->consultarTodoPersonal(FALSE);
@@ -219,33 +224,39 @@ function inabilitado ($ina) {
             $resultado.= '<td>' . $row->getTelefono() . '</td>';
             $resultado.= '<td>' . $row->getEstado(). '</td>';
             $resultado.= '<td>' . $row->getCiudad(). '</td>';
-            $resultado.= '<td>' . $row->getDireccion(). '</td>';
-            $resultado.= '<td>' . $row->getHabilitado(). '</td>';
             $resultado.= '<td>' . $row->getCargo(). '</td>';
-            $resultado.= '<td>' . $row->getSueldo(). '</td>';
+            $resultado.= '<td>' . $row->getSueldo(). ' BS'. '</td>';
+            $resultado.= '<td>' . $row->getHabilitadoString(). '</td>';
+            $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row->getCedula().')"/></td>';
+            $resultado.= '<td><input type="checkbox" name="tripulantes[]" value="'. $row->getCedula().'"></td>';
+
             $resultado.= '</tr>';
             $color = !$color;
         }
         $resultado.= '</table>';
+        $boton = crearBotonHabilitarTripulante();
         $objResponse->addAssign("gestionTripulante", "innerHTML", $resultado);
+        $objResponse->addAssign("BotonEliminar", "innerHTML", $boton);
 
     }
     else  {
         $resultado = "";
         $objResponse = new xajaxResponse();
-        $resultado = '<table class="tabla">';
+        $resultado = '<form id="formularioEditarMarcar">';
+        $resultado.= '<table class="tabla">';
         $resultado.= '<tr class = "titulo">';
-        $resultado.= '<th>Cedula</th>';
-        $resultado.= '<th>Nombre</th>';
-        $resultado.= '<th>Apellido</th>';
-        $resultado.= '<th>Sexo</th>';
-        $resultado.= '<th>Telefono</th>';
-        $resultado.= '<th>Estado</th>';
-        $resultado.= '<th>Ciudad</th>';
-        $resultado.= '<th>Direccion</th>';
-        $resultado.= '<th>Cargo</th>';
-        $resultado.= '<th>Sueldo</th>';
-        $resultado.= '<th>Habilitado</th>';
+        $resultado.= '<th>CEDULA</th>';
+        $resultado.= '<th>NOMBRE</th>';
+        $resultado.= '<th>APELLIDO</th>';
+        $resultado.= '<th>SEXO</th>';
+        $resultado.= '<th>TELEFONO</th>';
+        $resultado.= '<th>ESTADO</th>';
+        $resultado.= '<th>CIUDAD</th>';
+        $resultado.= '<th>CARGO</th>';
+        $resultado.= '<th>TARIFA/HORA</th>';
+        $resultado.= '<th>HABILITADO</th>';
+        $resultado.= '<th>EDITAR</th>';
+        $resultado.= '<th>MARCAR</th>';
         $resultado.= '</tr>';
         $controlLogica = new ControlTripulanteLogicaclass();
         $recurso = $controlLogica->consultarTodoPersonal(TRUE);
@@ -263,51 +274,69 @@ function inabilitado ($ina) {
             $resultado.= '<td>' . $row->getTelefono() . '</td>';
             $resultado.= '<td>' . $row->getEstado(). '</td>';
             $resultado.= '<td>' . $row->getCiudad(). '</td>';
-            $resultado.= '<td>' . $row->getDireccion(). '</td>';
             $resultado.= '<td>' . $row->getCargo(). '</td>';
-            $resultado.= '<td>' . $row->getSueldo(). '</td>';
+            $resultado.= '<td>' . $row->getSueldo(). ' BS'. '</td>';
             $resultado.= '<td>' . $row->getHabilitado(). '</td>';
+            $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row->getCedula().')"/></td>';
+            $resultado.= '<td><input type="checkbox" name="tripulantes[]" value="'. $row->getCedula().'"></td>';
             $resultado.= '</tr>';
             $color = !$color;
         }
         $resultado.= '</table>';
+        $resultado.= '</form>';
+        $boton = crearBotonInhabilitarTripulante();
+        $objResponse->addAssign("BotonEliminar", "innerHTML", $boton);
         $objResponse->addAssign("gestionTripulante", "innerHTML", $resultado);
     }
     return $objResponse;
 }
 
+function cerrarVentanaEditar () {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+}
+
 function editar($cedula) {
     $base = new controladorTripulanteBDclass();
+    $controlTipoCargo = new controladorTipoCargoBDclass();
     $recurso = $base->consultarPersonalCedula($cedula);
     $row = mysql_fetch_array($recurso);
-    $resultado = '<form name="form1" method="post" action="">
+    $recursoTipoCargo = $controlTipoCargo->obtenerTodosLosTiposCargo();
+    $resultado = '<form id="formUpdate">
   <table cellpadding="2" cellspacing="1">
     <tr class="titulo">
-      <td colspan="2">Agregar/Editar Tripulante</td>
+      <td>EDITAR TRIPULANTE</td>
+      <td><div align="right">
+        <label>
+        <input type="submit" name="cerrar" id="cerrar" value="X" accesskey="X" onclick = xajax_cerrarVentanaEditar()/>
+        </label>
+      </div></td>
     </tr>
     <tr class="r1">
       <td>Cedula</td>
       <td><label>
-        <input type="text" name="cedula" id="cedula" size="30" value='.$row[cedula].'>
+        <input type="text" name="cedula" id="cedula" READONLY size="30" value='.$row[cedula].'>
       </label></td>
     </tr>
     <tr class="r0">
       <td>Nombre</td>
       <td><label>
-        <input type="text" name="nombre" id="nombre" size="30" value='.$row[nombre].'>
+        <input type="text" name="nombre" id="nombre" onKeyUp="this.value=this.value.toUpperCase();" size="30" value='.$row[nombre].'>
       </label></td>
     </tr>
     <tr class="r1">
       <td>Apellido</td>
       <td><label>
-        <input type="text" name="apellido" id="apellido" size="30" value="'.$row[apellido].'">
+        <input type="text" name="apellido" id="apellido" onKeyUp="this.value=this.value.toUpperCase();" size="30" value="'.$row[apellido].'">
       </label></td>
     </tr>
     <tr class="r0">
       <td>Sexo</td>
       <td><p>
         <label>
-          <input type="radio" name="sexo" value="masculino" id="sexo_0"';
+          <input type="radio" name="sexo" value="M" id="sexo_0"';
     if($row[sexo] == 'M'){
         $resultado.= 'checked="checked"';
     }
@@ -315,7 +344,7 @@ function editar($cedula) {
           Masculino</label>
         <br>
         <label>
-          <input type="radio" name="sexo" value="femenino" id="sexo_1"';
+          <input type="radio" name="sexo" value="F" id="sexo_1"';
     if($row[sexo] == 'F'){
         $resultado.= 'checked="checked"';
     }
@@ -326,7 +355,7 @@ function editar($cedula) {
     <tr class="r1">
       <td>Telefono</td>
       <td><label>
-        <input type="text" name="telefono" id="telefono" size="30" value="'.$row[telefono].'">
+        <input type="text" name="telefono" id="telefono" onKeyUp="this.value=this.value.toUpperCase();" size="30" value="'.$row[telefono].'">
       </label></td>
     </tr>
     <tr class="r0">
@@ -350,26 +379,28 @@ function editar($cedula) {
     <tr class="r1">
       <td>Cargo</td>
       <td><label>
-        <select name="cargo" id="cargo">
-        </select>
+        <select name="cargo" id="cargo">';
+    while ($rowTP = mysql_fetch_array($recursoTipoCargo)) {
+        $resultado .= '<option value="'.$rowTP[id].'"';
+        if ($row[cargo] == $rowTP[cargo])
+        $resultado .= 'selected="selected"';
+        $resultado .= '>'.$rowTP[cargo].'</option>';
+    }
+    $resultado .='</select>
       </label></td>
     </tr>
     <tr class="r0">
-      <td>Sueldo</td>
+      <td>Habilitado</td>
       <td><label>
-        <input type="text" name="sueldo" id="sueldo" size="30" value="'.$row[sueldo].'">
+        <input type="checkbox" name="habilitado" id="habilitado" size="30" value="'.$row[habilitado].'"';
+    if ($row[habilitado] == 1) $resultado.= 'checked="checked"';
+    $resultado .='>
       </label></td>
     </tr>
     <tr class="r1">
-      <td>Habilitado</td>
-      <td><label>
-        <input type="checkbox" name="habilitado" id="habilitado" size="30" value="'.$row[habilitado].'">
-      </label></td>
-    </tr>
-    <tr class="r0">
       <td height="26" colspan="2"><label>
           <div align="center">
-            <input type="submit" name="button" id="button" value="Submit">
+            <input type="button" name="button" id="button" value="EDITAR" onclick = "xajax_procesarUpdate(xajax.getFormValues(\'formUpdate\'))">
               </div>
       </label></td>
     </tr>
@@ -378,5 +409,128 @@ function editar($cedula) {
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", $resultado);
     return $objResponse;
+}
+/**
+ * Metodo para actualizar la tabla principal
+ * @return <String> respuesta en html para actualizar la tabla principal
+ */
+function actualizarTablaPrinicipal () {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $resultado = '<table class="tabla">';
+    $resultado.= '<tr class = "titulo">';
+    $resultado.= '<th>CEDULA</th>';
+    $resultado.= '<th>NOMBRE</th>';
+    $resultado.= '<th>APELLIDO</th>';
+    $resultado.= '<th>SEXO</th>';
+    $resultado.= '<th>TELEFONO</th>';
+    $resultado.= '<th>ESTADO</th>';
+    $resultado.= '<th>CIUDAD</th>';
+    $resultado.= '<th>CARGO</th>';
+    $resultado.= '<th>TARIFA/HORA</th>';
+    $resultado.= '<th>HABILITADO</th>';
+    $resultado.= '<th>EDITAR</th>';
+    $resultado.= '<th>MARCAR</th>';
+    $resultado.= '</tr>';
+    $controlLogica = new ControlTripulanteLogicaclass();
+    $recurso = $controlLogica->consultarTodoPersonal(TRUE);
+    $color = false;
+    foreach ($recurso as $row) {
+        if ($color){
+            $resultado.= '<tr class="r0">';
+        } else {
+            $resultado.= '<tr class="r1">';
+        }
+        $resultado.= '<td>' . $row->getCedula(). '</td>';
+        $resultado.= '<td>' . $row->getNombre(). '</td>';
+        $resultado.= '<td>' . $row->getApellido(). '</td>';
+        $resultado.= '<td>' . $row->getSexo(). '</td>';
+        $resultado.= '<td>' . $row->getTelefono() . '</td>';
+        $resultado.= '<td>' . $row->getEstado(). '</td>';
+        $resultado.= '<td>' . $row->getCiudad(). '</td>';
+        $resultado.= '<td>' . $row->getCargo(). '</td>';
+        $resultado.= '<td>' . $row->getSueldo(). ' BS'. '</td>';
+        $resultado.= '<td>' . $row->getHabilitado(). '</td>';
+        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row->getCedula().')"/></td>';
+        $resultado.= '<td><input type="checkbox" name="tripulantes[]" value="'. $row->getCedula().'"></td>';
+        $resultado.= '</tr>';
+        $color = !$color;
+    }
+    $resultado.= '</table>';
+    $resultado.= '</form>';
+    return $resultado;
+}
+
+/**
+ * Metodo para procesar la edicion de un tripulante
+ * @param <type> $datos datos del formulario con la informacion a editar
+ * @return <xajaxResponse> respuesta del servidor
+ */
+function procesarUpdate ($datos) {
+    $respuesta = "";
+    $controlTripulante = new ControlTripulanteLogicaclass();
+    $resultado = $controlTripulante->actualizarTripulante(  $datos['cedula'],
+        $datos['nombre'],
+        $datos['apellido'],
+        $datos['sexo'],
+        $datos['telefono'],
+        $datos['estado'],
+        $datos['ciudad'],
+        $datos['direccion'],
+        $datos['habilitado'],
+        $datos['cargo']);
+    $objResponse = new xajaxResponse();
+    if ($resultado) {
+        $respuesta = "Tripulante ".$datos[cedula]." actualizado con exito";
+    }
+    else {
+        $respuesta = "No se pudo realizar la operacion. Vuelva a intentarlo. ERROR 001";
+    }
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
+    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    return $objResponse;
+}
+/**
+ * Metodo para inhabilitar uno o varios tripulante
+ * @param <type> $listaTripulantes lista de cedulas de los tripulantes a inhabilitar
+ * @return <xajaxResponse> la respuesta del servidor
+ */
+function eliminarTripulante($listaTripulantes) {
+    $respuesta ="";
+    $controlTripulante = new controladorTripulanteBDclass();
+    $objResponse = new xajaxResponse();
+    foreach ($listaTripulantes[tripulantes] as $trip) {
+        $controlTripulante->inhabilitarHabilitarTripulante($trip, 0);
+    }
+    $respuesta ="Tripulante(s) inhabilitado(s) con exito";
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
+    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    return $objResponse;
+}
+
+function habilitarTripulante($listaTripulantes) {
+    $respuesta ="";
+    $controlTripulante = new controladorTripulanteBDclass();
+    $objResponse = new xajaxResponse();
+    foreach ($listaTripulantes[tripulantes] as $trip) {
+        $controlTripulante->inhabilitarHabilitarTripulante($trip, 1);
+    }
+    $respuesta ="Tripulante(s) habilitado(s) con exito";
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
+    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    return $objResponse;
+}
+
+function crearBotonHabilitarTripulante () {
+    $boton = '<input type="button" name="button3" id="button3" value="HABLITAR SELECCION" onclick="xajax_habilitarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
+    return $boton;
+}
+
+function crearBotonInhabilitarTripulante () {
+    $boton = '<input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" onclick="xajax_eliminarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
+    return $boton;
 }
 ?>

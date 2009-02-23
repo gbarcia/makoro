@@ -158,5 +158,21 @@ class controladorTripulanteBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    /**
+     * Operacion para inhabilitar o habilitar un trupulante
+     * @param <type> $cedula la cedula del tripulante
+     * @param <type> $accion 1 si se quiere habilitar 0 si se quiere inhabilitar
+     * @return <boolean> resultado de la operacion
+     */
+    function inhabilitarHabilitarTripulante ($cedula,$accion) {
+        $resultado = false;
+        $query = "UPDATE PERSONAL SET habilitado=";
+        if ($accion == 1) $query .= "1";
+        else if ($accion == 0) $query .= "0";
+        $query .= " WHERE cedula = '".$cedula."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>

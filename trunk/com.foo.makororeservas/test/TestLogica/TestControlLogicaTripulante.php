@@ -145,7 +145,7 @@ foreach ($Coleccion as $variable) {
     echo '</tr>';
     while ($row = mysql_fetch_array($recursoDetalles)) {
         echo '<tr>';
-        echo '<td>' . $row['cedula']. '</td>';
+        echo '<td>' . $row[cedula]. '</td>';
         echo '<td>' . $row[nombre]. '</td>';
         echo '<td>' . $row[apellido]. '</td>';
         echo '<td>' . $row[sitioSalida]. '</td>';
