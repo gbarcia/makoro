@@ -540,13 +540,13 @@ function crearBotonInhabilitarTripulante () {
 
 function generarCrearNuevoTripulante () {
     $contenido = "";
-    $contenido ='<form name="form1" method="post" action="">
+    $contenido ='<form id="formNuevoTripulante">
   <table cellpadding="2" cellspacing="1">
     <tr class="titulo">
-      <td>Agregar Tripulante</td>
+      <td>NUEVO TRIPULANTE</td>
       <td><div align="right">
         <label>
-        <input type="submit" name="cerrar" id="cerrar" value="X" accesskey="X" />
+        <input type="button" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaEditar()" />
         </label>
       </div></td>
     </tr>
@@ -618,6 +618,64 @@ function generarCrearNuevoTripulante () {
     </tr>
   </table>
 </form>';
+    return $contenido;
+}
+
+function nuevoTripulanteInicio() {
+    $contenido = generarCrearNuevoTripulante();
     echo $contenido;
+}
+
+function desplegarNuevoTripulante(){
+    $respuesta = generarCrearNuevoTripulante();
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function generarFormularioNuevoCargo(){
+    $contenido = '<form name="form1" method="post" action="">
+  <table cellpadding="2" cellspacing="1">
+    <tr class="titulo">
+      <td>NUEVO CARGO</td>
+      <td><div align="right">
+        <label>
+        <input type="submit" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaEditar()" />
+        </label>
+      </div></td>
+    </tr>
+    <tr class="r1">
+      <td>Nombre</td>
+      <td><label>
+        <input type="text" name="cedula" id="cedula" size="30">
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td>Descripcion</td>
+      <td><label>
+        <input type="text" name="nombre" id="nombre" size="30">
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>Sueldo</td>
+      <td><label>
+        <input type="text" name="apellido" id="apellido" size="30">
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="AGREGAR">
+            </div>
+      </label></td>
+    </tr>
+  </table>
+</form>';
+    return $contenido;
+}
+
+function desplegarNuevoCargo(){
+    $respuesta = generarFormularioNuevoCargo();
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("der", "innerHTML", $respuesta);
+    return $objResponse;
 }
 ?>
