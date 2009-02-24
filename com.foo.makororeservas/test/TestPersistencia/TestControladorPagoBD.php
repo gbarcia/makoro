@@ -11,21 +11,25 @@ $controlPrueba = new controladorPagoBDclass();
 //$pago->setMonto(3.3);
 //$pago->setNombreBanco("Federal");
 //$pago->setNumeroTransaccion(4686435);
-//$resultado = $controlPrueba->agregarMoneda($pago);
+//$pago->setMonedaId(1);
+//$resultado = $controlPrueba->agregarPago($pago);
+//echo $resultado;
 ///*----------------*/
 
 
-///* EDITAR PAGO */
+/////* EDITAR PAGO */
 //$pago->setId(6);
 //$pago->setTipo("T");
 //$pago->setMonto(5.8);
-//$pago->setNombreBanco("Federal");
+//$pago->setNombreBanco("Federalito");
 //$pago->setNumeroTransaccion(4686437);
+//$pago->setMonedaId(1);
 //$resultado = $controlPrueba->editarPago($pago);
-///*---------------*/
+//echo $resultado;
+/////*---------------*/
 
 
-/* CONSULTAR PAGOS */
+///* CONSULTAR PAGOS */
 //echo '<table border=1>';
 //echo '<tr>';
 //echo '<th>Tipo Pago</th>';
@@ -34,6 +38,7 @@ $controlPrueba = new controladorPagoBDclass();
 //echo '<th>Banco</th>';
 //echo '<th>Numero Transaccion</th>';
 //echo '</tr>';
+//$resultado = $controlPrueba->consultarPagos();
 //while (($row = mysql_fetch_array($resultado))) {
 //    echo '<tr>';
 //    echo '<td>' . $row['tipo'] . '</td>';
@@ -44,21 +49,23 @@ $controlPrueba = new controladorPagoBDclass();
 //    echo '</tr>';
 //}
 //echo '</table>';
-/*-----------------*/
+///*-----------------*/
 
 
-/* CONSULTAR CANCELACION DE PAGO DE CLIENTE PARTICULAR */
+///* CONSULTAR CANCELACION DE PAGO DE CLIENTE PARTICULAR */
 //$cedula = 14567875;
 //$fechaini = '2009-01-01';
 //$fechafin = '2009-01-31';
-//$resultado = $controlPrueba->editarPago($cedula, $fechaini, $fechafin);
-/*-----------------------------------------------------*/
+//$resultado = $controlPrueba->cancelarPagoRealizadoClienteParticular($cedula, $fechaini, $fechafin);
+//echo $resultado;
+///*-----------------------------------------------------*/
 
 
 /* CONSULTAR CANCELACION DE PAGO DE CLIENTE AGENCIA */
 //$rif = 'J-566456';
 //$fechaini = '2009-01-01';
 //$fechafin = '2009-01-31';
-//$resultado = $controlPrueba->editarPago($rif, $fechaini, $fechafin);
+//$resultado = $controlPrueba->cancelarPagoRealizadoClienteAgencia($rif, $fechaini, $fechafin);
+//echo $resultado;
 /*-----------------------------------------------------*/
 ?>

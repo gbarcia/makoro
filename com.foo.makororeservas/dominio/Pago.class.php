@@ -54,9 +54,7 @@ class Pagoclass {
     }
 
     public function setNumeroTransaccion($numeroTransaccion) {
-        if (is_numeric($numeroTransaccion)) {
-            $this->numeroTransaccion = $numeroTransaccion;
-        }
+        $this->numeroTransaccion = $numeroTransaccion;
     }
 
     public function getMonedaId() {

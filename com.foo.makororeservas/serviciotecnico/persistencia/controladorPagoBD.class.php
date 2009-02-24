@@ -40,8 +40,8 @@ class controladorPagoBDclass {
         $resultado = false;
         $query = "UPDATE PAGO p SET p.tipo = '".$pago->getTipo()."',
                                         p.monto = ".$pago->getMonto().",
-                                        p.nombreBanco = ".$pago->getNombreBanco().",
-                                        p.numeroTransaccion = ".$pago->getNumeroTransaccion().",
+                                        p.nombreBanco = '".$pago->getNombreBanco()."',
+                                        p.numeroTransaccion = '".$pago->getNumeroTransaccion()."',
                                         p.MONEDA_id = '".$pago->getMonedaId()."'
 
                   WHERE p.id = '".$pago->getId()."'";
