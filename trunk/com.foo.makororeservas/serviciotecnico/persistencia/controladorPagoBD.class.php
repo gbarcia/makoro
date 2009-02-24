@@ -97,8 +97,7 @@ class controladorPagoBDclass {
                   AND re.estado = 'CA'
                   AND re.fecha = '" . $fecha . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
-        return $resultado; //en la logica primero tengo que actualizar el
-        //estado de la reserva a CA y despues llamar a este metodo
+        return $resultado;
     }
 }
 ?>
