@@ -48,5 +48,57 @@ class controladorPagoBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+/**
+ * Metodo para consultar los pagos de la base de datos
+ * @return <recurso> Coleccion de pago
+ */
+    function consultarPagos() {
+        $resultado = false;
+        $query = "SELECT * FROM PAGO";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para eliminar el pago de un cliente particular en la base de datos
+ * @param <Integer> $cedula
+ * @param <Date> $fechaini
+ * @param <Date> $fechafin
+ * @return <boolean> resultado de la operacion
+ */
+    function cancelarPagoRealizadoClienteParticular($cedula, $fechaini, $fechafin) {
+        $resultado = false;
+        $query = "DELETE PAGO p
+                  FROM RESERVA re, CLIENTE_PARTICULAR cp, PAGO p
+                  WHERE cp.cedula = re.CLIENTE_PARTICULAR_cedula
+                  AND re.PAGO_id = p.id
+                  AND re.CLIENTE_PARTICULAR_cedula = " . $cedula . "
+                  AND re.estado = 'CA'
+                  AND re.fecha BETWEEN '" . $fechaini . "' AND '" .$fechafin. "'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para eliminar el pago de un cliente agencia en la base de datos
+ * @param <String> $rif
+ * @param <Date> $fechaini
+ * @param <Date> $fechafin
+ * @return <boolean> resultado de la operacion
+ */
+    function cancelarPagoRealizadoClienteAgencia($rif, $fechaini, $fechafin) {
+        $resultado = false;
+        $query = "DELETE PAGO p
+                  FROM RESERVA re, CLIENTE_AGENCIA ca, PAGO p
+                  WHERE ca.rif = re.CLIENTE_AGENCIA_rif
+                  AND re.PAGO_id = p.id
+                  AND re.CLIENTE_AGENCIA_rif = '" . $rif . "'
+                  AND re.estado = 'CA'
+                  AND re.fecha BETWEEN '" . $fechaini . "' AND '" .$fechafin. "'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado; //en la logica primero tengo que actualizar el
+        //estado de la reserva a CA y despues llamar a este metodo
+    }
 }
 ?>

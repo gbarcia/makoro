@@ -16,7 +16,7 @@ $controlPrueba = new controladorPagoBDclass();
 
 
 ///* EDITAR PAGO */
-//$pago->setId(9);
+//$pago->setId(6);
 //$pago->setTipo("T");
 //$pago->setMonto(5.8);
 //$pago->setNombreBanco("Federal");
@@ -25,4 +25,40 @@ $controlPrueba = new controladorPagoBDclass();
 ///*---------------*/
 
 
+/* CONSULTAR PAGOS */
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>Tipo Pago</th>';
+//echo '<th>Monto</th>';
+//echo '<th>Moneda</th>';
+//echo '<th>Banco</th>';
+//echo '<th>Numero Transaccion</th>';
+//echo '</tr>';
+//while (($row = mysql_fetch_array($resultado))) {
+//    echo '<tr>';
+//    echo '<td>' . $row['tipo'] . '</td>';
+//    echo '<td>' . $row['monto'] . '</td>';
+//    echo '<td>' . $row['MONEDA_id'] . '</td>';
+//    echo '<td>' . $row['nombreBanco'] . '</td>';
+//    echo '<td>' . $row['numeroTransaccion'] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+/*-----------------*/
+
+
+/* CONSULTAR CANCELACION DE PAGO DE CLIENTE PARTICULAR */
+//$cedula = 14567875;
+//$fechaini = '2009-01-01';
+//$fechafin = '2009-01-31';
+//$resultado = $controlPrueba->editarPago($cedula, $fechaini, $fechafin);
+/*-----------------------------------------------------*/
+
+
+/* CONSULTAR CANCELACION DE PAGO DE CLIENTE AGENCIA */
+//$rif = 'J-566456';
+//$fechaini = '2009-01-01';
+//$fechafin = '2009-01-31';
+//$resultado = $controlPrueba->editarPago($rif, $fechaini, $fechafin);
+/*-----------------------------------------------------*/
 ?>
