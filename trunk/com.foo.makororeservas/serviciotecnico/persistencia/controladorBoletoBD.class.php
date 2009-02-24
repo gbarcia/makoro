@@ -1,0 +1,82 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/TransaccionBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Boleto.class.php';
+
+/**
+ * Description of controladorBoletoBDclass
+ * Clase para el manejo de los boletos en la base de datos
+ * @author Diana Uribe
+ */
+class controladorBoletoBDclass {
+    private $transaccion;
+
+    function __construct() {
+        $this->transaccion = new TransaccionBDclass();
+    }
+
+/**
+ * Metodo para agegar un boleto en la base de datos
+ * @param <BOLETO> $boleto
+ * @return <boolean> resultado de la operacion 
+ */
+    function agregarBoleto($boleto) {
+        $resultado = false;
+        $query = "INSERT INTO BOLETO (PAGO_id,PASAJERO_id) VALUES ('".$boleto->getPagoId()."',
+                                                                   '".$boleto->getPasajeroId()."')";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar todos los boletos
+ * @return <Coleccion> boletos
+ */
+    function consultarBoletos(){
+        $resultado = false;
+        $query = "SELECT r.solicitud,CONCAT(e.nombre,' ',e.apellido) Agente,v.fecha,v.hora,ru.abreviaturaSalida Salida,ru.abreviaturaLlegada Llegada,
+                 CONCAT(p.nombre,' ',p.apellido) Pasajero, vr.tipo Servicio,p.TIPO_PASAJERO_id Tipo
+
+                 FROM BOLETO b, PASAJERO p, RESERVA r, PAGO pa, TIPO_SERVICIO t, VUELO_RESERVA vr, VUELO v, RUTA ru, ENCARGADO e
+                 WHERE r.PAGO_id = pa.id
+                 AND pa.id = b.PAGO_id
+                 AND p.id = b.PASAJERO_id
+                 AND r.TIPO_SERVICIO_id = t.id
+                 AND r.PASAJERO_id = p.id
+                 AND vr.RESERVA_id = r.id
+                 AND v.id = vr.VUELO_id
+                 AND v.RUTA_sitioSalida = ru.sitioSalida
+                 AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                 AND r.ENCARGADO_cedula = e.cedula";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar un boleto en especifico segun la fecha de
+ * reserva y solicitud
+ * @param <Date> $fecha
+ * @param <String> $solicitud
+ * @return <recurso>
+ */
+    function consultarBoletoEspecifico($solicitud) {
+        $resultado = false;
+        $query = "SELECT r.solicitud,CONCAT(e.nombre,' ',e.apellido) Agente,v.fecha,v.hora,ru.abreviaturaSalida Salida,ru.abreviaturaLlegada Llegada,
+                         CONCAT(p.nombre,' ',p.apellido) Pasajero, vr.tipo Servicio,p.TIPO_PASAJERO_id Tipo
+
+                  FROM BOLETO b, PASAJERO p, RESERVA r, PAGO pa, TIPO_SERVICIO t, VUELO_RESERVA vr, VUELO v, RUTA ru, ENCARGADO e
+                  WHERE r.solicitud = '".$solicitud."'
+                  AND r.PAGO_id = pa.id
+                  AND pa.id = b.PAGO_id
+                  AND p.id = b.PASAJERO_id
+                  AND r.TIPO_SERVICIO_id = t.id
+                  AND r.PASAJERO_id = p.id
+                  AND vr.RESERVA_id = r.id
+                  AND v.id = vr.VUELO_id
+                  AND v.RUTA_sitioSalida = ru.sitioSalida
+                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                  AND r.ENCARGADO_cedula = e.cedula";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+}
+?>

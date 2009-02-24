@@ -66,6 +66,12 @@ class ControlPagoLogicaclass {
         return $recurso;
     }
 
+/**
+ *
+ * @param <type> $cedula
+ * @param <type> $fechaini
+ * @param <type> $fechafin
+ */
     function buscarCancelacionPagoClienteParticular($cedula, $fechaini, $fechafin) {
         $reserva->setEstado("CA");
         $this->controlBD->editarPago($reserva);
