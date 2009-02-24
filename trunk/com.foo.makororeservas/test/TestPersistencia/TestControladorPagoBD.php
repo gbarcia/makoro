@@ -54,18 +54,16 @@ $controlPrueba = new controladorPagoBDclass();
 
 ///* CONSULTAR CANCELACION DE PAGO DE CLIENTE PARTICULAR */
 //$cedula = 14567875;
-//$fechaini = '2009-01-01';
-//$fechafin = '2009-01-31';
-//$resultado = $controlPrueba->cancelarPagoRealizadoClienteParticular($cedula, $fechaini, $fechafin);
+//$fecha = '2009-01-30';
+//$resultado = $controlPrueba->cancelarPagoRealizadoClienteParticular($cedula, $fecha);
 //echo $resultado;
 ///*-----------------------------------------------------*/
 
 
 /* CONSULTAR CANCELACION DE PAGO DE CLIENTE AGENCIA */
 //$rif = 'J-566456';
-//$fechaini = '2009-01-01';
-//$fechafin = '2009-01-31';
-//$resultado = $controlPrueba->cancelarPagoRealizadoClienteAgencia($rif, $fechaini, $fechafin);
+//$fecha = '2009-03-30';
+//$resultado = $controlPrueba->cancelarPagoRealizadoClienteAgencia($rif, $fecha);
 //echo $resultado;
 /*-----------------------------------------------------*/
 ?>

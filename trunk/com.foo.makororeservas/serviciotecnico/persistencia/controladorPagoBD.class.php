@@ -75,7 +75,7 @@ class controladorPagoBDclass {
                   AND re.PAGO_id = p.id
                   AND re.CLIENTE_PARTICULAR_cedula = " . $cedula . "
                   AND re.estado = 'CA'
-                  AND re.fecha BETWEEN '" . $fechaini . "' AND '" .$fechafin. "'";
+                  AND re.fecha = '" . $fecha . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -87,7 +87,7 @@ class controladorPagoBDclass {
  * @param <Date> $fechafin
  * @return <boolean> resultado de la operacion
  */
-    function cancelarPagoRealizadoClienteAgencia($rif, $fechaini, $fechafin) {
+    function cancelarPagoRealizadoClienteAgencia($rif, $fecha) {
         $resultado = false;
         $query = "DELETE PAGO p
                   FROM RESERVA re, CLIENTE_AGENCIA ca, PAGO p
@@ -95,7 +95,7 @@ class controladorPagoBDclass {
                   AND re.PAGO_id = p.id
                   AND re.CLIENTE_AGENCIA_rif = '" . $rif . "'
                   AND re.estado = 'CA'
-                  AND re.fecha BETWEEN '" . $fechaini . "' AND '" .$fechafin. "'";
+                  AND re.fecha = '" . $fecha . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado; //en la logica primero tengo que actualizar el
         //estado de la reserva a CA y despues llamar a este metodo
