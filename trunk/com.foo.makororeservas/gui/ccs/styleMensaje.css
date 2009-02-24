@@ -1,0 +1,45 @@
+/* 
+    Document   : styleMensaje
+    Created on : Feb 23, 2009, 6:08:45 PM
+    Author     : jonathan
+    Description:
+        Estilo para los mensajes de informacion.
+*/
+
+.advertencia {
+	background-color: #FFEAAA;
+	border: 1px solid #FFCF40;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: center;
+	width: 98%;
+	padding: 5px;
+}
+.error {
+	background-color: #FBC1AE;
+	border: 1px solid #F57549;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: center;
+	width: 98%;
+	padding: 5px;
+}
+.exito {
+	background-color: #EDF8B1;
+	border: 1px solid #D8EF50;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: center;
+	width: 98%;
+	padding: 5px;
+}
+.mensaje{
+	background-color: #AACEFF;
+	border: 1px solid #4092FF;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: center;
+	width: 98%;
+	padding: 5px;
+}
+

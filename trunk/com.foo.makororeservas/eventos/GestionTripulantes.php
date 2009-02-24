@@ -492,10 +492,10 @@ function procesarUpdate ($datos) {
         $datos['habilitado'],
         $datos['cargo']);
     if ($resultado) {
-        $respuesta = "Tripulante ".$datos[cedula]." actualizado con exito";
+        $respuesta = '<div class="exito">Tripulante '.$datos[cedula].' actualizado con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
     }
     else {
-        $respuesta = "No se pudo realizar la operacion. Vuelva a intentarlo. ERROR 001";
+        $respuesta = '<div class="error">No se pudo realizar la operacion. Vuelva a intentarlo. ERROR 001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
     }
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
@@ -515,7 +515,7 @@ function eliminarTripulante($listaTripulantes) {
     foreach ($listaTripulantes[tripulantes] as $trip) {
         $controlTripulante->inhabilitarHabilitarTripulante($trip, 0);
     }
-    $respuesta ="Tripulante(s) inhabilitado(s) con exito";
+    $respuesta ='<div class="exito">Tripulante(s) inhabilitado(s) con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
     $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
@@ -524,7 +524,7 @@ function eliminarTripulante($listaTripulantes) {
 /**
  * Metodo para habilitar un tripulante ya borrado o inhabilitado
  * @param <Array> $listaTripulantes
- * @return <ajaxResponse> respuesta del servidor
+ * @return <Esta seguro de habilitar la seleccioajaxResponse> respuesta del servidor
  */
 function habilitarTripulante($listaTripulantes) {
     $respuesta ="";
@@ -534,7 +534,7 @@ function habilitarTripulante($listaTripulantes) {
     foreach ($listaTripulantes[tripulantes] as $trip) {
         $controlTripulante->inhabilitarHabilitarTripulante($trip, 1);
     }
-    $respuesta ="Tripulante(s) habilitado(s) con exito";
+    $respuesta ='<div class="exito">Tripulante(s) habilitado(s) con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
     $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
@@ -710,6 +710,17 @@ function desplegarNuevoCargo(){
     $respuesta = generarFormularioNuevoCargo();
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("der", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+/**
+ * Funcion para borrar el div de mensaje
+ * @return <xajaxResponse> respuesta del servidor
+ */
+function borrarMensaje(){
+    $respuesta = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
 }
 ?>
