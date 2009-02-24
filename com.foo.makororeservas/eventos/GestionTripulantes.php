@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlTripulanteLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTripulanteBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTipoCargoBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/TipoCargo.class.php';
 /**
  * Metodo xajax para autosugerir un tipulante
  * @param <type> $busqueda la busqueda a realizar y comparar con el sistema
@@ -156,34 +157,6 @@ function consultarNumeroTotalPersonal () {
 }
 
 /**
- * Funcion pa mostrar los links de la paginacion
- * @param <type> $actual pagina actua
- * @param <type> $total total de datos a mostrar
- * @param <type> $por_pagina registros a mostrar por pagina
- * @param <type> $enlace el enlace a donde sera llevada la pagina
- * @return <String> texto con la paginacion
- */
-function paginar($actual, $total, $por_pagina, $enlace) {
-    $total_paginas = ceil($total/$por_pagina);
-    $anterior = $actual - 1;
-    $posterior = $actual + 1;
-    if ($actual>1)
-    $texto = "<a href=\"$enlace$anterior\">&laquo;</a> ";
-    else
-    $texto = "<b>&laquo;</b> ";
-    for ($i=1; $i<$actual; $i++)
-    $texto .= "<a href=\"$enlace$i\">$i</a> ";
-    $texto .= "<b>$actual</b> ";
-    for ($i=$actual+1; $i<=$total_paginas; $i++)
-    $texto .= "<a href=\"$enlace$i\">$i</a> ";
-    if ($actual<$total_paginas)
-    $texto .= "<a href=\"$enlace$posterior\">&raquo;</a>";
-    else
-    $texto .= "<b>&raquo;</b>";
-    return $texto;
-}
-
-/**
  * Funcion con xjax para consultar todo el personal inhabilitado y regresar
  * a consultar los habilitados
  * @param <boolean> $ina 0 para mostrar todos los inhabilitados y 1 los habilitados
@@ -299,6 +272,17 @@ function cerrarVentanaEditar() {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+    return $objResponse;
+}
+/**
+ * Metodo para cerrar la ventana de NuevoCargo
+ * @return <type>
+ */
+function cerrarVentanaNuevoCargo() {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("der", "innerHTML", $resultado);
     $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
     return $objResponse;
 }
@@ -561,8 +545,10 @@ function crearBotonInhabilitarTripulante () {
  * @return <String> html para generar el formulario
  */
 function generarCrearNuevoTripulante () {
+    $controlTipoCargo = new controladorTipoCargoBDclass();
+    $recursoTipoCargo = $controlTipoCargo->obtenerTodosLosTiposCargo();
     $contenido = "";
-    $contenido ='<form id="formNuevoTripulante">
+    $contenido .='<form id="formNuevoTripulante">
   <table cellpadding="2" cellspacing="1">
     <tr class="titulo">
       <td>NUEVO TRIPULANTE</td>
@@ -581,60 +567,64 @@ function generarCrearNuevoTripulante () {
     <tr class="r0">
       <td>Nombre</td>
       <td><label>
-        <input type="text" name="nombre" id="nombre" size="30">
+        <input type="text" name="nombre" onKeyUp="this.value=this.value.toUpperCase();" id="nombre" size="30">
       </label></td>
     </tr>
     <tr class="r1">
       <td>Apellido</td>
       <td><label>
-        <input type="text" name="apellido" id="apellido" size="30">
+        <input type="text" name="apellido" onKeyUp="this.value=this.value.toUpperCase();" id="apellido" size="30">
       </label></td>
     </tr>
     <tr class="r0">
       <td>Sexo</td>
       <td><p>
         <label>
-          <input type="radio" name="sexo" value="radio" id="sexo_0">
+          <input type="radio" name="sexo"  value="M" id="sexo_0">
           Masculino</label>
         <br>
         <label>
-          <input type="radio" name="sexo" value="radio" id="sexo_1">
+          <input type="radio" name="sexo" value="F" id="sexo_1">
           Femenino</label>
       </td>
     </tr>
     <tr class="r1">
       <td>Telefono</td>
       <td><label>
-        <input type="text" name="telefono" id="telefono" size="30">
+        <input type="text" name="telefono" onKeyUp="this.value=this.value.toUpperCase();" id="telefono" size="30">
       </label></td>
     </tr>
     <tr class="r0">
       <td>Estado de residencia</td>
       <td><label>
-        <input type="text" name="estado" id="estado" size="30">
+        <input type="text" name="estado" id="estado" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
     <tr class="r1">
       <td>Ciudad de residencia</td>
       <td><label>
-        <input type="text" name="ciudad" id="ciudad" size="30">
+        <input type="text" name="ciudad" id="ciudad" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
     <tr class="r0">
       <td>Direccion de residencia</td>
       <td><label>
-        <textarea name="direccion" id="direccion" cols="23" rows="3"></textarea>
+        <textarea name="direccion" id="direccion" onKeyUp="this.value=this.value.toUpperCase();" cols="23" rows="3"></textarea>
       </label></td>
     </tr>
     <tr class="r1">
       <td>Cargo</td>
       <td><label>
-        <select name="cargo" id="cargo">
-        </select>
+        <select name="cargo" id="cargo">';
+    while ($rowTP = mysql_fetch_array($recursoTipoCargo)) {
+        $contenido .= '<option value="'.$rowTP[id].'"';
+        $contenido .= '>'.$rowTP[cargo].'</option>';
+    }
+    $contenido .= '</select>
       </label></td>
     </tr>
     <tr class="r0">
-      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="AGREGAR">
+      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="AGREGAR" onclick="xajax_procesarNuevoTripulante(xajax.getFormValues(\'formNuevoTripulante\'))">
             </div>
       </label></td>
     </tr>
@@ -665,42 +655,90 @@ function desplegarNuevoTripulante(){
  * @return <String> html para crear el formulario
  */
 function generarFormularioNuevoCargo(){
-    $contenido = '<form name="form1" method="post" action="">
+    $contenido = '<form id="formNuevoCargo">
   <table cellpadding="2" cellspacing="1">
     <tr class="titulo">
       <td>NUEVO CARGO</td>
       <td><div align="right">
         <label>
-        <input type="submit" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaEditar()" />
+        <input type="button" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaNuevoCargo()" />
         </label>
       </div></td>
     </tr>
     <tr class="r1">
       <td>Nombre</td>
       <td><label>
-        <input type="text" name="cedula" id="cedula" size="30">
+        <input type="text" name="nombre" id="nombre" size="30" onKeyUp="this.value=this.value.toUpperCase();">
       </label></td>
     </tr>
     <tr class="r0">
       <td>Descripcion</td>
       <td><label>
-        <input type="text" name="nombre" id="nombre" size="30">
+        <input type="text" name="descripcion" id="descripcion" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
     <tr class="r1">
       <td>Sueldo</td>
       <td><label>
-        <input type="text" name="apellido" id="apellido" size="30">
+        <input type="text" name="sueldo" id="sueldo" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
     <tr class="r0">
-      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="AGREGAR">
+      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarCargo(xajax.getFormValues(\'formNuevoCargo\'))">
             </div>
       </label></td>
     </tr>
   </table>
 </form>';
     return $contenido;
+}
+/**
+ * Metodo para procesar un nuevo cargo en el sistema
+ * @param <Array> $datos datos del formulario
+ * @return <xajaxResponse> objeto de respuesta con el mensaje de la operacion
+ */
+function procesarCargo($datos) {
+    $repuesta = "";
+    $controlTipoCargo = new controladorTipoCargoBDclass();
+    $tipoCargo = new TipoCargoclass();
+    $tipoCargo->setCargo($datos[nombre]);
+    $tipoCargo->setDescripcion($datos[descripcion]);
+    $tipoCargo->setSueldo($datos[sueldo]);
+    $resultado = $controlTipoCargo->agregarTipoCargo($tipoCargo);
+    $objResponse = new xajaxResponse();
+    if ($resultado) {
+        $respuesta .= '<div class="exito">Nuevo cargo '.$datos[nombre]. ' agregado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
+    }
+    else {
+        $respuesta .= '<div class="error">No se pudo completar la operacion. Error 001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+    }
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function procesarNuevoTripulante ($datos) {
+    $respuesta = "";
+    $controlTripulante = new ControlTripulanteLogicaclass();
+    $resultado = $controlTripulante->nuevoTripulante($datos[cedula],
+                                                     $datos[nombre],
+                                                     $datos[apellido],
+                                                     $datos[sexo],
+                                                     $datos[telefono],
+                                                     $datos[estado],
+                                                     $datos[ciudad],
+                                                     $datos[direccion],
+                                                     $datos[cargo]);
+   $objResponse = new xajaxResponse();
+   if ($resultado){
+         $respuesta .= '<div class="exito">Nuevo Tripulante '.$datos[cedula]. ' agregado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
+   }
+   else {
+       $respuesta .= '<div class="error">No se pudo completar la operacion. Error 001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+   }
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
+    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    return $objResponse;
 }
 /**
  * Metodo para presentar el formulario para agregar un nuevo cargo

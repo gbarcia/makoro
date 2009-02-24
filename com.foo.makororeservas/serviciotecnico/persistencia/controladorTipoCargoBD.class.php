@@ -22,7 +22,7 @@ class controladorTipoCargoBDclass {
         $resultado = false;
         $query = "INSERT INTO `TIPO_CARGO` (`cargo`, `descripcion`, `sueldo`)".
                  "VALUES ('" . $tipoCargo->getCargo() . "',
-                          '" . $tipoCargo->getDescripcion() . "'
+                          '" . $tipoCargo->getDescripcion() . "',
                           '" . $tipoCargo->getSueldo() . "')";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
