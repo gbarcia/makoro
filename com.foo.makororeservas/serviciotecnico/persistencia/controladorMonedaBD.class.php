@@ -21,6 +21,7 @@ class controladorMonedaBDclass {
     function agregarMoneda($moneda) {
         $resultado = false;
         $query = "INSERT INTO MONEDA (tipo) VALUES ('".$moneda->getTipo()."')";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
