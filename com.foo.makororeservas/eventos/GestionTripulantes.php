@@ -411,7 +411,8 @@ function editar($cedula) {
 function actualizarTablaPrinicipal () {
     $resultado = "";
     $objResponse = new xajaxResponse();
-    $resultado = '<table class="tabla">';
+    $resultado = '<form id="formularioEditarMarcar">';
+    $resultado.= '<table class="tabla">';
     $resultado.= '<tr class = "titulo">';
     $resultado.= '<th>CEDULA</th>';
     $resultado.= '<th>NOMBRE</th>';
