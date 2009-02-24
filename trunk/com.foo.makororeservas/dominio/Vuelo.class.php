@@ -11,6 +11,7 @@ class Vuelo {
     private $hora;
     private $rutaId;
     private $avionMatricula;
+    private $ruta;
 
     public function getId() {
         return $this->id;
@@ -54,6 +55,14 @@ class Vuelo {
 
     public function setAvionMatricula($avionMatricula) {
         $this->avionMatricula = strtoupper($avionMatricula);
+    }
+
+    public function getRuta() {
+        return $this->ruta;
+    }
+
+    public function setRuta($ruta) {
+        $this->ruta = $ruta;
     }
 }
 ?>
