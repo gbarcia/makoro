@@ -462,9 +462,10 @@ function actualizarTablaPrinicipal () {
  * @return <xajaxResponse> respuesta del servidor
  */
 function procesarUpdate ($datos) {
+    $objResponse = new xajaxResponse();
+    if (validarTripulante($datos)) {
     $respuesta = "";
     $controlTripulante = new ControlTripulanteLogicaclass();
-    $objResponse = new xajaxResponse();
     $objResponse->addConfirmCommands(6, "Esta seguro de editar ".$datos[cedula]." ?");
     $resultado = $controlTripulante->actualizarTripulante(  $datos['cedula'],
         $datos['nombre'],
@@ -482,9 +483,12 @@ function procesarUpdate ($datos) {
     else {
         $respuesta = '<div class="error">No se pudo realizar la operacion. Vuelva a intentarlo. ERROR 001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
     }
-    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
-    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);}
+    else {
+        $respuesta .= '<div class="error">No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR F01 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+    }
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
 }
 /**
@@ -493,9 +497,10 @@ function procesarUpdate ($datos) {
  * @return <xajaxResponse> la respuesta del servidor
  */
 function eliminarTripulante($listaTripulantes) {
+    $objResponse = new xajaxResponse();
+    if ($listaTripulantes[tripulantes] != ""){
     $respuesta ="";
     $controlTripulante = new controladorTripulanteBDclass();
-    $objResponse = new xajaxResponse();
     $objResponse->addConfirmCommands(6, "Esta seguro de inhabilitar la seleccion?");
     foreach ($listaTripulantes[tripulantes] as $trip) {
         $controlTripulante->inhabilitarHabilitarTripulante($trip, 0);
@@ -504,6 +509,11 @@ function eliminarTripulante($listaTripulantes) {
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
     $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    }
+    else {
+    $respuesta ='<div class="error">Debe marcar algun tripulante para inhabilitar <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
     return $objResponse;
 }
 /**
@@ -512,17 +522,25 @@ function eliminarTripulante($listaTripulantes) {
  * @return <Esta seguro de habilitar la seleccioajaxResponse> respuesta del servidor
  */
 function habilitarTripulante($listaTripulantes) {
+    $objResponse = new xajaxResponse();
+    if ($listaTripulantes[tripulantes] != ""){
     $respuesta ="";
     $controlTripulante = new controladorTripulanteBDclass();
-    $objResponse = new xajaxResponse();
     $objResponse->addConfirmCommands(6, "Esta seguro de habilitar la seleccion?");
     foreach ($listaTripulantes[tripulantes] as $trip) {
         $controlTripulante->inhabilitarHabilitarTripulante($trip, 1);
     }
+    $actualizarCheck = desmarcarCheckBox();
     $respuesta ='<div class="exito">Tripulante(s) habilitado(s) con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    $objResponse->addAssign("check", "innerHTML", $actualizarCheck);
     $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
     $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    }
+    else {
+    $respuesta ='<div class="error">Debe marcar algun tripulante para habilitar <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
     return $objResponse;
 }
 /**
@@ -718,6 +736,8 @@ function procesarCargo($datos) {
 }
 
 function procesarNuevoTripulante ($datos) {
+    $objResponse = new xajaxResponse();
+    if (validarTripulante($datos)) {
     $respuesta = "";
     $controlTripulante = new ControlTripulanteLogicaclass();
     $resultado = $controlTripulante->nuevoTripulante($datos[cedula],
@@ -738,7 +758,11 @@ function procesarNuevoTripulante ($datos) {
    }
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
-    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);}
+    else {
+        $respuesta .= '<div class="error">No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR F01 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
     return $objResponse;
 }
 /**
@@ -761,5 +785,47 @@ function borrarMensaje(){
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
+}
+
+function validarTripulante ($datos) {
+    $resultado = false;
+    if (is_numeric($datos[cedula]) && $datos[cedula] != "")
+    $resultado = true;
+    else
+    return false;
+    if (is_string($datos[nombre]) && $datos[nombre] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[apellido]) && $datos[apellido] != "")
+    $resultado = true;
+    else return false;
+    if ($datos[sexo] == 'M' || $datos[sexo] == 'F')
+    $resultado = true;
+    else return false;
+    if (is_string($datos[telefono]) && $datos[telefono] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[estado]) && $datos[estado] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[ciudad]) && $datos[ciudad] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[direccion]) && $datos[direccion] != "")
+    $resultado = true;
+    else return false;
+    if (is_numeric($datos[cargo]) && $datos[cargo] != "")
+    $resultado = true;
+    else return false;
+
+    return $resultado;
+}
+
+function desmarcarCheckBox () {
+    $codigo = '<label>
+   <input type="checkbox" name="desabilitado" value ="0"
+   onClick="xajax_inabilitado(document.formBusqueda.desabilitado.checked)" />
+   </label><span class="styleLetras">Ver solo deshabilitados</span>';
+    return $codigo;
 }
 ?>
