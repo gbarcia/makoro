@@ -59,7 +59,19 @@ class controladorTipoCargoBDclass {
      */
     function obtenerTodosLosTiposCargo () {
         $resultado;
-        $query = "SELECT id,cargo FROM TIPO_CARGO";
+        $query = "SELECT * FROM TIPO_CARGO";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para obtener un cargo por identificador
+     * @param <int> $idCargo El identificador del cargo a consultar
+     * @return <recurso> El cargo segun el identificador
+     */
+    function obtenerCargoID($idCargo){
+        $query = "SELECT * FROM TIPO_CARGO tp
+                  WHERE tp.id = ".$idCargo;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
