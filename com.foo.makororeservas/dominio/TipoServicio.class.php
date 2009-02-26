@@ -9,6 +9,7 @@ class TipoServicioclass {
     private $id;
     private $abreviatura;
     private $nombre;
+    private $habilitado;
 
     public function getId() {
         return $this->id;
@@ -36,6 +37,32 @@ class TipoServicioclass {
         $this->nombre = strtoupper($nombre);
     }
 
+    public function getHabilitado() {
+        return $this->habilitado;
+    }
 
+    public function getHabilitadoString() {
+        if ($this->habilitado == 1) {
+            return "SI";
+        }
+        else if ($this->habilitado == 0) {
+            return "NO";
+        }
+    }
+
+    public function setHabilitado($habilitado) {
+        if (is_numeric($habilitado)) {
+            $this->habilitado = $habilitado;
+        }
+    }
+
+    public function setHabilitadoString ($habilitado) {
+        if ($habilitado == 1) {
+            $this->habilitado = "SI";
+        }
+        else if ($habilitado == 0) {
+            $this->habilitado = "NO";
+        }
+    }
 }
 ?>

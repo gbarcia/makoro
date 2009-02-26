@@ -19,10 +19,11 @@ class ControlTipoServicioLogicaclass {
  * @param <String> $tipo
  * @return <boolean>
  */
-    function nuevoTipoServicio($abreviatura,$nombre) {
+    function nuevoTipoServicio($abreviatura,$nombre,$habilitado) {
         $tipoServicio = new TipoServicioclass();
         $tipoServicio->setAbreviatura($abreviatura);
         $tipoServicio->setNombre($nombre);
+        $tipoServicio->setHabilitado($habilitado);
         $resultado = $this->controlBD->agregarTipoServicio($tipoServicio);
 
         return ($resultado);
@@ -34,11 +35,12 @@ class ControlTipoServicioLogicaclass {
  * @param <String> $tipo
  * @return <boolean>
  */
-    function actualizarTipoServicio($id,$abreviatura,$nombre) {
+    function actualizarTipoServicio($id,$abreviatura,$nombre,$habilitado) {
         $tipoServicio = new TipoServicioclass();
         $tipoServicio->setId($id);
         $tipoServicio->setAbreviatura($abreviatura);
         $tipoServicio->setNombre($nombre);
+        $tipoServicio->setHabilitado($habilitado);
         $resultado = $this->controlBD->editarTipoServicio($tipoServicio);
 
         return ($resultado);
