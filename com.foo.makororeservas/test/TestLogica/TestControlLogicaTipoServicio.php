@@ -35,7 +35,7 @@ $servicioPrueba = new TipoServicioclass();
 //echo '<table border=1>';
 //echo '<tr>';
 //echo '<th>Id</th>';
-//echo '<th>Nombre</th>';
+//echo '<th>Servicio</th>';
 //echo '<th>Abreviatura</th>';
 //echo '</tr>';
 //$resultado = $controlBD->consultarInformacionServicio("IV");
@@ -50,24 +50,24 @@ $servicioPrueba = new TipoServicioclass();
 ///*---------------------------------------------------------*/
 
 ///* CONSULTAR SERVICIO MAS SOLICITADO */
-echo '<table border=1>';
-echo '<tr>';
-echo '<th>Id</th>';
-echo '<th>Nombre</th>';
-echo '<th>Abreviatura</th>';
-echo '<th>Cantidad</th>';
-echo '</tr>';
-$resultado = $controlBD->consultarServicioMasSolicitado();
-while ($row = mysql_fetch_array($resultado)) {
-    echo '<tr>';
-    echo '<td>' . $row[id]. '</td>';
-    echo '<td>' . $row[nombre]. '</td>';
-    echo '<td>' . $row[abreviatura]. '</td>';
-    echo '<td>' . $row[cantidad]. '</td>';
-    echo '</tr>';
-}
-
-echo '</table>';
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>Id</th>';
+//echo '<th>Servicio</th>';
+//echo '<th>Abreviatura</th>';
+//echo '<th>Cantidad</th>';
+//echo '</tr>';
+//$resultado = $controlBD->consultarServicioMasSolicitado();
+//while ($row = mysql_fetch_array($resultado)) {
+//    echo '<tr>';
+//    echo '<td>' . $row[id]. '</td>';
+//    echo '<td>' . $row[nombre]. '</td>';
+//    echo '<td>' . $row[abreviatura]. '</td>';
+//    echo '<td>' . $row[cantidad]. '</td>';
+//    echo '</tr>';
+//}
+//
+//echo '</table>';
 ///*---------------------------------------------------------*/
 
 
@@ -75,14 +75,16 @@ echo '</table>';
 //echo '<table border=1>';
 //echo '<tr>';
 //echo '<th>Id</th>';
-//echo '<th>Tipo</th>';
+//echo '<th>Servicio</th>';
+//echo '<th>Abreviatura</th>';
 //echo '<th>Cantidad</th>';
 //echo '</tr>';
 //$resultado = $controlBD->consultarServicioMasSolicitadoDesc();
 //while ($row = mysql_fetch_array($resultado)) {
 //    echo '<tr>';
 //    echo '<td>' . $row[id]. '</td>';
-//    echo '<td>' . $row[tipo]. '</td>';
+//    echo '<td>' . $row[nombre]. '</td>';
+//    echo '<td>' . $row[abreviatura]. '</td>';
 //    echo '<td>' . $row[cantidad]. '</td>';
 //    echo '</tr>';
 //}
