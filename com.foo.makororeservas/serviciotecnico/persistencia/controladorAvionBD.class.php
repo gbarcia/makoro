@@ -50,6 +50,15 @@ class controladorAvionBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function consultarAvionesPorMatricula($matricula){
+        $resultado = false;
+        $query = "SELECT *
+                  FROM AVION
+                  WHERE matricula = '".$matricula."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
 
