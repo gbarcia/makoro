@@ -7,7 +7,8 @@
  */
 class TipoServicioclass {
     private $id;
-    private $tipo;
+    private $abreviatura;
+    private $nombre;
 
     public function getId() {
         return $this->id;
@@ -19,12 +20,22 @@ class TipoServicioclass {
         }
     }
 
-    public function getTipo() {
-        return $this->tipo;
+    public function getAbreviatura() {
+        return $this->abreviatura;
     }
 
-    public function setTipo($tipo) {
-        $this->tipo = strtoupper($tipo);
+    public function setAbreviatura($abreviatura) {
+        $this->abreviatura = strtoupper($abreviatura);
     }
+
+    public function getNombre() {
+        return $this->nombre;
+    }
+
+    public function setNombre($nombre) {
+        $this->nombre = strtoupper($nombre);
+    }
+
+
 }
 ?>
