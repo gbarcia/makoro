@@ -51,25 +51,35 @@ class ControlVueloLogicaclass {
         return ($resultado);
     }
 
-
-
-    function vuelosReservados($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula) {
-        $resultado = false;
-        $resultado = $this->controlBD->consultarVuelo($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula);
-        return $resultado;
-    }
-
-    function obtenerCantidadAsientosReservados($id) {
+    function calculoAsientosDisponibles($id) {
         $resultado = false;
         $controlAvion = new controladorAvionBDclass();
-        $cantidadReservada = $this->controlBD->consultarVueloCantidadReserva($id);
-        $capacidadAvion = $controlAvion->consultarAvionesPorMatricula($matricula);
+        $recurso = $this->controlBD->consultarVueloCantidadReserva($id);
+        $row = mysql_fetch_array($recurso);
+        $cantidadAvion = $row[asientos];
+        $cantidadReservada = $row[cantidadReservada];
         $cantidadDisponible = $cantidadAvion - $cantidadReservada;
         return $cantidadDisponible;
     }
-    
-    function calculoAsientosReservados($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula) {
-        
+
+    function vueloEspecificoAsientosReservados($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula) {
+        $recurso = false;
+        $recurso = $this->controlBD->consultarVuelo($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula);
+        $row = mysql_fetch_array($resultado);
+        $idVuelo = $row[id];
+        $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
+        $operacion = mysql_fetch_array($recurso);
+        $vuelo = new Vueloclass();
+
+        $vuelo->setId($operacion[id]);
+        $vuelo->setFecha($operacion[fecha]);
+        $vuelo->setAvionMatricula($operacion[avionMatricula]);
+        $vuelo->setRutaSitioSalida($operacion[rutaSitioSalida]);
+        $vuelo->setRutaSitioLlegada($operacion[rutaSitioLlegada]);
+
+        $Objeto = new CantidadAsientosDisponiblesVueloclass($vuelo,$cantidadDisponible);
+        $coleccionResultado ->append($Objeto);
+        return $coleccionResultado;
     }
 }
 ?>
