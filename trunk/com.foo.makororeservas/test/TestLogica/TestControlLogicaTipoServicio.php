@@ -6,12 +6,12 @@ $controlBD = new ControlTipoServicioLogicaclass();
 $servicioPrueba = new TipoServicioclass();
 
 ///* AGREGAR UN SERVICIO */
-//$resultado = $controlBD->nuevoTipoServicio("AS","AGREGO SERVICIO");
+//$resultado = $controlBD->nuevoTipoServicio("AS","AGREGO SERVICIO",1);
 //echo $resultado;
 ///*---------------------------*/
 
 ///* ACTUALIZAR SERVICIO */
-//$resultado = $controlBD->actualizarTipoServicio(7, "ES","EDITO SERVICIO");
+//$resultado = $controlBD->actualizarTipoServicio(7, "ES","EDITO SERVICIO",0);
 //echo $resultado;
 ///*---------------------------*/
 
@@ -20,12 +20,14 @@ $servicioPrueba = new TipoServicioclass();
 //echo '<tr>';
 //echo '<th>Servicio</th>';
 //echo '<th>Abreviatura</th>';
+//echo '<th>Habilitado</th>';
 //echo '</tr>';
 //$result = $controlBD->consultarServicios();
 //while ($row = mysql_fetch_array($result)) {
 //    echo '<tr>';
 //    echo '<td>' . $row[nombre]. '</td>';
 //    echo '<td>' . $row[abreviatura]. '</td>';
+//    echo '<td>' . $row[habilitado]. '</td>';
 //    echo '</tr>';
 //}
 //echo '</table>';
@@ -37,6 +39,7 @@ $servicioPrueba = new TipoServicioclass();
 //echo '<th>Id</th>';
 //echo '<th>Servicio</th>';
 //echo '<th>Abreviatura</th>';
+//echo '<th>Habilitado</th>';
 //echo '</tr>';
 //$resultado = $controlBD->consultarInformacionServicio("IV");
 //while ($row = mysql_fetch_array($resultado)) {
@@ -44,6 +47,7 @@ $servicioPrueba = new TipoServicioclass();
 //    echo '<td>' . $row[id]. '</td>';
 //    echo '<td>' . $row[nombre]. '</td>';
 //    echo '<td>' . $row[abreviatura]. '</td>';
+//    echo '<td>' . $row[habilitado]. '</td>';
 //    echo '</tr>';
 //}
 //echo '</table>';
@@ -55,6 +59,7 @@ $servicioPrueba = new TipoServicioclass();
 //echo '<th>Id</th>';
 //echo '<th>Servicio</th>';
 //echo '<th>Abreviatura</th>';
+//echo '<th>Habilitado</th>';
 //echo '<th>Cantidad</th>';
 //echo '</tr>';
 //$resultado = $controlBD->consultarServicioMasSolicitado();
@@ -63,6 +68,7 @@ $servicioPrueba = new TipoServicioclass();
 //    echo '<td>' . $row[id]. '</td>';
 //    echo '<td>' . $row[nombre]. '</td>';
 //    echo '<td>' . $row[abreviatura]. '</td>';
+//    echo '<td>' . $row[habilitado]. '</td>';
 //    echo '<td>' . $row[cantidad]. '</td>';
 //    echo '</tr>';
 //}
@@ -77,6 +83,7 @@ $servicioPrueba = new TipoServicioclass();
 //echo '<th>Id</th>';
 //echo '<th>Servicio</th>';
 //echo '<th>Abreviatura</th>';
+//echo '<th>Habilitado</th>';
 //echo '<th>Cantidad</th>';
 //echo '</tr>';
 //$resultado = $controlBD->consultarServicioMasSolicitadoDesc();
@@ -85,6 +92,7 @@ $servicioPrueba = new TipoServicioclass();
 //    echo '<td>' . $row[id]. '</td>';
 //    echo '<td>' . $row[nombre]. '</td>';
 //    echo '<td>' . $row[abreviatura]. '</td>';
+//    echo '<td>' . $row[habilitado]. '</td>';
 //    echo '<td>' . $row[cantidad]. '</td>';
 //    echo '</tr>';
 //}

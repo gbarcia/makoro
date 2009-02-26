@@ -20,9 +20,10 @@ class controladorTipoServicioBDclass {
  */
     function agregarTipoServicio($tipoServicio) {
         $resultado = false;
-        $query = "INSERT INTO TIPO_SERVICIO (abreviatura,nombre)".
+        $query = "INSERT INTO TIPO_SERVICIO (abreviatura,nombre,habilitado)".
                  "VALUES ('" . $tipoServicio->getAbreviatura() . "',
-                          '" . $tipoServicio->getNombre() . "')";
+                          '" . $tipoServicio->getNombre() . "',
+                          TRUE)";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -35,7 +36,8 @@ class controladorTipoServicioBDclass {
     function editarTipoServicio($tipoServicio) {
         $resultado = false;
         $query = "UPDATE TIPO_SERVICIO t SET t.abreviatura = '".$tipoServicio->getAbreviatura()."',
-                                             t.nombre = '".$tipoServicio->getNombre()."'
+                                             t.nombre = '".$tipoServicio->getNombre()."',
+                                             t.habilitado = '".$tipoServicio->getHabilitado()."'
                   WHERE t.id = ".$tipoServicio->getId()."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -60,7 +62,7 @@ class controladorTipoServicioBDclass {
  */
     function consultarServicioId($id) {
         $resultado = false;
-        $query = "SELECT id, abreviatura, nombre
+        $query = "SELECT id, abreviatura, nombre, habilitado
                   FROM TIPO_SERVICIO
                   WHERE id = ".$id."";
         $resultado = $this->transaccion->realizarTransaccion($query);
@@ -74,7 +76,7 @@ class controladorTipoServicioBDclass {
  */
     function consultarServicio($busqueda) {
         $resultado = false;
-        $query = "SELECT id, abreviatura,nombre
+        $query = "SELECT id, abreviatura,nombre,habilitado
                   FROM TIPO_SERVICIO
                   WHERE abreviatura LIKE '".$busqueda."%'
                   AND nombre LIKE '".$busqueda."%'";
@@ -88,7 +90,7 @@ class controladorTipoServicioBDclass {
  */
     function consultarServiciosMasSolicitadosDescendente() {
         $resultado = false;
-        $query = "SELECT SUM(r.TIPO_SERVICIO_id) cantidadTotal, t.id id, t.abreviatura abreviatura, t.nombre nombre
+        $query = "SELECT SUM(r.TIPO_SERVICIO_id) cantidadTotal, t.id id, t.abreviatura abreviatura, t.nombre nombre, t.habilitado
                   FROM RESERVA r, TIPO_SERVICIO t
                   WHERE t.id = r.TIPO_SERVICIO_id
                   GROUP BY t.id, t.abreviatura, t.nombre
@@ -103,7 +105,7 @@ class controladorTipoServicioBDclass {
  */
     function consultarServicioMasSolicitado() {
         $resultado = false;
-        $query = "	SELECT t.id,t.abreviatura,t.nombre, COUNT(r.TIPO_SERVICIO_id) cantidad
+        $query = "	SELECT t.id,t.abreviatura,t.nombre,t.habilitado, COUNT(r.TIPO_SERVICIO_id) cantidad
                     FROM RESERVA r, TIPO_SERVICIO t
                     WHERE t.id = r.TIPO_SERVICIO_id
                     GROUP BY t.id
