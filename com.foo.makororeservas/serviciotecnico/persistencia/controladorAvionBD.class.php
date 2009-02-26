@@ -85,6 +85,19 @@ class controladorAvionBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    /**
+     * Metodo para consultar aviones por su matricula
+     * @param <type> $busqueda La matricula a consultar
+     * @return <type> Aviones segun la matricula
+     */
+    function consultarAvionesMat($busqueda){
+        $resultado = false;
+        $query = "SELECT *
+                  FROM AVION
+                  WHERE matricula LIKE '".$matricula."%'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
-

@@ -41,4 +41,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 //    echo '</tr>';
 //}
 //echo '</table>';
+
+$controlPrueba = new controladorAvionBDclass();
+echo '<table border=1>';
+echo '<tr>';
+echo '<th>Matricula</th>';
+echo '<th>Asientos</th>';
+echo '<th>Habilitado</th>';
+echo '</tr>';
+$resultado = $controlPrueba->consultarAvionesHab(TRUE);
+    while (($row = mysql_fetch_array($resultado))) {
+    echo '<tr>';
+    echo '<td>' . $row['matricula'] . '</td>';
+    echo '<td>' . $row['asientos'] . '</td>';
+    echo '<td>' . $row['habilitado'] . '</td>';
+    echo '</tr>';
+}
+echo '</table>';
 ?>
