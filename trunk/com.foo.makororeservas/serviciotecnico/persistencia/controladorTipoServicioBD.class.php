@@ -20,8 +20,8 @@ class controladorTipoServicioBDclass {
  */
     function agregarTipoServicio($tipoServicio) {
         $resultado = false;
-        $query = "INSERT INTO TIPO_SERVICIO (abreviatura,nombre,habilitado)".
-                 "VALUES ('" . $tipoServicio->getAbreviatura() . "',
+        $query = "INSERT INTO TIPO_SERVICIO (abreviatura,nombre,habilitado)
+                  VALUES ('" . $tipoServicio->getAbreviatura() . "',
                           '" . $tipoServicio->getNombre() . "',
                           TRUE)";
         $resultado = $this->transaccion->realizarTransaccion($query);

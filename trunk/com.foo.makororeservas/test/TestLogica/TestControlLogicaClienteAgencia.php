@@ -5,10 +5,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Client
 $controlBD = new ControlClienteAgenciaLogicaclass();
 $clienteAgenciaPrueba = new ClienteAgenciaclass();
 
-///* NUEVO CLIENTE AGENCIA */
-//$resultado = $controlBD->nuevoClienteAgencia("J-112233", "XEROX", "2233445", "Chacao", "Dtto Capital", "Caracas", 0);
-//echo $resultado;
-///*-----------------------*/
+/* NUEVO CLIENTE AGENCIA */
+$resultado = $controlBD->nuevoClienteAgencia("J-112233", "XEROX", "2233445", "Chacao", "Dtto Capital", "Caracas", 0);
+echo $resultado;
+/*-----------------------*/
 
 
 ///* EDITAR CLIENTE AGENCIA */
