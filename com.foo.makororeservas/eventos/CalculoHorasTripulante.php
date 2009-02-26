@@ -44,7 +44,7 @@ function calculoHora($datos) {
     }
 
     $resultado.= '</table>';
-    $resultado.= $total . ' BS';
+    $resultado.= ' BS'. $total;
 }
     $objResponse->addAssign("ResultadoCa", "innerHTML", $resultado);
 
