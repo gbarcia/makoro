@@ -77,7 +77,7 @@ class controladorSeguridadBDclass {
         $encargado = null;
         $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,
                          e.tipo, e.login, e.password clave, e.estado,e.ciudad, e.direccion,
-                         e.telefono,e.habilitado,s.nombre, s.id idSucursal
+                         e.telefono,e.habilitado,s.nombre nSucursal, s.id idSucursal
                          FROM ENCARGADO e, SUCURSAL s
                          WHERE e.SUCURSAL_id = s.id
                          AND e.cedula = ".$cedula."";
@@ -103,6 +103,22 @@ class controladorSeguridadBDclass {
             $encargado->setTipo($row[tipo]);
         }
         return $encargado;
+    }
+/**
+ * Metodo para obtener todos los empleados registrados en el sistema
+ * @return <Recurso> recurso sql con la respuesta
+ */
+    function traerTodosLosEncargados () {
+        $resultado = false;
+        $query = "﻿SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,
+                         e.tipo, e.login, e.password clave, e.estado,e.ciudad,
+                         e.direccion,e.telefono,e.habilitado,s.nombre, s.id idSucursal
+                         FROM ENCARGADO e, SUCURSAL s
+                         WHERE e.SUCURSAL_id = s.id
+                         GROUP BY e.cedula, s.id
+                         ORDER BY s.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
     }
 }
 ?>
