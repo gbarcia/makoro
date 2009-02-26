@@ -20,8 +20,9 @@ class controladorTipoServicioBDclass {
  */
     function agregarTipoServicio($tipoServicio) {
         $resultado = false;
-        $query = "INSERT INTO TIPO_SERVICIO (tipo)".
-                 "VALUES ('" . $tipoServicio->getTipo() . "')";
+        $query = "INSERT INTO TIPO_SERVICIO (abreviatura,nombre)".
+                 "VALUES ('" . $tipoServicio->getAbreviatura() . "',
+                          '" . $tipoServicio->getNombre() . "')";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -33,7 +34,8 @@ class controladorTipoServicioBDclass {
  */
     function editarTipoServicio($tipoServicio) {
         $resultado = false;
-        $query = "UPDATE TIPO_SERVICIO t SET t.tipo = '".$tipoServicio->getTipo()."'
+        $query = "UPDATE TIPO_SERVICIO t SET t.abreviatura = '".$tipoServicio->getAbreviatura()."',
+                                             t.nombre = '".$tipoServicio->getNombre()."'
                   WHERE t.id = ".$tipoServicio->getId()."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -58,7 +60,7 @@ class controladorTipoServicioBDclass {
  */
     function consultarServicioId($id) {
         $resultado = false;
-        $query = "SELECT id, tipo
+        $query = "SELECT id, abreviatura, nombre
                   FROM TIPO_SERVICIO
                   WHERE id = ".$id."";
         $resultado = $this->transaccion->realizarTransaccion($query);
@@ -72,9 +74,10 @@ class controladorTipoServicioBDclass {
  */
     function consultarServicio($busqueda) {
         $resultado = false;
-        $query = "SELECT id, tipo
+        $query = "SELECT id, abreviatura,nombre
                   FROM TIPO_SERVICIO
-                  WHERE tipo LIKE '".$busqueda."%'";
+                  WHERE abreviatura LIKE '".$busqueda."%'
+                  AND nombre LIKE '".$busqueda."%'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -85,10 +88,10 @@ class controladorTipoServicioBDclass {
  */
     function consultarServiciosMasSolicitadosDescendente() {
         $resultado = false;
-        $query = "SELECT SUM(r.TIPO_SERVICIO_id) cantidadTotal, t.id id, t.tipo Tipo
+        $query = "SELECT SUM(r.TIPO_SERVICIO_id) cantidadTotal, t.id id, t.abreviatura abreviatura, t.nombre nombre
                   FROM RESERVA r, TIPO_SERVICIO t
                   WHERE t.id = r.TIPO_SERVICIO_id
-                  GROUP BY t.id, t.tipo
+                  GROUP BY t.id, t.abreviatura, t.nombre
                   ORDER BY (SUM(r.TIPO_SERVICIO_id)) DESC";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -100,7 +103,7 @@ class controladorTipoServicioBDclass {
  */
     function consultarServicioMasSolicitado() {
         $resultado = false;
-        $query = "	SELECT t.id,t.tipo, COUNT(r.TIPO_SERVICIO_id) cantidad
+        $query = "	SELECT t.id,t.abreviatura,t.nombre, COUNT(r.TIPO_SERVICIO_id) cantidad
                     FROM RESERVA r, TIPO_SERVICIO t
                     WHERE t.id = r.TIPO_SERVICIO_id
                     GROUP BY t.id

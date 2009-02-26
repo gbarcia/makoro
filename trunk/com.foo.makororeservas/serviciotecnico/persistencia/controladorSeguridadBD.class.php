@@ -110,7 +110,7 @@ class controladorSeguridadBDclass {
  */
     function traerTodosLosEncargados () {
         $resultado = false;
-        $query = "﻿SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,
+        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,
                          e.tipo, e.login, e.password clave, e.estado,e.ciudad,
                          e.direccion,e.telefono,e.habilitado,s.nombre, s.id idSucursal
                          FROM ENCARGADO e, SUCURSAL s

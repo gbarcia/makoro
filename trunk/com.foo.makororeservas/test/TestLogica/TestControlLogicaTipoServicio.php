@@ -6,24 +6,26 @@ $controlBD = new ControlTipoServicioLogicaclass();
 $servicioPrueba = new TipoServicioclass();
 
 ///* AGREGAR UN SERVICIO */
-//$resultado = $controlBD->nuevoTipoServicio("ER");
+//$resultado = $controlBD->nuevoTipoServicio("AS","AGREGO SERVICIO");
 //echo $resultado;
 ///*---------------------------*/
 
 ///* ACTUALIZAR SERVICIO */
-//$resultado = $controlBD->actualizarTipoServicio(7, "MM");
+//$resultado = $controlBD->actualizarTipoServicio(7, "ES","EDITO SERVICIO");
 //echo $resultado;
 ///*---------------------------*/
 
 ///* CONSULTAR SERVICIO */
 //echo '<table border=1>';
 //echo '<tr>';
-//echo '<th>Tipo</th>';
+//echo '<th>Servicio</th>';
+//echo '<th>Abreviatura</th>';
 //echo '</tr>';
 //$result = $controlBD->consultarServicios();
 //while ($row = mysql_fetch_array($result)) {
 //    echo '<tr>';
-//    echo '<td>' . $row[tipo]. '</td>';
+//    echo '<td>' . $row[nombre]. '</td>';
+//    echo '<td>' . $row[abreviatura]. '</td>';
 //    echo '</tr>';
 //}
 //echo '</table>';
@@ -33,38 +35,39 @@ $servicioPrueba = new TipoServicioclass();
 //echo '<table border=1>';
 //echo '<tr>';
 //echo '<th>Id</th>';
-//echo '<th>Tipo</th>';
-//echo '<th>Cedula</th>';
-//echo '<th>Pasaporte</th>';
+//echo '<th>Nombre</th>';
+//echo '<th>Abreviatura</th>';
 //echo '</tr>';
 //$resultado = $controlBD->consultarInformacionServicio("IV");
 //while ($row = mysql_fetch_array($resultado)) {
 //    echo '<tr>';
 //    echo '<td>' . $row[id]. '</td>';
-//    echo '<td>' . $row[tipo]. '</td>';
+//    echo '<td>' . $row[nombre]. '</td>';
+//    echo '<td>' . $row[abreviatura]. '</td>';
 //    echo '</tr>';
 //}
-//
 //echo '</table>';
 ///*---------------------------------------------------------*/
 
 ///* CONSULTAR SERVICIO MAS SOLICITADO */
-//echo '<table border=1>';
-//echo '<tr>';
-//echo '<th>Id</th>';
-//echo '<th>Tipo</th>';
-//echo '<th>Cantidad</th>';
-//echo '</tr>';
-//$resultado = $controlBD->consultarServicioMasSolicitado();
-//while ($row = mysql_fetch_array($resultado)) {
-//    echo '<tr>';
-//    echo '<td>' . $row[id]. '</td>';
-//    echo '<td>' . $row[tipo]. '</td>';
-//    echo '<td>' . $row[cantidad]. '</td>';
-//    echo '</tr>';
-//}
-//
-//echo '</table>';
+echo '<table border=1>';
+echo '<tr>';
+echo '<th>Id</th>';
+echo '<th>Nombre</th>';
+echo '<th>Abreviatura</th>';
+echo '<th>Cantidad</th>';
+echo '</tr>';
+$resultado = $controlBD->consultarServicioMasSolicitado();
+while ($row = mysql_fetch_array($resultado)) {
+    echo '<tr>';
+    echo '<td>' . $row[id]. '</td>';
+    echo '<td>' . $row[nombre]. '</td>';
+    echo '<td>' . $row[abreviatura]. '</td>';
+    echo '<td>' . $row[cantidad]. '</td>';
+    echo '</tr>';
+}
+
+echo '</table>';
 ///*---------------------------------------------------------*/
 
 
