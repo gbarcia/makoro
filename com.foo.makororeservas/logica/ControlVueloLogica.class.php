@@ -51,6 +51,11 @@ class ControlVueloLogicaclass {
         return ($resultado);
     }
 
+/**
+ * Metodo para consultar los asientos disponibles
+ * @param <Integer> $id
+ * @return <recurso> recurso con la cantidad disponible
+ */
     function calculoAsientosDisponibles($id) {
         $resultado = false;
         $controlAvion = new controladorAvionBDclass();
@@ -62,22 +67,39 @@ class ControlVueloLogicaclass {
         return $cantidadDisponible;
     }
 
+/**
+ * Metodo para consultar los asientos disponibles, el piloto y el copiloto
+ * del vuelo consultado
+ * @param <Date> $hora
+ * @param <Date> $fecha
+ * @param <String> $rutaSitioSalida
+ * @param <String> $rutaSitioLlegada
+ * @param <String> $avionMatricula
+ * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
+ */
     function vueloEspecificoAsientosReservados($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula) {
-        $recurso = false;
         $recurso = $this->controlBD->consultarVuelo($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula);
-        $row = mysql_fetch_array($resultado);
+        $row = mysql_fetch_array($recurso);
         $idVuelo = $row[id];
         $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
         $operacion = mysql_fetch_array($recurso);
-        $vuelo = new Vueloclass();
 
+        $controlVueloPersonal = new controladorVueloPersonalBDclass();
+        $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
+        $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
+        $rowVueloPiloto = mysql_fetch_array($vueloTripulacionPiloto);
+        $rowVueloCopiloto = mysql_fetch_array($vueloTripulacionCopiloto);
+        $piloto = $rowVueloPiloto[tripulante];
+        $copiloto = $rowVueloCopiloto[tripulante];
+
+        $vuelo = new Vueloclass();
         $vuelo->setId($operacion[id]);
         $vuelo->setFecha($operacion[fecha]);
         $vuelo->setAvionMatricula($operacion[avionMatricula]);
         $vuelo->setRutaSitioSalida($operacion[rutaSitioSalida]);
         $vuelo->setRutaSitioLlegada($operacion[rutaSitioLlegada]);
 
-        $Objeto = new CantidadAsientosDisponiblesVueloclass($vuelo,$cantidadDisponible);
+        $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto);
         $coleccionResultado ->append($Objeto);
         return $coleccionResultado;
     }
