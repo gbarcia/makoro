@@ -44,9 +44,38 @@ class controladorVueloPersonalBDclass {
         return $resultado;
     }
 
-    function consultarVueloPersonal() {
+/**
+ * Metodo para consultar el piloto del vuelo
+ * @param <Integer> $id
+ * @return <recurso> vuelo con el piloto
+ */
+    function consultarVueloPersonalPiloto($id) {
         $resultado;
-        $query = "SELECT * FROM VUELO_PERSONAL";
+        $query = "SELECT vp.VUELO_id idVuelo, CONCAT(p.nombre,' ',p.apellido) tripulante, tp.cargo
+                  FROM VUELO_PERSONAL vp, VUELO v, PERSONAL p, TIPO_CARGO tp
+                  WHERE v.id = vp.VUELO_id
+                  AND v.id = ".$id."
+                  AND vp.PERSONAL_cedula = p.cedula
+                  AND vp.cargo = tp.id
+                  AND tp.id = 1";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar el copiloto del vuelo
+ * @param <Integer> $id
+ * @return <recurso> vuelo con el copiloto
+ */
+    function consultarVueloPersonalCopiloto($id) {
+        $resultado;
+        $query = "SELECT vp.VUELO_id idVuelo, CONCAT(p.nombre,' ',p.apellido) tripulante, tp.cargo
+                  FROM VUELO_PERSONAL vp, VUELO v, PERSONAL p, TIPO_CARGO tp
+                  WHERE v.id = vp.VUELO_id
+                  AND v.id = ".$id."
+                  AND vp.PERSONAL_cedula = p.cedula
+                  AND vp.cargo = tp.id
+                  AND tp.id = 2";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
