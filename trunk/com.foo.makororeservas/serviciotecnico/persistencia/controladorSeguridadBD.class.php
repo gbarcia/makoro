@@ -28,7 +28,7 @@ class controladorSeguridadBDclass {
         $query = "INSERT INTO ENCARGADO (cedula, nombre, apellido, sexo,
                                          fechaNacimiento, tipo, login, password,
                                          estado, ciudad, direccion, telefono,
-                                         habilitado, SUCURSAL_id)
+                                         habilitado, SUCURSAL_id,correo)
                                           VALUES (" .$encargado->getCedula().",
                                                   '".$encargado->getNombre()."',
                                                   '".$encargado->getApellido()."',
@@ -42,7 +42,8 @@ class controladorSeguridadBDclass {
                                                   '".$encargado->getDireccion()."',
                                                   '".$encargado->getTelefono()."',
                                                    ".$encargado->getHabilitado().",
-                                                   ".$encargado->getSucursalDondeTrabaja().")";
+                                                   ".$encargado->getSucursalDondeTrabaja().",
+                                                  '".$encargado->getCorreo()."')";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -63,8 +64,9 @@ class controladorSeguridadBDclass {
                                      ciudad   = '".$encargado->getCiudad()."',
                                     direccion = '".$encargado->getDireccion()."',
                                     telefono  = '".$encargado->getTelefono()."',
-                                  SUCURSAL_id =  ".$encargado->getSucursalDondeTrabaja()."
-                                    WHERE cedula = ".$encargado->getCedula()."";
+                                  SUCURSAL_id =  ".$encargado->getSucursalDondeTrabaja().",
+                                       correo = '".$encargado->getCorreo()."',
+                                 WHERE cedula =  ".$encargado->getCedula()."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -75,7 +77,7 @@ class controladorSeguridadBDclass {
  */
     function buscarEncargadoPorCedula ($cedula) {
         $encargado = null;
-        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,
+        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo
                          e.tipo, e.login, e.password clave, e.estado,e.ciudad, e.direccion,
                          e.telefono,e.habilitado,s.nombre nSucursal, s.id idSucursal
                          FROM ENCARGADO e, SUCURSAL s
@@ -110,13 +112,53 @@ class controladorSeguridadBDclass {
  */
     function traerTodosLosEncargados () {
         $resultado = false;
-        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,
+        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo
                          e.tipo, e.login, e.password clave, e.estado,e.ciudad,
-                         e.direccion,e.telefono,e.habilitado,s.nombre, s.id idSucursal
+                         e.direccion,e.telefono,e.habilitado,s.nombre nSucursal, s.id idSucursal
                          FROM ENCARGADO e, SUCURSAL s
                          WHERE e.SUCURSAL_id = s.id
                          GROUP BY e.cedula, s.id
-                         ORDER BY s.id";
+                         ORDER BY e.apellido,e.nombre,s.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+/**
+ * Metodo para buscar encargados en el sistema deacuerdo al motor de busqueda
+ * @param <String> $busqueda la busqueda por cedula, nombre o apellido
+ * @return <recurso> recurso mysql con el resultado de la busqueda
+ */
+    function busquedaEncargadoAutoSugerir($busqueda) {
+        $resultado = false;
+        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo
+                         e.tipo, e.login, e.password clave, e.estado,e.ciudad, e.direccion,
+                         e.telefono,e.habilitado,s.nombre nSucursal, s.id idSucursal
+                         FROM ENCARGADO e, SUCURSAL s
+                         WHERE e.SUCURSAL_id = s.id
+                         AND (e.nombre LIKE '".$busqueda."%' OR e.apellido LIKE '".$busqueda."%'
+                         OR e.cedula LIKE '".$busqueda."%')";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para inhabilitar un encargado en el sistema
+ * @param <Integer> $cedula la cedula de la persona a borrar
+ * @return <boolean> resultado de la operacion
+ */
+    function borrarEncargado ($cedula) {
+        $resultado = false;
+        $query = "UPDATE ENCARGADO SET habilitado = 0 WHERE cedula = ".$cedula."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+/**
+ * Metodo para habilitar un encargado en el sistema
+ * @param <Integer> $cedula la cedula del persona a habilitar
+ * @return <boolean> resultado de la operacion
+ */
+    function rehabilitarEncargado ($cedula) {
+        $resultado = false;
+        $query = "UPDATE ENCARGADO SET habilitado = 1 WHERE cedula = ".$cedula."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
