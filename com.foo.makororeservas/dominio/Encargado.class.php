@@ -37,6 +37,8 @@ class Encargadoclass {
 
     private $sucursalDondeTrabajaString;
 
+    private $correo;
+
     function __construct() {
     }
 
@@ -158,6 +160,14 @@ class Encargadoclass {
 
     public function setSucursalDondeTrabajaString($sucursalDondeTrabajaString) {
         $this->sucursalDondeTrabajaString = strtoupper($sucursalDondeTrabajaString);
+    }
+
+    public function getCorreo() {
+        return $this->correo;
+    }
+
+    public function setCorreo($correo) {
+        $this->correo = $correo;
     }
 }
 ?>

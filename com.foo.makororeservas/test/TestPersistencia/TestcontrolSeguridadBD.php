@@ -68,34 +68,82 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //print "HABILITADO: ". $encargadoPrueba->getHabilitado(). "<p></p>";
 
 #TRAER TODOS LOS ENCARGADOS#
-$controlPruebaSeguridad = new controladorSeguridadBDclass();
-echo '<table border=1>';
-echo '<tr>';
-echo '<th>CEDULA</th>';
-echo '<th>NOMBRE</th>';
-echo '<th>APELLIDO</th>';
-echo '<th>SEXO</th>';
-echo '<th>FECHA NACIMIENTO</th>';
-echo '<th>ESTADO</th>';
-echo '<th>CIUDAD</th>';
-echo '<th>DIRECCION</th>';
-echo '<th>LOGIN</th>';
-echo '<th>CLAVE</th>';
-echo '</tr>';
-$resultado = $controlPruebaSeguridad->traerTodosLosEncargados();
-    while (($row = mysql_fetch_array($resultado))) {
-    echo '<tr>';
-    echo '<td>' . $row[cedula] . '</td>';
-    echo '<td>' . $row[nombre] . '</td>';
-    echo '<td>' . $row[apellido] . '</td>';
-    echo '<td>' . $row[sexo] . '</td>';
-    echo '<td>' . $row[fechaNacimiento] . '</td>';
-    echo '<td>' . $row[estado] . '</td>';
-    echo '<td>' . $row[ciudad] . '</td>';
-    echo '<td>' . $row[direccion] . '</td>';
-    echo '<td>' . $row[login] . '</td>';
-    echo '<td>' . $row[cave] . '</td>';
-    echo '</tr>';
-}
-echo '</table>';
+//$controlPruebaSeguridad = new controladorSeguridadBDclass();
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>CEDULA</th>';
+//echo '<th>NOMBRE</th>';
+//echo '<th>APELLIDO</th>';
+//echo '<th>SEXO</th>';
+//echo '<th>FECHA NACIMIENTO</th>';
+//echo '<th>ESTADO</th>';
+//echo '<th>CIUDAD</th>';
+//echo '<th>DIRECCION</th>';
+//echo '<th>LOGIN</th>';
+//echo '<th>CLAVE</th>';
+//echo '<th>HABILITADO</th>';
+//echo '<th>SUCURSAL</th>';
+//echo '<th>ID SUCURSAL</th>';
+//echo '</tr>';
+//$resultado = $controlPruebaSeguridad->traerTodosLosEncargados();
+//    while (($row = mysql_fetch_array($resultado))) {
+//    echo '<tr>';
+//    echo '<td>' . $row[cedula] . '</td>';
+//    echo '<td>' . $row[nombre] . '</td>';
+//    echo '<td>' . $row[apellido] . '</td>';
+//    echo '<td>' . $row[sexo] . '</td>';
+//    echo '<td>' . $row[fechaNacimiento] . '</td>';
+//    echo '<td>' . $row[estado] . '</td>';
+//    echo '<td>' . $row[ciudad] . '</td>';
+//    echo '<td>' . $row[direccion] . '</td>';
+//    echo '<td>' . $row[login] . '</td>';
+//    echo '<td>' . $row[clave] . '</td>';
+//    echo '<td>' . $row[habilitado] . '</td>';
+//    echo '<td>' . $row[nSucursal] . '</td>';
+//    echo '<td>' . $row[idSucursal] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+#TRAER TODOS LOS ENCARGADOS AUTOSUGERIR#
+//$controlPruebaSeguridad = new controladorSeguridadBDclass();
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>CEDULA</th>';
+//echo '<th>NOMBRE</th>';
+//echo '<th>APELLIDO</th>';
+//echo '<th>SEXO</th>';
+//echo '<th>FECHA NACIMIENTO</th>';
+//echo '<th>ESTADO</th>';
+//echo '<th>CIUDAD</th>';
+//echo '<th>DIRECCION</th>';
+//echo '<th>LOGIN</th>';
+//echo '<th>CLAVE</th>';
+//echo '<th>HABILITADO</th>';
+//echo '<th>SUCURSAL</th>';
+//echo '<th>ID SUCURSAL</th>';
+//echo '</tr>';
+//$resultado = $controlPruebaSeguridad->busquedaEncargadoAutoSugerir(1);
+//    while (($row = mysql_fetch_array($resultado))) {
+//    echo '<tr>';
+//    echo '<td>' . $row[cedula] . '</td>';
+//    echo '<td>' . $row[nombre] . '</td>';
+//    echo '<td>' . $row[apellido] . '</td>';
+//    echo '<td>' . $row[sexo] . '</td>';
+//    echo '<td>' . $row[fechaNacimiento] . '</td>';
+//    echo '<td>' . $row[estado] . '</td>';
+//    echo '<td>' . $row[ciudad] . '</td>';
+//    echo '<td>' . $row[direccion] . '</td>';
+//    echo '<td>' . $row[login] . '</td>';
+//    echo '<td>' . $row[clave] . '</td>';
+//    echo '<td>' . $row[habilitado] . '</td>';
+//    echo '<td>' . $row[nSucursal] . '</td>';
+//    echo '<td>' . $row[idSucursal] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+#INHABILITAR VENDEDOR Y HABILITARLO#
+//$controlPruebaSeguridad = new controladorSeguridadBDclass();
+//$resultadoPrueba = $controlPruebaSeguridad->rehabilitarEncargado(1);
+//print $resultadoPrueba;
+
 ?>
