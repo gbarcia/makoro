@@ -44,6 +44,14 @@ class controladorAvionBDclass {
         return $resultado;
     }
 
+    function actualizarAsientos($matricula, $asientos){
+        $resultado = false;
+        $query = "UPDATE AVION a SET a.asientos = '".$asientos."'
+                  WHERE a.matricula = '".$matricula."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
     /**
      * Metodo para consultar todos los aviones de la base de datos
      * @return <Coleccion> todos los aviones

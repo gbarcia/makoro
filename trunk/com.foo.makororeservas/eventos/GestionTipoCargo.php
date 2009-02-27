@@ -24,7 +24,7 @@ function consultarTodosLosTiposCargo() {
         $resultado.= '<td>' . $row[cargo]. '</td>';
         $resultado.= '<td>' . $row[descripcion]. '</td>';
         $resultado.= '<td>' . $row[sueldo]. '</td>';
-        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar('.$row[id].')"/></td>';
+        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioAgregar('.$row[id].')"/></td>';
         $resultado.= '</tr>';
     }
     $resultado.= '</table>';
@@ -77,7 +77,7 @@ function editarCargo($idCargo){
       <td>EDITAR SUELDO</td>
       <td><div align="right">
         <label>
-        <input type="submit" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentana()" />
+        <input type="submit" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaDerecha()" />
         </label>
       </div></td>
     </tr>
@@ -123,10 +123,21 @@ function mostrarFormularioEditar($idCargo){
  * Metodo para cerrar la ventana de los formularios
  * @return <ajaxResponse> objeto de respuesta para modificar el div
  */
-function cerrarVentana() {
+function cerrarVentanaDerecha() {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("derecha", "innerHTML", $resultado);
+    return $objResponse;
+}
+
+/**
+ * Metodo para cerrar la ventana de los formularios
+ * @return <ajaxResponse> objeto de respuesta para modificar el div
+ */
+function cerrarVentanaIzquierda() {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izquierda", "innerHTML", $resultado);
     return $objResponse;
 }
 
@@ -160,7 +171,7 @@ function insertarNuevoCargo(){
                        <td>AGREGAR CARGO</td>
                        <td><div align="right">
                          <label>
-                         <input type="submit" name="cerrar" id="cerrar" value="X" accesskey="X" onclick=""xajax_cerrarVentana()"/>
+                         <input type="submit" name="cerrar" id="cerrar" value="X" accesskey="X" onclick=""xajax_cerrarVentanaIzquierda()"/>
                          </label>
                        </div></td>
                      </tr>
