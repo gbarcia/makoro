@@ -7,7 +7,12 @@ $xajax->registerFunction("mostrarAviones");
 $xajax->registerFunction("mostrarAvionesInhabilitados");
 $xajax->registerFunction("mostrarFormularioAgregar");
 $xajax->registerFunction("agregarAvion");
-//$xajax->registerFunction("desplegarNuevoAvion");
+$xajax->registerFunction("mostrarFormularioEditar");
+$xajax->registerFunction("editarAvion");
+$xajax->registerFunction("procesarAvion");
+$xajax->registerFunction("obtenerAviones");
+$xajax->registerFunction("cerrarVentanaDerecha");
+$xajax->registerFunction("cerrarVentanaIzquierda");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -42,48 +47,48 @@ $xajax->processRequests();
         </script>
     </head>
     <body>
-    	<div id="encabezado">IMAGEN ENCABEZADO</div>
+        <div id="encabezado">IMAGEN ENCABEZADO</div>
         <div id="seccion"> DATOS DE SESSION</div>
         <div class="arriba">
-        	<form id="busqueda" name="busqueda">
-            	<div id="datos">
-                	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-                    	<tr>
-                        	<td width="41%">
-   	              <label>Matricula:</label>
-                            	<input input="input" type="text" id="txt_search" name="txt_search" autocomplete="off" size="50"/>
+            <form id="busqueda" name="busqueda">
+                <div id="datos">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="45%">
+                                <label>Matricula:</label>
+                                <input input="input" type="text" id="txt_search" name="txt_search" autocomplete="off" size="50"/>
                             </td>
-                            
-                      <td width="15%">
-<div align="center">
+
+                            <td width="10%">
+                                <div align="left">
                                     <label>
                                         <input type="button" name="button" id="button" value="NUEVO AVION" onClick="xajax_mostrarFormularioAgregar()"/>
                                     </label>
                                 </div>
                             </td>
-                            
-              <td width="44%">
-<div id="BotonEliminar" align="center">
-                                        <div align="left">
-                                          <input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" />
-                                                </div>
-</div>
-                          </td>
-                      </tr>
+
+                            <td width="45%">
+                                <div id="BotonEliminar" align="left">
+                                    <div align="left">
+                                        <input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                 </div>
-                
+
                 <div id="check">
-                	<label>
+                    <label>
                         <input type="checkbox" name="deshabilitado" value ="0" onClick="xajax_mostrarAvionesInhabilitados(document.busqueda.deshabilitado.checked)"/>
-                	</label>Ver solo deshabilitados
+                    </label>Ver solo deshabilitados
                 </div>
             </form>
         </div>
         <div class="tablaResultado" id="gestionAvion">
-           <script type="text/javascript">
-		   xajax_mostrarAviones();
-		   </script>
+            <script type="text/javascript">
+                xajax_mostrarAviones();
+            </script>
         </div>
         <div id="mensaje"></div>
         <div id="izquierda"></div>
