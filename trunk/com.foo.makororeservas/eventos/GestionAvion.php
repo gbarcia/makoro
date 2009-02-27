@@ -90,7 +90,7 @@ function editarAvion($matricula) {
     </tr>
     <tr class="r0">
       <td height="26" colspan="2"><div align="center">
-        <input name="button" type="button" id="button" onClick="xajax_procesarAvion(xajax.getFormValues(\'formularioEditar\'),'.$row[matricula].')" value="EDITAR"/>
+        <input name="button" type="button" id="button" onClick="xajax_procesarAvion(xajax.getFormValues(\'formularioEditar\'),\''. $row[matricula] .'\')" value="EDITAR"/>
       </div>
       </label></td>
     </tr>
@@ -111,7 +111,7 @@ function procesarAvion($datos,$matricula){
     }
     $objResponse->addAssign("mensaje", "innerHTML", $mensaje);
     $actualizar = obtenerAviones();
-    $objResponse->addAssign("derecha", "innerHTML", $actualizar);
+    $objResponse->addAssign("gestionAvion", "innerHTML", $actualizar);
 
     return $objResponse;
 }
