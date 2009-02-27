@@ -30,7 +30,7 @@ function autoSugerir($busqueda){
                 $resultado.= '<td>' . $row[matricula]. '</td>';
                 $resultado.= '<td>' . $row[asientos]. '</td>';
                 $resultado.= '<td>' . $avion->getHabilitado(). '</td>';
-                $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar()"/></td>';
+                $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar(\''. $row[matricula] .'\')"/></td>';
                 $resultado.= '<td><input type="checkbox" name="aviones[]" value='.$row[matricula].'/></td>';
                 $resultado.= '</tr>';
             }
@@ -45,7 +45,7 @@ function autoSugerir($busqueda){
             $resultado.= '<td>' . $row->getMatricula(). '</td>';
             $resultado.= '<td>' . $row->getAsientos(). '</td>';
             $resultado.= '<td>' . $row->getHabilitadoString(). '</td>';
-            $resultado.='<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar()"/></td>';
+            $resultado.='<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar(\''. $row[matricula] .'\')"/></td>';
             $resultado.= '<td><input type="checkbox" name="aviones[]" value='.$row->getMatricula().'s/></td>';
             $resultado.= '</tr>';
         }
@@ -135,8 +135,7 @@ function mostrarAviones(){
         $resultado.= '<td>' . $row[matricula]. '</td>';
         $resultado.= '<td>' . $row[asientos]. '</td>';
         $resultado.= '<td>' . $row[habilitado]. '</td>';
-        $a = 'A';
-        $resultado.= '<td><input type="button" name="button" id="button" value="EDITAR AVION" onClick="xajax_mostrarFormularioEditar()"/></td>';
+        $resultado.= '<td><input type="button" name="button" id="button" value="EDITAR AVION" onClick="xajax_mostrarFormularioEditar(\''. $row[matricula] .'\')"/></td>';
         $resultado.= '<td><input type="checkbox" name="aviones[]" value=""/></td>';
         $resultado.= '</tr>';
     }
@@ -166,7 +165,7 @@ function obtenerAviones(){
         $resultado.= '<td>' . $row[matricula]. '</td>';
         $resultado.= '<td>' . $row[asientos]. '</td>';
         $resultado.= '<td>' . $row[habilitado]. '</td>';
-        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar()"/></td>';
+        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar(\''. $row[matricula] .'\')"/></td>';
         $resultado.= '<td><input type="checkbox" name="aviones[]" value=""/></td>';
         $resultado.= '</tr>';
     }
@@ -195,7 +194,7 @@ function mostrarAvionesInhabilitados($inhab){
             $resultado.= '<td>' . $row[matricula]. '</td>';
             $resultado.= '<td>' . $row[asientos]. '</td>';
             $resultado.= '<td>' . $row[habilitado]. '</td>';
-            $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar()"/></td>';
+            $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar(\''. $row[matricula] .'\')"/></td>';
             $resultado.= '<td><input type="checkbox" name="aviones[]" value=""/></td>';
             $resultado.= '</tr>';
         }
@@ -223,7 +222,7 @@ function mostrarAvionesInhabilitados($inhab){
             $resultado.= '<td>' . $row[matricula]. '</td>';
             $resultado.= '<td>' . $row[asientos]. '</td>';
             $resultado.= '<td>' . $row[habilitado]. '</td>';
-            $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar()"/></td>';
+            $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar(\''. $row[matricula] .'\')"/></td>';
             $resultado.= '<td><input type="checkbox" name="aviones[]" value=""/></td>';
             $resultado.= '</tr>';
         }
@@ -322,7 +321,7 @@ function mostrarFormularioAgregar(){
 function mostrarFormularioEditar($matricula){
     $resultado = editarAvion($matricula);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("derecha", "innerHTML", $resultado);
+    $objResponse->addAssign("derecha", "innerHTML", "$resultado");
     return $objResponse;
 }
 
