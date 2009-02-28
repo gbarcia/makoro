@@ -58,13 +58,13 @@ class ControlSeguridadclass {
     {
         $resultado = true;
         $mail = new PHPMailer();
-        $body = $cuerpo;
         $mail->From = "soporte@makoroenlinea.com";
         $mail->FromName = "Sistema de Reservas Makoro";
         $mail->Subject    = "Registro en sistema de Reservas Makoro";
-        $mail->MsgHTML($body);
+        $mail->MsgHTML($cuerpo);
         $mail->AddAddress($correo);
         if(!$mail->Send()) {
+            print "mail no enviado";
             $resultado = false;
         }
         return $resultado;
@@ -90,6 +90,38 @@ class ControlSeguridadclass {
                 $cuerpo .= "Soporte@makoroenlinea.com";
                 $resultado = $this->enviarMail($RepCorreo,$cuerpo);
             }
+        }
+        return $resultado;
+    }
+/**
+ * Metodo para editar un encargado en el sistema
+ * @param <Encargado> $encargado el objeto encargado a editar
+ * @param <String> $nuevaClaveRep la repeticion de la nueva clave en caso de que se quiera modificar
+ * @param <String> $claveVieja la clave anterior
+ * @return <boolean> resultado de la operacion
+ */
+    public function editarEncargado ($encargado,$nuevaClaveRep,$claveVieja) {
+        $resultado = false;
+        if ($nuevaClaveRep != "" && $claveVieja != "") {
+            $infoEncargado = $this->controlPruebaSeguridad->buscarEncargadoPorCedula($encargado->getCedula());
+            if ($infoEncargado->getClave() == md5($claveVieja)) {
+                if (md5($nuevaClaveRep) == $encargado->getClave()) {
+                    $encargado->setClave(md5($nuevaClaveRep));
+                    $resultado = $this->controlPruebaSeguridad->editarEncargado($encargado);
+                    if ($resultado) {
+                        $cuerpo = "<font size='2' face='Arial'><P>Estimado: ". $encargado->getNombre(). "</P>";
+                        $cuerpo .= "<P>Lo siguiente, son los datos de acceso al Sistema:</P>";
+                        $cuerpo .= "Nombre de Usuario: ".$encargado->getNombre()." <br>";
+                        $cuerpo .= "Clave: ".$nuevaClaveRep." <br>";
+                        $cuerpo .= "<P>La clave de Usuario es provisional y podrá ser cambiada una vez que ingrese al sistema. En caso de tener alguna consulta en referencia a ésta página por favor no dude en contactarnos.</P>";
+                        $cuerpo .= "Soporte@makoroenlinea.com";
+                        $resultado = $this->enviarMail($encargado->getCorreo(),$cuerpo);
+                    }
+                }
+            }
+        }
+        else {
+            $resultado = $this->controlPruebaSeguridad->editarEncargado($encargado);
         }
         return $resultado;
     }
