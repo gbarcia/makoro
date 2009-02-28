@@ -65,7 +65,7 @@ class controladorSeguridadBDclass {
                                     direccion = '".$encargado->getDireccion()."',
                                     telefono  = '".$encargado->getTelefono()."',
                                   SUCURSAL_id =  ".$encargado->getSucursalDondeTrabaja().",
-                                       correo = '".$encargado->getCorreo()."',
+                                       correo = '".$encargado->getCorreo()."'
                                  WHERE cedula =  ".$encargado->getCedula()."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -77,7 +77,7 @@ class controladorSeguridadBDclass {
  */
     function buscarEncargadoPorCedula ($cedula) {
         $encargado = null;
-        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo
+        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo,
                          e.tipo, e.login, e.password clave, e.estado,e.ciudad, e.direccion,
                          e.telefono,e.habilitado,s.nombre nSucursal, s.id idSucursal
                          FROM ENCARGADO e, SUCURSAL s
@@ -103,6 +103,7 @@ class controladorSeguridadBDclass {
             $encargado->setSucursalDondeTrabajaString($row[nSucursal]);
             $encargado->setTelefono($row[telefono]);
             $encargado->setTipo($row[tipo]);
+            $encargado->setCorreo($row[correo]);
         }
         return $encargado;
     }
@@ -112,7 +113,7 @@ class controladorSeguridadBDclass {
  */
     function traerTodosLosEncargados () {
         $resultado = false;
-        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo
+        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo,
                          e.tipo, e.login, e.password clave, e.estado,e.ciudad,
                          e.direccion,e.telefono,e.habilitado,s.nombre nSucursal, s.id idSucursal
                          FROM ENCARGADO e, SUCURSAL s
@@ -129,13 +130,26 @@ class controladorSeguridadBDclass {
  */
     function busquedaEncargadoAutoSugerir($busqueda) {
         $resultado = false;
-        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo
+        $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo,
                          e.tipo, e.login, e.password clave, e.estado,e.ciudad, e.direccion,
                          e.telefono,e.habilitado,s.nombre nSucursal, s.id idSucursal
                          FROM ENCARGADO e, SUCURSAL s
                          WHERE e.SUCURSAL_id = s.id
                          AND (e.nombre LIKE '".$busqueda."%' OR e.apellido LIKE '".$busqueda."%'
                          OR e.cedula LIKE '".$busqueda."%')";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+/**
+ * Metodo para buscar un encargado por medio de su login
+ * @param <String> $login su login del sistema
+ * @return <recurso> recurso de mysql con los resultados de la busqueda
+ */
+    function busquedaEncargadoPorLogin ($login) {
+        $resultado = false;
+        $query = "SELECT login,password,tipo,cedula,correo,habilitado,SUCURSAL_id
+                  FROM ENCARGADO
+                  WHERE login = '".$login."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

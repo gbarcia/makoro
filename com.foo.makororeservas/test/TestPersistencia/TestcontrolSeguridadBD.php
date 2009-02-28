@@ -3,7 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encargado.class.php';
 #AGREGAR NUEVO ENCARGADO#
 //$encargadoPrueba = new Encargadoclass();
-//$encargadoPrueba->setCedula(1);
+//$encargadoPrueba->setCedula(2);
 //$encargadoPrueba->setNombre('GOMOSITO');
 //$encargadoPrueba->setApellido('SUEÑO');
 //$encargadoPrueba->setCiudad('CARACAS');
@@ -17,16 +17,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //$encargadoPrueba->setTelefono("234");
 //$encargadoPrueba->setTipo("V");
 //$encargadoPrueba->setSucursalDondeTrabaja(1);
+//$encargadoPrueba->setCorreo('ger@gmail.com');
 //
 //$controlPruebaSeguridad = new controladorSeguridadBDclass();
 //
 //$reultadoPrueba = $controlPruebaSeguridad->agregarEncargado($encargadoPrueba);
-
+//
 //print "RESULTADO DEL TEST AGREGAR NUEVO ENCARGADO: " .$reultadoPrueba;
 
 #EDITAR ENCARGADO#
 //$encargadoPrueba = new Encargadoclass();
-//$encargadoPrueba->setCedula(1);
+//$encargadoPrueba->setCedula(2);
 //$encargadoPrueba->setNombre('GOMOSITOr');
 //$encargadoPrueba->setApellido('SUEÑOrr');
 //$encargadoPrueba->setCiudad('CARACASR');
@@ -38,16 +39,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //$encargadoPrueba->setTelefono("234R");
 //$encargadoPrueba->setTipo("A");
 //$encargadoPrueba->setSucursalDondeTrabaja(2);
+//$encargadoPrueba->setCorreo('gerrdobarciap@gmail.com');
 //
 //$controlPruebaSeguridad = new controladorSeguridadBDclass();
 //
 //$reultadoPrueba = $controlPruebaSeguridad->editarEncargado($encargadoPrueba);
 //
-//print "RESULTADO DEL TEST AGREGAR NUEVO ENCARGADO: " .$reultadoPrueba;
+//print "RESULTADO DEL TEST EDITAR ENCARGADO: " .$reultadoPrueba;
 
 #CONSULTAR ENCARGADO#
 //$controlPruebaSeguridad = new controladorSeguridadBDclass();
-//$encargadoPrueba = $controlPruebaSeguridad->buscarEncargadoPorCedula(17064051);
+//$encargadoPrueba = $controlPruebaSeguridad->buscarEncargadoPorCedula(2);
 ////$encargadoPrueba = new Encargadoclass();
 //
 //print "RESULTADO DEL TEST BUSCAR ENCARGADO: \n" . "<p></p>";
@@ -66,6 +68,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //print "DIRECCION: ". $encargadoPrueba->getDireccion(). "<p></p>";
 //print "TIPO: ". $encargadoPrueba->getTipo(). "<p></p>";
 //print "HABILITADO: ". $encargadoPrueba->getHabilitado(). "<p></p>";
+//print "CORREO: ". $encargadoPrueba->getCorreo(). "<p></p>";
 
 #TRAER TODOS LOS ENCARGADOS#
 //$controlPruebaSeguridad = new controladorSeguridadBDclass();
@@ -84,6 +87,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //echo '<th>HABILITADO</th>';
 //echo '<th>SUCURSAL</th>';
 //echo '<th>ID SUCURSAL</th>';
+//echo '<th>CORREO</th>';
 //echo '</tr>';
 //$resultado = $controlPruebaSeguridad->traerTodosLosEncargados();
 //    while (($row = mysql_fetch_array($resultado))) {
@@ -101,6 +105,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //    echo '<td>' . $row[habilitado] . '</td>';
 //    echo '<td>' . $row[nSucursal] . '</td>';
 //    echo '<td>' . $row[idSucursal] . '</td>';
+//    echo '<td>' . $row[correo] . '</td>';
 //    echo '</tr>';
 //}
 //echo '</table>';
@@ -121,8 +126,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //echo '<th>HABILITADO</th>';
 //echo '<th>SUCURSAL</th>';
 //echo '<th>ID SUCURSAL</th>';
+//echo '<th>CORREO</th>';
 //echo '</tr>';
-//$resultado = $controlPruebaSeguridad->busquedaEncargadoAutoSugerir(1);
+//$resultado = $controlPruebaSeguridad->busquedaEncargadoAutoSugerir('g');
 //    while (($row = mysql_fetch_array($resultado))) {
 //    echo '<tr>';
 //    echo '<td>' . $row[cedula] . '</td>';
@@ -138,6 +144,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //    echo '<td>' . $row[habilitado] . '</td>';
 //    echo '<td>' . $row[nSucursal] . '</td>';
 //    echo '<td>' . $row[idSucursal] . '</td>';
+//    echo '<td>' . $row[correo] . '</td>';
 //    echo '</tr>';
 //}
 //echo '</table>';
@@ -145,5 +152,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 //$controlPruebaSeguridad = new controladorSeguridadBDclass();
 //$resultadoPrueba = $controlPruebaSeguridad->rehabilitarEncargado(1);
 //print $resultadoPrueba;
+#INHABILITAR VENDEDOR Y HABILITARLO#
+//$controlPruebaSeguridad = new controladorSeguridadBDclass();
+//$resultadoPrueba = $controlPruebaSeguridad->busquedaEncargadoPorLogin("GOMIR");
+//$row = mysql_fetch_array($resultadoPrueba);
+//
+//print $row[password];
+//echo (md5('1234'));
 
 ?>
