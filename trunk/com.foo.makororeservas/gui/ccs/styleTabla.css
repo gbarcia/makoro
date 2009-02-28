@@ -1,37 +1,37 @@
 /*
-    Document   : styleTabla
-    Created on : Feb 21, 2009, 12:38:51 AM
-    Author     : jonathan
-    Description:
-        Estilo para tablas de resultados
+Document   : styleTabla
+Created on : Feb 21, 2009, 12:38:51 AM
+Author     : jonathan
+Description:
+Estilo para tablas de resultados
 */
 @charset "utf-8";
 .tabla {
-	width: 100%;
+    width: 100%;
     overflow-y: scroll;
 }
 .titulo {
-	background-color: #067AC2;
-	color: #FFFFFF;
-	font-weight:bold;
+    background-color: #067AC2;
+    color: #FFFFFF;
+    font-weight:bold;
 }
 .r0 {
-	background-color: #CCCCCC;
-	color: #000000;
+    background-color: #CCCCCC;
+    color: #000000;
 }
 .r1 {
-	background-color: #E1E1E1;
-	color: #000000;
+    background-color: #E1E1E1;
+    color: #000000;
 }
 .rPagado {
-	color: #000000;
-	font-weight:bold;
+    color: #000000;
+    font-weight:bold;
 }
 .rConfirmado{
-	color: #0000FF;
-	font-weight:bold;
+    color: #0000FF;
+    font-weight:bold;
 }
 .rPorPagar{
-	color: #CC0000;
-	font-weight:bold;
+    color: #CC0000;
+    font-weight:bold;
 }
