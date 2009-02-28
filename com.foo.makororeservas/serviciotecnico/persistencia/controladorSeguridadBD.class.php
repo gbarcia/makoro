@@ -111,14 +111,16 @@ class controladorSeguridadBDclass {
  * Metodo para obtener todos los empleados registrados en el sistema
  * @return <Recurso> recurso sql con la respuesta
  */
-    function traerTodosLosEncargados () {
+    function traerTodosLosEncargados ($habilitado) {
         $resultado = false;
         $query = "SELECT e.cedula, e.nombre, e.apellido, e.sexo, e.fechaNacimiento,e.correo,
                          e.tipo, e.login, e.password clave, e.estado,e.ciudad,
                          e.direccion,e.telefono,e.habilitado,s.nombre nSucursal, s.id idSucursal
                          FROM ENCARGADO e, SUCURSAL s
-                         WHERE e.SUCURSAL_id = s.id
-                         GROUP BY e.cedula, s.id
+                         WHERE e.SUCURSAL_id = s.id";
+                         if ($habilitado) $query .= " AND e.habilitado = 1";
+                         else $query .= " AND e.habilitado = 0";
+                   $query.= " GROUP BY e.cedula, s.id
                          ORDER BY e.apellido,e.nombre,s.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -136,7 +138,8 @@ class controladorSeguridadBDclass {
                          FROM ENCARGADO e, SUCURSAL s
                          WHERE e.SUCURSAL_id = s.id
                          AND (e.nombre LIKE '".$busqueda."%' OR e.apellido LIKE '".$busqueda."%'
-                         OR e.cedula LIKE '".$busqueda."%')";
+                         OR e.cedula LIKE '".$busqueda."%') GROUP BY e.cedula, s.id
+                         ORDER BY e.apellido,e.nombre,s.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
