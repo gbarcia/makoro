@@ -1,19 +1,27 @@
-@charset "utf-8";
+/*
+Document   : styleDisposicion
+Created on : Feb 23, 2009, 6:08:45 PM
+Author     : jonathan
+Description:
+Disposicion de los paneles.
+*/
 .izq {
-	float: left;
-	width: 48%;
-    padding: 5px;
+    float: left;
+    width: 48%;
     margin: 5px;
 }
 .der {
-	float: right;
-	width: 48%;
-    padding: 5px;
+    float: right;
+    width: 48%;
     margin: 5px;
 }
 .filtros {
-	background-color: #CCCCCC;
-	border: 1px solid #000000;
+    background-color: #CCCCCC;
+    border: 1px solid #000000;
     padding: 5px;
+    margin: 5px;
+}
+.contenido {
+    clear:both;
     margin: 5px;
 }
