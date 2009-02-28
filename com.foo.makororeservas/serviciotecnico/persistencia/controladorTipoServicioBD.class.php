@@ -23,7 +23,7 @@ class controladorTipoServicioBDclass {
         $query = "INSERT INTO TIPO_SERVICIO (abreviatura,nombre,habilitado)
                   VALUES ('" . $tipoServicio->getAbreviatura() . "',
                           '" . $tipoServicio->getNombre() . "',
-                          TRUE)";
+                          1)";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -50,7 +50,8 @@ class controladorTipoServicioBDclass {
  */
     function consultarTodosLosTipoServicio() {
         $resultado = false;
-        $query = "SELECT * FROM TIPO_SERVICIO";
+        $query = "SELECT * FROM TIPO_SERVICIO
+                  WHERE habilitado = 1";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
