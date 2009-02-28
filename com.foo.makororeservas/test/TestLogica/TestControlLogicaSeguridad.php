@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 $encargadoPrueba = new Encargadoclass();
 
 $encargadoPrueba = new Encargadoclass();
-$encargadoPrueba->setCedula(17079794);
+$encargadoPrueba->setCedula(17079);
 $encargadoPrueba->setNombre('GERARDO');
 $encargadoPrueba->setApellido('BARCIA');
 $encargadoPrueba->setCiudad('CARACAS');

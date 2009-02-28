@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorSeguridadBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encargado.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/class.phpmailer.php';
 
 /**
  * Description of ControlSeguridadclass
@@ -55,12 +56,17 @@ class ControlSeguridadclass {
  */
     private function enviarMail($correo, $cuerpo)
     {
-        print $correo;
-        $Headers = 'MIME-Version: 1.0' . "\r\n";
-        $Headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-        $Headers .= "From: soporte@makoroenlinea.com \r\n";
-        $asunto = "Registro en el sistema de Makoro";
-        $resultado = mail($correo, $asunto, $cuerpo,$Headers);
+        $resultado = true;
+        $mail = new PHPMailer();
+        $body = $cuerpo;
+        $mail->From = "soporte@makoroenlinea.com";
+        $mail->FromName = "Sistema de Reservas Makoro";
+        $mail->Subject    = "Registro en sistema de Reservas Makoro";
+        $mail->MsgHTML($body);
+        $mail->AddAddress($correo);
+        if(!$mail->Send()) {
+            $resultado = false;
+        }
         return $resultado;
     }
 /**
