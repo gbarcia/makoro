@@ -53,7 +53,7 @@ class controladorVueloBDclass {
  * @param <VUELO> $vuelo
  * @return <recurso>
  */
-    function consultarVuelo($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula) {
+    function consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
         $resultado = false;
         $query = "SELECT v.id id,v.fecha,v.hora,v.AVION_matricula,ru.abreviaturaSalida,
                          ru.abreviaturaLlegada,a.asientos
@@ -89,6 +89,46 @@ class controladorVueloBDclass {
                                         WHERE v.id = '".$id."')
                   AND vr.VUELO_id = v.id
                   AND v.AVION_matricula = a.matricula";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar los vuelos realizados
+ * @return <recurso>
+ */
+    function consultarVuelosRealizados() {
+        $resultado = false;
+        $query = "SELECT v.id,v.fecha, v.hora, v.AVION_matricula, v.RUTA_sitioSalida, v.RUTA_sitioLlegada, ru.abreviaturaSalida,ru.abreviaturaLlegada
+                  FROM VUELO v,VUELO_RESERVA vr, RESERVA r, RUTA ru
+                  WHERE v.fecha < SYSDATE(v.fecha)
+                  AND v.id = vr.VUELO_id
+                  AND vr.RESERVA_id = r.id
+                  AND v.RUTA_sitioSalida = ru.sitioSalida
+                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                  GROUP BY v.id,v.fecha, v.hora, v.AVION_matricula, v.RUTA_sitioSalida, v.RUTA_sitioLlegada,ru.abreviaturaSalida,ru.abreviaturaLlegada
+                 ORDER BY v.fecha ASC";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar los tripulantes de los vuelos realizados
+ * @return <recurso>
+ */
+    function consultarTripulantesVuelosRealizados($id, $numCargo){
+        $resultado = false;
+        $query = "SELECT v.id,CONCAT(p.nombre,' ',p.apellido) tripulante, p.cedula, tp.cargo
+                  FROM VUELO v, VUELO_PERSONAL vp, PERSONAL p, VUELO_RESERVA vr, RESERVA r,TIPO_CARGO tp
+                  WHERE v.fecha < SYSDATE(v.fecha)
+                  AND v.id = vp.VUELO_id
+                  AND v.id = vr.VUELO_id
+                  AND v.id = ".$id."
+                  AND vp.PERSONAL_cedula = p.cedula
+                  AND vr.RESERVA_id = r.id
+                  AND tp.id = vp.cargo
+                  AND tp.id = ".$numCargo."
+                  GROUP BY v.id, CONCAT(p.nombre,' ',p.apellido), p.cedula, tp.cargo";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

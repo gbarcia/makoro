@@ -6,11 +6,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 $moneda = new Monedaclass();
 $controlPrueba = new controladorMonedaBDclass();
 
-///* AGREGAR MONEDA */
-//$moneda->setTipo("LIBRAS ESTERLINAS");
-//$resultado = $controlPrueba->agregarMoneda($moneda);
-//echo $resultado;
-///*----------------*/
+/* AGREGAR MONEDA */
+$moneda->setTipo("PRUEBA");
+$resultado = $controlPrueba->agregarMoneda($moneda);
+echo $resultado;
+/*----------------*/
 
 
 ///* EDITAR MONEDA */
