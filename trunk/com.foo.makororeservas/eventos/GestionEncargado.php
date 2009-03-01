@@ -286,16 +286,7 @@ function crearBotonInhabilitarTripulante () {
 }
 
 function generarFormularioNuevoVendedor () {
-    $formulario = '<form name="formularioNuevoEncargado" id = "formularioNuevoEncargado"> <script type="text/javascript">
-            Calendar.setup({
-                inputField     :    "fechaNac",     // id of the input field
-                ifFormat       :    "%Y-%m-%d",      // format of the input field
-                button         :    "f_trigger_c",  // trigger for the calendar (button ID)
-                align          :    "Tl",           // alignment (defaults to "Bl")
-                singleClick    :    true
-            });
-        </script>' ;
-    $formulario .= '<table cellpadding="2" cellspacing="1">
+    $formulario = '<form name="formularioNuevoEncargado" id = "formularioNuevoEncargado"><table cellpadding="2" cellspacing="1">
     <tr class="titulo">
       <td width="156">NUEVO VENDEDOR</td>
       <td width="242"><div align="right">
@@ -370,8 +361,8 @@ function generarFormularioNuevoVendedor () {
     </tr>
     <tr class="r1">
       <td>Fecha de Nacimiento</td>
-      <td><input type="text" name="fechaNac" id="fechaNac" readonly="1" size="15" /></td><td<img src="img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
-/></td>
+      <td><input type="text" name="fechaNac" id="f_date_c" readonly="1" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
+</td>
     </tr>
     <tr class="r1">
       <td>correo electr&oacute;nico</td>
@@ -400,6 +391,14 @@ function mostrarFormularioNuevoVendedor() {
     $formulario = generarFormularioNuevoVendedor();
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", "$formulario");
+    $objResponse->addScript('
+    Calendar.setup({
+        inputField     :    "f_date_c",     // id of the input field
+        ifFormat       :    "%Y-%m-%d",      // format of the input field
+        button         :    "f_trigger_c",  // trigger for the calendar (button ID)
+        align          :    "Tl",           // alignment (defaults to "Bl")
+        singleClick    :    true
+    });');
     return $objResponse;
 }
 ?>
