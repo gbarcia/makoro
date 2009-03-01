@@ -1,8 +1,7 @@
 <?php
-
 /**
  * Description of VueloPersonalclass
- *
+ * Clase para manejar los vuelos con el personal
  * @author Diana Uribe
  */
 class VueloPersonalclass {
