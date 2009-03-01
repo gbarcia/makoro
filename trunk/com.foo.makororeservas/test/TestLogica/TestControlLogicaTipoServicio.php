@@ -5,15 +5,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/TipoSe
 $controlBD = new ControlTipoServicioLogicaclass();
 $servicioPrueba = new TipoServicioclass();
 
-/* AGREGAR UN SERVICIO */
-$resultado = $controlBD->nuevoTipoServicio("AS","AGREGO SERVICIO");
-echo $resultado;
-/*---------------------------*/
-
-///* ACTUALIZAR SERVICIO */
-//$resultado = $controlBD->actualizarTipoServicio(6, "SP","SERVICIO PRUEBA",0);
+///* AGREGAR UN SERVICIO */
+//$resultado = $controlBD->nuevoTipoServicio("AS","AGREGO SERVICIO");
 //echo $resultado;
 ///*---------------------------*/
+
+/* ACTUALIZAR SERVICIO */
+$resultado = $controlBD->actualizarTipoServicio(6, "SP","SERVICIO PRUEBA",0);
+echo $resultado;
+/*---------------------------*/
 
 ///* CONSULTAR SERVICIO */
 //echo '<table border=1>';

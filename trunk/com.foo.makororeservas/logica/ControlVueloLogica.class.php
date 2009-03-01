@@ -40,8 +40,9 @@ class ControlVueloLogicaclass {
  * @param <String> $avionMatricula
  * @return <boolean>
  */
-    function actualizarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioSalida) {
+    function actualizarVuelo($id,$fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioSalida) {
         $vuelo = new Vueloclass();
+        $vuelo->setId($id);
         $vuelo->setFecha($fecha);
         $vuelo->setHora($hora);
         $vuelo->setAvionMatricula($avionMatricula);
@@ -77,8 +78,8 @@ class ControlVueloLogicaclass {
  * @param <String> $avionMatricula
  * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
  */
-    function vueloEspecificoAsientosReservados($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula) {
-        $recurso = $this->controlBD->consultarVuelo($hora,$fecha,$rutaSitioSalida,$rutaSitioLlegada,$avionMatricula);
+    function vueloEspecificoAsientosReservados($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
+        $recurso = $this->controlBD->consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada);
         $row = mysql_fetch_array($recurso);
         $idVuelo = $row[id];
         $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
@@ -102,6 +103,30 @@ class ControlVueloLogicaclass {
         $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto);
         $coleccionResultado ->append($Objeto);
         return $coleccionResultado;
+    }
+
+
+    function vuelosRealizados() {
+        $coleccion = $this->controlBD->consultarVuelosRealizados();
+        $resultado = new ArrayObject();
+        foreach ($coleccion as $var) {
+            
+            $piloto = $this->controlBD->consultarTripulantesVuelosRealizados($var[id],1);
+            $copiloto = $this->controlBD->consultarTripulantesVuelosRealizados($var[id],1);
+
+            $operacionInfo = mysql_fetch_array($recursoInfo);
+            $tripulante = new Tripulanteclass ();
+            if ($total != 0) {
+                $tripulante->setCedula ($operacionInfo[cedula]);
+                $tripulante->setNombre($operacionInfo[nombre]);
+                $tripulante->setApellido($operacionInfo[apellido]);
+                $tripulante->setCargo ($operacionInfo[cargo]);
+                $tripulante->setSueldo($operacionInfo[sueldo]);
+                $Objeto = new PagoNominaTripulacionclass($recurso,$total,$tripulante);
+                $resultado ->append($Objeto);
+            }
+        }
+         return $coleccionResultado;
     }
 }
 ?>

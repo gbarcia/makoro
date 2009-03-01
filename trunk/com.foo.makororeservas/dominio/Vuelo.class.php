@@ -9,11 +9,9 @@ class Vuelo {
     private $id;
     private $fecha;
     private $hora;
+    private $avionMatricula;
     private $rutaSitioSalida;
     private $rutaSitioLLegada;
-    private $avionMatricula;
-    private $piloto;
-    private $copiloto;
 
     public function getId() {
         return $this->id;
@@ -63,22 +61,6 @@ class Vuelo {
 
     public function setRutaSitioLLegada($rutaSitioLLegada) {
         $this->rutaSitioLLegada = strtoupper($rutaSitioLLegada);
-    }
-
-    public function getPiloto() {
-        return $this->piloto;
-    }
-
-    public function setPiloto($piloto) {
-        $this->piloto = $piloto;
-    }
-
-    public function getCopiloto() {
-        return $this->copiloto;
-    }
-
-    public function setCopiloto($copiloto) {
-        $this->copiloto = $copiloto;
     }
 }
 ?>
