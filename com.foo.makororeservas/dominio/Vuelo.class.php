@@ -1,11 +1,10 @@
 <?php
-
 /**
- * Description of Vuelo
- * 
+ * Description of Vueloclass
+ * Clase para manejar los vuelos
  * @author Diana Uribe
  */
-class Vuelo {
+class Vueloclass {
     private $id;
     private $fecha;
     private $hora;
