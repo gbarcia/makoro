@@ -8,9 +8,9 @@ class Vueloclass {
     private $id;
     private $fecha;
     private $hora;
-    private $avionMatricula;
     private $rutaSitioSalida;
     private $rutaSitioLLegada;
+    private $avionMatricula;
 
     public function getId() {
         return $this->id;
