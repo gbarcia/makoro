@@ -7,24 +7,25 @@
  * @author Diana Uribe
  */
 class AsientosDisponiblesVueloTripulacionclass {
-    private $vuelo;
+    private $coleccionVuelo;
     private $asientosDisponibles;
     private $piloto;
     private $copiloto;
 
-    function __construct($vuelo, $asientosDisponibles, $piloto, $copiloto) {
-        $this->vuelo = $vuelo;
+    function __construct($coleccionVuelo, $asientosDisponibles, $piloto, $copiloto) {
+        $this->coleccionVuelo = $coleccionVuelo;
         $this->asientosDisponibles = $asientosDisponibles;
         $this->piloto = $piloto;
         $this->copiloto = $copiloto;
     }
 
-    public function getVuelo() {
-        return $this->vuelo;
+
+    public function getColeccionVuelo() {
+        return $this->coleccionVuelo;
     }
 
-    public function setVuelo($vuelo) {
-        $this->vuelo = $vuelo;
+    public function setColeccionVuelo($coleccionVuelo) {
+        $this->coleccionVuelo = $coleccionVuelo;
     }
 
     public function getAsientosDisponibles() {

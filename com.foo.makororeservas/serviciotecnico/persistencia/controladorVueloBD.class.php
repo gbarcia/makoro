@@ -43,7 +43,7 @@ class controladorVueloBDclass {
                                      v.AVION_matricula = '".$vuelo->getAvionMatricula()."',
                                      v.RUTA_sitioSalida = '".$vuelo->getRutaSitioSalida()."',
                                      v.RUTA_sitioLlegada = '".$vuelo->getRutaSitioLlegada()."'
-                  WHERE v.id = '".$vuelo->getId()."'";
+                  WHERE v.id = ".$vuelo->getId()."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -55,20 +55,20 @@ class controladorVueloBDclass {
  */
     function consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
         $resultado = false;
-        $query = "SELECT v.id id,v.fecha,v.hora,v.AVION_matricula,ru.abreviaturaSalida,
-                         ru.abreviaturaLlegada,a.asientos
+        $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
+                         v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos
                   FROM VUELO v, RUTA ru, AVION a
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
-                  AND v.AVION_matricula = a.matricula";
+                  AND v.AVION_matricula = a.matricula ";
                   if($hora != "")
                   $query.= "AND v.hora = '".$hora."'";
                   if($fecha != "")
                   $query.= "AND v.fecha = '".$fecha."'";
                   if($rutaSitioSalida != "")
-                  $query.= "AND ru.RUTA_sitioSalida = '".$rutaSitioSalida."'";
+                  $query.= "AND ru.sitioSalida = '".$rutaSitioSalida."'";
                   if($rutaSitioLlegada != "")
-                  $query.= "AND ru.RUTA_sitioLlegada = '".$rutaSitioLlegada."'";
+                  $query.= "AND ru.sitioLlegada = '".$rutaSitioLlegada."'";
                   if($avionMatricula != "")
                   $query.= "AND a.matricula = '".$avionMatricula."'";
         $resultado = $this->transaccion->realizarTransaccion($query);

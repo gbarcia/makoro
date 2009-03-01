@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloPersonalBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Vuelo.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/AsientosDisponiblesVueloTripulacion.class.php';
 /**
  * Description of ControlVueloLogicaclass
  * Clase para manejar la logica de los vuelos
@@ -40,7 +42,7 @@ class ControlVueloLogicaclass {
  * @param <String> $avionMatricula
  * @return <boolean>
  */
-    function actualizarVuelo($id,$fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioSalida) {
+    function actualizarVuelo($id,$fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
         $vuelo = new Vueloclass();
         $vuelo->setId($id);
         $vuelo->setFecha($fecha);
@@ -59,7 +61,6 @@ class ControlVueloLogicaclass {
  */
     function calculoAsientosDisponibles($id) {
         $resultado = false;
-        $controlAvion = new controladorAvionBDclass();
         $recurso = $this->controlBD->consultarVueloCantidadReserva($id);
         $row = mysql_fetch_array($recurso);
         $cantidadAvion = $row[asientos];
@@ -79,15 +80,15 @@ class ControlVueloLogicaclass {
  * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
  */
     function vueloEspecificoAsientosReservados($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
+        $coleccionResultado = new ArrayObject();
         $recurso = $this->controlBD->consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada);
-        $row = mysql_fetch_array($recurso);
-        $idVuelo = $row[id];
-        $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
         $operacion = mysql_fetch_array($recurso);
+        $idVuelo = $operacion[id];
+        $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
 
         $controlVueloPersonal = new controladorVueloPersonalBDclass();
         $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
-        $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
+        $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalCopiloto($idVuelo);
         $rowVueloPiloto = mysql_fetch_array($vueloTripulacionPiloto);
         $rowVueloCopiloto = mysql_fetch_array($vueloTripulacionCopiloto);
         $piloto = $rowVueloPiloto[tripulante];
@@ -96,10 +97,10 @@ class ControlVueloLogicaclass {
         $vuelo = new Vueloclass();
         $vuelo->setId($operacion[id]);
         $vuelo->setFecha($operacion[fecha]);
-        $vuelo->setAvionMatricula($operacion[avionMatricula]);
+        $vuelo->setHora($operacion[hora]);
         $vuelo->setRutaSitioSalida($operacion[rutaSitioSalida]);
         $vuelo->setRutaSitioLlegada($operacion[rutaSitioLlegada]);
-
+        $vuelo->setAvionMatricula($operacion[avionMatricula]);
         $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto);
         $coleccionResultado ->append($Objeto);
         return $coleccionResultado;
