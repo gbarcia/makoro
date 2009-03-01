@@ -284,7 +284,10 @@ function crearBotonInhabilitarTripulante () {
     $boton = '<input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" onclick="xajax_eliminarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
     return $boton;
 }
-
+/**
+ * Metodo para generar el formulario para crear un nuevo vendedor
+ * @return <String> codigo html para generar el formulario
+ */
 function generarFormularioNuevoVendedor () {
     $formulario = '<form name="formularioNuevoEncargado" id = "formularioNuevoEncargado"><table cellpadding="2" cellspacing="1">
     <tr class="titulo">
@@ -320,11 +323,11 @@ function generarFormularioNuevoVendedor () {
       <td>Sexo</td>
       <td><p>
         <label>
-          <input type="radio" name="sexo" value="radio" id="sexo_0">
+          <input type="radio" name="sexo" value="M" id="sexo_0">
           Masculino</label>
         <br>
         <label>
-          <input type="radio" name="sexo" value="radio" id="sexo_1">
+          <input type="radio" name="sexo" value="F" id="sexo_1">
           Femenino</label>
       </td>
     </tr>
@@ -386,7 +389,10 @@ function generarFormularioNuevoVendedor () {
 </form>';
     return $formulario;
 }
-
+/**
+ * Cogigo para mostrar el formulario de un nuevo vendedor
+ * @return <xAjaxResponse> respuesta del servidor
+ */
 function mostrarFormularioNuevoVendedor() {
     $formulario = generarFormularioNuevoVendedor();
     $objResponse = new xajaxResponse();
@@ -400,5 +406,50 @@ function mostrarFormularioNuevoVendedor() {
         singleClick    :    true
     });');
     return $objResponse;
+}
+
+function validarForumularioNuevoVendedor ($datos) {
+    $resultado = false;
+    if (is_numeric($datos[cedula]) && $datos[cedula] != "") 
+        $resultado = true;
+    else return false;
+    if (is_string($datos[nombre]) && $datos[nombre] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[apellido]) && $datos[apellido] != "")
+    $resultado = true;
+    else return false;
+    if ($datos[sexo] == 'M' || $datos[sexo] == 'F')
+    $resultado = true;
+    else return false;
+    if (is_string($datos[telefono]) && $datos[telefono] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[estado]) && $datos[estado] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[ciudad]) && $datos[ciudad] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[direccion]) && $datos[direccion] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[tipo]) && $datos[tipo] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[f_date_c]) && $datos[f_date_c] != "")
+    $resultado =true;
+    else return false;
+    if (is_string($datos[correo]) && $datos[correo] != "")
+    $resultado =true;
+    else return false;
+    if (is_string($datos[login]) && $datos[login] != "")
+    $resultado =true;
+    else return false;
+    if (is_numeric($datos[sucursal]) && $datos[sucursal] != "")
+    $resultado =true;
+    else return false;
+
+    return $resultado;
 }
 ?>
