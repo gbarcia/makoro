@@ -69,6 +69,13 @@ class Rutaclass {
         return $this->generaIVA;
     }
 
+    public function getGeneraIVAString() {
+        if ($this->generaIVA == 1)
+        return "SI";
+        if ($this->generaIVA == 0)
+        return "NO";
+    }
+
     public function setGeneraIVA($generaIVA) {
         if (is_numeric($generaIVA)) {
             $this->generaIVA = $generaIVA;
