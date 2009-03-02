@@ -61,7 +61,7 @@ class controladorBoletoBDclass {
     function consultarBoletoEspecifico($solicitud) {
         $resultado = false;
         $query = "SELECT r.solicitud,CONCAT(e.nombre,' ',e.apellido) Agente,v.fecha,v.hora,ru.abreviaturaSalida Salida,ru.abreviaturaLlegada Llegada,
-                         CONCAT(p.nombre,' ',p.apellido) Pasajero, vr.tipo Servicio,p.TIPO_PASAJERO_id Tipo
+                         CONCAT(p.nombre,' ',p.apellido) Pasajero, t.abreviatura Servicio,p.TIPO_PASAJERO_id Tipo
 
                   FROM BOLETO b, PASAJERO p, RESERVA r, PAGO pa, TIPO_SERVICIO t, VUELO_RESERVA vr, VUELO v, RUTA ru, ENCARGADO e
                   WHERE r.solicitud = '".$solicitud."'
