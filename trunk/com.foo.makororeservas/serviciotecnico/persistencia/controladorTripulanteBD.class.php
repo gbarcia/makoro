@@ -76,7 +76,8 @@ class controladorTripulanteBDclass {
                   WHERE p.cedula = vp.PERSONAL_cedula
                   AND p.cedula = '".$cedula."'
                   AND v.id = vp.VUELO_id
-                  AND r.id = v.RUTA_id
+                  AND r.sitioSalida = v.RUTA_sitioSalida
+                  AND r.sitioLlegada = v.RUTA_sitioLlegada
                   AND tc.id = vp.cargo
                   AND vp.cargo =$cargo
                   AND p.habilitado = 1
@@ -97,12 +98,13 @@ class controladorTripulanteBDclass {
     function consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula){
         $resultado = false;
         $query = "SELECT p.cedula, p.nombre, p.apellido, r.sitioSalida, r.sitioLlegada,
-                         r.tiempo, v.AVION_matricula, tc.cargo
+                         r.tiempo, v.AVION_matricula, tc.cargo,p.TIPO_CARGO_id idCargo
                   FROM PERSONAL p, VUELO_PERSONAL vp, VUELO v, RUTA r, TIPO_CARGO tc
                   WHERE p.cedula = vp.PERSONAL_cedula
                   AND p.cedula = '".$cedula."'
                   AND v.id = vp.VUELO_id
-                  AND r.id = v.RUTA_id
+                  AND r.sitioSalida = v.RUTA_sitioSalida
+                  AND r.sitioLlegada = v.RUTA_sitioLlegada
                   AND tc.id = vp.cargo
                   AND p.habilitado = 1
                   AND v.fecha BETWEEN '" . $fechaini . "' AND '" .$fechafin. "'";
