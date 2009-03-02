@@ -35,6 +35,7 @@ class ControlSeguridadclass {
                 $_SESSION['EncargadoCedula'] = $row[cedula];
                 $_SESSION['EncargadoMail'] = $row[correo];
                 $_SESSION['EncargadoSucursal'] = $row[SUCURSAL_id];
+                $_SESSION['EncargadoValido'] = TRUE;
             }
         }
         return $resultado;
