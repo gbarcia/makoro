@@ -268,23 +268,6 @@ function inabilitado ($ina) {
     }
     return $objResponse;
 }
-
-/**
- * Metodo para generar el boton par habilitar los tripulantes
- * @return <String> html para generar el boton
- */
-function crearBotonHabilitarTripulante () {
-    $boton = '<input type="button" name="button3" id="button3" value="HABLITAR SELECCION" onclick="xajax_habilitarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
-    return $boton;
-}
-/**
- * Metodo para generar el boton para inhabilitar tripulantes
- * @return <String> html para generar el boton
- */
-function crearBotonInhabilitarTripulante () {
-    $boton = '<input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" onclick="xajax_eliminarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
-    return $boton;
-}
 /**
  * Metodo para generar el formulario para crear un nuevo vendedor
  * @return <String> codigo html para generar el formulario
@@ -297,7 +280,7 @@ function generarFormularioNuevoVendedor () {
       <td width="156">NUEVO VENDEDOR</td>
       <td width="242"><div align="right">
         <label>
-        <input type="button" name="cerrar" id="cerrar" value="X" />
+        <input type="button" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaEditar()" />
         </label>
       </div></td>
     </tr>
@@ -535,7 +518,7 @@ function generarFormularioEditar ($cedula) {
       <td width="161">EDITAR VENDEDOR</td>
       <td width="242"><div align="right">
         <label>
-        <input type="submit" name="cerrar" id="cerrar" value="X" accesskey="X" />
+        <input type="button" name="cerrar" id="cerrar" value="X" accesskey="X" onclick="xajax_cerrarVentanaEditar()" />
         </label>
       </div></td>
     </tr>
@@ -739,6 +722,7 @@ function procesarEditarEncargado ($datos) {
     $objResponse = new xajaxResponse();
     $respuesta = "";
     if (validarForumularioEditarVendedor($datos)) {
+        $objResponse->addConfirmCommands(31, "Esta seguro de querer editar a ". $datos[nombre] . " ?");
         $controlBD = new controladorSeguridadBDclass();
         $EncargadoClave = $controlBD->buscarEncargadoPorCedula($datos[cedula]);
         $encargado = new Encargadoclass();
@@ -776,29 +760,110 @@ function procesarEditarEncargado ($datos) {
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
     return $objResponse;
+}
 
     /**
      * Metodo para cerrar las ventanas
      * @return <xAjaxResponse> respuesta del servidor
      */
-    function cerrarVentanaEditar() {
-        $resultado = "";
-        $objResponse = new xajaxResponse();
-        $objResponse->addAssign("izq", "innerHTML", $resultado);
-        $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
-        return $objResponse;
-    }
+function cerrarVentanaEditar() {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+    return $objResponse;
+}
 
  /**
  * Funcion para borrar el div de mensaje
  * @return <xajaxResponse> respuesta del servidor
  */
-    function borrarMensaje(){
-        $respuesta = "";
-        $objResponse = new xajaxResponse();
+function borrarMensaje(){
+    $respuesta = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+ /**
+ * Metodo para habilitar un encargado ya borrado o inhabilitado
+ * @param <Array> $listaEncargados arreglo con todas las cedulas a habilitar
+ * @return <Esta seguro de habilitar la seleccioajaxResponse> respuesta del servidor
+ */
+function habilitarEncargado($listaEncargados) {
+    $objResponse = new xajaxResponse();
+    if ($listaEncargados[encargados] != ""){
+        $respuesta ="";
+        $controlEncargado = new controladorSeguridadBDclass();
+        $objResponse->addConfirmCommands(6, "Esta seguro de habilitar la seleccion?");
+        foreach ($listaEncargados[encargados] as $enc) {
+            $controlEncargado->rehabilitarEncargado($enc);
+        }
+        $actualizarCheck = desmarcarCheckBox();
+        $respuesta ='<div class="exito">Encargado(s) habilitado(s) con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
-        return $objResponse;
+        $objResponse->addAssign("check", "innerHTML", $actualizarCheck);
+        $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
+        $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
     }
+    else {
+        $respuesta ='<div class="error">Debe marcar algun encargado para habilitar <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
+    return $objResponse;
+}
+ /**
+ * Metodo para inhabilitar un encargado ya borrado o inhabilitado
+ * @param <Array> $listaEncargados arreglo con todas las cedulas a inhabilitar
+ * @return <Esta seguro de habilitar la seleccioajaxResponse> respuesta del servidor
+ */
+function inhabilitarEncargado($listaEncargados) {
+    $objResponse = new xajaxResponse();
+    if ($listaEncargados[encargados] != ""){
+        $respuesta ="";
+        $controlEncargado = new controladorSeguridadBDclass();
+        $objResponse->addConfirmCommands(6, "Esta seguro de inhabilitar la seleccion?");
+        foreach ($listaEncargados[encargados] as $enc) {
+            $controlEncargado->borrarEncargado($enc);
+        }
+        $respuesta ='<div class="exito">Encargado(s) inhabilitado(s) con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
+        $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    }
+    else {
+        $respuesta ='<div class="error">Debe marcar algun encargado para inhabilitar <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
+    return $objResponse;
+}
+/**
+ * Metodo para desmarcar un CheckBox
+ * @return <String> codigo HTML
+ */
+function desmarcarCheckBox () {
+    $codigo = '<label>
+   <input type="checkbox" name="desabilitado" value ="0"
+   onClick="xajax_inabilitado(document.formBusqueda.desabilitado.checked)" />
+   </label><span class="styleLetras">Ver solo deshabilitados</span>';
+    return $codigo;
+}
+
+/**
+ * Metodo para generar el boton par habilitar los encargados
+ * @return <String> html para generar el boton
+ */
+function crearBotonHabilitarTripulante () {
+    $boton = '<input type="button" name="button3" id="button3" value="HABLITAR SELECCION" onclick="xajax_habilitarEncargado(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
+    return $boton;
+}
+/**
+ * Metodo para generar el boton para inhabilitar los encargados
+ * @return <String> html para generar el boton
+ */
+function crearBotonInhabilitarTripulante () {
+    $boton = '<input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" onclick="xajax_inhabilitarEncargado(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
+    return $boton;
 }
 
 ?>
