@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlTripulanteLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Tripulante.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/PagoNominaTripulacion.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTipoCargoBD.class.php';
 
 function calculoHora($datos) {
     $fechaini = $datos[fechaInicio];
@@ -29,8 +30,11 @@ function calculoHora($datos) {
     $resultado.= '<th>Tiempo</th>';
     $resultado.= '<th>Matricula</th>';
     $resultado.= '<th>Cargo</th>';
+    $resultado.= '<th>SUBTOTAL</th>';
     $resultado.= '</tr>';
     while ($row = mysql_fetch_array($recursoDetalles)) {
+        $controlTipoCargo = new controladorTipoCargoBDclass();
+        $tarifa = $controlTipoCargo->obtenerSueldoTipoCargo($row[idCargo]);
         $resultado.= '<tr>';
         $resultado.= '<td>' . $row[cedula]. '</td>';
         $resultado.= '<td>' . $row[nombre]. '</td>';
@@ -40,6 +44,7 @@ function calculoHora($datos) {
         $resultado.= '<td>' . $row[tiempo]. '</td>';
         $resultado.= '<td>' . $row[AVION_matricula]. '</td>';
         $resultado.= '<td>' . $row[cargo]. '</td>';
+        $resultado.= '<td>' . $row[tiempo]*$tarifa . ' BS'. '</td>';
         $resultado.= '</tr>';
     }
 
