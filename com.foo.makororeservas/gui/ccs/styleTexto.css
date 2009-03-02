@@ -1,0 +1,74 @@
+/* 
+Document   : styleTexto
+Created on : Mar 2, 2009, 12:21:27 AM
+Author     : jonathan
+Description:
+Estilo de los titulos y bloques de texto.
+*/
+@charset "utf-8";
+.tituloBlanco1{
+    position:relative;
+    font-size: 14px;
+    color: #FFFFFF;
+    padding: 5px;
+    font-weight: bold;
+}
+.tituloBlanco2{
+    position:relative;
+    font-size: 16px;
+    color: #FFFFFF;
+    padding: 5px;
+    font-weight: bold;
+}
+.tituloBlanco3{
+    position:relative;
+    font-size: 18px;
+    color: #FFFFFF;
+    padding: 5px;
+    font-weight: bold;
+}
+.tituloNegro1{
+    position:relative;
+    font-size: 14px;
+    color: #000000;
+    padding: 5px;
+    font-weight: bold;
+}
+.tituloNegro2{
+    position:relative;
+    font-size: 16px;
+    color: #000000;
+    padding: 5px;
+    font-weight: bold;
+}
+.tituloNegro3{
+    position:relative;
+    font-size: 18px;
+    color: #000000;
+    padding: 5px;
+    font-weight: bold;
+}
+.textoBlanco1{
+    position:relative;
+    font-size: 12px;
+    color: #FFFFFF;
+    padding: 5px;
+}
+.textoBlanco2{
+    position:relative;
+    font-size: 14px;
+    color: #FFFFFF;
+    padding: 5px;
+}
+.textoNegro1{
+    position:relative;
+    font-size: 12px;
+    color: #000000;
+    padding: 5px;
+}
+.textoNegro2{
+    position:relative;
+    font-size: 14px;
+    color: #000000;
+    padding: 5px;
+}

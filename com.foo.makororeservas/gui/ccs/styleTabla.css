@@ -6,32 +6,66 @@ Description:
 Estilo para tablas de resultados
 */
 @charset "utf-8";
-.tabla {
-    width: 100%;
-    overflow-y: scroll;
+div.tableContainer {
+    width: 100%;		/* table width will be 99% of this*/
+    height: 300px; 	/* must be greater than tbody*/
+    overflow: auto;
+    margin-bottom: inherit;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
 }
-.titulo {
+table {
+    width: 99%;		/*100% of container produces horiz. scroll in Mozilla*/
+    border: none;
+    background-color: #FFFFFF;
+}
+table>tbody	{  /* child selector syntax which IE6 and older do not support*/
+    overflow: auto;
+    height: 250px;
+    overflow-x: hidden;
+}
+thead tr	{
+    position:relative;
+    top: expression(offsetParent.scrollTop); /*IE5+ only*/
+}
+thead td, thead th {
+    padding-left: 2px;
+    padding-right: 2px;
+    text-align: left;
+    font-size: 14px;
     background-color: #067AC2;
     color: #FFFFFF;
-    font-weight:bold;
+    font-weight: bold;
+    border-top: solid 1px #d8d8d8;
+}
+td	{
+    color: #000;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 12px;
+    text-align: left;
+    border-bottom: solid 1px #d8d8d8;
+    border-left: solid 1px #d8d8d8;
 }
 .r0 {
-    background-color: #CCCCCC;
-    color: #000000;
+    background-color: #F4F4F4;
 }
 .r1 {
-    background-color: #E1E1E1;
-    color: #000000;
+    background-color: #E9E9E9;
 }
-.rPagado {
-    color: #000000;
-    font-weight:bold;
+table tfoot tr { /*idea of Renato Cherullo to help IE*/
+    position: relative;
+    overflow-x: hidden;
+    top: expression(parentNode.parentNode.offsetHeight >=
+    offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
 }
-.rConfirmado{
-    color: #0000FF;
-    font-weight:bold;
+tfoot td	{
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #25A5DE;
+    color: #FFFFFF;
+    border-top: solid 1px #d8d8d8;
 }
-.rPorPagar{
-    color: #CC0000;
-    font-weight:bold;
+td:last-child {
+    padding-right: 20px; /*prevent Mozilla scrollbar from hiding cell content*/
 }

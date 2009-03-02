@@ -1,0 +1,12 @@
+/* 
+Document   : styleMain
+Created on : Mar 2, 2009, 12:23:49 AM
+Author     : jonathan
+Description:
+Main de hojas de estilos.
+*/
+@import url("styleDisposicion.css");
+@import url("styleTexto.css");
+@import url("styleMensaje.css");
+
+
