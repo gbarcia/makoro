@@ -6,10 +6,15 @@ Description:
 Disposicion de los paneles.
 */
 @charset "utf-8";
+body{
+    margin: 0px;
+}
 .cuerpo {
     font-family:Verdana, Arial, Helvetica, sans-serif;
     clear:both;
     margin-bottom:10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .izq {
     float: left;

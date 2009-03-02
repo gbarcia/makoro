@@ -16,8 +16,9 @@ function autoSugerir($busqueda){
     $recurso = $controlLogica->consultarTripulanteCedulaNombreApellido($busqueda);
     $numFilas = mysql_num_rows($recurso);
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table class="tabla">';
-    $resultado.= '<tr class="titulo">';
+    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<thead>';
+    $resultado.= '<tr>';
     $resultado.= '<th>CEDULA</th>';
     $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>APELLIDO</th>';
@@ -31,6 +32,7 @@ function autoSugerir($busqueda){
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '<th>MARCAR</th>';
     $resultado.= '</tr>';
+    $resultado.= '</thead>';
     if (isset($busqueda)) {
         if ($numFilas > 0){ //Si hay coincidencias
             $color = false;
@@ -64,6 +66,7 @@ function autoSugerir($busqueda){
     }
     else { // retorno o borrar datos
         $recurso = $controlLogica->consultarTodoPersonal(TRUE);
+        $color = false;
         foreach ($recurso as $row) {
             if ($color){
                 $resultado.= '<tr class="r0">';
@@ -102,8 +105,9 @@ function autoSugerir($busqueda){
 function autosugerirInicio ($reg1,$tamPag) {
     $controlLogica = new ControlTripulanteLogicaclass();
     echo '<form id="formularioEditarMarcar">';
-    echo '<table class="tabla">';
-    echo '<tr class="titulo">';
+    echo '<table cellspacing="0">';
+    echo '<thead>';
+    echo '<tr>';
     echo '<th>CEDULA</th>';
     echo '<th>NOMBRE</th>';
     echo '<th>APELLIDO</th>';
@@ -113,10 +117,11 @@ function autosugerirInicio ($reg1,$tamPag) {
     echo '<th>CIUDAD</th>';
     echo '<th>CARGO</th>';
     echo '<th>TARIFA/HORA</th>';
-    echo '<th>HABIITADO</th>';
+    echo '<th>HABILITADO</th>';
     echo '<th>EDITAR</th>';
     echo '<th>MARCAR</th>';
     echo '</tr>';
+    echo '</thead>';
     $resultado = $controlLogica->consultarTodoPersonal(TRUE);
     $tamanoArreglo = sizeof($resultado);
     $color = false;
@@ -167,8 +172,9 @@ function inabilitado ($ina) {
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
-        $resultado.= '<table class="tabla">';
-        $resultado.= '<tr class = "titulo">';
+        $resultado.= '<table cellspacing="0">';
+        $resultado.= '<thead>';
+        $resultado.= '<tr>';
         $resultado.= '<th>CEDULA</th>';
         $resultado.= '<th>NOMBRE</th>';
         $resultado.= '<th>APELLIDO</th>';
@@ -182,6 +188,7 @@ function inabilitado ($ina) {
         $resultado.= '<th>EDITAR</th>';
         $resultado.= '<th>MARCAR</th>';
         $resultado.= '</tr>';
+        $resultado.= '</thead>';
         $controlLogica = new ControlTripulanteLogicaclass();
         $recurso = $controlLogica->consultarTodoPersonal(FALSE);
         $color = false;
@@ -217,8 +224,9 @@ function inabilitado ($ina) {
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
-        $resultado.= '<table class="tabla">';
-        $resultado.= '<tr class = "titulo">';
+        $resultado.= '<table cellspacing="0">';
+        $resultado.= '<thead>';
+        $resultado.= '<tr>';
         $resultado.= '<th>CEDULA</th>';
         $resultado.= '<th>NOMBRE</th>';
         $resultado.= '<th>APELLIDO</th>';
@@ -232,6 +240,7 @@ function inabilitado ($ina) {
         $resultado.= '<th>EDITAR</th>';
         $resultado.= '<th>MARCAR</th>';
         $resultado.= '</tr>';
+        $resultado.= '</thead>';
         $controlLogica = new ControlTripulanteLogicaclass();
         $recurso = $controlLogica->consultarTodoPersonal(TRUE);
         $color = false;
@@ -299,34 +308,43 @@ function editar($cedula) {
     $row = mysql_fetch_array($recurso);
     $recursoTipoCargo = $controlTipoCargo->obtenerTodosLosTiposCargo();
     $resultado = '<form id="formUpdate">
-  <table cellpadding="2" cellspacing="1">
-    <tr class="titulo">
-      <td>EDITAR TRIPULANTE</td>
-      <td><div align="right">
-        <label>
-        <input type="button" name="botonCerrar" id="botonCerrar" value="X" onclick="xajax_cerrarVentanaEditar()">
-        </label>
-      </div></td>
+  <table class="formTable" cellspacing="0">
+    <tr>
+    <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">
+            EDITAR TRIPULANTE
+            <div class="botonCerrar">
+            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        <div>
+        </div>
+        </td>
+    </thead>
     </tr>
     <tr class="r1">
+    <td colspan="2">
+        Todos los campos son obligatorios
+    </td>
+    </tr>
+    <tr class="r0">
       <td>Cedula</td>
       <td><label>
         <input type="text" name="cedula" id="cedula" READONLY size="30" value='.$row[cedula].'>
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" onKeyUp="this.value=this.value.toUpperCase();" size="30" value='.$row[nombre].'>
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Apellido</td>
       <td><label>
         <input type="text" name="apellido" id="apellido" onKeyUp="this.value=this.value.toUpperCase();" size="30" value="'.$row[apellido].'">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Sexo</td>
       <td><p>
         <label>
@@ -346,31 +364,31 @@ function editar($cedula) {
           Femenino</label>
       </td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Telefono</td>
       <td><label>
         <input type="text" name="telefono" id="telefono" onKeyUp="this.value=this.value.toUpperCase();" size="30" value="'.$row[telefono].'">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Estado de residencia</td>
       <td><label>
         <input type="text" name="estado" id="estado" size="30" value="'.$row[estado].'">
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Ciudad de residencia</td>
       <td><label>
         <input type="text" name="ciudad" id="ciudad" size="30" value="'.$row[ciudad].'">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Direccion de residencia</td>
       <td><label>
         <textarea name="direccion" id="direccion" cols="23" rows="3">'.$row[direccion].'</textarea>
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Cargo</td>
       <td><label>
         <select name="cargo" id="cargo">';
@@ -383,7 +401,7 @@ function editar($cedula) {
     $resultado .='</select>
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Habilitado</td>
       <td><label>
         <input type="checkbox" name="habilitado" id="habilitado" size="30" value="'.$row[habilitado].'"';
@@ -391,7 +409,7 @@ function editar($cedula) {
     $resultado .='>
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td height="26" colspan="2"><label>
           <div align="center">
             <input type="button" name="button" id="button" value="EDITAR" onclick = "xajax_procesarUpdate(xajax.getFormValues(\'formUpdate\'))">
@@ -412,8 +430,9 @@ function actualizarTablaPrinicipal () {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table class="tabla">';
-    $resultado.= '<tr class = "titulo">';
+    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<thead>';
+    $resultado.= '<tr>';
     $resultado.= '<th>CEDULA</th>';
     $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>APELLIDO</th>';
@@ -427,6 +446,7 @@ function actualizarTablaPrinicipal () {
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '<th>MARCAR</th>';
     $resultado.= '</tr>';
+    $resultado.= '</thead>';
     $controlLogica = new ControlTripulanteLogicaclass();
     $recurso = $controlLogica->consultarTodoPersonal(TRUE);
     $color = false;
@@ -464,29 +484,50 @@ function actualizarTablaPrinicipal () {
 function procesarUpdate ($datos) {
     $objResponse = new xajaxResponse();
     if (validarTripulante($datos)) {
-    $respuesta = "";
-    $controlTripulante = new ControlTripulanteLogicaclass();
-    $objResponse->addConfirmCommands(6, "Esta seguro de editar ".$datos[cedula]." ?");
-    $resultado = $controlTripulante->actualizarTripulante(  $datos['cedula'],
-        $datos['nombre'],
-        $datos['apellido'],
-        $datos['sexo'],
-        $datos['telefono'],
-        $datos['estado'],
-        $datos['ciudad'],
-        $datos['direccion'],
-        $datos['habilitado'],
-        $datos['cargo']);
-    if ($resultado) {
-        $respuesta = '<div class="exito">Tripulante '.$datos[cedula].' actualizado con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-    }
+        $respuesta = "";
+        $controlTripulante = new ControlTripulanteLogicaclass();
+        $objResponse->addConfirmCommands(6, "Esta seguro de editar ".$datos[cedula]." ?");
+        $resultado = $controlTripulante->actualizarTripulante(  $datos['cedula'],
+            $datos['nombre'],
+            $datos['apellido'],
+            $datos['sexo'],
+            $datos['telefono'],
+            $datos['estado'],
+            $datos['ciudad'],
+            $datos['direccion'],
+            $datos['habilitado'],
+            $datos['cargo']);
+        if ($resultado) {
+            $respuesta = '<div class="exito">
+                          <div class="textoMensaje">
+                            Tripulante '.$datos[cedula].' actualizado con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta = '<div class="error">
+                          <div class="textoMensaje">
+                            No se pudo realizar la operacion. Verifique el manual del usuario. CODIGO FT001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
+        $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);}
     else {
-        $respuesta = '<div class="error">No se pudo realizar la operacion. Vuelva a intentarlo. ERROR 001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-    }
-    $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
-    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);}
-    else {
-        $respuesta .= '<div class="error">No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR F01 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $respuesta .= '<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo efectuar la operacion. Los datos del formulario no son correctos. CODIGO FT002.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
     }
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
@@ -499,20 +540,34 @@ function procesarUpdate ($datos) {
 function eliminarTripulante($listaTripulantes) {
     $objResponse = new xajaxResponse();
     if ($listaTripulantes[tripulantes] != ""){
-    $respuesta ="";
-    $controlTripulante = new controladorTripulanteBDclass();
-    $objResponse->addConfirmCommands(6, "Esta seguro de inhabilitar la seleccion?");
-    foreach ($listaTripulantes[tripulantes] as $trip) {
-        $controlTripulante->inhabilitarHabilitarTripulante($trip, 0);
-    }
-    $respuesta ='<div class="exito">Tripulante(s) inhabilitado(s) con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
-    $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
-    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        $respuesta ="";
+        $controlTripulante = new controladorTripulanteBDclass();
+        $objResponse->addConfirmCommands(6, "Esta seguro de inhabilitar la seleccion?");
+        foreach ($listaTripulantes[tripulantes] as $trip) {
+            $controlTripulante->inhabilitarHabilitarTripulante($trip, 0);
+        }
+        $respuesta = '<div class="exito">
+                          <div class="textoMensaje">
+                          Tripulante(s) inhabilitado(s) con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
+        $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
     }
     else {
-    $respuesta ='<div class="error">Debe marcar algun tripulante para inhabilitar <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $respuesta = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          Debe marcar algun tripulante para inhabilitar.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
     return $objResponse;
 }
@@ -524,22 +579,38 @@ function eliminarTripulante($listaTripulantes) {
 function habilitarTripulante($listaTripulantes) {
     $objResponse = new xajaxResponse();
     if ($listaTripulantes[tripulantes] != ""){
-    $respuesta ="";
-    $controlTripulante = new controladorTripulanteBDclass();
-    $objResponse->addConfirmCommands(6, "Esta seguro de habilitar la seleccion?");
-    foreach ($listaTripulantes[tripulantes] as $trip) {
-        $controlTripulante->inhabilitarHabilitarTripulante($trip, 1);
-    }
-    $actualizarCheck = desmarcarCheckBox();
-    $respuesta ='<div class="exito">Tripulante(s) habilitado(s) con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
-    $objResponse->addAssign("check", "innerHTML", $actualizarCheck);
-    $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
-    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        $respuesta ="";
+        $controlTripulante = new controladorTripulanteBDclass();
+        $objResponse->addConfirmCommands(6, "Esta seguro de habilitar la seleccion?");
+        foreach ($listaTripulantes[tripulantes] as $trip) {
+            $controlTripulante->inhabilitarHabilitarTripulante($trip, 1);
+        }
+        $actualizarCheck = desmarcarCheckBox();
+        $boton = crearBotonInhabilitarTripulante();
+        $objResponse->addAssign("BotonEliminar", "innerHTML", $boton);
+        $respuesta ='<div class="exito">
+                          <div class="textoMensaje">
+                          Tripulante(s) habilitado(s) con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
+        $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        $objResponse->addAssign("check", "innerHTML", $actualizarCheck);
     }
     else {
-    $respuesta ='<div class="error">Debe marcar algun tripulante para habilitar <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $respuesta = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          Debe marcar algun tripulante para habilitar.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
     return $objResponse;
 }
@@ -548,7 +619,7 @@ function habilitarTripulante($listaTripulantes) {
  * @return <String> html para generar el boton
  */
 function crearBotonHabilitarTripulante () {
-    $boton = '<input type="button" name="button3" id="button3" value="HABLITAR SELECCION" onclick="xajax_habilitarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
+    $boton = '<input type="button" name="button3" id="button3" value="HABILITAR SELECCION" onclick="xajax_habilitarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
     return $boton;
 }
 /**
@@ -556,7 +627,7 @@ function crearBotonHabilitarTripulante () {
  * @return <String> html para generar el boton
  */
 function crearBotonInhabilitarTripulante () {
-    $boton = '<input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" onclick="xajax_eliminarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
+    $boton = '<input type="button" name="button3" id="button3" value="INHABILITAR SELECCION" onclick="xajax_eliminarTripulante(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
     return $boton;
 }
 /**
@@ -568,34 +639,43 @@ function generarCrearNuevoTripulante () {
     $recursoTipoCargo = $controlTipoCargo->obtenerTodosLosTiposCargo();
     $contenido = "";
     $contenido .='<form id="formNuevoTripulante">
-  <table cellpadding="2" cellspacing="1">
-    <tr class="titulo">
-      <td>NUEVO TRIPULANTE</td>
-      <td><div align="right">
-        <label>
-        <input type="button" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaEditar()" />
-        </label>
-      </div></td>
+      <table class="formTable" cellspacing="0">
+    <tr>
+        <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">
+            NUEVO TRIPULANTE
+            <div class="botonCerrar">
+            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>
+        </td>
+        </thead>
     </tr>
     <tr class="r1">
+    <td colspan="2">
+        Todos los campos son obligatorios
+    </td>
+    </tr>
+    <tr class="r0">
       <td>Cedula</td>
       <td><label>
         <input type="text" name="cedula" id="cedula" size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Nombre</td>
       <td><label>
         <input type="text" name="nombre" onKeyUp="this.value=this.value.toUpperCase();" id="nombre" size="30">
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Apellido</td>
       <td><label>
         <input type="text" name="apellido" onKeyUp="this.value=this.value.toUpperCase();" id="apellido" size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Sexo</td>
       <td><p>
         <label>
@@ -607,31 +687,31 @@ function generarCrearNuevoTripulante () {
           Femenino</label>
       </td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Telefono</td>
       <td><label>
         <input type="text" name="telefono" onKeyUp="this.value=this.value.toUpperCase();" id="telefono" size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Estado de residencia</td>
       <td><label>
         <input type="text" name="estado" id="estado" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Ciudad de residencia</td>
       <td><label>
         <input type="text" name="ciudad" id="ciudad" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Direccion de residencia</td>
       <td><label>
         <textarea name="direccion" id="direccion" onKeyUp="this.value=this.value.toUpperCase();" cols="23" rows="3"></textarea>
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Cargo</td>
       <td><label>
         <select name="cargo" id="cargo">';
@@ -642,7 +722,7 @@ function generarCrearNuevoTripulante () {
     $contenido .= '</select>
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="AGREGAR" onclick="xajax_procesarNuevoTripulante(xajax.getFormValues(\'formNuevoTripulante\'))">
             </div>
       </label></td>
@@ -675,14 +755,18 @@ function desplegarNuevoTripulante(){
  */
 function generarFormularioNuevoCargo(){
     $contenido = '<form id="formNuevoCargo">
-  <table cellpadding="2" cellspacing="1">
-    <tr class="titulo">
-      <td>NUEVO CARGO</td>
-      <td><div align="right">
-        <label>
-        <input type="button" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaNuevoCargo()" />
-        </label>
-      </div></td>
+  <table class="formTable" cellspacing="0">
+    <tr>
+        <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">
+            NUEVO CARGO
+            <div class="botonCerrar">
+            <button name="boton" type="button" onclick="xajax_cerrarVentanaNuevoCargo()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>
+        </td>
+        </thead>
     </tr>
     <tr class="r1">
       <td>Nombre</td>
@@ -726,10 +810,24 @@ function procesarCargo($datos) {
     $resultado = $controlTipoCargo->agregarTipoCargo($tipoCargo);
     $objResponse = new xajaxResponse();
     if ($resultado) {
-        $respuesta .= '<div class="exito">Nuevo cargo '.$datos[nombre]. ' agregado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
+        $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Nuevo cargo '.$datos[nombre]. ' agregado con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
     }
     else {
-        $respuesta .= '<div class="error">No se pudo completar la operacion. Error 001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique el manual del usuario. CODIGO GC001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
     }
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
@@ -738,29 +836,50 @@ function procesarCargo($datos) {
 function procesarNuevoTripulante ($datos) {
     $objResponse = new xajaxResponse();
     if (validarTripulante($datos)) {
-    $respuesta = "";
-    $controlTripulante = new ControlTripulanteLogicaclass();
-    $resultado = $controlTripulante->nuevoTripulante($datos[cedula],
-                                                     $datos[nombre],
-                                                     $datos[apellido],
-                                                     $datos[sexo],
-                                                     $datos[telefono],
-                                                     $datos[estado],
-                                                     $datos[ciudad],
-                                                     $datos[direccion],
-                                                     $datos[cargo]);
-   $objResponse = new xajaxResponse();
-   if ($resultado){
-         $respuesta .= '<div class="exito">Nuevo Tripulante '.$datos[cedula]. ' agregado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
-   }
-   else {
-       $respuesta .= '<div class="error">No se pudo completar la operacion. Error 001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-   }
-    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
-    $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
-    $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);}
+        $respuesta = "";
+        $controlTripulante = new ControlTripulanteLogicaclass();
+        $resultado = $controlTripulante->nuevoTripulante($datos[cedula],
+            $datos[nombre],
+            $datos[apellido],
+            $datos[sexo],
+            $datos[telefono],
+            $datos[estado],
+            $datos[ciudad],
+            $datos[direccion],
+            $datos[cargo]);
+        $objResponse = new xajaxResponse();
+        if ($resultado){
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Nuevo Tripulante '.$datos[cedula]. ' agregado con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique el manual del usuario. GT001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
+        $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);}
     else {
-        $respuesta .= '<div class="error">No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR F01 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $respuesta .= '<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR GT001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
     return $objResponse;
@@ -823,7 +942,7 @@ function validarTripulante ($datos) {
 
 function desmarcarCheckBox () {
     $codigo = '<label>
-   <input type="checkbox" name="desabilitado" value ="0"
+   <input type="checkbox" name="desabilitado"
    onClick="xajax_inabilitado(document.formBusqueda.desabilitado.checked)" />
    </label><span class="styleLetras">Ver solo deshabilitados</span>';
     return $codigo;

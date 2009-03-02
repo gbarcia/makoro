@@ -6,7 +6,27 @@ Description:
 Estilo para tablas de resultados
 */
 @charset "utf-8";
-div.tableContainer {
+/* Formularios */
+.formContainer {
+    width: 100%;		/* table width will be 99% of this*/
+    overflow: auto;
+    margin-bottom: inherit;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.formTable {
+    width: auto;		/*100% of container produces horiz. scroll in Mozilla*/
+    border: none;
+    background-color: #FFFFFF;
+}
+
+.formTable>tbody	{  /* child selector syntax which IE6 and older do not support*/
+    overflow: auto;
+    height: auto;
+    overflow-x: hidden;
+}
+
+/* Tablas con scroll */
+.tableContainer {
     width: 100%;		/* table width will be 99% of this*/
     height: 300px; 	/* must be greater than tbody*/
     overflow: auto;
@@ -46,10 +66,10 @@ td	{
     border-bottom: solid 1px #d8d8d8;
     border-left: solid 1px #d8d8d8;
 }
-.r0 {
+.r1 {
     background-color: #F4F4F4;
 }
-.r1 {
+.r0 {
     background-color: #E9E9E9;
 }
 table tfoot tr { /*idea of Renato Cherullo to help IE*/
