@@ -600,6 +600,7 @@ function habilitarTripulante($listaTripulantes) {
         $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
         $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
         $objResponse->addAssign("check", "innerHTML", $actualizarCheck);
+        $objResponse->addScript("deseleccionar_todo()");
     }
     else {
         $respuesta = '<div class="advertencia">
@@ -942,9 +943,25 @@ function validarTripulante ($datos) {
 
 function desmarcarCheckBox () {
     $codigo = '<label>
-   <input type="checkbox" name="desabilitado"
+   <input type="checkbox" name="desabilitado" value="0"
    onClick="xajax_inabilitado(document.formBusqueda.desabilitado.checked)" />
    </label><span class="styleLetras">Ver solo deshabilitados</span>';
     return $codigo;
+}
+
+function validarNuevoTipoCargo ($datos) {
+    $resultado = false;
+    if (is_string($datos[nombre]) && $datos[nombre] != "")
+    $resultado = true;
+    else
+    return false;
+    if (is_string($datos[descripcion]) && $datos[descripcion] != "")
+    $resultado = true;
+    else return false;
+    if (is_numeric($datos[sueldo]) && $datos[sueldo] != "")
+    $resultado = true;
+    else return false;
+
+    return $resultado;
 }
 ?>
