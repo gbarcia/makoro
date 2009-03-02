@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlSeguridad.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encargado.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorSeguridadBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlSucursalLogica.class.php';
 
 /**
  * Metodo xajax para autosugerir un encargado
@@ -52,7 +53,7 @@ function autoSugerir($busqueda){
                 $resultado.= '<td>' . $row[tipo]. '</td>';
                 $resultado.= '<td>' . $row[nSucursal].'</td>';
                 $resultado.= '<td>' . $encargado->getHabilitadoString(). '</td>';
-                $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[cedula].')"/></td>';
+                $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar('.$row[cedula].')"/></td>';
                 $resultado.= '<td><input type="checkbox" name="encargados[]" value="'.$row[cedula].'"></td>';
                 $resultado.= '</tr>';
                 $color = !$color;
@@ -82,7 +83,7 @@ function autoSugerir($busqueda){
             $resultado.= '<td>' . $row[tipo]. '</td>';
             $resultado.= '<td>' . $row[nSucursal].'</td>';
             $resultado.= '<td>' . $encargado->getHabilitadoString(). '</td>';
-            $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[cedula].')"/></td>';
+            $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar('.$row[cedula].')"/></td>';
             $resultado.= '<td><input type="checkbox" name="encargados[]" value="'.$row[cedula].'"></td>';
             $resultado.= '</tr>';
             $color = !$color;
@@ -135,7 +136,7 @@ function CadenaTodosLosEmpleados () {
         $resultado.= '<td>' . $row[tipo]. '</td>';
         $resultado.= '<td>' . $row[nSucursal]. '</td>';
         $resultado.= '<td>' . $encargado->getHabilitadoString(). '</td>';
-        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[cedula].')"/></td>';
+        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar('.$row[cedula].')"/></td>';
         $resultado.= '<td><input type="checkbox" name="encargados[]" value="'.$row[cedula].'"></td>';
         $resultado.= '</tr>';
         $color = !$color;
@@ -289,6 +290,8 @@ function crearBotonInhabilitarTripulante () {
  * @return <String> codigo html para generar el formulario
  */
 function generarFormularioNuevoVendedor () {
+    $controlSucursal = new ControlSucursalLogicaclass();
+    $recursoSucursal = $controlSucursal->consultarSucursales();
     $formulario = '<form name="formularioNuevoEncargado" id = "formularioNuevoEncargado"><table cellpadding="2" cellspacing="1">
     <tr class="titulo">
       <td width="156">NUEVO VENDEDOR</td>
@@ -359,29 +362,39 @@ function generarFormularioNuevoVendedor () {
       <td>Cargo en el sistema</td>
       <td><label>
         <select name="tipo" id="tipo">
+          <option value="V" selected="selected">Vendedor</option>
+          <option value="A">Administrador</option>
         </select>
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Fecha de Nacimiento</td>
       <td><input type="text" name="fechaNac" id="f_date_c" readonly="1" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
 </td>
     </tr>
     <tr class="r1">
       <td>correo electr&oacute;nico</td>
-      <td><input type="text" name="correo" id="correo" size="30" /></td>
+      <td><input type="text" name="correo" id="correo" size="30" onKeyUp="this.value=this.value.toLowerCase();" /></td>
     </tr>
+        <tr class="r0">
+      <td>repita correo electr&oacute;nico</td>
+      <td><input type="text" name="correor" id="correor" size="30" onKeyUp="this.value=this.value.toLowerCase();" /></td>
+        </tr>
     <tr class="r1">
       <td>login</td>
-      <td><input type="text" name="login" id="login" size="30" /></td>
-    </tr>
-    <tr class="r1">
-      <td>Sucursal</td>
-      <td><select name="sucursal" id="sucursal">
-            </select></td>
+      <td><input type="text" name="login" id="login" size="30" onKeyUp="this.value=this.value.toLowerCase();" /></td>
     </tr>
     <tr class="r0">
-      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button"  value="AGREGAR">
+      <td>Sucursal</td>
+      <td><select name="sucursal" id="sucursal">';
+    while ($rowS = mysql_fetch_array($recursoSucursal)) {
+        $formulario .= '<option value="'.$rowS[id].'"';
+        $formulario .= '>'.$rowS[nombre].'</option>';
+    }
+           $formulario.=' </select></td>
+    </tr>
+    <tr class="r1">
+      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button"  value="AGREGAR" onclick = "xajax_procesarNuevoEncargado(xajax.getFormValues(\'formularioNuevoEncargado\'))">
             </div>
       </label></td>
     </tr>
@@ -407,7 +420,11 @@ function mostrarFormularioNuevoVendedor() {
     });');
     return $objResponse;
 }
-
+/**
+ * Metodo para validar un vendedor
+ * @param <Array> $datos los datos del formulario
+ * @return <boolean> resultado de la validacion
+ */
 function validarForumularioNuevoVendedor ($datos) {
     $resultado = false;
     if (is_numeric($datos[cedula]) && $datos[cedula] != "") 
@@ -437,9 +454,6 @@ function validarForumularioNuevoVendedor ($datos) {
     if (is_string($datos[tipo]) && $datos[tipo] != "")
     $resultado = true;
     else return false;
-    if (is_string($datos[f_date_c]) && $datos[f_date_c] != "")
-    $resultado =true;
-    else return false;
     if (is_string($datos[correo]) && $datos[correo] != "")
     $resultado =true;
     else return false;
@@ -449,7 +463,215 @@ function validarForumularioNuevoVendedor ($datos) {
     if (is_numeric($datos[sucursal]) && $datos[sucursal] != "")
     $resultado =true;
     else return false;
+    if (is_string($datos[correor]) && $datos[correor] != "")
+    $resultado =true;
+    else return false;
+    if ($datos[correo] == $datos[correor])
+    $resultado =true;
+    else return false;
+    if ($datos[fechaNac] != "")
+    $resultado =true;
+    else return false;
 
     return $resultado;
 }
+/**
+ * Metodo para procesar en el sistema un nuevo encargado
+ * @param <array> $datos los datos del formulario
+ * @return <xajaxResponse> rspuesta del servidor con el resultado de la operacion
+ */
+function procesarNuevoEncargado ($datos) {
+    $objResponse = new xajaxResponse();
+    if (validarForumularioNuevoVendedor($datos)) {
+    $respuesta = "";
+    $controlLogica = new ControlSeguridadclass();
+    $encargado = new Encargadoclass();
+    $encargado->setApellido($datos[apellido]);
+    $encargado->setCedula($datos[cedula]);
+    $encargado->setCiudad($datos[ciudad]);
+    $encargado->setCorreo($datos[correo]);
+    $encargado->setDireccion($datos[direccion]);
+    $encargado->setEstado($datos[estado]);
+    $encargado->setFechaNac($datos[fechaNac]);
+    $encargado->setHabilitado(1);
+    $encargado->setLogin($datos[login]);
+    $encargado->setNombre($datos[nombre]);
+    $encargado->setSexo($datos[sexo]);
+    $encargado->setSucursalDondeTrabaja($datos[sucursal]);
+    $encargado->setTelefono($datos[telefono]);
+    $encargado->setTipo($datos[tipo]);
+    $resultado = $controlLogica->nuevoEncargado($encargado, $datos[correor]);
+   $objResponse = new xajaxResponse();
+   if ($resultado){
+         $respuesta .= '<div class="exito">Nuevo Vendedor '.$datos[cedula]. ' agregado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
+         $objResponse->addAssign("izq", "innerHTML", "");
+   }
+   else {
+       $respuesta .= '<div class="error">No se pudo completar la operacion. Error FE001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+   }
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
+    $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    }
+    else {
+        $respuesta .= '<div class="error">No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR FGE02 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
+    return $objResponse;
+}
+/**
+ * Metodo para generar el formulario para editar un encargado
+ * @param <Integer> $cedula la cedula del encargado a editar
+ * @return <String> codigo HTML para generar el formulario
+ */
+function generarFormularioEditar ($cedula) {
+    $controlSucursal = new ControlSucursalLogicaclass();
+    $controlBD = new controladorSeguridadBDclass();
+    $encargado = $controlBD->buscarEncargadoPorCedula($cedula);
+    $recursoSucursal = $controlSucursal->consultarSucursales();
+    $formulario = '<form name="formularioEditarEncargado" id = "formularioEditarEncargado">
+  <table cellpadding="2" cellspacing="1">
+    <tr class="titulo">
+      <td width="161">EDITAR VENDEDOR</td>
+      <td width="242"><div align="right">
+        <label>
+        <input type="submit" name="cerrar" id="cerrar" value="X" accesskey="X" />
+        </label>
+      </div></td>
+    </tr>
+    <tr class="r1">
+      <td colspan="2">Todos los campos son obligatorios</td>
+    </tr>
+    <tr class="r1">
+      <td>Cedula</td>
+      <td><label>
+        <input name="cedula" type="text" id="cedula" value="'.$encargado->getCedula().'" READONLY size="30">
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td>Nombre</td>
+      <td><label>
+        <input type="text" name="nombre" id="nombre" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getNombre().'">
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>Apellido</td>
+      <td><label>
+        <input type="text" name="apellido" id="apellido" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getApellido().'">
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td>Sexo</td>
+      <td><p>
+        <label>
+          <input type="radio" name="sexo" value="M" id="sexo_0"';
+    if($encargado->getSexo() == 'M'){
+        $formulario.= 'checked="checked"';
+    }
+    $formulario.= '>Masculino</label>
+        <br>
+        <label>
+          <input type="radio" name="sexo" value="F" id="sexo_1"';
+    if($encargado->getSexo() == 'F'){
+        $formulario.= 'checked="checked"';
+    }
+    $formulario.= '>Femenino</label>
+      </td>
+    </tr>
+    <tr class="r1">
+      <td>Telefono</td>
+      <td><label>
+        <input type="text" name="telefono" id="telefono" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getTelefono().'">
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td>Estado de residencia</td>
+      <td><label>
+        <input type="text" name="estado" id="estado" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getEstado().'">
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>Ciudad de residencia</td>
+      <td><label>
+        <input type="text" name="ciudad" id="ciudad" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getCiudad().'">
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td>Direccion de residencia</td>
+      <td><label>
+        <textarea name="direccion" id="direccion" cols="23" rows="3"onKeyUp="this.value=this.value.toUpperCase();">'.$encargado->getDireccion().'</textarea>
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>Cargo en el sistema</td>
+      <td><label>
+        <select name="tipo" id="tipo">';
+        $formulario .= '<option value="V"';
+        if ($encargado->getTipo() == 'V')
+        $formulario .= 'selected="selected"';
+        $formulario .= '>Vendedor</option>';
+        $formulario .= '<option value="A"';
+        if ($encargado->getTipo() == 'A')
+        $formulario .= 'selected="selected"';
+        $formulario .= '>Administrador</option>';
+    $formulario .='</select>
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td>Fecha de Nacimiento</td>
+      <td><input type="text" name="fechaNac" id="f_date_c" readonly="1" size="15" value="'.$encargado->getFechaNac().'" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
+</td>
+    </tr>
+    <tr class="r1">
+      <td>correo electr&oacute;nico</td>
+      <td><input type="text" name="correo" id="correo" size="30" value = "'.$encargado->getCorreo().'" onKeyUp="this.value=this.value.toLowerCase();" /></td>
+    </tr>
+    <tr class="r1">
+      <td>repetir correo electr&oacute;nico</td>
+      <td><input type="text" name="correor" id="correor" size="30" value = "solo en caso de editar el correo" onKeyUp="this.value=this.value.toLowerCase();" onclick= "colocarEnBlanco()" /></td>
+    </tr>
+    <tr class="r0">
+      <td>login</td>
+      <td><input type="text" name="login" id="login" READONLY value="'.$encargado->getLogin().'" size="30" /></td>
+    </tr>
+    <tr class="r1">
+      <td>Sucursal</td>
+      <td><select name="sucursal" id="sucursal">';
+    while ($rowS = mysql_fetch_array($recursoSucursal)) {
+        $formulario .= '<option value="'.$rowS[id].'"';
+        if ($rowS[id] == $encargado->getSucursalDondeTrabaja())
+        $formulario .= 'selected="selected"';
+        $formulario .= '>'.$rowS[nombre].'</option>';
+    }
+           $formulario.= '</select></td>
+    </tr>
+    <tr class="r0">
+      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="EDITAR" onclick="xajax_procesarEditarEncargado(xajax.getFormValues(\'formularioEditarEncargado\'))">
+            </div>
+      </label></td>
+    </tr>
+  </table>
+</form>';
+    return $formulario;
+}
+/**
+ * Metodo para mostrar el formulario para editar un encargado
+ * @param <Integer> $cedula la cedula del encargado a editar
+ * @return <xAjaxResponse> respuesta del servidor
+ */
+function mostrarFormularioEditar ($cedula) {
+    $formulario = generarFormularioEditar($cedula);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", "$formulario");
+    $objResponse->addScript('
+    Calendar.setup({
+        inputField     :    "f_date_c",     // id of the input field
+        ifFormat       :    "%Y-%m-%d",      // format of the input field
+        button         :    "f_trigger_c",  // trigger for the calendar (button ID)
+        align          :    "Tl",           // alignment (defaults to "Bl")
+        singleClick    :    true
+    });');
+    return $objResponse;
+}
+
 ?>
