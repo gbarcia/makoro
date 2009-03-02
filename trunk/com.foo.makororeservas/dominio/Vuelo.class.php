@@ -11,6 +11,7 @@ class Vueloclass {
     private $rutaSitioSalida;
     private $rutaSitioLLegada;
     private $avionMatricula;
+    private $asientos;
 
     public function getId() {
         return $this->id;
@@ -60,6 +61,16 @@ class Vueloclass {
 
     public function setRutaSitioLLegada($rutaSitioLLegada) {
         $this->rutaSitioLLegada = strtoupper($rutaSitioLLegada);
+    }
+
+    public function getAsientos() {
+        return $this->asientos;
+    }
+
+    public function setAsientos($asientos) {
+        if (is_numeric($asientos)) {
+            $this->asientos = $asientos;
+        }
     }
 }
 ?>

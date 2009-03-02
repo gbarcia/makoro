@@ -109,22 +109,98 @@ class ControlVueloLogicaclass {
  * Metodo para consultar los vuelos realizados comparando con la fecha actual
  * @return <$coleccion> coleccion de vuelos pasados
  */
-    function vuelosRealizados() {
-        $coleccion = false;
-        $coleccion = $this->controlBD->consultarVuelosRealizados();
-        return $coleccion;
+    function buscarVuelosRealizados() {
+        $resultado = new ArrayObject();
+        $recurso = $this->controlBD->consultarVuelosRealizados();
+        while ($row = mysql_fetch_array($recurso)) {
+            $vuelo = new Vueloclass();
+            $vuelo->setId($row[id]);
+            $vuelo->setFecha($row[fecha]);
+            $vuelo->setHora($row[hora]);
+            $vuelo->setRutaSitioSalida($row[abreviaturaSalida]);
+            $vuelo->setRutaSitioLLegada($row[abreviaturaLlegada]);
+            $vuelo->setAvionMatricula($row[avionMatricula]);
+            $vuelo->setAsientos($row[asientos]);
+
+            $resultado->append($vuelo);
+        }
+        return $resultado;
     }
 
-    function vuelosCantidadAsientosDisponibles() {
-        $recurso = $this->controlBD->consultarTodosVuelos();
-        //$operacion = mysql_fetch_array($recurso);
+/**
+ * Metodo para consultar los vuelos realizados con los piloto, copilotos y
+ * asientos que fueron reservados
+ * @return <Coleccion> coleccion vuelo
+ */
+    function vuelosRealizados() {
+        $recurso = $this->buscarVuelosRealizados();
         $coleccionResultado = new ArrayObject();
+
+        foreach ($recurso as $variable) {
+            $idVuelo = $variable->getId();
+            $recursoInfo = $this->controlBD->consultarVueloCantidadReserva($idVuelo);
+            $row = mysql_fetch_array($recursoInfo);
+            $cantidadReservada = $row[cantidadReservada];
+
+            $controlVueloPersonal = new controladorVueloPersonalBDclass();
+            $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
+            $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalCopiloto($idVuelo);
+            $rowVueloPiloto = mysql_fetch_array($vueloTripulacionPiloto);
+            $rowVueloCopiloto = mysql_fetch_array($vueloTripulacionCopiloto);
+            $piloto = $rowVueloPiloto[tripulante];
+            $copiloto = $rowVueloCopiloto[tripulante];
+
+            $vuelo = new Vueloclass();
+            $vuelo->setId($variable->getId());
+            $vuelo->setFecha($variable->getFecha());
+            $vuelo->setHora($variable->getHora());
+            $vuelo->setRutaSitioSalida($variable->getRutaSitioSalida());
+            $vuelo->setRutaSitioLlegada($variable->getRutaSitioLLegada());
+            $vuelo->setAvionMatricula($variable->getAvionMatricula());
+            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadReservada,$piloto,$copiloto);
+
+            $coleccionResultado ->append($Objeto);
+        }
+        return $coleccionResultado;
+    }
+
+/**
+ * Metodo para consultar todos los vuelos para las fechas siguientes
+ * @return <Coleccion> coleccion de vuelo
+ */
+    function consultarLosVuelos(){
+        $resultado = new ArrayObject();
+        $recurso = $this->controlBD->consultarTodosVuelos();
+        while ($row = mysql_fetch_array($recurso)) {
+            $vuelo = new Vueloclass();
+            $vuelo->setId($row[id]);
+            $vuelo->setFecha($row[fecha]);
+            $vuelo->setHora($row[hora]);
+            $vuelo->setRutaSitioSalida($row[abreviaturaSalida]);
+            $vuelo->setRutaSitioLLegada($row[abreviaturaLlegada]);
+            $vuelo->setAvionMatricula($row[avionMatricula]);
+            $vuelo->setAsientos($row[asientos]);
+
+            $resultado->append($vuelo);
+        }
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar la cantidad de asientos disponibles para las siguientes
+ * fechas con el piloto, copiloto y la cantidad de asientos disponibles
+ * @return <Coleccion> coleccion de objeto vuelo
+ */
+    function vuelosCantidadAsientosDisponibles() {
+        $recurso = $this->consultarLosVuelos();
+        $coleccionResultado = new ArrayObject();
+
         foreach ($recurso as $variable) {
 
-            $idVuelo = $variable[id];
+            $idVuelo = $variable->getId();
             $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
             if ($cantidadDisponible == 0){
-                $cantidadDisponible = $variable[asientos]; //me quede aqui
+                $cantidadDisponible = $variable->getAsientos();
             }
             $controlVueloPersonal = new controladorVueloPersonalBDclass();
             $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
@@ -135,20 +211,17 @@ class ControlVueloLogicaclass {
             $copiloto = $rowVueloCopiloto[tripulante];
 
             $vuelo = new Vueloclass();
-            $vuelo->setId($variable[id]);
-            $vuelo->setFecha($variable[fecha]);
-            $vuelo->setHora($variable[hora]);
-            $vuelo->setRutaSitioSalida($variable[rutaSitioSalida]);
-            $vuelo->setRutaSitioLlegada($variable[rutaSitioLlegada]);
-            $vuelo->setAvionMatricula($variable[avionMatricula]);
+            $vuelo->setId($variable->getId());
+            $vuelo->setFecha($variable->getFecha());
+            $vuelo->setHora($variable->getHora());
+            $vuelo->setRutaSitioSalida($variable->getRutaSitioSalida());
+            $vuelo->setRutaSitioLlegada($variable->getRutaSitioLLegada());
+            $vuelo->setAvionMatricula($variable->getAvionMatricula());
             $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto);
 
             $coleccionResultado ->append($Objeto);
-
         }
-
         return $coleccionResultado;
-
     }
 
     /**
