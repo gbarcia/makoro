@@ -14,7 +14,7 @@ function IniciarSession ($datos) {
     $control = new ControlSeguridadclass();
     $resultado = $control->validarSession($datos[login], $datos[pass]);
     if ($resultado == true) {
-        $objResponse->addRedirect("home.php");
+        $objResponse->addRedirect("gui/PresentacionGestionTripulantes.php");
     }
     else {
         $mensaje = "Fallo de Atenticacion. No autorizado";

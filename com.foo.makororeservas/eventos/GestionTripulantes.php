@@ -373,19 +373,19 @@ function editar($cedula) {
     <tr class="r1">
       <td>Estado de residencia</td>
       <td><label>
-        <input type="text" name="estado" id="estado" size="30" value="'.$row[estado].'">
+        <input type="text" name="estado" id="estado" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$row[estado].'">
       </label></td>
     </tr>
     <tr class="r0">
       <td>Ciudad de residencia</td>
       <td><label>
-        <input type="text" name="ciudad" id="ciudad" size="30" value="'.$row[ciudad].'">
+        <input type="text" name="ciudad" id="ciudad" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$row[ciudad].'">
       </label></td>
     </tr>
     <tr class="r1">
       <td>Direccion de residencia</td>
       <td><label>
-        <textarea name="direccion" id="direccion" cols="23" rows="3">'.$row[direccion].'</textarea>
+        <textarea name="direccion" id="direccion" cols="23" onKeyUp="this.value=this.value.toUpperCase();" rows="3">'.$row[direccion].'</textarea>
       </label></td>
     </tr>
     <tr class="r0">
@@ -510,7 +510,7 @@ function procesarUpdate ($datos) {
         else {
             $respuesta = '<div class="error">
                           <div class="textoMensaje">
-                            No se pudo realizar la operacion. Verifique el manual del usuario. CODIGO FT001.
+                            No se pudo realizar la operacion. Verifique el manual del usuario. CODIGO FTBD002.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -522,7 +522,7 @@ function procesarUpdate ($datos) {
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
-                          No se pudo efectuar la operacion. Los datos del formulario no son correctos. CODIGO FT002.
+                          No se pudo efectuar la operacion. Los datos del formulario no son correctos. CODIGO FTf002.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -803,13 +803,14 @@ function generarFormularioNuevoCargo(){
  */
 function procesarCargo($datos) {
     $repuesta = "";
+    $objResponse = new xajaxResponse();
+    if (validarNuevoTipoCargo($datos)) {
     $controlTipoCargo = new controladorTipoCargoBDclass();
     $tipoCargo = new TipoCargoclass();
     $tipoCargo->setCargo($datos[nombre]);
     $tipoCargo->setDescripcion($datos[descripcion]);
     $tipoCargo->setSueldo($datos[sueldo]);
     $resultado = $controlTipoCargo->agregarTipoCargo($tipoCargo);
-    $objResponse = new xajaxResponse();
     if ($resultado) {
         $respuesta .= '<div class="exito">
                           <div class="textoMensaje">
@@ -823,7 +824,18 @@ function procesarCargo($datos) {
     else {
         $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique el manual del usuario. CODIGO GC001.
+                          No se pudo completar la operacion. El nombre cargo introducido ya existe.Verifique el manual del usuario. CODIGO GCBD001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+    }
+    }
+    else {
+        $respuesta ='<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. El formulario no es correcro. CODIGO GCF001.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -860,9 +872,9 @@ function procesarNuevoTripulante ($datos) {
                           </div>';
         }
         else {
-            $respuesta .= '<div class="exito">
+            $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique el manual del usuario. GT001.
+                          No se pudo completar la operacion. Verifique que la cedula no exista. GTBD001.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -875,7 +887,7 @@ function procesarNuevoTripulante ($datos) {
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR GT001.
+                          No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR GTF001.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
