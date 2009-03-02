@@ -391,7 +391,7 @@ function generarFormularioNuevoVendedor () {
         $formulario .= '<option value="'.$rowS[id].'"';
         $formulario .= '>'.$rowS[nombre].'</option>';
     }
-           $formulario.=' </select></td>
+    $formulario.=' </select></td>
     </tr>
     <tr class="r1">
       <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button"  value="AGREGAR" onclick = "xajax_procesarNuevoEncargado(xajax.getFormValues(\'formularioNuevoEncargado\'))">
@@ -427,8 +427,8 @@ function mostrarFormularioNuevoVendedor() {
  */
 function validarForumularioNuevoVendedor ($datos) {
     $resultado = false;
-    if (is_numeric($datos[cedula]) && $datos[cedula] != "") 
-        $resultado = true;
+    if (is_numeric($datos[cedula]) && $datos[cedula] != "")
+    $resultado = true;
     else return false;
     if (is_string($datos[nombre]) && $datos[nombre] != "")
     $resultado = true;
@@ -483,35 +483,35 @@ function validarForumularioNuevoVendedor ($datos) {
 function procesarNuevoEncargado ($datos) {
     $objResponse = new xajaxResponse();
     if (validarForumularioNuevoVendedor($datos)) {
-    $respuesta = "";
-    $controlLogica = new ControlSeguridadclass();
-    $encargado = new Encargadoclass();
-    $encargado->setApellido($datos[apellido]);
-    $encargado->setCedula($datos[cedula]);
-    $encargado->setCiudad($datos[ciudad]);
-    $encargado->setCorreo($datos[correo]);
-    $encargado->setDireccion($datos[direccion]);
-    $encargado->setEstado($datos[estado]);
-    $encargado->setFechaNac($datos[fechaNac]);
-    $encargado->setHabilitado(1);
-    $encargado->setLogin($datos[login]);
-    $encargado->setNombre($datos[nombre]);
-    $encargado->setSexo($datos[sexo]);
-    $encargado->setSucursalDondeTrabaja($datos[sucursal]);
-    $encargado->setTelefono($datos[telefono]);
-    $encargado->setTipo($datos[tipo]);
-    $resultado = $controlLogica->nuevoEncargado($encargado, $datos[correor]);
-   $objResponse = new xajaxResponse();
-   if ($resultado){
-         $respuesta .= '<div class="exito">Nuevo Vendedor '.$datos[cedula]. ' agregado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
-         $objResponse->addAssign("izq", "innerHTML", "");
-   }
-   else {
-       $respuesta .= '<div class="error">No se pudo completar la operacion. Error FE001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-   }
-    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
-    $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
-    $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        $respuesta = "";
+        $controlLogica = new ControlSeguridadclass();
+        $encargado = new Encargadoclass();
+        $encargado->setApellido($datos[apellido]);
+        $encargado->setCedula($datos[cedula]);
+        $encargado->setCiudad($datos[ciudad]);
+        $encargado->setCorreo($datos[correo]);
+        $encargado->setDireccion($datos[direccion]);
+        $encargado->setEstado($datos[estado]);
+        $encargado->setFechaNac($datos[fechaNac]);
+        $encargado->setHabilitado(1);
+        $encargado->setLogin($datos[login]);
+        $encargado->setNombre($datos[nombre]);
+        $encargado->setSexo($datos[sexo]);
+        $encargado->setSucursalDondeTrabaja($datos[sucursal]);
+        $encargado->setTelefono($datos[telefono]);
+        $encargado->setTipo($datos[tipo]);
+        $resultado = $controlLogica->nuevoEncargado($encargado, $datos[correor]);
+        $objResponse = new xajaxResponse();
+        if ($resultado){
+            $respuesta .= '<div class="exito">Nuevo Vendedor '.$datos[cedula]. ' agregado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
+            $objResponse->addAssign("izq", "innerHTML", "");
+        }
+        else {
+            $respuesta .= '<div class="error">No se pudo completar la operacion. Error FE001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        }
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
+        $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
     }
     else {
         $respuesta .= '<div class="error">No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR FGE02 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
@@ -606,14 +606,14 @@ function generarFormularioEditar ($cedula) {
       <td>Cargo en el sistema</td>
       <td><label>
         <select name="tipo" id="tipo">';
-        $formulario .= '<option value="V"';
-        if ($encargado->getTipo() == 'V')
-        $formulario .= 'selected="selected"';
-        $formulario .= '>Vendedor</option>';
-        $formulario .= '<option value="A"';
-        if ($encargado->getTipo() == 'A')
-        $formulario .= 'selected="selected"';
-        $formulario .= '>Administrador</option>';
+    $formulario .= '<option value="V"';
+    if ($encargado->getTipo() == 'V')
+    $formulario .= 'selected="selected"';
+    $formulario .= '>Vendedor</option>';
+    $formulario .= '<option value="A"';
+    if ($encargado->getTipo() == 'A')
+    $formulario .= 'selected="selected"';
+    $formulario .= '>Administrador</option>';
     $formulario .='</select>
       </label></td>
     </tr>
@@ -643,7 +643,7 @@ function generarFormularioEditar ($cedula) {
         $formulario .= 'selected="selected"';
         $formulario .= '>'.$rowS[nombre].'</option>';
     }
-           $formulario.= '</select></td>
+    $formulario.= '</select></td>
     </tr>
     <tr class="r0">
       <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="EDITAR" onclick="xajax_procesarEditarEncargado(xajax.getFormValues(\'formularioEditarEncargado\'))">
@@ -672,6 +672,133 @@ function mostrarFormularioEditar ($cedula) {
         singleClick    :    true
     });');
     return $objResponse;
+}
+
+/**
+ * Metodo para validar un vendedor
+ * @param <Array> $datos los datos del formulario
+ * @return <boolean> resultado de la validacion
+ */
+function validarForumularioEditarVendedor ($datos) {
+    $resultado = false;
+    if (is_numeric($datos[cedula]) && $datos[cedula] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[nombre]) && $datos[nombre] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[apellido]) && $datos[apellido] != "")
+    $resultado = true;
+    else return false;
+    if ($datos[sexo] == 'M' || $datos[sexo] == 'F')
+    $resultado = true;
+    else return false;
+    if (is_string($datos[telefono]) && $datos[telefono] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[estado]) && $datos[estado] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[ciudad]) && $datos[ciudad] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[direccion]) && $datos[direccion] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[tipo]) && $datos[tipo] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[correo]) && $datos[correo] != "")
+    $resultado =true;
+    else return false;
+    if (is_string($datos[login]) && $datos[login] != "")
+    $resultado =true;
+    else return false;
+    if (is_numeric($datos[sucursal]) && $datos[sucursal] != "")
+    $resultado =true;
+    else return false;
+    if ($datos[fechaNac] != "")
+    $resultado =true;
+    else return false;
+    if ($datos[correor] != "") {
+        if ($datos[correor] != 'solo en caso de editar el correo') {
+            if ($datos[correor] == $datos[correo])
+            $resultado =true;
+            else return false;
+        }
+    }
+
+    return $resultado;
+}
+/**
+ * Metodo para procesar la edicion de un encargado en el sistema
+ * @param <array> $datos datos recibidos desde el formulario
+ * @return <xajaxResponse> respuesta del servidor
+ */
+function procesarEditarEncargado ($datos) {
+    $objResponse = new xajaxResponse();
+    $respuesta = "";
+    if (validarForumularioEditarVendedor($datos)) {
+        $controlBD = new controladorSeguridadBDclass();
+        $EncargadoClave = $controlBD->buscarEncargadoPorCedula($datos[cedula]);
+        $encargado = new Encargadoclass();
+        $encargado->setCedula($datos[cedula]);
+        $encargado->setNombre($datos[nombre]);
+        $encargado->setApellido($datos[apellido]);
+        $encargado->setCiudad($datos[ciudad]);
+        $encargado->setDireccion($datos[direccion]);
+        $encargado->setEstado($datos[estado]);
+        $encargado->setFechaNac($datos[fechaNac]);
+        $encargado->setHabilitado(1);
+        $encargado->setLogin($datos[login]);
+        $encargado->setSexo($datos[sexo]);
+        $encargado->setTelefono($datos[telefono]);
+        $encargado->setTipo($datos[tipo]);
+        $encargado->setSucursalDondeTrabaja($datos[sucursal]);
+        $encargado->setCorreo($datos[correo]);
+        $encargado->setClave($EncargadoClave->getClave());
+        $controlSeguridad = new ControlSeguridadclass();
+
+        $resultado = $controlSeguridad->editarEncargado($encargado, "","");
+        if ($resultado){
+            $respuesta .= '<div class="exito">Nuevo Vendedor '.$datos[cedula]. ' editado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
+            $objResponse->addAssign("izq", "innerHTML", "");
+        }
+        else {
+            $respuesta .= '<div class="error">No se pudo completar la operacion. Error FE001B <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        }
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
+        $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
+    }
+    else {
+        $respuesta .= '<div class="error">No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR FGE02 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
+    return $objResponse;
+
+    /**
+     * Metodo para cerrar las ventanas
+     * @return <xAjaxResponse> respuesta del servidor
+     */
+    function cerrarVentanaEditar() {
+        $resultado = "";
+        $objResponse = new xajaxResponse();
+        $objResponse->addAssign("izq", "innerHTML", $resultado);
+        $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+        return $objResponse;
+    }
+
+ /**
+ * Funcion para borrar el div de mensaje
+ * @return <xajaxResponse> respuesta del servidor
+ */
+    function borrarMensaje(){
+        $respuesta = "";
+        $objResponse = new xajaxResponse();
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        return $objResponse;
+    }
 }
 
 ?>
