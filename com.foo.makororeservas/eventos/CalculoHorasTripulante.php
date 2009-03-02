@@ -17,6 +17,7 @@ function calculoHora($datos) {
     $recursoDetalles = $variable->getColeccionDetalles();
     $total = $variable->getTotalPago();
     $tripulante = $variable->getTripulante();
+    $totalGeneral += $total;
 
     $resultado.= "\n";
     $resultado.= "\n";
@@ -49,9 +50,12 @@ function calculoHora($datos) {
     }
 
     $resultado.= '</table>';
-    $resultado.= ' BS'. $total;
+    $resultado.= '<table border=1><tr><td> Total BS '. $total .'</td></tr>';
+    $resultado.= '</table>';
+    $resultadoTotal = '<table border=1><tr><td> Total Egresos '. $totalGeneral .'</td></tr></table>';
 }
     $objResponse->addAssign("ResultadoCa", "innerHTML", $resultado);
+    $objResponse->addAssign("totalGeneral", "innerHTML", $resultadoTotal);
 
     return $objResponse;
 }
