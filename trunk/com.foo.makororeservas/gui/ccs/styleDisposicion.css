@@ -5,23 +5,39 @@ Author     : jonathan
 Description:
 Disposicion de los paneles.
 */
+@charset "utf-8";
+.cuerpo {
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    clear:both;
+    margin-bottom:10px;
+}
 .izq {
     float: left;
-    width: 48%;
-    margin: 5px;
+    width: 49%;
+    margin-bottom:inherit;
 }
 .der {
     float: right;
-    width: 48%;
-    margin: 5px;
+    width: 49%;
+    margin-bottom:inherit;
+}
+.izq2 {
+    float: left;
+    width: 74%;
+    margin-bottom:inherit;
+}
+.der2 {
+    float: right;
+    width: 24%;
+    margin-bottom:inherit;
 }
 .filtros {
     background-color: #CCCCCC;
     border: 1px solid #000000;
-    padding: 5px;
-    margin: 5px;
+    margin-bottom:inherit;
 }
-.contenido {
-    clear:both;
-    margin: 5px;
+.panel {
+    background-color: #25A5DE;
+    border: 1px solid #067AC2;
+    margin-bottom:inherit;
 }
