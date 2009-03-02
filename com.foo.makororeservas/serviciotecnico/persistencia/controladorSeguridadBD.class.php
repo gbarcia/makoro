@@ -121,7 +121,7 @@ class controladorSeguridadBDclass {
                          if ($habilitado) $query .= " AND e.habilitado = 1";
                          else $query .= " AND e.habilitado = 0";
                    $query.= " GROUP BY e.cedula, s.id
-                         ORDER BY e.apellido,e.nombre,s.id";
+                         ORDER BY s.id,e.apellido,e.nombre";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -139,7 +139,7 @@ class controladorSeguridadBDclass {
                          WHERE e.SUCURSAL_id = s.id
                          AND (e.nombre LIKE '".$busqueda."%' OR e.apellido LIKE '".$busqueda."%'
                          OR e.cedula LIKE '".$busqueda."%') GROUP BY e.cedula, s.id
-                         ORDER BY e.apellido,e.nombre,s.id";
+                         ORDER BY s.id,e.apellido,e.nombre";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
