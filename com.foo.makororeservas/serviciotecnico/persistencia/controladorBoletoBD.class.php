@@ -60,21 +60,21 @@ class controladorBoletoBDclass {
  */
     function consultarBoletoEspecifico($solicitud) {
         $resultado = false;
-        $query = "SELECT r.solicitud,CONCAT(e.nombre,' ',e.apellido) Agente,v.fecha,v.hora,ru.abreviaturaSalida Salida,ru.abreviaturaLlegada Llegada,
-                         CONCAT(p.nombre,' ',p.apellido) Pasajero, t.abreviatura Servicio,p.TIPO_PASAJERO_id Tipo
-
-                  FROM BOLETO b, PASAJERO p, RESERVA r, PAGO pa, TIPO_SERVICIO t, VUELO_RESERVA vr, VUELO v, RUTA ru, ENCARGADO e
+        $query = "SELECT DISTINCT pa.id idPago,r.solicitud
+                  FROM RESERVA r, PAGO pa
                   WHERE r.solicitud = '".$solicitud."'
-                  AND r.PAGO_id = pa.id
-                  AND pa.id = b.PAGO_id
-                  AND p.id = b.PASAJERO_id
-                  AND r.TIPO_SERVICIO_id = t.id
-                  AND r.PASAJERO_id = p.id
-                  AND vr.RESERVA_id = r.id
-                  AND v.id = vr.VUELO_id
-                  AND v.RUTA_sitioSalida = ru.sitioSalida
-                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
-                  AND r.ENCARGADO_cedula = e.cedula";
+                  AND r.PAGO_id = pa.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function consultarPasajeros($pagoId){
+        $resultado = false;
+        $query = "SELECT b.PAGO_id idPago, b.PASAJERO_id idPasajero, CONCAT(p.nombre,' ',p.apellido) pasajero, 
+                        p.TIPO_PASAJERO_id,p.cedula,p.pasaporte,p.nacionalidad
+                  FROM BOLETO b, PASAJERO p
+                  WHERE b.PAGO_id = ".$pagoId."
+                  AND b.PASAJERO_id = p.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

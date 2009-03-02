@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorBoletoBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Boleto.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/EmitirBoleto.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pasajero.class.php';
 
 /**
  * Description of ControlBoletoLogicaclass
@@ -39,14 +41,41 @@ class ControlBoletoLogicaclass {
     }
 
 /**
- * Metodo para consultar un boleto especifico de una reserva
+ * Metodo para consultar el pago de un boleto especifico de una reserva
  * @param <String> $solicitud
  * @return <recurso> boleto de una reserva en especifico
  */
-    function buscarBoletoEspecifico($solicitud) {
-        $recurso = false;
-        $recurso = $this->controlBD->consultarBoletoEspecifico($solicitud);
-        return $recurso;
+    function busquedaBoletoEspecifico($solicitud) {
+        $resultado = new ArrayObject();
+        $resultado = $this->controlBD->consultarBoletoEspecifico($solicitud);
+        return $resultado;
+    }
+
+    function emitirBoleto($solicitud) {
+        $recurso = $this->busquedaBoletoEspecifico($solicitud);
+        $coleccionResultado = new ArrayObject();
+            $rowRecurso = mysql_fetch_array($recurso);
+
+            $idPago = $rowRecurso[idPago];
+            $pasajeroInfo = $this->controlBD->consultarPasajeros($pagoId);
+            
+        foreach ($pasajeroInfo as $variable) {
+
+                $pasajero = new Pasajeroclass();
+                $pasajero->setId($variable->getId());
+                $pasajero->setNombre($variable->getNombre());
+                $pasajero->setApellido($variable->getApellido());
+                $pasajero->setCedula($variable->getCedula());
+                $pasajero->setPasaporte($variable->getPasaporte());
+                $pasajero->setNacionalidad($variable->getNacionalidad());
+                $pasajero->setTipoPasajeroId($variable->getTipoPasajeroId());
+                $Objeto = new EmitirBoletoclass($agente, $solicitud, $fechaIda, $fechaVuelta, $lugarSalida, $lugarLlegada, $coleccionPasajero, $servicio);
+
+                $coleccionResultado ->append($Objeto);
+
+
+        }
+        return $coleccionResultado;
     }
 }
 ?>

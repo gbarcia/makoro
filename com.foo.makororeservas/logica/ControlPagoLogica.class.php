@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPagoBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pago.class.php';
 /**
  * Description of ControlPagoLogicaclass
@@ -73,8 +74,8 @@ class ControlPagoLogicaclass {
  * @param <type> $fechafin
  */
     function buscarCancelacionPagoClienteParticular($cedula, $fechaini, $fechafin) {
-        $reserva->setEstado("CA");
-        $this->controlBD->editarPago($reserva);
+        
+
     }
 }
 ?>
