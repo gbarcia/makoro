@@ -150,5 +150,17 @@ class ControlVueloLogicaclass {
         return $coleccionResultado;
 
     }
+
+    /**
+     * Metodo para consultar los detalles de un vuelo especifico
+     * @param <type> $idVuelo Identificador del vuelo a consultar
+     * @param <type> $idSucursal Identificador de la sucursal a consultar
+     * @return <type> Los detalles del vuelo especificado
+     */
+    function consultarVuelosDetalles($idVuelo,$idSucursal){
+        $recurso = $this->controlBD->consultarDetallesVuelo($idVuelo, $idSucursal);
+        return $recurso;
+    }
+
 }
 ?>
