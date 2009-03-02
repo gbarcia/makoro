@@ -23,7 +23,7 @@ $vueloPrueba = new Vueloclass();
 ///*---------------------------*/
 
 ///* CONSULTAR VUELO ESPECIFICO */
-//$Coleccion = $controlBD->vueloEspecificoAsientosReservados('2009-02-01', '07:00:00', 'YV 307T', 'Maiquetia', 'Los Roques');
+//$Coleccion = $controlBD->vueloEspecificoAsientosReservados('2009-05-01', '16:00:00', 'YV 302T', 'Maiquetia', 'Los Roques');
 //foreach ($Coleccion as $var) {
 //    $recursoDetalles = $var->getColeccionVuelo();
 //    $cantidadDisponible = $var->getAsientosDisponibles();

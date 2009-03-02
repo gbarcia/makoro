@@ -85,6 +85,10 @@ class ControlVueloLogicaclass {
         $idVuelo = $operacion[id];
         $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
 
+        if($cantidadDisponible == 0){
+            $cantidadDisponible = $operacion[asientos];
+        }
+
         $controlVueloPersonal = new controladorVueloPersonalBDclass();
         $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
         $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalCopiloto($idVuelo);
@@ -93,12 +97,17 @@ class ControlVueloLogicaclass {
         $piloto = $rowVueloPiloto[tripulante];
         $copiloto = $rowVueloCopiloto[tripulante];
 
+        if($piloto == ''||$copiloto == ''){
+            $piloto = "No hay piloto registrado";
+            $copiloto = "No hay copiloto registrado";
+        }
+
         $vuelo = new Vueloclass();
         $vuelo->setId($operacion[id]);
         $vuelo->setFecha($operacion[fecha]);
         $vuelo->setHora($operacion[hora]);
-        $vuelo->setRutaSitioSalida($operacion[rutaSitioSalida]);
-        $vuelo->setRutaSitioLlegada($operacion[rutaSitioLlegada]);
+        $vuelo->setRutaSitioSalida($operacion[abreviaturaSalida]);
+        $vuelo->setRutaSitioLlegada($operacion[abreviaturaLlegada]);
         $vuelo->setAvionMatricula($operacion[avionMatricula]);
         $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto);
         $coleccionResultado ->append($Objeto);
@@ -209,6 +218,11 @@ class ControlVueloLogicaclass {
             $rowVueloCopiloto = mysql_fetch_array($vueloTripulacionCopiloto);
             $piloto = $rowVueloPiloto[tripulante];
             $copiloto = $rowVueloCopiloto[tripulante];
+
+            if($piloto == ''||$copiloto == ''){
+                $piloto = "No hay piloto registrado";
+                $copiloto = "No hay copiloto registrado";
+            }
 
             $vuelo = new Vueloclass();
             $vuelo->setId($variable->getId());

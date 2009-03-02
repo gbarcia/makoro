@@ -56,11 +56,13 @@ class controladorVueloBDclass {
     function consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
         $resultado = false;
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
-                         v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos
+                         v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
+                         ru.abreviaturaLlegada abreviaturaLlegada
                   FROM VUELO v, RUTA ru, AVION a
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
-                  AND v.AVION_matricula = a.matricula ";
+                  AND v.AVION_matricula = a.matricula
+                  AND a.habilitado = 1 ";
                   if($hora != "")
                   $query.= "AND v.hora = '".$hora."'";
                   if($fecha != "")
