@@ -162,5 +162,26 @@ class controladorSucursalBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    /**
+     * Metodo para consultar el encargado con mas reservas realizadas
+     * @param <type> $idSucursal El id de la sucursal a la que pertenece el encargado
+     * @param <type> $fechaInicio La fecha de inicio a consultar
+     * @param <type> $fechaFin La fecha de fin a consultar
+     * @return <type> Encargado con mas reservas realizadas
+     */
+    function consultarEncargadoConMasReservas($idSucursal,$fechaInicio,$fechaFin){
+        $query = "SELECT s.id as idSucursal,s.nombre as nombreSucursal, e.cedula cedula,
+                         e.nombre encargadoNombre, COUNT(r.ENCARGADO_cedula) as cantidad
+                  FROM SUCURSAL s, RESERVA r, ENCARGADO e
+                  WHERE s.id = r.SUCURSAL_id
+                  AND s.id = ".$idSucursal."
+                  AND e.cedula = r.ENCARGADO_cedula
+                  AND r.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'
+                  GROUP BY idSucursal
+                  ORDER BY cantidad desc";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
