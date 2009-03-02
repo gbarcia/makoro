@@ -99,7 +99,7 @@ class controladorVueloBDclass {
  */
     function consultarVuelosRealizados() {
         $resultado = false;
-        $query = "SELECT v.id,v.fecha, v.hora, v.AVION_matricula, v.RUTA_sitioSalida, v.RUTA_sitioLlegada, ru.abreviaturaSalida,ru.abreviaturaLlegada
+        $query = "SELECT v.id,v.fecha, v.hora, v.AVION_matricula avionMatricula, v.RUTA_sitioSalida, v.RUTA_sitioLlegada, ru.abreviaturaSalida,ru.abreviaturaLlegada
                   FROM VUELO v,VUELO_RESERVA vr, RESERVA r, RUTA ru
                   WHERE v.fecha < SYSDATE(v.fecha)
                   AND v.id = vr.VUELO_id
@@ -112,27 +112,18 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar los tripulantes de los vuelos realizados
- * @return <recurso>
- */
-    function consultarTripulantesVuelosRealizados($id, $numCargo){
+
+    function consultarTodosVuelos() {
         $resultado = false;
-        $query = "SELECT v.id,CONCAT(p.nombre,' ',p.apellido) tripulante, p.cedula, tp.cargo
-                  FROM VUELO v, VUELO_PERSONAL vp, PERSONAL p, VUELO_RESERVA vr, RESERVA r,TIPO_CARGO tp
-                  WHERE v.fecha < SYSDATE(v.fecha)
-                  AND v.id = vp.VUELO_id
-                  AND v.id = vr.VUELO_id
-                  AND v.id = ".$id."
-                  AND vp.PERSONAL_cedula = p.cedula
-                  AND vr.RESERVA_id = r.id
-                  AND tp.id = vp.cargo
-                  AND tp.id = ".$numCargo."
-                  GROUP BY v.id, CONCAT(p.nombre,' ',p.apellido), p.cedula, tp.cargo";
+        $query = "SELECT DISTINCT v.id,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
+                         v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos
+                  FROM VUELO v, RUTA ru, AVION a
+                  WHERE v.RUTA_sitioSalida = ru.sitioSalida
+                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                  AND v.AVION_matricula = a.matricula";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
-
 
 }
 ?>
