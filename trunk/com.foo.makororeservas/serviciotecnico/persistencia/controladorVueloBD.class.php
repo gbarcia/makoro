@@ -125,5 +125,32 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para consultar detalles de un vuelo
+     * @param <type> $idVuelo El identificador del vuelo a consultar
+     * @param <type> $idSucursal El identificador de la sucursal a consultar
+     * @return <type> Los detalles de un vuelo
+     */
+    function consultarDetallesVuelo($idVuelo,$idSucursal){
+        $query = "SELECT P.cedula, P.nombre as pasajeroNombre, P.apellido as pasajeroApellido, TP.id as tipoPasajero, TS.nombre as servicio,
+                         E.nombre as encargadoNombre, VR.tipo, R.CLIENTE_AGENCIA_rif as agencia, R.CLIENTE_PARTICULAR_cedula as particular,
+                         IF(R.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre
+                  FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS,
+                       ENCARGADO E, TIPO_PASAJERO TP, CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA
+                  WHERE V.id = VR.VUELO_id
+                  AND R.id = VR.RESERVA_id
+                  AND V.id = ".$idVuelo."
+                  AND P.id = R.PASAJERO_id
+                  AND TP.id = P.TIPO_PASAJERO_id
+                  AND TS.id = R.TIPO_SERVICIO_id
+                  AND S.id = R.SUCURSAL_id
+                  AND S.id = ".$idSucursal."
+                  AND E.cedula = R.ENCARGADO_cedula
+                  AND (R.CLIENTE_PARTICULAR_cedula = CP.cedula
+                       OR R.CLIENTE_AGENCIA_rif = CA.rif)
+                  GROUP BY(cedula)";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
