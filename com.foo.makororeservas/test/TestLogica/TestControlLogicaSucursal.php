@@ -170,6 +170,34 @@ $sucursalTest = new Sucursalclass();
 //}
 //echo '</table>';
 
+///**
+// * El encargado que ha vendido mas en una sucursal
+// */
+//$idSucursal = 1;
+//$fechaInicio = '2009-01-01';
+//$fechaFin = '2009-04-31';
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>idSucursal</th>';
+//echo '<th>nombreSucursal</th>';
+//echo '<th>moneda</th>';
+//echo '<th>cedula</th>';
+//echo '<th>encargadoNombre</th>';
+//echo '<th>monto</th>';
+//echo '</tr>';
+//$resultado = $controlTest->consultarEncargadoMasVenta($idSucursal, $fechaInicio, $fechaFin);
+//while ($row = mysql_fetch_array($resultado)) {
+//    echo '<tr>';
+//    echo '<td>' . $row[idSucursal] . '</td>';
+//    echo '<td>' . $row[nombreSucursal] . '</td>';
+//    echo '<td>' . $row[moneda] . '</td>';
+//    echo '<td>' . $row[cedula] . '</td>';
+//    echo '<td>' . $row[encargadoNombre] . '</td>';
+//    echo '<td>' . $row[monto] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+
 /**
  * El encargado que ha vendido mas en una sucursal
  */
@@ -180,20 +208,18 @@ echo '<table border=1>';
 echo '<tr>';
 echo '<th>idSucursal</th>';
 echo '<th>nombreSucursal</th>';
-echo '<th>moneda</th>';
 echo '<th>cedula</th>';
 echo '<th>encargadoNombre</th>';
-echo '<th>monto</th>';
+echo '<th>cantidad</th>';
 echo '</tr>';
-$resultado = $controlTest->consultarEncargadoMasVenta($idSucursal, $fechaInicio, $fechaFin);
+$resultado = $controlTest->consultarEncargadoConMasReservas($idSucursal, $fechaInicio, $fechaFin);
 while ($row = mysql_fetch_array($resultado)) {
     echo '<tr>';
     echo '<td>' . $row[idSucursal] . '</td>';
     echo '<td>' . $row[nombreSucursal] . '</td>';
-    echo '<td>' . $row[moneda] . '</td>';
     echo '<td>' . $row[cedula] . '</td>';
     echo '<td>' . $row[encargadoNombre] . '</td>';
-    echo '<td>' . $row[monto] . '</td>';
+    echo '<td>' . $row[cantidad] . '</td>';
     echo '</tr>';
 }
 echo '</table>';

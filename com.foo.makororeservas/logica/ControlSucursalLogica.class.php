@@ -130,5 +130,17 @@ class ControlSucursalLogicaclass {
         return $recurso;
     }
 
+    /**
+     * Metodo para consultar el encargado con mas reservas realizadas
+     * @param <type> $idSucursal El id de la sucursal a la que pertenece el encargado
+     * @param <type> $fechaInicio La fecha de inicio a consultar
+     * @param <type> $fechaFin La fecha de fin a consultar
+     * @return <type> Encargado con mas reservas realizadas
+     */
+    function consultarEncargadoConMasReservas($idSucursal,$fechaInicio,$fechaFin){
+        $recurso = $this->controlBD->consultarEncargadoConMasReservas($idSucursal, $fechaInicio, $fechaFin);
+        return $recurso;
+    }
+
 }
 ?>
