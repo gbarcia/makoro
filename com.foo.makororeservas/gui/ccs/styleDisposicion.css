@@ -42,7 +42,14 @@ body{
     margin-bottom:inherit;
 }
 .panel {
-    background-color: #25A5DE;
+    background-color: #BCE0E7;
     border: 1px solid #067AC2;
     margin-bottom:inherit;
+}
+.panelSesion{
+    position:absolute;
+    width: auto;
+    height: auto;
+    top:5px;
+    right:5px;
 }
