@@ -84,13 +84,13 @@ function generarFormularioNuevaRuta () {
       </label></td>
     </tr>
     <tr class="r0">
-      <td>Adbreviatura Sitio de Salida</td>
+      <td>Abreviatura Sitio de Salida</td>
       <td><label>
         <input type="text" name="salidaA" id="salidaA" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
     <tr class="r1">
-      <td>Adbreviatura Sitio de Llegada</td>
+      <td>Abreviatura Sitio de Llegada</td>
       <td><input type="text" name="llegadaA" id="llegadaA" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
     <tr class="r0">
@@ -135,10 +135,10 @@ function validarFormularioRuta ($datos) {
     if (is_string($datos[llegada]) && $datos[llegada] != "")
     $resultado = true;
     else return false;
-    if (is_string($datos[salidaA]) && $datos[salidaA] != "")
+    if (is_string($datos[salidaA]) && $datos[salidaA] != "" && strlen($datos[salidaA]) < 4)
     $resultado = true;
     else return false;
-    if (is_string($datos[llegadaA]) && $datos[llegadaA] != "")
+    if (is_string($datos[llegadaA]) && $datos[llegadaA] != "" && strlen($datos[llegadaA]) < 4)
     $resultado = true;
     else return false;
     if (is_numeric($datos[costo]) && $datos[costo] != "")
@@ -234,13 +234,13 @@ function generarFormularioEditar ($sitioSalida,$sitioLlegada) {
       </label></td>
     </tr>
     <tr class="r0">
-      <td>Adbreviatura Sitio de Salida</td>
+      <td>Abreviatura Sitio de Salida</td>
       <td><label>
         <input type="text" name="salidaA" id="salidaA" value = "'.$rowR[abreviaturaSalida].'"onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
     <tr class="r1">
-      <td>Adbreviatura Sitio de Llegada</td>
+      <td>Abreviatura Sitio de Llegada</td>
       <td><input type="text" name="llegadaA" id="llegadaA" value = "'.$rowR[abreviaturaLlegada].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
     <tr class="r0">
