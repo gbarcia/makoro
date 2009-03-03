@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Ruta.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlRutaLogica.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorRutaBD.class.php';
 
 function cadenaTodasLasRutas () {
     $resultado = "";
@@ -36,7 +37,7 @@ function cadenaTodasLasRutas () {
         $resultado.= '<td>' . $row->getTiempo(). '</td>';
         $resultado.= '<td>' . $row->getCosto(). ' BS'. '</td>';
         $resultado.= '<td>' . $row->getGeneraIVAString().'</td>';
-        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar(\'.$row->getSitioSalida().\',\'.$row->getAbreviaturaLlegada().\')"/></td>';
+        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_desplegarFormularioEditarRuta(\''. $row->getSitioSalida() .'\',\''. $row->getSitioLlegada() .'\')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -61,7 +62,7 @@ function generarFormularioNuevaRuta () {
         <div class="tituloBlanco1">
             NUEVA RUTA
             <div class="botonCerrar">
-            <button name="boton" type="button" onclick="xajax_cerrarVentanaNuevoCargo()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+            <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
         </div>
         </div>
         </td>
@@ -197,8 +198,145 @@ function procesarRuta ($datos) {
     return $objResponse;
 }
 
-function generarFormularioEditar () {
+function generarFormularioEditar ($sitioSalida,$sitioLlegada) {
+    $control = new controladorRutaBDclass();
+    $recursoRuta = $control->consultarRutaID($sitioSalida, $sitioLlegada);
+    $rowR = mysql_fetch_array($recursoRuta);
+    $formulario ='<form id="formRuta">
+   <table class="formTable" cellspacing="0">
+   <tr>
+      <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">
+            EDITAR RUTA
+            <div class="botonCerrar">
+            <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>
+        </td>
+        </thead>
+    </tr>
+    <tr class="r1">
+      <td colspan="2">Todos los campos son requeridos</td>
+      </tr>
+    <tr class="r0">
+      <td>Sitio de salida</td>
+      <td><label>
+        <input type="text" name="salida" id="salida" size="30" READONLY value ="'.$rowR[sitioSalida].'" onkeyup="this.value=this.value.toUpperCase();" />
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>Sitio de Llegada</td>
+      <td><label>
+        <input type="text" name="llegada" id="llegada" READONLY value = "'.$rowR[sitioLlegada].'"onkeyup="this.value=this.value.toUpperCase();" size="30" />
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td>Adbreviatura Sitio de Salida</td>
+      <td><label>
+        <input type="text" name="salidaA" id="salidaA" value = "'.$rowR[abreviaturaSalida].'"onkeyup="this.value=this.value.toUpperCase();" size="30" />
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>Adbreviatura Sitio de Llegada</td>
+      <td><input type="text" name="llegadaA" id="llegadaA" value = "'.$rowR[abreviaturaLlegada].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
+    </tr>
+    <tr class="r0">
+      <td>Tiempo de vuelo</td>
+      <td><input type="text" name="tiempo" id="tiempo" value = "'.$rowR[tiempo].'"onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
+    </tr>
+    <tr class="r1">
+      <td>Costo del viaje</td>
+      <td><input type="text" name="costo" id="costo" value = "'.$rowR[costo].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
+    </tr>
+    <tr class="r0">
+      <td>Genera I.V.A</td>
+      <td><select name="iva" id="iva">
+        <option value="1"';
+    if ($rowR[generaIVA] == 1)
+    $formulario.= 'selected="selected"';
+       $formulario.='>SI</option><option value="0"';
+    if ($rowR[generaIVA] == 0)
+    $formulario.= 'selected="selected"';
+       $formulario.='>No</option>
+      </select>      </td>
+    </tr>
+    <tr class="r1">
+      <td height="26" colspan="2"><div align="center">
+        <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarEditarRuta(xajax.getFormValues(\'formRuta\'))" />
+      </div></td>
+    </tr>
+  </table>    <label></label></td>
+    </tr>
+</table>
+</form>';
+    return $formulario;
+}
 
+function desplegarFormularioEditarRuta ($sitioSalida,$sitioLlegada) {
+    $resultado = generarFormularioEditar($sitioSalida, $sitioLlegada);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    return $objResponse;
+}
+
+function procesarEditarRuta ($datos) {
+    $objResponse = new xajaxResponse();
+    if (validarFormularioRuta($datos)) {
+        $respuesta = "";
+        $controlRuta = new ControlRutaLogicaclass();
+        $resultado = $controlRuta->actualizarRuta($datos[salida], $datos[llegada], $datos[tiempo], $datos[salidaA], $datos[llegadaA],$datos[costo],$datos[iva]);
+        $objResponse = new xajaxResponse();
+        if ($resultado){
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                           RUTA editada con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique que la ruta no exista. GRBD001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = cadenaTodasLasRutas();
+        $objResponse->addAssign("gestionRutas", "innerHTML", $actualizarTablaPrincipalRespuesta);}
+    else {
+        $respuesta .= '<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR GRF001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
+    return $objResponse;
+}
+
+function cerrarVentana() {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+    return $objResponse;
+}
+
+function borrarMensaje(){
+    $respuesta = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    return $objResponse;
 }
 
 ?>

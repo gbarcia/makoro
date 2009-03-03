@@ -42,12 +42,12 @@ class controladorRutaBDclass {
         $resultado = false;
         $query = "UPDATE RUTA r
                   SET r.tiempo = " . $ruta->getTiempo() . ",".
-                     "r.abreviaturaSalida = '" . mysql_real_escape_string($ruta->getAbreviaturaSalida()) . "',".
-                     "r.abreviaturaLlegada = '" . mysql_real_escape_string($ruta->getAbreviaturaLlegada()) . "',".
-                     "r.costo = '" . mysql_real_escape_string($ruta->getCosto()) . "',".
+                     "r.abreviaturaSalida = '" . $ruta->getAbreviaturaSalida() . "',".
+                     "r.abreviaturaLlegada = '" . $ruta->getAbreviaturaLlegada() . "',".
+                     "r.costo = '" . $ruta->getCosto() . "',".
                      "r.generaIVA = " . $ruta->getGeneraIVA() . " ".
-                  "WHERE r.sitioSalida = '" . mysql_real_escape_string($ruta->getSitioSalida()) . "' AND ".
-                        "r.sitioLlegada = '" . mysql_real_escape_string($ruta->getSitioLlegada()) . "'";
+                  "WHERE r.sitioSalida = '" . $ruta->getSitioSalida() . "' AND ".
+                        "r.sitioLlegada = '" . $ruta->getSitioLlegada() . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -69,8 +69,8 @@ class controladorRutaBDclass {
      */
     function consultarRutaID($sitioSalida, $sitioLlegada){
         $query = "SELECT * FROM RUTA r
-                 WHERE r.sitioSalida = '" . mysql_real_escape_string($sitioSalida) . "' AND ".
-                      "r.sitioLlegada = '" . mysql_real_escape_string($sitioLlegada) . "'";
+                 WHERE r.sitioSalida = '" . $sitioSalida . "' AND ".
+                      "r.sitioLlegada = '" . $sitioLlegada . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

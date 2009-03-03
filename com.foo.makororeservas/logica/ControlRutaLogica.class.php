@@ -50,7 +50,7 @@ class ControlRutaLogicaclass {
      * @param <boolean> $generaIVA determina si la ruta genera IVA
      * @return <boolean> resultado de la operacion
      */
-    function actualizarRuta($sitioSalida, $sitioLlegada, $tiempo, $abreviaturaSalida, $abreviaturaLlegada,$costo){
+    function actualizarRuta($sitioSalida, $sitioLlegada, $tiempo, $abreviaturaSalida, $abreviaturaLlegada,$costo,$generaIVA){
         $ruta = new Rutaclass();
         $ruta->setSitioSalida($sitioSalida);
         $ruta->setSitioLlegada($sitioLlegada);
@@ -58,6 +58,7 @@ class ControlRutaLogicaclass {
         $ruta->setAbreviaturaSalida($abreviaturaSalida);
         $ruta->setAbreviaturaLlegada($abreviaturaLlegada);
         $ruta->setCosto($costo);
+        $ruta->setGeneraIVA($generaIVA);
         $resultado = $this->controlBD->editarRuta($ruta);
         return $resultado;
     }
