@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorRBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorRutaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Ruta.class.php';
 
 /**
@@ -27,13 +27,15 @@ class ControlRutaLogicaclass {
      * @param <boolean> $generaIVA determina si la ruta genera IVA
      * @return <boolean> resultado de la operacion
      */
-    function nuevaRuta($sitioSalida, $sitioLlegada, $tiempo, $abreviaturaSalida, $abreviaturaLlegada, $generaIVA){
+    function nuevaRuta($sitioSalida, $sitioLlegada, $tiempo, $abreviaturaSalida, $abreviaturaLlegada, $generaIVA,$costo){
         $ruta = new Rutaclass();
         $ruta->setSitioSalida($sitioSalida);
         $ruta->setSitioLlegada($sitioLlegada);
         $ruta->setTiempo($tiempo);
         $ruta->setAbreviaturaSalida($abreviaturaSalida);
         $ruta->setAbreviaturaLlegada($abreviaturaLlegada);
+        $ruta->setCosto($costo);
+        $ruta->setGeneraIVA($generaIVA);
         $resultado = $this->controlBD->agregarRuta($ruta);
         return $resultado;
     }
@@ -48,13 +50,14 @@ class ControlRutaLogicaclass {
      * @param <boolean> $generaIVA determina si la ruta genera IVA
      * @return <boolean> resultado de la operacion
      */
-    function actualizarRuta($sitioSalida, $sitioLlegada, $tiempo, $abreviaturaSalida, $abreviaturaLlegada, $generaIVA){
+    function actualizarRuta($sitioSalida, $sitioLlegada, $tiempo, $abreviaturaSalida, $abreviaturaLlegada,$costo){
         $ruta = new Rutaclass();
         $ruta->setSitioSalida($sitioSalida);
         $ruta->setSitioLlegada($sitioLlegada);
         $ruta->setTiempo($tiempo);
         $ruta->setAbreviaturaSalida($abreviaturaSalida);
         $ruta->setAbreviaturaLlegada($abreviaturaLlegada);
+        $ruta->setCosto($costo);
         $resultado = $this->controlBD->editarRuta($ruta);
         return $resultado;
     }
@@ -74,6 +77,7 @@ class ControlRutaLogicaclass {
             $ruta->setAbreviaturaSalida($row['abreviaturaSalida']);
             $ruta->setAbreviaturaLlegada($row['abreviaturaLlegada']);
             $ruta->setGeneraIVA($row['generaIVA']);
+            $ruta->setCosto($row[costo]);
 
             $resultado->append($ruta);
         }

@@ -22,12 +22,12 @@ class controladorRutaBDclass {
         $resultado = false;
         $query = "INSERT INTO RUTA(sitioSalida, sitioLlegada, tiempo,
                                    abreviaturaSalida, abreviaturaLlegada, costo,generaIVA)
-                  VALUES('" . mysql_real_escape_string($ruta->getSitioSalida()) . "',
-                         '" . mysql_real_escape_string($ruta->getSitioLlegada()) . "',
+                  VALUES('" . $ruta->getSitioSalida() . "',
+                         '" . $ruta->getSitioLlegada() . "',
                           " . $ruta->getTiempo() . ",
-                         '" . mysql_real_escape_string($ruta->getAbreviaturaSalida()) . "',
-                         '" . mysql_real_escape_string($ruta->getAbreviaturaLlegada()) . "',
-                         '" . mysql_real_escape_string($ruta->getCosto()) . "',
+                         '" . $ruta->getAbreviaturaSalida() . "',
+                         '" . $ruta->getAbreviaturaLlegada() . "',
+                         '" . $ruta->getCosto() . "',
                           " . $ruta->getGeneraIVA() . ")";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
