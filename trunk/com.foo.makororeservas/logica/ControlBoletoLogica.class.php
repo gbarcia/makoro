@@ -51,29 +51,75 @@ class ControlBoletoLogicaclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar los pasajeros de un boleto especifico
+ * @param <Integer> $idPago
+ * @return <Coleccion> coleccion de pasajeros
+ */
+    function buscarPasajerosBoletoEspecifico($idPago) {
+        $resultado = new ArrayObject();
+        $recurso = $this->controlBD->consultarPasajeros($idPago);
+        while ($row = mysql_fetch_array($recurso)) {
+            $pasajero = new Pasajeroclass();
+            $pasajero->setId($row[idPasajero]);
+            $pasajero->setNombre($row[nombre]);
+            $pasajero->setApellido($row[apellido]);
+            $pasajero->setSexo($row[sexo]);
+            $pasajero->setCedula($row[cedula]);
+            $pasajero->setPasaporte($row[pasaporte]);
+            $pasajero->setNacionalidad($row[nacionalidad]);
+            $pasajero->setTipoPasajeroId($row[tipoPasajeroId]);
+
+            $resultado->append($pasajero);
+        }
+        return $resultado;
+    }
+
+/**
+ * Metodo para emitir el boleto
+ * @param <String> $solicitud
+ * @return <Coleccion> informacion de los pasajeros, solicitud, vuelos
+ */
     function emitirBoleto($solicitud) {
         $recurso = $this->busquedaBoletoEspecifico($solicitud);
+        $rowRecurso = mysql_fetch_array($recurso);
+
+        $idPago = $rowRecurso[idPago];
+        $numSolicitud = $rowRecurso[solicitud];
+        $agente = $rowRecurso[agente];
+        $servicio = $rowRecurso[nombreServicio];
+
+        $vueloIdaInfo = $this->controlBD->consultarRutaFechaHoraVuelo($solicitud, "IDA");
+        $rowVueloIdaInfo = mysql_fetch_array($vueloIdaInfo);
+        $fechaIda = $rowVueloIdaInfo[fecha];
+        $horaIda = $rowVueloIdaInfo[hora];
+        $lugarSalida = $rowVueloIdaInfo[sitioSalida].'-'.$rowVueloIdaInfo[sitioLlegada];
+
+        $vueloVueltaInfo = $this->controlBD->consultarRutaFechaHoraVuelo($solicitud, "VUELTA");
+        $rowVueloVueltaInfo = mysql_fetch_array($vueloVueltaInfo);
+        $fechaVuelta = $rowVueloVueltaInfo[fecha];
+        $horaVuelta = $rowVueloVueltaInfo[hora];
+        $lugarLlegada = $rowVueloVueltaInfo[sitioSalida].'-'.$rowVueloVueltaInfo[sitioLlegada];
+        if($fechaVuelta == ''||$horaVuelta == ''|$lugarLlegada==''){
+            $fechaVuelta = "No hay fecha de retorno";
+            $horaVuelta = "No hay hora de retorno";
+            $lugarLlegada = "No hay retorno";
+        }
+        $fechaEmision = date ("Y") ."-".date ("m"). "-".date ("d");
+        $pasajeroInfo = $this->buscarPasajerosBoletoEspecifico($idPago);
         $coleccionResultado = new ArrayObject();
-            $rowRecurso = mysql_fetch_array($recurso);
+        foreach ($pasajeroInfo as $var) {
+            $pasajero = new Pasajeroclass();
+            $pasajero->setId($var->getId());
+            $pasajero->setNombre($var->getNombre());
+            $pasajero->setApellido($var->getApellido());
+            $pasajero->setCedula($var->getCedula());
+            $pasajero->setPasaporte($var->getPasaporte());
+            $pasajero->setNacionalidad($var->getNacionalidad());
+            $pasajero->setTipoPasajeroId($var->getTipoPasajeroId());
+            $Objeto = new EmitirBoletoclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $lugarSalida, $lugarLlegada, $pasajero, $servicio);
 
-            $idPago = $rowRecurso[idPago];
-            $pasajeroInfo = $this->controlBD->consultarPasajeros($pagoId);
-            
-        foreach ($pasajeroInfo as $variable) {
-
-                $pasajero = new Pasajeroclass();
-                $pasajero->setId($variable->getId());
-                $pasajero->setNombre($variable->getNombre());
-                $pasajero->setApellido($variable->getApellido());
-                $pasajero->setCedula($variable->getCedula());
-                $pasajero->setPasaporte($variable->getPasaporte());
-                $pasajero->setNacionalidad($variable->getNacionalidad());
-                $pasajero->setTipoPasajeroId($variable->getTipoPasajeroId());
-                $Objeto = new EmitirBoletoclass($agente, $solicitud, $fechaIda, $fechaVuelta, $lugarSalida, $lugarLlegada, $coleccionPasajero, $servicio);
-
-                $coleccionResultado ->append($Objeto);
-
-
+            $coleccionResultado ->append($Objeto);
         }
         return $coleccionResultado;
     }

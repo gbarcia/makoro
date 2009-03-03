@@ -60,21 +60,40 @@ class controladorBoletoBDclass {
  */
     function consultarBoletoEspecifico($solicitud) {
         $resultado = false;
-        $query = "SELECT DISTINCT pa.id idPago,r.solicitud
-                  FROM RESERVA r, PAGO pa
+        $query = "SELECT DISTINCT pa.id idPago,r.solicitud,t.abreviatura abreviatura,
+                                  t.nombre nombreServicio,CONCAT(e.nombre,' ',e.apellido) agente
+                  FROM RESERVA r, PAGO pa, TIPO_SERVICIO t, ENCARGADO e
                   WHERE r.solicitud = '".$solicitud."'
-                  AND r.PAGO_id = pa.id";
+                  AND r.PAGO_id = pa.id
+                  AND r.TIPO_SERVICIO_id = t.id
+                  AND r.ENCARGADO_cedula = e.cedula";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 
     function consultarPasajeros($pagoId){
         $resultado = false;
-        $query = "SELECT b.PAGO_id idPago, b.PASAJERO_id idPasajero, CONCAT(p.nombre,' ',p.apellido) pasajero, 
-                        p.TIPO_PASAJERO_id,p.cedula,p.pasaporte,p.nacionalidad
+        $query = "SELECT b.PAGO_id idPago, b.PASAJERO_id idPasajero, p.nombre nombre,p.apellido apellido,
+                        p.TIPO_PASAJERO_id tipoPasajeroId,p.sexo sexo,p.cedula cedula,p.pasaporte pasaporte,p.nacionalidad nacionalidad
                   FROM BOLETO b, PASAJERO p
                   WHERE b.PAGO_id = ".$pagoId."
                   AND b.PASAJERO_id = p.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function consultarRutaFechaHoraVuelo($solicitud,$tipoVuelo) {
+        $resultado = false;
+        $query = "SELECT r.solicitud,v.fecha,v.hora,ru.abreviaturaSalida sitioSalida,
+                         ru.abreviaturaLlegada sitioLlegada
+                  FROM RESERVA r, VUELO_RESERVA vr, VUELO v, RUTA ru
+                  WHERE r.solicitud = '".$solicitud."'
+                  AND vr.RESERVA_id = r.id
+                  AND v.id = vr.VUELO_id
+                  AND v.RUTA_sitioSalida = ru.sitioSalida
+                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                  AND vr.tipo = '".$tipoVuelo."'
+                  GROUP BY r.solicitud,v.fecha,v.hora,ru.abreviaturaSalida,ru.abreviaturaLlegada";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
