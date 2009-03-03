@@ -9,19 +9,24 @@ class EmitirBoletoclass {
     private $solicitud;
     private $fechaEmision;
     private $fechaIda;
+    private $horaIda;
     private $fechaVuelta;
-    private $lugarSalida;
-    private $lugarLlegada;
+    private $horaVuelta;
+    private $salida;
+    private $retorno;
     private $coleccionPasajero;
     private $servicio;
 
-    function __construct($agente, $solicitud, $fechaIda, $fechaVuelta, $lugarSalida, $lugarLlegada, $coleccionPasajero, $servicio) {
+    function __construct($agente, $solicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $salida, $retorno, $coleccionPasajero, $servicio) {
         $this->agente = $agente;
         $this->solicitud = $solicitud;
+        $this->fechaEmision = $fechaEmision;
         $this->fechaIda = $fechaIda;
+        $this->horaIda = $horaIda;
         $this->fechaVuelta = $fechaVuelta;
-        $this->lugarSalida = $lugarSalida;
-        $this->lugarLlegada = $lugarLlegada;
+        $this->horaVuelta = $horaVuelta;
+        $this->salida = $salida;
+        $this->retorno = $retorno;
         $this->coleccionPasajero = $coleccionPasajero;
         $this->servicio = $servicio;
     }
@@ -66,21 +71,39 @@ class EmitirBoletoclass {
         $this->fechaVuelta = $fechaVuelta;
     }
 
-    public function getLugarSalida() {
-        return $this->lugarSalida;
+    public function getHoraIda() {
+        return $this->horaIda;
     }
 
-    public function setLugarSalida($lugarSalida) {
-        $this->lugarSalida = $lugarSalida;
+    public function setHoraIda($horaIda) {
+        $this->horaIda = $horaIda;
     }
 
-    public function getLugarLlegada() {
-        return $this->lugarLlegada;
+    public function getHoraVuelta() {
+        return $this->horaVuelta;
     }
 
-    public function setLugarLlegada($lugarLlegada) {
-        $this->lugarLlegada = $lugarLlegada;
+    public function setHoraVuelta($horaVuelta) {
+        $this->horaVuelta = $horaVuelta;
     }
+
+    public function getSalida() {
+        return $this->salida;
+    }
+
+    public function setSalida($salida) {
+        $this->salida = $salida;
+    }
+
+    public function getRetorno() {
+        return $this->retorno;
+    }
+
+    public function setRetorno($retorno) {
+        $this->retorno = $retorno;
+    }
+
+
 
     public function getColeccionPasajero() {
         return $this->coleccionPasajero;
