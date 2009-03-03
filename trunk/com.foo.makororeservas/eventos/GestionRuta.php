@@ -183,7 +183,9 @@ function procesarRuta ($datos) {
         }
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
         $actualizarTablaPrincipalRespuesta = cadenaTodasLasRutas();
-        $objResponse->addAssign("gestionRutas", "innerHTML", $actualizarTablaPrincipalRespuesta);}
+        $objResponse->addAssign("gestionRutas", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        $objResponse->addAssign("izq", "innerHTML", "");
+        }
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
