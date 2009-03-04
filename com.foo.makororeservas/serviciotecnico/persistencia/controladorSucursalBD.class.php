@@ -60,8 +60,8 @@ class controladorSucursalBDclass {
      * Metodo para consultar todas las sucursales de la base de datos
      * @return <Coleccion> Todas las sucursales de la base de datos
      */
-    function consultarSucursales(){
-        $query = "SELECT * FROM SUCURSAL s";
+    function consultarSucursales($habilitado){
+        $query = "SELECT * FROM SUCURSAL s WHERE s.habilitado=$habilitado";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -180,6 +180,18 @@ class controladorSucursalBDclass {
                   AND r.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'
                   GROUP BY idSucursal
                   ORDER BY cantidad desc";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function eliminarRegenerarSucursal ($valor,$id) {
+        $query = "UPDATE SUCURSAL SET habilitado=$valor WHERE id = $id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function consultarSucursal ($id) {
+        $query = "SELECT * FROM SUCURSAL WHERE id=$id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

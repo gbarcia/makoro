@@ -69,8 +69,8 @@ class ControlSucursalLogicaclass {
      * Metodo para consultar todas las sucursales del sistema
      * @return <Coleccion> Todas las sucursales del sistema
      */
-    function consultarSucursales(){
-        $recurso = $this->controlBD->consultarSucursales();
+    function consultarSucursales($habilitado){
+        $recurso = $this->controlBD->consultarSucursales($habilitado);
         return $recurso;
     }
 
