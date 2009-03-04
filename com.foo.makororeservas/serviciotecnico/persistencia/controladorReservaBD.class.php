@@ -23,17 +23,23 @@ class controladorReservaBDclass {
         $query = "INSERT INTO RESERVA (`fecha`, `estado`, `solicitud`, `TIPO_SERVICIO_id`, `SUCURSAL_id`,
                                        `ENCARGADO_cedula`, `CLIENTE_PARTICULAR_cedula`, `CLIENTE_AGENCIA_rif`,
                                        `PAGO_id`, `PASAJERO_id`, `POSADA_id`)
-                               VALUES ('". $reserva->getFecha() ."',
+                                VALUES('". $reserva->getFecha() ."',
                                        '". $reserva->getEstado() ."',
                                        '". $reserva->getSolicitud() ."',
-                                       '". $reserva->getTipoServicioId() ."',
-                                       '". $reserva->getSucursalId() ."',
-                                       '". $reserva->getEncargadoCedula() ."',
-                                       '". $reserva->getClienteParticularCedula() ."',
-                                       '". $reserva->getClienteAgenciaRif() ."',
-                                       '". $reserva->getPagoId() ."',
-                                       '". $reserva->getPasajeroId() ."',
-                                       '". $reserva->getPosadaId() ."')";
+                                        ". $reserva->getTipoServicioId() .",
+                                        ". $reserva->getSucursalId() .",
+                                        ". $reserva->getEncargadoCedula() .",
+                                        ". $reserva->getClienteParticularCedula() .",";
+                                        
+                                        if(is_null($reserva->getClienteAgenciaRif())){
+                                           $query .= "null,";
+                                        }else{
+                                           $query .= "'". $reserva->getClienteAgenciaRif() ."',";
+                                        }
+
+                                        $query .= $reserva->getPagoId() .",
+                                        ". $reserva->getPasajeroId() .",
+                                        ". $reserva->getPosadaId() .")";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

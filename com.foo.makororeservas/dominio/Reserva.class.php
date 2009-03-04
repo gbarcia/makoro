@@ -95,7 +95,11 @@ class Reservaclass {
     }
 
     public function setClienteAgenciaRif($clienteAgenciaRif) {
-        $this->clienteAgenciaRif = strtoupper($clienteAgenciaRif);
+        if (is_null($clienteAgenciaRif)){
+            $this->clienteAgenciaRif = null;
+        }else{
+            $this->clienteAgenciaRif = strtoupper($clienteAgenciaRif);
+        }
     }
 
     public function getPagoId() {

@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/Reserva.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Reserva.class.php';
 /**
  * Description of ControlReservaLogicaclass
  *
@@ -26,11 +26,11 @@ class ControlReservaLogicaclass {
      * @param <type> $PAGO_id El pago de la reserva
      * @param <type> $pasajeroId El pasajero de la reserva
      * @param <type> $posadaId La posada en la que se hospedara
-     * @return <type>
+     * @return <type> El resultado de la operacion
      */
     function nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId,
                           $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
-                          $PAGO_id, $pasajeroId, $posadaId) {
+                          $pagoId, $pasajeroId, $posadaId) {
         $reserva = new Reservaclass();
         $reserva->setFecha($fecha);
         $reserva->setEstado($estado);
