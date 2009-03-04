@@ -16,8 +16,10 @@ class EmitirBoletoclass {
     private $retorno;
     private $coleccionPasajero;
     private $servicio;
+    private $cliente;
+    private $identificadorCliente;
 
-    function __construct($agente, $solicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $salida, $retorno, $coleccionPasajero, $servicio) {
+    function __construct($agente, $solicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $salida, $retorno, $coleccionPasajero, $servicio, $cliente, $identificadorCliente) {
         $this->agente = $agente;
         $this->solicitud = $solicitud;
         $this->fechaEmision = $fechaEmision;
@@ -29,6 +31,8 @@ class EmitirBoletoclass {
         $this->retorno = $retorno;
         $this->coleccionPasajero = $coleccionPasajero;
         $this->servicio = $servicio;
+        $this->cliente = $cliente;
+        $this->identificadorCliente = $identificadorCliente;
     }
 
     public function getAgente() {
@@ -103,8 +107,6 @@ class EmitirBoletoclass {
         $this->retorno = $retorno;
     }
 
-
-
     public function getColeccionPasajero() {
         return $this->coleccionPasajero;
     }
@@ -121,5 +123,20 @@ class EmitirBoletoclass {
         $this->servicio = $servicio;
     }
 
+    public function getCliente() {
+        return $this->cliente;
+    }
+
+    public function setCliente($cliente) {
+        $this->cliente = $cliente;
+    }
+
+    public function getIdentificadorCliente() {
+        return $this->identificadorCliente;
+    }
+
+    public function setIdentificadorCliente($identificadorCliente) {
+        $this->identificadorCliente = $identificadorCliente;
+    }
 }
 ?>
