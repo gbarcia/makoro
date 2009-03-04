@@ -76,6 +76,11 @@ class controladorBoletoBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar la informacion de los pasajeros
+ * @param <Integer> $pagoId
+ * @return <Coleccion> coleccion de pasajeros
+ */
     function consultarPasajeros($pagoId){
         $resultado = false;
         $query = "SELECT b.PAGO_id idPago, b.PASAJERO_id idPasajero, p.nombre nombre,p.apellido apellido,
@@ -87,6 +92,12 @@ class controladorBoletoBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar la cantidad de adultos y niños que iran en el viaje
+ * @param <Integer> $pagoId
+ * @param <String> $tipoPasajero
+ * @return <recurso> recurso con la cantidad de adultos o niños
+ */
     function cantidadAdultosNinos($pagoId, $tipoPasajero){
         $resultado = false;
         $query = "SELECT COUNT(TIPO_PASAJERO_id) cantidad
@@ -98,7 +109,13 @@ class controladorBoletoBDclass {
         return $resultado;
     }
 
-    
+/**
+ * Metodo para consultar el vuelo dependiendo del numero de la solicitud y
+ * el tipo de vuelo, ya sea de ida o vuelta
+ * @param <String> $solicitud
+ * @param <String> $tipoVuelo
+ * @return <recurso> recurso con detalles del vuelo
+ */
     function consultarRutaFechaHoraVuelo($solicitud,$tipoVuelo) {
         $resultado = false;
         $query = "SELECT r.solicitud,v.fecha,v.hora,ru.abreviaturaSalida sitioSalida,
