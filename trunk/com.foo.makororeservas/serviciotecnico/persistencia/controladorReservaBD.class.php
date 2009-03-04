@@ -13,6 +13,30 @@ class controladorReservaBDclass {
         $this->transaccion = new TransaccionBDclass();
     }
 
+    /**
+     * Metodo para agregar una reserva
+     * @param <type> $reserva La reserva a agregar
+     * @return <type> El resultado de la operacion 
+     */
+    function agregarReserva($reserva){
+        $resultado = false;
+        $query = "INSERT INTO RESERVA (`fecha`, `estado`, `solicitud`, `TIPO_SERVICIO_id`, `SUCURSAL_id`,
+                                       `ENCARGADO_cedula`, `CLIENTE_PARTICULAR_cedula`, `CLIENTE_AGENCIA_rif`,
+                                       `PAGO_id`, `PASAJERO_id`, `POSADA_id`)
+                               VALUES ('". $reserva->getFecha() ."',
+                                       '". $reserva->getEstado() ."',
+                                       '". $reserva->getSolicitud() ."',
+                                       '". $reserva->getTipoServicioId() ."',
+                                       '". $reserva->getSucursalId() ."',
+                                       '". $reserva->getEncargadoCedula() ."',
+                                       '". $reserva->getClienteParticularCedula() ."',
+                                       '". $reserva->getClienteAgenciaRif() ."',
+                                       '". $reserva->getPagoId() ."',
+                                       '". $reserva->getPasajeroId() ."',
+                                       '". $reserva->getPosadaId() ."')";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
     
 }
 ?>
