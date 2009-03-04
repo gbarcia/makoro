@@ -52,6 +52,18 @@ class ControlBoletoLogicaclass {
     }
 
 /**
+ * Metodo para consultar la cantidad de adultos y niños de la reserva
+ * @param <Integer> $idPago
+ * @param <String> $tipoPasajero
+ * @return <recurso> recurso con la cantidad de adultos o niños
+ */
+    function consultarCantidadAdultosNinos($idPago, $tipoPasajero) {
+        $resultado = new ArrayObject();
+        $resultado = $this->controlBD->cantidadAdultosNinos($idPago, $tipoPasajero);
+        return $resultado;
+    }
+
+/**
  * Metodo para consultar los pasajeros de un boleto especifico
  * @param <Integer> $idPago
  * @return <Coleccion> coleccion de pasajeros
@@ -92,13 +104,21 @@ class ControlBoletoLogicaclass {
         $rifAgencia = $rowRecurso[rifAgencia];
         $particularCedula = $rowRecurso[particularCedula];
 
+        $recursoAdultos = $this->consultarCantidadAdultosNinos($idPago, "ADL");
+        $rowCantidadAdultos = mysql_fetch_array($recursoAdultos);
+        $cantidadAdultos = $rowCantidadAdultos[cantidad];
+
+        $recursoNinos = $this->consultarCantidadAdultosNinos($idPago, "CHD");
+        $rowCantidadNinos = mysql_fetch_array($recursoNinos);
+        $cantidadNinos = $rowCantidadNinos[cantidad];
+
         if($rifAgencia == null){
-        $identificadorCliente = $particularCedula;
+            $identificadorCliente = $particularCedula;
         }
         if($particularCedula == null){
-        $identificadorCliente = $rifAgencia;
+            $identificadorCliente = $rifAgencia;
         }
-        
+
         $vueloIdaInfo = $this->controlBD->consultarRutaFechaHoraVuelo($solicitud, "IDA");
         $rowVueloIdaInfo = mysql_fetch_array($vueloIdaInfo);
         $fechaIda = $rowVueloIdaInfo[fecha];
@@ -111,8 +131,8 @@ class ControlBoletoLogicaclass {
         $horaVuelta = $rowVueloVueltaInfo[hora];
         $lugarLlegada = $rowVueloVueltaInfo[sitioSalida].'-'.$rowVueloVueltaInfo[sitioLlegada];
         if($fechaVuelta == ''||$horaVuelta == ''|$lugarLlegada==''){
-            $fechaVuelta = "No hay fecha de retorno";
-            $horaVuelta = "No hay hora de retorno";
+            $fechaVuelta = "XXXX/XX/XX";
+            $horaVuelta = "XX:XX";
             $lugarLlegada = "No hay retorno";
         }
         $fechaEmision = date ("Y") ."-".date ("m"). "-".date ("d");
@@ -127,7 +147,7 @@ class ControlBoletoLogicaclass {
             $pasajero->setPasaporte($var->getPasaporte());
             $pasajero->setNacionalidad($var->getNacionalidad());
             $pasajero->setTipoPasajeroId($var->getTipoPasajeroId());
-            $Objeto = new EmitirBoletoclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $lugarSalida, $lugarLlegada, $pasajero, $servicio, $cliente, $identificadorCliente);
+            $Objeto = new EmitirBoletoclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $lugarSalida, $lugarLlegada, $pasajero, $servicio, $cliente, $identificadorCliente, $cantidadAdultos, $cantidadNinos);
 
             $coleccionResultado ->append($Objeto);
         }

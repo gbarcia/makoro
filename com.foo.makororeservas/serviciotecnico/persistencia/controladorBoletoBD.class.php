@@ -87,6 +87,18 @@ class controladorBoletoBDclass {
         return $resultado;
     }
 
+    function cantidadAdultosNinos($pagoId, $tipoPasajero){
+        $resultado = false;
+        $query = "SELECT COUNT(TIPO_PASAJERO_id) cantidad
+                  FROM BOLETO b, PASAJERO p
+                  WHERE b.PAGO_id = ".$pagoId."
+                  AND b.PASAJERO_id = p.id
+                  AND TIPO_PASAJERO_id = '".$tipoPasajero."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    
     function consultarRutaFechaHoraVuelo($solicitud,$tipoVuelo) {
         $resultado = false;
         $query = "SELECT r.solicitud,v.fecha,v.hora,ru.abreviaturaSalida sitioSalida,
