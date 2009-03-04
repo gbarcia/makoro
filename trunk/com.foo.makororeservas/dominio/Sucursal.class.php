@@ -73,6 +73,13 @@ class Sucursalclass {
         return $this->habilitado;
     }
 
+    public function getHabilitadoString() {
+        if ($this->habilitado == 1)
+        return "SI";
+        else
+        return "NO";
+    }
+
     public function setHabilitado($habilitado) {
         if (is_numeric($habilitado))
         $this->habilitado = $habilitado;
