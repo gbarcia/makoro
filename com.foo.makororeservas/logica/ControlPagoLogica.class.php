@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPagoBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorBoletoBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pago.class.php';
 /**
  * Description of ControlPagoLogicaclass
@@ -11,7 +12,9 @@ class ControlPagoLogicaclass {
     private $controlBD;
 
     function __construct() {
-        $this->controlBD = new controladorPagoBDclass();
+        $this->controlPagoBD = new controladorPagoBDclass();
+        $this->controlBoletoBD = new controladorBoletoBDclass();
+        $this->controlReservaBD = new controladorReservaBDclass();
     }
 
 /**
@@ -76,6 +79,26 @@ class ControlPagoLogicaclass {
     function buscarCancelacionPagoClienteParticular($cedula, $fechaini, $fechafin) {
         
 
+    }
+
+    function reciboDePago($solicitud) {
+        
+        $vueloIdaInfo = $this->controlBoletoBD->consultarRutaFechaHoraVuelo($solicitud, "IDA");
+        $rowVueloIdaInfo = mysql_fetch_array($vueloIdaInfo);
+        $fechaIda = $rowVueloIdaInfo[fecha];
+        $horaIda = $rowVueloIdaInfo[hora];
+        $lugarSalida = $rowVueloIdaInfo[sitioSalida].'-'.$rowVueloIdaInfo[sitioLlegada];
+
+        $vueloVueltaInfo = $this->controlBoletoBD->consultarRutaFechaHoraVuelo($solicitud, "VUELTA");
+        $rowVueloVueltaInfo = mysql_fetch_array($vueloVueltaInfo);
+        $fechaVuelta = $rowVueloVueltaInfo[fecha];
+        $horaVuelta = $rowVueloVueltaInfo[hora];
+        $lugarLlegada = $rowVueloVueltaInfo[sitioSalida].'-'.$rowVueloVueltaInfo[sitioLlegada];
+        if($fechaVuelta == ''||$horaVuelta == ''|$lugarLlegada==''){
+            $fechaVuelta = "XXXX/XX/XX";
+            $horaVuelta = "XX:XX";
+            $lugarLlegada = "No hay retorno";
+        }
     }
 }
 ?>

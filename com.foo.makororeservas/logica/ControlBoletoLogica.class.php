@@ -112,6 +112,10 @@ class ControlBoletoLogicaclass {
         $rowCantidadNinos = mysql_fetch_array($recursoNinos);
         $cantidadNinos = $rowCantidadNinos[cantidad];
 
+        $recursoInfantes = $this->consultarCantidadAdultosNinos($idPago, "INF");
+        $rowCantidadInfantes = mysql_fetch_array($recursoInfantes);
+        $cantidadInfantes = $rowCantidadInfantes[cantidad];
+
         if($rifAgencia == null){
             $identificadorCliente = $particularCedula;
         }
@@ -147,7 +151,7 @@ class ControlBoletoLogicaclass {
             $pasajero->setPasaporte($var->getPasaporte());
             $pasajero->setNacionalidad($var->getNacionalidad());
             $pasajero->setTipoPasajeroId($var->getTipoPasajeroId());
-            $Objeto = new EmitirBoletoclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $lugarSalida, $lugarLlegada, $pasajero, $servicio, $cliente, $identificadorCliente, $cantidadAdultos, $cantidadNinos);
+            $Objeto = new EmitirBoletoclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $lugarSalida, $lugarLlegada, $pasajero, $servicio, $cliente, $identificadorCliente, $cantidadAdultos, $cantidadNinos, $cantidadInfantes);
 
             $coleccionResultado ->append($Objeto);
         }

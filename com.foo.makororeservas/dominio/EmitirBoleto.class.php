@@ -20,8 +20,9 @@ class EmitirBoletoclass {
     private $identificadorCliente;
     private $cantidadAdultos;
     private $cantidadNinos;
+    private $cantidadInfantes;
 
-    function __construct($agente, $solicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $salida, $retorno, $coleccionPasajero, $servicio, $cliente, $identificadorCliente, $cantidadAdultos, $cantidadNinos) {
+    function __construct($agente, $solicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $salida, $retorno, $coleccionPasajero, $servicio, $cliente, $identificadorCliente, $cantidadAdultos, $cantidadNinos, $cantidadInfantes) {
         $this->agente = $agente;
         $this->solicitud = $solicitud;
         $this->fechaEmision = $fechaEmision;
@@ -37,7 +38,9 @@ class EmitirBoletoclass {
         $this->identificadorCliente = $identificadorCliente;
         $this->cantidadAdultos = $cantidadAdultos;
         $this->cantidadNinos = $cantidadNinos;
+        $this->cantidadInfantes = $cantidadInfantes;
     }
+
 
     public function getAgente() {
         return $this->agente;
@@ -157,6 +160,14 @@ class EmitirBoletoclass {
 
     public function setCantidadNinos($cantidadNinos) {
         $this->cantidadNinos = $cantidadNinos;
+    }
+
+    public function getCantidadInfantes() {
+        return $this->cantidadInfantes;
+    }
+
+    public function setCantidadInfantes($cantidadInfantes) {
+        $this->cantidadInfantes = $cantidadInfantes;
     }
 }
 ?>
