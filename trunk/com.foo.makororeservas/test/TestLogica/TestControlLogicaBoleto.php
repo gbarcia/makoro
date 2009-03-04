@@ -22,6 +22,8 @@ foreach ($Coleccion as $var) {
     $lugarSalida = $var->getSalida();
     $lugarLlegada = $var->getRetorno();
     $servicio = $var->getServicio();
+    $cliente = $var->getCliente();
+    $identificadorCliente = $var->getIdentificadorCliente();
 }
     echo "\n";
     echo 'Solicitud: ' . $solicitud;
@@ -31,6 +33,8 @@ foreach ($Coleccion as $var) {
     echo 'Agente: ' . $agente;
     echo '<p></p>';
     echo 'Servicio: ' . $servicio;
+    echo '<p></p>';
+    echo 'Cliente: ' . $cliente .'   |   '. 'C.I. o Rif: '. $identificadorCliente;
     echo '<p></p>';
     echo '<p></p>';
     echo '<p></p>';

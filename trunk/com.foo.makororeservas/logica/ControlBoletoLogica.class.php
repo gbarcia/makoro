@@ -88,7 +88,17 @@ class ControlBoletoLogicaclass {
         $numSolicitud = $rowRecurso[solicitud];
         $agente = $rowRecurso[agente];
         $servicio = $rowRecurso[nombreServicio];
+        $cliente = $rowRecurso[clienteNombre];
+        $rifAgencia = $rowRecurso[rifAgencia];
+        $particularCedula = $rowRecurso[particularCedula];
 
+        if($rifAgencia == null){
+        $identificadorCliente = $particularCedula;
+        }
+        if($particularCedula == null){
+        $identificadorCliente = $rifAgencia;
+        }
+        
         $vueloIdaInfo = $this->controlBD->consultarRutaFechaHoraVuelo($solicitud, "IDA");
         $rowVueloIdaInfo = mysql_fetch_array($vueloIdaInfo);
         $fechaIda = $rowVueloIdaInfo[fecha];
@@ -117,7 +127,7 @@ class ControlBoletoLogicaclass {
             $pasajero->setPasaporte($var->getPasaporte());
             $pasajero->setNacionalidad($var->getNacionalidad());
             $pasajero->setTipoPasajeroId($var->getTipoPasajeroId());
-            $Objeto = new EmitirBoletoclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $lugarSalida, $lugarLlegada, $pasajero, $servicio);
+            $Objeto = new EmitirBoletoclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $lugarSalida, $lugarLlegada, $pasajero, $servicio, $cliente, $identificadorCliente);
 
             $coleccionResultado ->append($Objeto);
         }
