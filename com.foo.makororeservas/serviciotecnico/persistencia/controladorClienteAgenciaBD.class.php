@@ -31,7 +31,6 @@ class controladorClienteAgenciaBDclass {
                           '".$clienteAgencia->getEstado()."',
                           '".$clienteAgencia->getCiudad()."',
                           '".$clienteAgencia->getPorcentajeComision()."')";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
 //        echo $resultado;
         return $resultado;
@@ -63,10 +62,10 @@ class controladorClienteAgenciaBDclass {
      */
     function consultarClienteAgenciaRifNombre ($busqueda) {
         $resultado = false;
-        $query = "SELECT CONCAT(ca.rif,' ',ca.nombre), ca.rif,ca.nombre
-                  FROM CLIENTE_AGENCIA ca
-                  WHERE (ca.nombre LIKE '".$busqueda."%'
-                  OR ca.rif LIKE '".$busqueda."%') LIMIT 0,5";
+        $query = "SELECT *
+                  FROM CLIENTE_AGENCIA 
+                  WHERE (nombre LIKE '".$busqueda."%'
+                  OR rif LIKE '".$busqueda."%') LIMIT 0,10";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -130,6 +129,20 @@ class controladorClienteAgenciaBDclass {
                   WHERE r.CLIENTE_AGENCIA_rif = ca.rif
                   AND   r.estado = 'PP'
                   AND   r.fecha BETWEEN '" . $fechaInicio . "' AND '" . $fechaFin . "'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function consultarTodasLasAgencias () {
+        $resultado = false;
+        $query = "SELECT * FROM CLIENTE_AGENCIA";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function consultarAgencia ($rif) {
+        $resultado = false;
+        $query = "SELECT * FROM CLIENTE_AGENCIA WHERE rif = '".$rif."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

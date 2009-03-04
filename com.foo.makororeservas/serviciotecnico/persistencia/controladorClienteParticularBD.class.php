@@ -136,5 +136,17 @@ class controladorClienteParticularBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function consultarTodoLosClientesPersonales () {
+        $query = "SELECT * FROM CLIENTE_PARTICULAR";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function consultarClienteParticular ($cedula) {
+        $query = "SELECT * FROM CLIENTE_PARTICULAR WHERE cedula = $cedula";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
