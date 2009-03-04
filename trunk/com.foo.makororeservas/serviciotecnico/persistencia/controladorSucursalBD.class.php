@@ -178,7 +178,7 @@ class controladorSucursalBDclass {
                   AND s.id = ".$idSucursal."
                   AND e.cedula = r.ENCARGADO_cedula
                   AND r.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'
-                  GROUP BY idSucursal
+                  GROUP BY cedula
                   ORDER BY cantidad desc";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;

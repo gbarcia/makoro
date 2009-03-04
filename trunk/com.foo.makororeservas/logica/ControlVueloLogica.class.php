@@ -249,5 +249,17 @@ class ControlVueloLogicaclass {
         return $recurso;
     }
 
+    /**
+     * Metodo para consultar los clientes con mas vuelos
+     * @param <type> $idSucursal El id de la sucursal a consultar
+     * @param <type> $fechaInicio La fecha de inicio a consultar
+     * @param <type> $fechaFin La fecha de fin a consultar
+     * @return <type> Los clientes con mas vuelos pagados
+     */
+    function consultarClientesMasVuelos($idSucursal,$fechaInicio,$fechaFin){
+        $recurso = $this->controlBD->consultarClienteConMasVuelos($idSucursal, $fechaInicio, $fechaFin);
+        return $recurso;
+    }
+
 }
 ?>

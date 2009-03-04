@@ -175,5 +175,27 @@ class controladorVueloBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    /**
+     * Metodo para consultar los clientes con mas reservas pagadas
+     * @param <type> $idSucursal El id de la sucursal a consultar
+     * @param <type> $fechaInicio La fecha de inicio a consultar
+     * @param <type> $fechaFin La fecha de fin a consultar
+     * @return <type> Los clientes con mas vuelos
+     */
+    function consultarClienteConMasVuelos($idSucursal,$fechaInicio,$fechaFin){
+        $query = "SELECT r.id,r.CLIENTE_PARTICULAR_cedula as particular,r.CLIENTE_AGENCIA_rif as agencia,
+                         if(r.CLIENTE_PARTICULAR_cedula is null,(SELECT ca.nombre FROM CLIENTE_AGENCIA ca WHERE r.CLIENTE_AGENCIA_rif = ca.rif),(SELECT CONCAT(cp.nombre,' ',cp.apellido) FROM CLIENTE_PARTICULAR cp WHERE r.CLIENTE_PARTICULAR_cedula = cp.cedula)) as cliente,
+                         if(r.CLIENTE_PARTICULAR_cedula is null,COUNT(r.CLIENTE_AGENCIA_rif),COUNT(r.CLIENTE_PARTICULAR_cedula)) as cantidad
+                  FROM SUCURSAL s, RESERVA r
+                  WHERE s.id = r.SUCURSAL_id
+                  AND s.id = ".$idSucursal."
+                  AND r.estado = 'PA'
+                  AND r.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'
+                  GROUP BY agencia,particular
+                  ORDER BY cantidad desc";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
