@@ -57,41 +57,63 @@ $vueloPrueba = new Vueloclass();
 //}
 ///*-------------------------------*/
 
-/* CONSULTAR DETALLES VUELO */
+///* CONSULTAR DETALLES VUELO */
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>id</th>';
+//echo '<th>tipoPasajero</th>';
+//echo '<th>pasajero</th>';
+//echo '<th>servicio</th>';
+//echo '<th>encargadoNombre</th>';
+//echo '<th>tipo</th>';
+//echo '<th>agencia</th>';
+//echo '<th>particular</th>';
+//echo '<th>clienteNombre</th>';
+//echo '<th>pago</th>';
+//echo '<th>banco</th>';
+//echo '<th>numeroTran</th>';
+//echo '<th>monto</th>';
+//echo '<th>boleto</th>';
+//echo '</tr>';
+//$resultado = $controlBD->consultarVuelosDetalles(9, 1);
+//    while ($row = mysql_fetch_array($resultado)) {
+//    echo '<tr>';
+//    echo '<td>' . $row[id] . '</td>';
+//    echo '<td>' . $row[tipoPasajero] . '</td>';
+//    echo '<td>' . $row[pasajero] . '</td>';
+//    echo '<td>' . $row[servicio] . '</td>';
+//    echo '<td>' . $row[encargadoNombre] . '</td>';
+//    echo '<td>' . $row[tipo] . '</td>';
+//    echo '<td>' . $row[agencia] . '</td>';
+//    echo '<td>' . $row[particular] . '</td>';
+//    echo '<td>' . $row[clienteNombre] . '</td>';
+//    echo '<td>' . $row[pago] . '</td>';
+//    echo '<td>' . $row[banco] . '</td>';
+//    echo '<td>' . $row[numeroTran] . '</td>';
+//    echo '<td>' . $row[monto] . '</td>';
+//    echo '<td>' . $row[boleto] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+///*-------------------------------*/
+
+/* CONSULTAR CIENTE CON MAS VUELOS */
 echo '<table border=1>';
 echo '<tr>';
 echo '<th>id</th>';
-echo '<th>tipoPasajero</th>';
-echo '<th>pasajero</th>';
-echo '<th>servicio</th>';
-echo '<th>encargadoNombre</th>';
-echo '<th>tipo</th>';
-echo '<th>agencia</th>';
 echo '<th>particular</th>';
-echo '<th>clienteNombre</th>';
-echo '<th>pago</th>';
-echo '<th>banco</th>';
-echo '<th>numeroTran</th>';
-echo '<th>monto</th>';
-echo '<th>boleto</th>';
+echo '<th>agencia</th>';
+echo '<th>cliente</th>';
+echo '<th>cantidad</th>';
 echo '</tr>';
-$resultado = $controlBD->consultarVuelosDetalles(9, 1);
+$resultado = $controlBD->consultarClientesMasVuelos(1, '2009-01-01', '2009-05-31');
     while ($row = mysql_fetch_array($resultado)) {
     echo '<tr>';
     echo '<td>' . $row[id] . '</td>';
-    echo '<td>' . $row[tipoPasajero] . '</td>';
-    echo '<td>' . $row[pasajero] . '</td>';
-    echo '<td>' . $row[servicio] . '</td>';
-    echo '<td>' . $row[encargadoNombre] . '</td>';
-    echo '<td>' . $row[tipo] . '</td>';
-    echo '<td>' . $row[agencia] . '</td>';
     echo '<td>' . $row[particular] . '</td>';
-    echo '<td>' . $row[clienteNombre] . '</td>';
-    echo '<td>' . $row[pago] . '</td>';
-    echo '<td>' . $row[banco] . '</td>';
-    echo '<td>' . $row[numeroTran] . '</td>';
-    echo '<td>' . $row[monto] . '</td>';
-    echo '<td>' . $row[boleto] . '</td>';
+    echo '<td>' . $row[agencia] . '</td>';
+    echo '<td>' . $row[cliente] . '</td>';
+    echo '<td>' . $row[cantidad] . '</td>';
     echo '</tr>';
 }
 echo '</table>';
