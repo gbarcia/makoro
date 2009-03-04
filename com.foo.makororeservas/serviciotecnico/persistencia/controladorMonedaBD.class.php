@@ -21,7 +21,6 @@ class controladorMonedaBDclass {
     function agregarMoneda($moneda) {
         $resultado = false;
         $query = "INSERT INTO MONEDA (tipo) VALUES ('".$moneda->getTipo()."')";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -45,7 +44,7 @@ class controladorMonedaBDclass {
  */
     function consultarMonedas() {
         $resultado = false;
-        $query = "SELECT * FROM MONEDA";
+        $query = "SELECT * FROM MONEDA ORDER BY id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

@@ -11,7 +11,6 @@ function cadenaTodasLasMonedas () {
     $resultado.= '<tr>';
     $resultado.= '<th>ID</th>';
     $resultado.= '<th>NOMBRE DE LA MONEDA</th>';
-    $resultado.= '<th>SITIO DE LLEGADA</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $controlLogica = new controladorMonedaBDclass();
@@ -36,7 +35,7 @@ function cadenaTodasLasMonedas () {
 function inicio () {
     $resultado = cadenaTodasLasMonedas();
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("gestionRutas", "innerHTML", $resultado);
+    $objResponse->addAssign("gestionMonedas", "innerHTML", $resultado);
     return $objResponse;
 }
 
@@ -59,14 +58,14 @@ function generarFormularioNuevaMoneda() {
       <td colspan="2">Todos los campos son requeridos</td>
       </tr>
     <tr class="r0">
-      <td>Sitio de salida</td>
+      <td>Nombre de la moneda</td>
       <td><label>
         <input type="text" name="moneda" id="moneda" size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
     <tr class="r0">
       <td height="26" colspan="2"><div align="center">
-        <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarMoneda(xajax.getFormValues(\'formNuevaRuta\'))" />
+        <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarMoneda(xajax.getFormValues(\'formNuevaMoneda\'))" />
       </div></td>
     </tr>
   </table>    <label></label></td>
@@ -76,10 +75,80 @@ function generarFormularioNuevaMoneda() {
     return $formulario;
 }
 
-function desplegarFormularioNuevaMoneda () {
-    $resultado =  generarFormularioNuevaMoneda();
+function desplegarFormularioNuevaMoneda() {
+    $resultado = generarFormularioNuevaMoneda();
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", $resultado);
+    return $objResponse;
+}
+
+function validarFormularioMoneda ($datos) {
+    $resultado = false;
+    if (is_string($datos[moneda]) && $datos[moneda] != "")
+    $resultado = true;
+
+    return $resultado;
+}
+
+function procesarMoneda ($datos) {
+    $objResponse = new xajaxResponse();
+    if (validarFormularioMoneda($datos)) {
+        $respuesta = "";
+        $moneda = new Monedaclass();
+        $moneda->setTipo($datos[moneda]);
+        $controlMoneda = new controladorMonedaBDclass();
+        $resultado =  $controlMoneda->agregarMoneda($moneda);
+        if ($resultado){
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Nueva MONEDA agregada con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique que la moneda no exista.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = cadenaTodasLasMonedas();
+        $objResponse->addAssign("gestionMonedas", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        $objResponse->addAssign("izq", "innerHTML", "");
+        }
+    else {
+        $respuesta .= '<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. No puede dejar el campo en blanco
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
+    return $objResponse;
+}
+
+function cerrarVentana() {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+    return $objResponse;
+}
+
+function borrarMensaje(){
+    $respuesta = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
 }
 ?>
