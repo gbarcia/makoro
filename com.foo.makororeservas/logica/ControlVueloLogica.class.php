@@ -78,39 +78,43 @@ class ControlVueloLogicaclass {
  * @param <String> $avionMatricula
  * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
  */
-    function vueloEspecificoAsientosReservados($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
+    function vueloEspecificoAsientosReservados($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad) {
         $coleccionResultado = new ArrayObject();
-        $recurso = $this->controlBD->consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada);
-        $operacion = mysql_fetch_array($recurso);
-        $idVuelo = $operacion[id];
-        $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
+        $recurso = $this->controlBD->consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad);
+        
+        while ($operacion = mysql_fetch_array($recurso)) {
+//            $operacion = mysql_fetch_array($recurso);
+            $idVuelo = $operacion[id];
+            $cantidadDisponible = $operacion[quedan];
+    //        $cantidadDisponible = $this->calculoAsientosDisponibles($idVuelo);
+    //
+    //        if($cantidadDisponible == 0){
+    //            $cantidadDisponible = $operacion[asientos];
+    //        }
 
-        if($cantidadDisponible == 0){
-            $cantidadDisponible = $operacion[asientos];
+            $controlVueloPersonal = new controladorVueloPersonalBDclass();
+            $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
+            $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalCopiloto($idVuelo);
+            $rowVueloPiloto = mysql_fetch_array($vueloTripulacionPiloto);
+            $rowVueloCopiloto = mysql_fetch_array($vueloTripulacionCopiloto);
+            $piloto = $rowVueloPiloto[tripulante];
+            $copiloto = $rowVueloCopiloto[tripulante];
+
+            if($piloto == ''||$copiloto == ''){
+                $piloto = "No hay piloto registrado";
+                $copiloto = "No hay copiloto registrado";
+            }
+
+            $vuelo = new Vueloclass();
+            $vuelo->setId($operacion[id]);
+            $vuelo->setFecha($operacion[fecha]);
+            $vuelo->setHora($operacion[hora]);
+            $vuelo->setRutaSitioSalida($operacion[abreviaturaSalida]);
+            $vuelo->setRutaSitioLlegada($operacion[abreviaturaLlegada]);
+            $vuelo->setAvionMatricula($operacion[avionMatricula]);
+            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto);
+            $coleccionResultado ->append($Objeto);
         }
-
-        $controlVueloPersonal = new controladorVueloPersonalBDclass();
-        $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
-        $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalCopiloto($idVuelo);
-        $rowVueloPiloto = mysql_fetch_array($vueloTripulacionPiloto);
-        $rowVueloCopiloto = mysql_fetch_array($vueloTripulacionCopiloto);
-        $piloto = $rowVueloPiloto[tripulante];
-        $copiloto = $rowVueloCopiloto[tripulante];
-
-        if($piloto == ''||$copiloto == ''){
-            $piloto = "No hay piloto registrado";
-            $copiloto = "No hay copiloto registrado";
-        }
-
-        $vuelo = new Vueloclass();
-        $vuelo->setId($operacion[id]);
-        $vuelo->setFecha($operacion[fecha]);
-        $vuelo->setHora($operacion[hora]);
-        $vuelo->setRutaSitioSalida($operacion[abreviaturaSalida]);
-        $vuelo->setRutaSitioLlegada($operacion[abreviaturaLlegada]);
-        $vuelo->setAvionMatricula($operacion[avionMatricula]);
-        $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto);
-        $coleccionResultado ->append($Objeto);
         return $coleccionResultado;
     }
 
@@ -244,8 +248,8 @@ class ControlVueloLogicaclass {
      * @param <type> $idSucursal Identificador de la sucursal a consultar
      * @return <type> Los detalles del vuelo especificado
      */
-    function consultarVuelosDetalles($idVuelo,$idSucursal){
-        $recurso = $this->controlBD->consultarDetallesVuelo($idVuelo, $idSucursal);
+    function consultarVuelosDetalles($idVuelo){
+        $recurso = $this->controlBD->consultarDetallesVuelo($idVuelo);
         return $recurso;
     }
 

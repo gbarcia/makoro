@@ -53,15 +53,20 @@ class controladorVueloBDclass {
  * @param <VUELO> $vuelo
  * @return <recurso>
  */
-    function consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
+    function consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad) {
         $resultado = false;
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
-                         ru.abreviaturaLlegada abreviaturaLlegada
-                  FROM VUELO v, RUTA ru, AVION a
+                         ru.abreviaturaLlegada abreviaturaLlegada,a.asientos-COUNT(vr.RESERVA_id) as quedan";
+                         if($capacidad != ""){
+                             $query .= ",if(a.asientos-(COUNT(vr.RESERVA_id)+".$capacidad.")>=0,TRUE,FALSE) as disponibilidad ";
+                         }
+                  $query .= "FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
                   AND v.AVION_matricula = a.matricula
+                  AND vr.VUELO_id = v.id
+                  AND r.id = vr.RESERVA_id
                   AND a.habilitado = 1 ";
                   if($hora != "")
                   $query.= "AND v.hora = '".$hora."'";
@@ -73,6 +78,7 @@ class controladorVueloBDclass {
                   $query.= "AND ru.sitioLlegada = '".$rutaSitioLlegada."'";
                   if($avionMatricula != "")
                   $query.= "AND a.matricula = '".$avionMatricula."'";
+                  $query.= " GROUP BY v.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -140,7 +146,7 @@ class controladorVueloBDclass {
      * @param <type> $idSucursal El identificador de la sucursal a consultar
      * @return <type> Los detalles de un vuelo
      */
-    function consultarDetallesVuelo($idVuelo,$idSucursal){
+    function consultarDetallesVuelo($idVuelo){
         $query = "SELECT R.id,TP.id as tipoPasajero,
                          IF(R.PASAJERO_id is not null,
                             (SELECT CONCAT(P.cedula,' ',P.nombre,' ',P.apellido)
@@ -166,7 +172,6 @@ class controladorVueloBDclass {
                   AND TP.id = P.TIPO_PASAJERO_id
                   AND TS.id = R.TIPO_SERVICIO_id
                   AND S.id = R.SUCURSAL_id
-                  AND S.id = ".$idSucursal."
                   AND E.cedula = R.ENCARGADO_cedula
                   AND (R.CLIENTE_PARTICULAR_cedula = CP.cedula
                        OR R.CLIENTE_AGENCIA_rif = CA.rif)
