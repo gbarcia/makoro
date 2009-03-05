@@ -12,7 +12,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Encarg
 
 function generarComboBoxLugar(){
     $objResponse = new xajaxResponse();
-    $combo = 'Ruta: <select name="ruta"><option value="">TODAS</option>';
+    $combo = '<select name="ruta"><option value="">TODAS</option>';
     $controladorRutas = new ControlRutaLogicaclass();
     $recurso = $controladorRutas->consultarTodasLasRutas();
     foreach ($recurso as $row) {

@@ -47,6 +47,8 @@ body{
     margin-bottom:inherit;
 }
 .panelSesion{
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
     position:absolute;
     width: auto;
     height: auto;

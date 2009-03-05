@@ -49,50 +49,26 @@ $xajax->processRequests();
                 <div id="PanelVuelos" class="CollapsiblePanel">
                     <div class="CollapsiblePanelTab" tabindex="0">Por Vuelos</div>
                     <div class="CollapsiblePanelContent">
-                        <table border="0" width="100">
+                        <table width="100%" border="0">
                             <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
+                                <td class="cleanTd">Fecha de inicio:</td>
+                                <td class="cleanTd"><input name="fechaInicio" type="text" id="f_date_c" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
+                                <td class="cleanTd">Ruta:</td>
+                                <td class="cleanTd"><div id="comboBoxRuta">
+                                        <script language="javascript">
+                                            xajax_generarComboBoxLugar();
+                                        </script>
+                                </div></td>
                             </tr>
                             <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
+                                <td class="cleanTd">Fecha de fin:</td>
+                                <td class="cleanTd"><input name="fechaFin" type="text" id="f_date_c2" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c2" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
+                                <td class="cleanTd"></td>
+                                <td class="cleanTd"></td>
                             </tr>
                         </table>
-
-
-
-
-
-
-
-                        <div>Fecha de inicio: <input name="fechaInicio" type="text" id="f_date_c" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></div>
-                        <div>Fecha de fin: <input name="fechaFin" type="text" id="f_date_c2" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c2" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></div>
-                        <div id="comboBoxRuta">
-                            <script language="javascript">
-                                xajax_generarComboBoxLugar();
-                            </script>
-                        </div>
-
                     </div>
                 </div>
-
                 <div id="PanelReservas" class="CollapsiblePanel">
                     <div class="CollapsiblePanelTab" tabindex="0">Por Reservas</div>
                     <div class="CollapsiblePanelContent">
