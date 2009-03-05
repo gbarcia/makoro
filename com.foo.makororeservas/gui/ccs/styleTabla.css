@@ -18,6 +18,20 @@ Estilo para tablas de resultados
     overflow-x: hidden;
 }
 
+/* Filtros */
+.formTable {
+    width: auto;
+    border: none;
+    background-color: none;
+}
+.filterTd {
+    color: none;
+    padding-left: 2px;
+    padding-right: 2px;
+    text-align: left;
+    border: none;
+}
+
 /* Tablas con scroll */
 .tableContainer {
     width: 100%;		/* table width will be 99% of this*/
