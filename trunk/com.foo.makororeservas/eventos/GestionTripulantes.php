@@ -33,7 +33,7 @@ function autoSugerir($busqueda){
     $resultado.= '<th>MARCAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
-    if (isset($busqueda)) {
+       if (isset($busqueda)) {
         if ($numFilas > 0){ //Si hay coincidencias
             $color = false;
             while ($row = mysql_fetch_array($recurso)) {
