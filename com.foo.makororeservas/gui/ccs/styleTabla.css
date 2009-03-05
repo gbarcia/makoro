@@ -6,6 +6,38 @@ Description:
 Estilo para tablas de resultados
 */
 @charset "utf-8";
+/* Genericos */
+thead tr {
+    position:relative;
+    top: expression(offsetParent.scrollTop); /*IE5+ only*/
+}
+thead td, thead th {
+    padding-left: 2px;
+    padding-right: 2px;
+    text-align: left;
+    font-size: 14px;
+    background-color: #067AC2;
+    color: #FFFFFF;
+    font-weight: bold;
+    border-top: solid 1px #d8d8d8;
+    border-bottom: solid 1px #d8d8d8;
+    border-left: solid 1px #d8d8d8;
+}
+table tfoot tr { /*idea of Renato Cherullo to help IE*/
+    position: relative;
+    overflow-x: hidden;
+    top: expression(parentNode.parentNode.offsetHeight >=
+    offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
+}
+tfoot td	{
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #BCE0E7;
+    color: #FFFFFF;
+    border-top: solid 1px #d8d8d8;
+}
+
 /* Formularios */
 .formTable {
     width: auto;
@@ -16,6 +48,14 @@ Estilo para tablas de resultados
     overflow: auto;
     height: auto;
     overflow-x: hidden;
+}
+.formTable>tbody>tr>td	{
+    color: #000;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 12px;
+    text-align: left;
+    border: solid 1px #d8d8d8;
 }
 
 /* Tablas con scroll */
@@ -36,20 +76,6 @@ Estilo para tablas de resultados
     height: 250px;
     overflow-x: hidden;
 }
-thead tr	{
-    position:relative;
-    top: expression(offsetParent.scrollTop); /*IE5+ only*/
-}
-thead td, thead th {
-    padding-left: 2px;
-    padding-right: 2px;
-    text-align: left;
-    font-size: 14px;
-    background-color: #067AC2;
-    color: #FFFFFF;
-    font-weight: bold;
-    border-top: solid 1px #d8d8d8;
-}
 .scrollTable>tbody>tr>td	{
     color: #000;
     padding-left: 2px;
@@ -59,26 +85,20 @@ thead td, thead th {
     border-bottom: solid 1px #d8d8d8;
     border-left: solid 1px #d8d8d8;
 }
+.scrollTable>tbody>tr>td:last-child {
+    padding-right: 20px; /*prevent Mozilla scrollbar from hiding cell content*/
+}
+
+/* Colores Estados */
 .r1 {
     background-color: #F4F4F4;
 }
 .r0 {
     background-color: #E9E9E9;
 }
-table tfoot tr { /*idea of Renato Cherullo to help IE*/
-    position: relative;
-    overflow-x: hidden;
-    top: expression(parentNode.parentNode.offsetHeight >=
-    offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
+.confirmado {
+    background-color: #AACEFF;
 }
-tfoot td	{
-    text-align: center;
-    font-size: 13px;
-    font-weight: bold;
-    background-color: #25A5DE;
-    color: #FFFFFF;
-    border-top: solid 1px #d8d8d8;
-}
-td:last-child {
-    padding-right: 20px; /*prevent Mozilla scrollbar from hiding cell content*/
+.porPagar {
+    background-color: #FBC1AE;
 }
