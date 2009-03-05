@@ -124,11 +124,12 @@ class controladorClienteAgenciaBDclass {
     function consultarClientesAgenciasPorPagar($fechaInicio, $fechaFin){
         $resultado = false;
         $query = "SELECT ca.rif,ca.nombre,ca.telefono,ca.estado,ca.ciudad,
-                         ca.direccion,ca.porcentajeComision,r.fecha
+                         ca.direccion,ca.porcentajeComision,r.fecha, COUNT(r.CLIENTE_AGENCIA_rif) cn
                   FROM CLIENTE_AGENCIA ca, RESERVA r
                   WHERE r.CLIENTE_AGENCIA_rif = ca.rif
                   AND   r.estado = 'PP'
-                  AND   r.fecha BETWEEN '" . $fechaInicio . "' AND '" . $fechaFin . "'";
+                  AND   r.fecha BETWEEN '" . $fechaInicio . "' AND '" . $fechaFin . "'
+                  GROUP BY ca.rif";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
