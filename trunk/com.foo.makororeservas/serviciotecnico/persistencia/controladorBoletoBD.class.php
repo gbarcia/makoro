@@ -98,7 +98,7 @@ class controladorBoletoBDclass {
  * @param <String> $tipoPasajero
  * @return <recurso> recurso con la cantidad de adultos o niños
  */
-    function cantidadAdultosNinos($solicitud, $tipoPasajero){
+    function cantidadAdultosNinos($solicitud, $tipoPasajero, $tipoVuelo){
         $resultado = false;
         $query = "SELECT COUNT(TIPO_PASAJERO_id) cantidad, t.porcentajeDescuento descuento
                   FROM RESERVA r, PASAJERO p, TIPO_PASAJERO t, VUELO_RESERVA vr
@@ -106,6 +106,7 @@ class controladorBoletoBDclass {
                   AND r.PASAJERO_id = p.id
                   AND p.TIPO_PASAJERO_id = '".$tipoPasajero."'
                   AND p.TIPO_PASAJERO_id = t.id
+                  AND vr.tipo = '".$tipoVuelo."'
                   AND vr.RESERVA_id = r.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;

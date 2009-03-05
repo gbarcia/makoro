@@ -217,7 +217,7 @@ class ControlPagoLogicaclass {
         $subtotalAdultosLlegada = $this->calculoSubtotalPasajeAdultosLlegada($cantidadAdultosLlegada, $costoLlegada);
         $subtotalAdultos = $subtotalAdultosSalida + $subtotalAdultosLlegada;
 
-        $infantes = $this->controlBoletoBD->cantidadAdultosNinos($solicitud, "INF");
+        $infantes = $this->controlBoletoBD->cantidadAdultosNinos($solicitud, "INF", "IDA");
         $rowCantidadInfantes = mysql_fetch_array($infantes);
         $cantidadInfantes = $rowCantidadInfantes[cantidad];
 

@@ -8,7 +8,7 @@ $controlBD = new ControlBoletoLogicaclass();
 $boletoPrueba = new Boletoclass();
 
 /* GENERAR BOLETO POR SOLICITUD */
-$solicitud = "11M5";
+$solicitud = "34FN";
 
 $Coleccion = $controlBD->informacionGeneralReciboBoleto($solicitud);
 foreach ($Coleccion as $var) {
