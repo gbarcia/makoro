@@ -48,8 +48,6 @@ Estilo para los mensajes de informacion.
     width: 100%;
 }
 .botonCerrar{
-    background-color: #AACEFF;
-    border: 1px solid #4092FF;
     position:absolute;
     width: 16px;
     height: 16px;

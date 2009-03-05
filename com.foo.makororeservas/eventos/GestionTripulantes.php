@@ -16,7 +16,7 @@ function autoSugerir($busqueda){
     $recurso = $controlLogica->consultarTripulanteCedulaNombreApellido($busqueda);
     $numFilas = mysql_num_rows($recurso);
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>CEDULA</th>';
@@ -105,7 +105,7 @@ function autoSugerir($busqueda){
 function autosugerirInicio ($reg1,$tamPag) {
     $controlLogica = new ControlTripulanteLogicaclass();
     echo '<form id="formularioEditarMarcar">';
-    echo '<table cellspacing="0">';
+    echo '<table class="scrollTable" cellspacing="0">';
     echo '<thead>';
     echo '<tr>';
     echo '<th>CEDULA</th>';
@@ -172,7 +172,7 @@ function inabilitado ($ina) {
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
-        $resultado.= '<table cellspacing="0">';
+        $resultado.= '<table class="scrollTable" cellspacing="0">';
         $resultado.= '<thead>';
         $resultado.= '<tr>';
         $resultado.= '<th>CEDULA</th>';
@@ -224,7 +224,7 @@ function inabilitado ($ina) {
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
-        $resultado.= '<table cellspacing="0">';
+        $resultado.= '<table class="scrollTable" cellspacing="0">';
         $resultado.= '<thead>';
         $resultado.= '<tr>';
         $resultado.= '<th>CEDULA</th>';
@@ -430,7 +430,7 @@ function actualizarTablaPrinicipal () {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>CEDULA</th>';
