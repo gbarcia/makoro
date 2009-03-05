@@ -2,103 +2,84 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTipoCargoBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/TipoCargo.class.php';
 
-/**
- * Metodo para consultar todos los cargos registrados en el sistema
- * @return <type> objeto de respuesta xajax
- */
-function consultarTodosLosTiposCargo() {
-    $controlPersistencia = new controladorTipoCargoBDclass();
-    $objResponse = new xajaxResponse();
+function cadenaTodasLosCargos () {
     $resultado = "";
-    $recurso = $controlPersistencia->obtenerTodosLosTiposCargo();
-    $numFilas = mysql_num_rows($recurso);
-    $resultado .= '<form id="formularioMostrarCargos">';
-    $resultado.= '<table class="tabla">';
-    $resultado.= '<tr class="titulo">';
-    $resultado.= '<th>CARGO</th>';
+    $objResponse = new xajaxResponse();
+    $resultado = '<form id="formularioEditarMarcar">';
+    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<thead>';
+    $resultado.= '<tr>';
+    $resultado.= '<th>IDENTIFICADOR</th>';
+    $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>DESCRIPCION</th>';
-    $resultado.= '<th>SUELDO</th>';
+    $resultado.= '<th>SUELDO</th>';;
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '</tr>';
+    $resultado.= '</thead>';
+    $controlLogica = new controladorTipoCargoBDclass();
+    $recurso = $controlLogica->obtenerTodosLosTiposCargo();
+    $color = false;
     while ($row = mysql_fetch_array($recurso)) {
+        if ($color){
+            $resultado.= '<tr class="r0">';
+        } else {
+            $resultado.= '<tr class="r1">';
+        }
+        $resultado.= '<td>' . $row[id] . '</td>';
         $resultado.= '<td>' . $row[cargo]. '</td>';
         $resultado.= '<td>' . $row[descripcion]. '</td>';
         $resultado.= '<td>' . $row[sueldo]. '</td>';
-        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar('.$row[id].')"/></td>';
+        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_desplegarFormularioEditar('.$row[id].')"/></td>';
         $resultado.= '</tr>';
-    }
-    $resultado.= '</table>';
-    $resultado.= '</form>';
-    $objResponse->addAssign("gestionTipoCargo", "innerHTML", "$resultado");
-
-    return $objResponse;
-}
-
-/**
- * Metodo para obtener todos los cargos del sistema
- * @return <type> Todos los cargos del sistema
- */
-function obtenerCargos(){
-    $controlPersistencia = new controladorTipoCargoBDclass();
-    $recurso = $controlPersistencia->obtenerTodosLosTiposCargo();
-    $numFilas = mysql_num_rows($recurso);
-    $resultado .= '<form id="formularioMostrarCargos">';
-    $resultado.= '<table class="tabla">';
-    $resultado.= '<tr class="titulo">';
-    $resultado.= '<th>CARGO</th>';
-    $resultado.= '<th>DESCRIPCION</th>';
-    $resultado.= '<th>SUELDO</th>';
-    $resultado.= '<th>EDITAR</th>';
-    $resultado.= '</tr>';
-    while ($row = mysql_fetch_array($recurso)) {
-        $resultado.= '<td>' . $row[cargo]. '</td>';
-        $resultado.= '<td>' . $row[descripcion]. '</td>';
-        $resultado.= '<td>' . $row[sueldo]. '</td>';
-        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_mostrarFormularioEditar('.$row[id].')"/></td>';
-        $resultado.= '</tr>';
+        $color = !$color;
     }
     $resultado.= '</table>';
     $resultado.= '</form>';
     return $resultado;
 }
 
-/**
- * Metodo para construir el formulario para editar un cargo
- * @param <type> $idCargo El cargo a editar
- * @return <type> El formulario con los cargos del sistema
- */
-function editarCargo($idCargo){
-    $control = new controladorTipoCargoBDclass();
-    $recurso = $control->obtenerCargoID($idCargo);
-    $row = mysql_fetch_array($recurso);
-    $contenido = '<form id="formularioEditar">
-  <table cellpadding="2" cellspacing="1">
-    <tr class="titulo">
-      <td>EDITAR SUELDO</td>
-      <td><div align="right">
-        <label>
-        <input type="submit" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentana()" />
-        </label>
-      </div></td>
+function inicio () {
+    $resultado = cadenaTodasLosCargos();
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("gestion", "innerHTML", $resultado);
+    return $objResponse;
+}
+
+function crearFormularioNuevoCargo () {
+    $contenido = '<form id="formNuevoCargo">
+  <table class="formTable" cellspacing="0">
+    <tr>
+        <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">
+            NUEVO CARGO
+            <div class="botonCerrar">
+            <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>
+        </td>
+        </thead>
     </tr>
     <tr class="r1">
-      <td>Cargo</td>
+      <td>Nombre</td>
       <td><label>
-        <input type="text" name="cargo" id="cargo" size="30" readonly="readonly" value="'.$row[cargo].'">
+        <input type="text" name="nombre" id="nombre" size="30" onKeyUp="this.value=this.value.toUpperCase();">
       </label></td>
     </tr>
     <tr class="r0">
+      <td>Descripcion</td>
+      <td><label>
+        <input type="text" name="descripcion" id="descripcion" onKeyUp="this.value=this.value.toUpperCase();" size="30">
+      </label></td>
+    </tr>
+    <tr class="r1">
       <td>Sueldo</td>
       <td><label>
-        <input type="text" name="sueldo" id="sueldo" size="30" value="'.$row[sueldo].'">
+        <input type="text" name="sueldo" id="sueldo" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
     <tr class="r0">
-      <td>&nbsp;</td>
-      <td><label></label></td>
-    </tr>
-    <tr class="r0">
-      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" onclick="xajax_procesarCargo(xajax.getFormValues(\'formularioEditar\'),'.$row[id].')" value="EDITAR">
+      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarCargo(xajax.getFormValues(\'formNuevoCargo\'))">
             </div>
       </label></td>
     </tr>
@@ -107,120 +88,188 @@ function editarCargo($idCargo){
     return $contenido;
 }
 
-/**
- * Metodo para mostrar el formulario con los cargos
- * @param <type> $idCargo El cargo a editar
- * @return <type> xajax response
- */
-function mostrarFormularioEditar($idCargo){
-    $resultado = editarCargo($idCargo);
+function desplegarFormularioNuevoCargo () {
+    $resultado = crearFormularioNuevoCargo();
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("derecha", "innerHTML", "$resultado");
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
     return $objResponse;
 }
 
-/**
- * Metodo para cerrar la ventana de los formularios
- * @return <ajaxResponse> objeto de respuesta para modificar el div
- */
-function cerrarVentana() {
-    $resultado = "";
-    $objResponse = new xajaxResponse();
-    $objResponse->addAssign("derecha", "innerHTML", $resultado);
-    return $objResponse;
+function validarCargo ($datos) {
+    $resultado = false;
+    if (is_string($datos[nombre]) && $datos[nombre] != "")
+    $resultado = true;
+    else return false;
+    if (is_numeric($datos[sueldo]) && $datos[sueldo] != "")
+    $resultado = true;
+    else return false;
+
+    return $resultado;
 }
 
-/**
- * Metodo para editar un sueldo
- * @param <type> $datos Campos editados
- * @param <type> $idCargo El identificador del cargo que se quiere editar
- * @return <type> xajax response
- */
-function procesarCargo($datos,$idCargo){
+function procesarCargo ($datos) {
     $objResponse = new xajaxResponse();
-    $objResponse->addConfirmCommands(10, "Esta seguro que desea modificar el sueldo?");
-    $control = new controladorTipoCargoBDclass();
-    $resultado = $control->actualizarSueldoTipoCargo($idCargo, $datos[sueldo]);
-    if ($resultado==true){
-        $mensaje = 'Sueldo actualizado con exito';
-    }else{
-        $mensaje = 'No se pudo actualizar el sueldo';
+    if (validarCargo($datos)) {
+        $respuesta = "";
+        $control = new controladorTipoCargoBDclass();
+        $tipoCargo = new TipoCargoclass();
+        $tipoCargo->setCargo($datos[nombre]);
+        $tipoCargo->setDescripcion($datos[descripcion]);
+        $tipoCargo->setSueldo($datos[sueldo]);
+        $resultado = $control->agregarTipoCargo($tipoCargo);
+        $objResponse = new xajaxResponse();
+        if ($resultado){
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Nueva CARGO agregado con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique que el cargo no exista.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = cadenaTodasLosCargos();
+        $objResponse->addAssign("gestion", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        if ($resultado)
+        $objResponse->addAssign("izq", "innerHTML", "");
+        }
+    else {
+        $respuesta .= '<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. El campo de sueldo debe ser numerico.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
-    $objResponse->addAssign("mensaje", "innerHTML", $mensaje);
-    $actualizar = obtenerCargos();
-    $objResponse->addAssign("gestionTipoCargo", "innerHTML", $actualizar);
-
     return $objResponse;
 }
 
-function insertarNuevoCargo(){
-    $contenido ='<form id="formularioAgregar">
-                   <table cellpadding="2" cellspacing="1">
-                     <tr class="titulo">
-                       <td>AGREGAR CARGO</td>
-                       <td><div align="right">
-                         <label>
-                         <input type="submit" name="cerrar" id="cerrar" value="X" accesskey="X" onclick=""xajax_cerrarVentana()"/>
-                         </label>
-                       </div></td>
-                     </tr>
-                     <tr class="r1">
-                       <td>Cargo</td>
-                       <td><label>
-                         <input type="text" name="cargo" id="cargo" size="30" onKeyUp="this.value=this.value.toUpperCase();">
-                       </label></td>
-                     </tr>
-                     <tr class="r0">
-                       <td>Descripcion</td>
-                       <td><label>
-                         <input type="text" name="descripcion" id="descripcion" size="30" onKeyUp="this.value=this.value.toUpperCase();">
-                       </label></td>
-                     </tr>
-                     <tr class="r1">
-                       <td>Sueldo</td>
-                       <td><label>
-                         <input type="text" name="sueldo" id="sueldo" size="30">
-                       </label></td>
-                     </tr>
-                     <tr class="r1">
-                       <td>&nbsp;</td>
-                       <td><label></label></td>
-                     </tr>
-                     <tr class="r0">
-                       <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" onclick="xajax_agregarCargo(xajax.getFormValues(\'formularioAgregar\'))" value="AGREGAR">
-                             </div>
-                       </label></td>
-                     </tr>
-                   </table>
-                 </form>';
+function crearFormularioEditarCargo ($id) {
+    $control = new controladorTipoCargoBDclass();
+    $recurso = $control->obtenerCargoID($id);
+    $row = mysql_fetch_array($recurso);
+    $contenido = '<form id="formNuevoCargo">
+  <table class="formTable" cellspacing="0">
+    <tr>
+        <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">
+            EDITAR CARGO <input type="hidden" name="id" id="id" value= "'.$row[id].'" />
+            <div class="botonCerrar">
+            <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>
+        </td>
+        </thead>
+    </tr>
+    <tr class="r1">
+      <td>Nombre</td>
+      <td><label>
+        <input type="text" name="nombre" value="'.$row[cargo].'" READONLY id="nombre" size="30" onKeyUp="this.value=this.value.toUpperCase();">
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td>Descripcion</td>
+      <td><label>
+        <input type="text" name="descripcion" value="'.$row[descripcion].'" READONLY id="descripcion" onKeyUp="this.value=this.value.toUpperCase();" size="30">
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>Sueldo</td>
+      <td><label>
+        <input type="text" name="sueldo" id="sueldo" value="'.$row[sueldo].'" onKeyUp="this.value=this.value.toUpperCase();" size="30">
+      </label></td>
+    </tr>
+    <tr class="r0">
+      <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarCargoEditar(xajax.getFormValues(\'formNuevoCargo\'))">
+            </div>
+      </label></td>
+    </tr>
+  </table>
+</form>';
     return $contenido;
 }
 
-function mostrarFormularioAgregar(){
-    $resultado = insertarNuevoCargo();
+function desplegarFormularioEditar ($id) {
+    $resultado = crearFormularioEditarCargo($id);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("izquierda", "innerHTML", "$resultado");
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
     return $objResponse;
 }
 
-
-function agregarCargo($datos){
-    $control = new controladorTipoCargoBDclass();
-    $tipoCargo = new TipoCargoclass();
-    $tipoCargo->setCargo($datos[cargo]);
-    $tipoCargo->setDescripcion($datos[descripcion]);
-    $tipoCargo->setSueldo($datos[sueldo]);
-    $resultado = $control->agregarTipoCargo($tipoCargo);
-    if ($resultado==true){
-        $mensaje = 'Cargo insertado con exito';
-    }else{
-        $mensaje = 'No se pudo insertar el cargo';
-    }
+function procesarCargoEditar ($datos) {
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("mensaje", "innerHTML", $mensaje);
-    $actualizar = obtenerCargos();
-    $objResponse->addAssign("gestionTipoCargo", "innerHTML", $actualizar);
+    if (validarCargo($datos)) {
+        $respuesta = "";
+        $control = new controladorTipoCargoBDclass();
+        $resultado = $control->actualizarSueldoTipoCargo($datos[id], $datos[sueldo]);
+        $objResponse = new xajaxResponse();
+        if ($resultado){
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Cargo actualizado con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Contacte con el equipo de soporte.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = cadenaTodasLosCargos();
+        $objResponse->addAssign("gestion", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        if ($resultado)
+        $objResponse->addAssign("izq", "innerHTML", "");
+        }
+    else {
+        $respuesta .= '<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. El campo de sueldo debe ser numerico.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
+    return $objResponse;
+}
 
+function cerrarVentana() {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+    return $objResponse;
+}
+
+function borrarMensaje(){
+    $respuesta = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
 }
 
