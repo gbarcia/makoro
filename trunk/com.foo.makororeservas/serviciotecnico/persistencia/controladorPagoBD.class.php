@@ -26,7 +26,8 @@ class controladorPagoBDclass {
                                                        ".$pago->getMonto().",
                                                        '".$pago->getNombreBanco()."',
                                                        ".$pago->getNumeroTransaccion().",
-                                                       '".$pago->getMonedaId()."')";
+                                                       ".$pago->getMonedaId().")";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -96,6 +97,20 @@ class controladorPagoBDclass {
                   AND re.CLIENTE_AGENCIA_rif = '" . $rif . "'
                   AND re.estado = 'CA'
                   AND re.fecha = '" . $fecha . "'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function cantidadAdultosNinosPorSolicitud($solicitud, $tipoPasajero, $tipoVuelo){
+        $resultado = false;
+        $query = "SELECT COUNT(TIPO_PASAJERO_id) cantidad, t.porcentajeDescuento descuento
+                  FROM RESERVA r, PASAJERO p, TIPO_PASAJERO t, VUELO_RESERVA vr
+                  WHERE r.solicitud = '" . $solicitud . "'
+                  AND r.PASAJERO_id = p.id
+                  AND p.TIPO_PASAJERO_id = '".$tipoPasajero."'
+                  AND p.TIPO_PASAJERO_id = t.id
+                  AND vr.RESERVA_id = r.id
+                  AND vr.tipo = '".$tipoVuelo."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

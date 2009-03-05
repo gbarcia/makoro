@@ -1,16 +1,17 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlBoletoLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Boleto.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/EmitirBoleto.class.php';
-
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/InformacionGeneralBoletoRecibo.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/DetallesEmitirBoleto.class.php';
 
 $controlBD = new ControlBoletoLogicaclass();
+$controlPagoLogica = new ControlPagoLogicaclass();
 $boletoPrueba = new Boletoclass();
 
-/* CONSULTAR BOLETO POR SOLICITUD */
+/* GENERAR BOLETO POR SOLICITUD */
 $solicitud = "11M5";
 
-$Coleccion = $controlBD->emitirBoleto($solicitud);
+$Coleccion = $controlBD->informacionGeneralReciboBoleto($solicitud);
 foreach ($Coleccion as $var) {
     $agente = $var->getAgente();
     $solicitud = $var->getSolicitud();
@@ -24,6 +25,9 @@ foreach ($Coleccion as $var) {
     $servicio = $var->getServicio();
     $cliente = $var->getCliente();
     $identificadorCliente = $var->getIdentificadorCliente();
+}
+$Coleccion = $controlBD->detallesEmitirBoleto($solicitud);
+foreach ($Coleccion as $var) {
     $cantidadAdultos = $var->getCantidadAdultos();
     $cantidadNinos = $var->getCantidadNinos();
     $cantidadInfantes = $var->getCantidadInfantes();
@@ -84,7 +88,7 @@ echo '<table border=1>';
     echo '<th>Tipo</th>';
     echo '</tr>';
 
-    $ColeccionPasajeros = $controlBD->emitirBoleto($solicitud);
+    $ColeccionPasajeros = $controlBD->informacionGeneralReciboBoleto($solicitud);
 foreach ($ColeccionPasajeros as $var) {
     $recursoDetalles = $var->getColeccionPasajero();
 
