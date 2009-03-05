@@ -1,10 +1,12 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlPagoLogica.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlBoletoLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pago.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/InformacionGeneralBoletoRecibo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/DetallesReciboDePago.class.php';
 
 $controlBD = new ControlPagoLogicaclass();
+$controlBoletoLogica = new ControlBoletoLogicaclass();
 $pagoPrueba = new Pagoclass();
 
 ///* AGREGAR PAGO */
@@ -18,9 +20,9 @@ $pagoPrueba = new Pagoclass();
 ///*---------------------------*/
 
 /* GENERAR RECIBO DE PAGO POR SOLICITUD */
-$solicitud = "34FN";
+$solicitud = "TY78";
 
-$Coleccion = $controlBD->informacionRecibo($solicitud);
+$Coleccion = $controlBoletoLogica->informacionGeneralReciboBoleto($solicitud);
 foreach ($Coleccion as $var) {
     $agente = $var->getAgente();
     $solicitud = $var->getSolicitud();
@@ -67,8 +69,8 @@ echo '<p></p>';
 echo 'Agente: ' . $agente;
 echo '<p></p>';
 echo 'Servicio: ' . $servicio.'   |   '.'ADL: '.$cantidadAdultosSalida.'  '
-                                       .'CHD: '.$cantidadNinosSalida.'  '
-                                       .'INF: '.$cantidadInfantes;
+.'CHD: '.$cantidadNinosSalida.'  '
+.'INF: '.$cantidadInfantes;
 echo '<p></p>';
 echo 'Cliente: ' . $cliente .'   |   '. 'C.I. o Rif: '. $identificadorCliente;
 echo '<p></p>';
@@ -184,7 +186,7 @@ echo '<th>Pasajeros</th>';
 echo '<th>Tipo</th>';
 echo '</tr>';
 
-$ColeccionPasajeros = $controlBD->informacionRecibo($solicitud);
+$ColeccionPasajeros = $controlBoletoLogica->informacionGeneralReciboBoleto($solicitud);
 foreach ($ColeccionPasajeros as $var) {
     $recursoDetalles = $var->getColeccionPasajero();
 
@@ -194,5 +196,5 @@ foreach ($ColeccionPasajeros as $var) {
     echo '</tr>';
 }
 echo '</table>';
-
+///*---------------------------*/
 ?>

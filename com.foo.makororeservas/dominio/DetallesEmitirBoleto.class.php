@@ -39,6 +39,5 @@ class DetallesEmitirBoletoclass {
     public function setCantidadInfantes($cantidadInfantes) {
         $this->cantidadInfantes = $cantidadInfantes;
     }
-        
 }
 ?>
