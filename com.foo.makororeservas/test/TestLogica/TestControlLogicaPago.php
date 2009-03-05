@@ -20,7 +20,7 @@ $pagoPrueba = new Pagoclass();
 ///*---------------------------*/
 
 /* GENERAR RECIBO DE PAGO POR SOLICITUD */
-$solicitud = "TY78";
+$solicitud = "34FN";
 
 $Coleccion = $controlBoletoLogica->informacionGeneralReciboBoleto($solicitud);
 foreach ($Coleccion as $var) {

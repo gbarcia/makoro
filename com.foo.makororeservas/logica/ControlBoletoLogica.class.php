@@ -57,9 +57,9 @@ class ControlBoletoLogicaclass {
  * @param <String> $tipoPasajero
  * @return <recurso> recurso con la cantidad de adultos o niños
  */
-    function consultarCantidadAdultosNinos($solicitud, $tipoPasajero) {
+    function consultarCantidadAdultosNinos($solicitud, $tipoPasajero, $tipoVuelo) {
         $resultado = new ArrayObject();
-        $resultado = $this->controlBD->cantidadAdultosNinos($solicitud, $tipoPasajero);
+        $resultado = $this->controlBD->cantidadAdultosNinos($solicitud, $tipoPasajero, $tipoVuelo);
         return $resultado;
     }
 
@@ -155,15 +155,16 @@ class ControlBoletoLogicaclass {
  * @return <Coleccion> coleccion de detalles de la emisión del boleto
  */
     function detallesEmitirBoleto($solicitud) {
-        $recursoAdultos = $this->consultarCantidadAdultosNinos($solicitud, "ADL");
+        $recursoAdultos = $this->consultarCantidadAdultosNinos($solicitud, "ADL", "IDA");
         $rowCantidadAdultos = mysql_fetch_array($recursoAdultos);
         $cantidadAdultos = $rowCantidadAdultos[cantidad];
+        echo $cantidadAdultos;
 
-        $recursoNinos = $this->consultarCantidadAdultosNinos($solicitud, "CHD");
+        $recursoNinos = $this->consultarCantidadAdultosNinos($solicitud, "CHD", "IDA");
         $rowCantidadNinos = mysql_fetch_array($recursoNinos);
         $cantidadNinos = $rowCantidadNinos[cantidad];
 
-        $recursoInfantes = $this->consultarCantidadAdultosNinos($solicitud, "INF");
+        $recursoInfantes = $this->consultarCantidadAdultosNinos($solicitud, "INF", "IDA");
         $rowCantidadInfantes = mysql_fetch_array($recursoInfantes);
         $cantidadInfantes = $rowCantidadInfantes[cantidad];
 
