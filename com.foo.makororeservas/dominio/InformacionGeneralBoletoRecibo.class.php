@@ -1,10 +1,12 @@
 <?php
 /**
- * Description of EmitirBoletoclass
- * Clase para emitir los boletos
+ * Description of InformacionGeneralBoletoReciboclass
+ * Clase para manejar la información general de los boletos y recibos de pago.
+ * Acerca de los pasajeros, vuelos ida y vuelta, cliente, fecha de emisión tanto
+ * como de boletos y recibos de pago.
  * @author Diana Uribe
  */
-class EmitirBoletoclass {
+class InformacionGeneralBoletoReciboclass {
     private $agente;
     private $solicitud;
     private $fechaEmision;
@@ -18,11 +20,8 @@ class EmitirBoletoclass {
     private $servicio;
     private $cliente;
     private $identificadorCliente;
-    private $cantidadAdultos;
-    private $cantidadNinos;
-    private $cantidadInfantes;
 
-    function __construct($agente, $solicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $salida, $retorno, $coleccionPasajero, $servicio, $cliente, $identificadorCliente, $cantidadAdultos, $cantidadNinos, $cantidadInfantes) {
+    function __construct($agente, $solicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $salida, $retorno, $coleccionPasajero, $servicio, $cliente, $identificadorCliente) {
         $this->agente = $agente;
         $this->solicitud = $solicitud;
         $this->fechaEmision = $fechaEmision;
@@ -36,12 +35,8 @@ class EmitirBoletoclass {
         $this->servicio = $servicio;
         $this->cliente = $cliente;
         $this->identificadorCliente = $identificadorCliente;
-        $this->cantidadAdultos = $cantidadAdultos;
-        $this->cantidadNinos = $cantidadNinos;
-        $this->cantidadInfantes = $cantidadInfantes;
     }
-
-
+    
     public function getAgente() {
         return $this->agente;
     }
@@ -74,20 +69,20 @@ class EmitirBoletoclass {
         $this->fechaIda = $fechaIda;
     }
 
-    public function getFechaVuelta() {
-        return $this->fechaVuelta;
-    }
-
-    public function setFechaVuelta($fechaVuelta) {
-        $this->fechaVuelta = $fechaVuelta;
-    }
-
     public function getHoraIda() {
         return $this->horaIda;
     }
 
     public function setHoraIda($horaIda) {
         $this->horaIda = $horaIda;
+    }
+
+    public function getFechaVuelta() {
+        return $this->fechaVuelta;
+    }
+
+    public function setFechaVuelta($fechaVuelta) {
+        $this->fechaVuelta = $fechaVuelta;
     }
 
     public function getHoraVuelta() {
@@ -144,30 +139,6 @@ class EmitirBoletoclass {
 
     public function setIdentificadorCliente($identificadorCliente) {
         $this->identificadorCliente = $identificadorCliente;
-    }
-
-    public function getCantidadAdultos() {
-        return $this->cantidadAdultos;
-    }
-
-    public function setCantidadAdultos($cantidadAdultos) {
-        $this->cantidadAdultos = $cantidadAdultos;
-    }
-
-    public function getCantidadNinos() {
-        return $this->cantidadNinos;
-    }
-
-    public function setCantidadNinos($cantidadNinos) {
-        $this->cantidadNinos = $cantidadNinos;
-    }
-
-    public function getCantidadInfantes() {
-        return $this->cantidadInfantes;
-    }
-
-    public function setCantidadInfantes($cantidadInfantes) {
-        $this->cantidadInfantes = $cantidadInfantes;
     }
 }
 ?>

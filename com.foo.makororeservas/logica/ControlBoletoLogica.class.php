@@ -1,9 +1,10 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorBoletoBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Boleto.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/EmitirBoleto.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/DetallesEmitirBoleto.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/InformacionGeneralBoletoRecibo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pasajero.class.php';
-
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlPagoLogica.class.php';
 /**
  * Description of ControlBoletoLogicaclass
  * Clase para el manejo de la logica de los boletos
@@ -14,6 +15,7 @@ class ControlBoletoLogicaclass {
 
     function __construct() {
         $this->controlBD = new controladorBoletoBDclass();
+        $this->controlPagoLogica = new ControlPagoLogicaclass();
     }
 
 /**
@@ -68,9 +70,9 @@ class ControlBoletoLogicaclass {
  * @param <Integer> $idPago
  * @return <Coleccion> coleccion de pasajeros
  */
-    function buscarPasajerosBoletoEspecifico($idPago) {
+    function buscarPasajerosBoletoEspecifico($solicitud) {
         $resultado = new ArrayObject();
-        $recurso = $this->controlBD->consultarPasajeros($idPago);
+        $recurso = $this->controlBD->consultarPasajeros($solicitud);
         while ($row = mysql_fetch_array($recurso)) {
             $pasajero = new Pasajeroclass();
             $pasajero->setId($row[idPasajero]);
@@ -87,60 +89,47 @@ class ControlBoletoLogicaclass {
         return $resultado;
     }
 
-/**
- * Metodo para emitir el boleto
- * @param <String> $solicitud
- * @return <Coleccion> informacion de los pasajeros, solicitud, vuelos
- */
-    function emitirBoleto($solicitud) {
+    
+
+function informacionGeneralReciboBoleto($solicitud) {
         $recurso = $this->busquedaBoletoEspecifico($solicitud);
         $rowRecurso = mysql_fetch_array($recurso);
 
-        $idPago = $rowRecurso[idPago];
-        $numSolicitud = $rowRecurso[solicitud];
         $agente = $rowRecurso[agente];
+        $numSolicitud = $rowRecurso[solicitud];
+        $fechaEmision = date ("Y") ."-".date ("m"). "-".date ("d");
         $servicio = $rowRecurso[nombreServicio];
         $cliente = $rowRecurso[clienteNombre];
         $rifAgencia = $rowRecurso[rifAgencia];
         $particularCedula = $rowRecurso[particularCedula];
 
-        $recursoAdultos = $this->consultarCantidadAdultosNinos($idPago, "ADL");
-        $rowCantidadAdultos = mysql_fetch_array($recursoAdultos);
-        $cantidadAdultos = $rowCantidadAdultos[cantidad];
-
-        $recursoNinos = $this->consultarCantidadAdultosNinos($idPago, "CHD");
-        $rowCantidadNinos = mysql_fetch_array($recursoNinos);
-        $cantidadNinos = $rowCantidadNinos[cantidad];
-
-        $recursoInfantes = $this->consultarCantidadAdultosNinos($idPago, "INF");
-        $rowCantidadInfantes = mysql_fetch_array($recursoInfantes);
-        $cantidadInfantes = $rowCantidadInfantes[cantidad];
-
-        if($rifAgencia == null){
-            $identificadorCliente = $particularCedula;
-        }
-        if($particularCedula == null){
-            $identificadorCliente = $rifAgencia;
-        }
-
         $vueloIdaInfo = $this->controlBD->consultarRutaFechaHoraVuelo($solicitud, "IDA");
         $rowVueloIdaInfo = mysql_fetch_array($vueloIdaInfo);
         $fechaIda = $rowVueloIdaInfo[fecha];
         $horaIda = $rowVueloIdaInfo[hora];
-        $lugarSalida = $rowVueloIdaInfo[sitioSalida].'-'.$rowVueloIdaInfo[sitioLlegada];
+        $salida = $rowVueloIdaInfo[sitioSalida].'-'.$rowVueloIdaInfo[sitioLlegada];
 
         $vueloVueltaInfo = $this->controlBD->consultarRutaFechaHoraVuelo($solicitud, "VUELTA");
         $rowVueloVueltaInfo = mysql_fetch_array($vueloVueltaInfo);
         $fechaVuelta = $rowVueloVueltaInfo[fecha];
         $horaVuelta = $rowVueloVueltaInfo[hora];
-        $lugarLlegada = $rowVueloVueltaInfo[sitioSalida].'-'.$rowVueloVueltaInfo[sitioLlegada];
-        if($fechaVuelta == ''||$horaVuelta == ''|$lugarLlegada==''){
+        $retorno = $rowVueloVueltaInfo[sitioSalida].'-'.$rowVueloVueltaInfo[sitioLlegada];
+
+        if($fechaVuelta == ''||$horaVuelta == ''|$retorno==''){
             $fechaVuelta = "XXXX/XX/XX";
             $horaVuelta = "XX:XX";
-            $lugarLlegada = "No hay retorno";
+            $retorno = "No hay retorno";
         }
-        $fechaEmision = date ("Y") ."-".date ("m"). "-".date ("d");
-        $pasajeroInfo = $this->buscarPasajerosBoletoEspecifico($idPago);
+
+        if($rifAgencia == null){
+            $identificadorCliente = $particularCedula;
+        }
+
+        if($particularCedula == null){
+            $identificadorCliente = $rifAgencia;
+        }
+
+        $pasajeroInfo = $this->buscarPasajerosBoletoEspecifico($solicitud);
         $coleccionResultado = new ArrayObject();
         foreach ($pasajeroInfo as $var) {
             $pasajero = new Pasajeroclass();
@@ -151,10 +140,35 @@ class ControlBoletoLogicaclass {
             $pasajero->setPasaporte($var->getPasaporte());
             $pasajero->setNacionalidad($var->getNacionalidad());
             $pasajero->setTipoPasajeroId($var->getTipoPasajeroId());
-            $Objeto = new EmitirBoletoclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta, $horaVuelta, $lugarSalida, $lugarLlegada, $pasajero, $servicio, $cliente, $identificadorCliente, $cantidadAdultos, $cantidadNinos, $cantidadInfantes);
-
+            $Objeto = new InformacionGeneralBoletoReciboclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta,
+                $horaVuelta, $salida, $retorno, $pasajero, $servicio, $cliente, $identificadorCliente);
             $coleccionResultado ->append($Objeto);
         }
+        return $coleccionResultado;
+    }
+
+/**
+ * Metodo para emitir el boleto
+ * @param <String> $solicitud
+ * @return <Coleccion> informacion de los pasajeros, solicitud, vuelos
+ */
+    function detallesEmitirBoleto($solicitud) {
+        $recursoAdultos = $this->consultarCantidadAdultosNinos($solicitud, "ADL");
+        $rowCantidadAdultos = mysql_fetch_array($recursoAdultos);
+        $cantidadAdultos = $rowCantidadAdultos[cantidad];
+
+        $recursoNinos = $this->consultarCantidadAdultosNinos($solicitud, "CHD");
+        $rowCantidadNinos = mysql_fetch_array($recursoNinos);
+        $cantidadNinos = $rowCantidadNinos[cantidad];
+
+        $recursoInfantes = $this->consultarCantidadAdultosNinos($solicitud, "INF");
+        $rowCantidadInfantes = mysql_fetch_array($recursoInfantes);
+        $cantidadInfantes = $rowCantidadInfantes[cantidad];
+
+        $coleccionResultado = new ArrayObject();
+        $Objeto = new DetallesEmitirBoletoclass($cantidadAdultos, $cantidadNinos, $cantidadInfantes);
+
+        $coleccionResultado ->append($Objeto);
         return $coleccionResultado;
     }
 }

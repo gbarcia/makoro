@@ -62,8 +62,8 @@ class controladorBoletoBDclass {
         $resultado = false;
         $query = "SELECT r.CLIENTE_AGENCIA_rif rifAgencia, r.CLIENTE_PARTICULAR_cedula particularCedula, pa.id idPago,r.solicitud,t.abreviatura abreviatura,
                          t.nombre nombreServicio,CONCAT(e.nombre,' ',e.apellido) agente,
-                         IF(r.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre
-
+                         IF(r.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre,
+                         CA.porcentajeComision porcentajeComision
                   FROM RESERVA r, PAGO pa, TIPO_SERVICIO t, ENCARGADO e, CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA
                   WHERE r.solicitud = '".$solicitud."'
                   AND r.PAGO_id = pa.id
@@ -81,13 +81,13 @@ class controladorBoletoBDclass {
  * @param <Integer> $pagoId
  * @return <Coleccion> coleccion de pasajeros
  */
-    function consultarPasajeros($pagoId){
+    function consultarPasajeros($solicitud){
         $resultado = false;
-        $query = "SELECT b.PAGO_id idPago, b.PASAJERO_id idPasajero, p.nombre nombre,p.apellido apellido,
+        $query = "SELECT p.id idPasajero,p.nombre nombre,p.apellido apellido,
                         p.TIPO_PASAJERO_id tipoPasajeroId,p.sexo sexo,p.cedula cedula,p.pasaporte pasaporte,p.nacionalidad nacionalidad
-                  FROM BOLETO b, PASAJERO p
-                  WHERE b.PAGO_id = ".$pagoId."
-                  AND b.PASAJERO_id = p.id";
+                  FROM RESERVA r, PASAJERO p
+                  WHERE r.solicitud = '".$solicitud."'
+                  AND r.PASAJERO_id = p.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -98,13 +98,15 @@ class controladorBoletoBDclass {
  * @param <String> $tipoPasajero
  * @return <recurso> recurso con la cantidad de adultos o niños
  */
-    function cantidadAdultosNinos($pagoId, $tipoPasajero){
+    function cantidadAdultosNinos($solicitud, $tipoPasajero){
         $resultado = false;
-        $query = "SELECT COUNT(TIPO_PASAJERO_id) cantidad
-                  FROM BOLETO b, PASAJERO p
-                  WHERE b.PAGO_id = ".$pagoId."
-                  AND b.PASAJERO_id = p.id
-                  AND TIPO_PASAJERO_id = '".$tipoPasajero."'";
+        $query = "SELECT COUNT(TIPO_PASAJERO_id) cantidad, t.porcentajeDescuento descuento
+                  FROM RESERVA r, PASAJERO p, TIPO_PASAJERO t, VUELO_RESERVA vr
+                  WHERE r.solicitud = '" . $solicitud . "'
+                  AND r.PASAJERO_id = p.id
+                  AND p.TIPO_PASAJERO_id = '".$tipoPasajero."'
+                  AND p.TIPO_PASAJERO_id = t.id
+                  AND vr.RESERVA_id = r.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -119,7 +121,7 @@ class controladorBoletoBDclass {
     function consultarRutaFechaHoraVuelo($solicitud,$tipoVuelo) {
         $resultado = false;
         $query = "SELECT r.solicitud,v.fecha,v.hora,ru.abreviaturaSalida sitioSalida,
-                         ru.abreviaturaLlegada sitioLlegada
+                         ru.abreviaturaLlegada sitioLlegada, ru.costo costoRuta, ru.generaIva generaIva
                   FROM RESERVA r, VUELO_RESERVA vr, VUELO v, RUTA ru
                   WHERE r.solicitud = '".$solicitud."'
                   AND vr.RESERVA_id = r.id
