@@ -20,8 +20,6 @@ function AgenciasPorPagar ($datos) {
     $resultado.= '<th>CANTIDAD RESERVAS</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
-    $controlLogica = new controladorClienteAgenciaBDclass();
-    $recurso = $controlLogica->consultarClientesAgenciasVuelosDescendente();
     $color = false;
     while ($row = mysql_fetch_array($recurso)) {
         if ($color){
