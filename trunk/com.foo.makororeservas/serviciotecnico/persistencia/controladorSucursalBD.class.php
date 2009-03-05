@@ -147,7 +147,7 @@ class controladorSucursalBDclass {
      * @param <Date> $fechaFin La fecha de fin a consultar
      * @return <coleccion> El ejecutivo que ha vendido mas en una sucursal
      */
-    function consultarEncargadoMasVenta($idSucursal,$fechaInicio,$fechaFin){
+    function consultarEncargadoMasVenta($fechaInicio,$fechaFin){
         $query = "SELECT s.id as idSucursal,s.nombre as nombreSucursal, m.tipo as moneda, e.cedula cedula, e.nombre encargadoNombre, SUM(p.monto) as monto
                   FROM SUCURSAL s, RESERVA r, PAGO p, MONEDA m, ENCARGADO e
                   WHERE s.id = r.SUCURSAL_id
@@ -155,7 +155,6 @@ class controladorSucursalBDclass {
                   AND p.id = r.PAGO_id
                   AND m.id = p.MONEDA_id
                   AND e.cedula = r.ENCARGADO_cedula
-                  AND s.id = ".$idSucursal."
                   AND r.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'
                   GROUP BY moneda,cedula
                   ORDER BY p.monto desc";
@@ -170,12 +169,11 @@ class controladorSucursalBDclass {
      * @param <type> $fechaFin La fecha de fin a consultar
      * @return <type> Encargado con mas reservas realizadas
      */
-    function consultarEncargadoConMasReservas($idSucursal,$fechaInicio,$fechaFin){
+    function consultarEncargadoConMasReservas($fechaInicio,$fechaFin){
         $query = "SELECT s.id as idSucursal,s.nombre as nombreSucursal, e.cedula cedula,
                          e.nombre encargadoNombre, COUNT(r.ENCARGADO_cedula) as cantidad
                   FROM SUCURSAL s, RESERVA r, ENCARGADO e
                   WHERE s.id = r.SUCURSAL_id
-                  AND s.id = ".$idSucursal."
                   AND e.cedula = r.ENCARGADO_cedula
                   AND r.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."'
                   GROUP BY cedula

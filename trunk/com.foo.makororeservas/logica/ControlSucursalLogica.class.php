@@ -125,7 +125,7 @@ class ControlSucursalLogicaclass {
      * @param <Date> $fechaFin La fecha de fin a consultar
      * @return <recurso> El ejecutivo que ha vendido mas en una sucursal
      */
-    function consultarEncargadoMasVenta($idSucursal,$fechaInicio,$fechaFin){
+    function consultarEncargadoMasVenta($fechaInicio,$fechaFin){
         $recurso = $this->controlBD->consultarEncargadoMasVenta($idSucursal, $fechaInicio, $fechaFin);
         return $recurso;
     }
@@ -137,7 +137,7 @@ class ControlSucursalLogicaclass {
      * @param <type> $fechaFin La fecha de fin a consultar
      * @return <type> Encargado con mas reservas realizadas
      */
-    function consultarEncargadoConMasReservas($idSucursal,$fechaInicio,$fechaFin){
+    function consultarEncargadoConMasReservas($fechaInicio,$fechaFin){
         $recurso = $this->controlBD->consultarEncargadoConMasReservas($idSucursal, $fechaInicio, $fechaFin);
         return $recurso;
     }
