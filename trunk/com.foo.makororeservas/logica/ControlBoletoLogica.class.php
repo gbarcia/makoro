@@ -4,7 +4,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Boleto
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/DetallesEmitirBoleto.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/InformacionGeneralBoletoRecibo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pasajero.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlPagoLogica.class.php';
 /**
  * Description of ControlBoletoLogicaclass
  * Clase para el manejo de la logica de los boletos
@@ -15,7 +14,6 @@ class ControlBoletoLogicaclass {
 
     function __construct() {
         $this->controlBD = new controladorBoletoBDclass();
-        $this->controlPagoLogica = new ControlPagoLogicaclass();
     }
 
 /**
@@ -59,9 +57,9 @@ class ControlBoletoLogicaclass {
  * @param <String> $tipoPasajero
  * @return <recurso> recurso con la cantidad de adultos o niños
  */
-    function consultarCantidadAdultosNinos($idPago, $tipoPasajero) {
+    function consultarCantidadAdultosNinos($solicitud, $tipoPasajero) {
         $resultado = new ArrayObject();
-        $resultado = $this->controlBD->cantidadAdultosNinos($idPago, $tipoPasajero);
+        $resultado = $this->controlBD->cantidadAdultosNinos($solicitud, $tipoPasajero);
         return $resultado;
     }
 
@@ -89,9 +87,15 @@ class ControlBoletoLogicaclass {
         return $resultado;
     }
 
-    
-
-function informacionGeneralReciboBoleto($solicitud) {
+/**
+ * Metodo para consultar la informacion acerca de los pasajeros, servicio, cliente,
+ * agente, vuelo. Esta información puede ser utilizada tanto para los recibos de pagos
+ * como para los boletos a generar
+ * @param <String> $solicitud
+ * @return <Coleccion> coleccion con toda loa información necesaria según el
+ * identificador de la solicitud
+ */
+    function informacionGeneralReciboBoleto($solicitud) {
         $recurso = $this->busquedaBoletoEspecifico($solicitud);
         $rowRecurso = mysql_fetch_array($recurso);
 
@@ -120,15 +124,12 @@ function informacionGeneralReciboBoleto($solicitud) {
             $horaVuelta = "XX:XX";
             $retorno = "No hay retorno";
         }
-
         if($rifAgencia == null){
             $identificadorCliente = $particularCedula;
         }
-
         if($particularCedula == null){
             $identificadorCliente = $rifAgencia;
         }
-
         $pasajeroInfo = $this->buscarPasajerosBoletoEspecifico($solicitud);
         $coleccionResultado = new ArrayObject();
         foreach ($pasajeroInfo as $var) {
@@ -148,9 +149,10 @@ function informacionGeneralReciboBoleto($solicitud) {
     }
 
 /**
- * Metodo para emitir el boleto
+ * Metodo para consultar los detalles de los boletos como la cantidad de adultos,
+ * niños e infantes que hay en la reserva del cliente
  * @param <String> $solicitud
- * @return <Coleccion> informacion de los pasajeros, solicitud, vuelos
+ * @return <Coleccion> coleccion de detalles de la emisión del boleto
  */
     function detallesEmitirBoleto($solicitud) {
         $recursoAdultos = $this->consultarCantidadAdultosNinos($solicitud, "ADL");
