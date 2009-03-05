@@ -8,7 +8,7 @@ Estilo para tablas de resultados
 @charset "utf-8";
 /* Formularios */
 .formTable {
-    width: auto;	
+    width: auto;
     border: none;
     background-color: none;
 }
@@ -16,20 +16,6 @@ Estilo para tablas de resultados
     overflow: auto;
     height: auto;
     overflow-x: hidden;
-}
-
-/* Filtros */
-.formTable {
-    width: auto;
-    border: none;
-    background-color: none;
-}
-.filterTd {
-    color: none;
-    padding-left: 2px;
-    padding-right: 2px;
-    text-align: left;
-    border: none;
 }
 
 /* Tablas con scroll */
@@ -64,7 +50,7 @@ thead td, thead th {
     font-weight: bold;
     border-top: solid 1px #d8d8d8;
 }
-td	{
+.scrollTable>tbody>tr>td	{
     color: #000;
     padding-left: 2px;
     padding-right: 2px;
