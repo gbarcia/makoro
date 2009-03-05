@@ -7,18 +7,11 @@ Estilo para tablas de resultados
 */
 @charset "utf-8";
 /* Formularios */
-.formContainer {
-    width: 100%;		/* table width will be 99% of this*/
-    overflow: auto;
-    margin-bottom: inherit;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-}
 .formTable {
-    width: auto;		/*100% of container produces horiz. scroll in Mozilla*/
+    width: auto;	
     border: none;
-    background-color: #FFFFFF;
+    background-color: none;
 }
-
 .formTable>tbody	{  /* child selector syntax which IE6 and older do not support*/
     overflow: auto;
     height: auto;
@@ -33,12 +26,12 @@ Estilo para tablas de resultados
     margin-bottom: inherit;
     font-family: Verdana, Arial, Helvetica, sans-serif;
 }
-table {
+.scrollTable {
     width: 99%;		/*100% of container produces horiz. scroll in Mozilla*/
     border: none;
     background-color: #FFFFFF;
 }
-table>tbody	{  /* child selector syntax which IE6 and older do not support*/
+.scrollTable>tbody	{  /* child selector syntax which IE6 and older do not support*/
     overflow: auto;
     height: 250px;
     overflow-x: hidden;
