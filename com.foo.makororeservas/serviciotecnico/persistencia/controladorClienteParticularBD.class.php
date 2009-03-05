@@ -128,11 +128,12 @@ class controladorClienteParticularBDclass {
 
     function consultarClientesParticularesPorPagar($fechaInicio,$fechaFin){
        $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.sexo,cp.fechaNacimiento,
-                        cp.telefono,cp.estado,cp.ciudad,cp.direccion,r.fecha
+                        cp.telefono,cp.estado,cp.ciudad,cp.direccion,r.fecha,COUNT(r.CLIENTE_PARTICULAR_cedula) cn
                   FROM CLIENTE_PARTICULAR cp, RESERVA r
                   WHERE r.CLIENTE_PARTICULAR_cedula = cp.cedula
                   AND   r.estado = 'PP'
-                  AND   r.fecha BETWEEN '" . $fechaInicio . "' AND '" . $fechaFin . "'";
+                  AND   r.fecha BETWEEN '" . $fechaInicio . "' AND '" . $fechaFin . "'
+                  GROUP BY cp.cedula";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
