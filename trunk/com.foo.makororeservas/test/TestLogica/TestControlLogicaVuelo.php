@@ -22,40 +22,40 @@ $vueloPrueba = new Vueloclass();
 //echo $resultado;
 ///*---------------------------*/
 
-///* CONSULTAR VUELO ESPECIFICO */
-//$Coleccion = $controlBD->vueloEspecificoAsientosReservados('2009-05-01', '16:00:00', 'YV 302T', 'Maiquetia', 'Los Roques');
-//foreach ($Coleccion as $var) {
-//    $recursoDetalles = $var->getColeccionVuelo();
-//    $cantidadDisponible = $var->getAsientosDisponibles();
-//    $piloto = $var->getPiloto();
-//    $copiloto = $var->getCopiloto();
-//
-//    echo "\n";
-//    echo '<table border=1>';
-//    echo '<tr>';
-//    echo '<th>Fecha</th>';
-//    echo '<th>Hora</th>';
-//    echo '<th>Sitio Salida</th>';
-//    echo '<th>Sitio Llegada</th>';
-//    echo '<th>Avion Matricula</th>';
-//    echo '<th>Asientos Disponibles</th>';
-//    echo '<th>Piloto</th>';
-//    echo '<th>Copiloto</th>';
-//    echo '</tr>';
-//
-//    echo '<tr>';
-//    echo '<td>' . $recursoDetalles->getFecha(). '</td>';
-//    echo '<td>' . $recursoDetalles->getHora(). '</td>';
-//    echo '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
-//    echo '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
-//    echo '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
-//    echo '<td>' . $cantidadDisponible. '</td>';
-//    echo '<td>' . $piloto. '</td>';
-//    echo '<td>' . $copiloto. '</td>';
-//    echo '</tr>';
-//    echo '</table>';
-//}
-///*-------------------------------*/
+/* CONSULTAR VUELO ESPECIFICO */
+$Coleccion = $controlBD->vueloEspecificoAsientosReservados('', '', '', 'Los Roques', 'Maiquetia', 11);
+foreach ($Coleccion as $var) {
+    $recursoDetalles = $var->getColeccionVuelo();
+    $cantidadDisponible = $var->getAsientosDisponibles();
+    $piloto = $var->getPiloto();
+    $copiloto = $var->getCopiloto();
+
+    echo "\n";
+    echo '<table border=1>';
+    echo '<tr>';
+    echo '<th>Fecha</th>';
+    echo '<th>Hora</th>';
+    echo '<th>Sitio Salida</th>';
+    echo '<th>Sitio Llegada</th>';
+    echo '<th>Avion Matricula</th>';
+    echo '<th>Asientos Disponibles</th>';
+    echo '<th>Piloto</th>';
+    echo '<th>Copiloto</th>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<td>' . $recursoDetalles->getFecha(). '</td>';
+    echo '<td>' . $recursoDetalles->getHora(). '</td>';
+    echo '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
+    echo '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
+    echo '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
+    echo '<td>' . $cantidadDisponible. '</td>';
+    echo '<td>' . $piloto. '</td>';
+    echo '<td>' . $copiloto. '</td>';
+    echo '</tr>';
+    echo '</table>';
+}
+/*-------------------------------*/
 
 ///* CONSULTAR DETALLES VUELO */
 //echo '<table border=1>';
@@ -75,7 +75,7 @@ $vueloPrueba = new Vueloclass();
 //echo '<th>monto</th>';
 //echo '<th>boleto</th>';
 //echo '</tr>';
-//$resultado = $controlBD->consultarVuelosDetalles(9, 1);
+//$resultado = $controlBD->consultarVuelosDetalles(9);
 //    while ($row = mysql_fetch_array($resultado)) {
 //    echo '<tr>';
 //    echo '<td>' . $row[id] . '</td>';
@@ -97,27 +97,27 @@ $vueloPrueba = new Vueloclass();
 //echo '</table>';
 ///*-------------------------------*/
 
-/* CONSULTAR CIENTE CON MAS VUELOS */
-echo '<table border=1>';
-echo '<tr>';
-echo '<th>id</th>';
-echo '<th>particular</th>';
-echo '<th>agencia</th>';
-echo '<th>cliente</th>';
-echo '<th>cantidad</th>';
-echo '</tr>';
-$resultado = $controlBD->consultarClientesMasVuelos(1, '2009-01-01', '2009-05-31');
-    while ($row = mysql_fetch_array($resultado)) {
-    echo '<tr>';
-    echo '<td>' . $row[id] . '</td>';
-    echo '<td>' . $row[particular] . '</td>';
-    echo '<td>' . $row[agencia] . '</td>';
-    echo '<td>' . $row[cliente] . '</td>';
-    echo '<td>' . $row[cantidad] . '</td>';
-    echo '</tr>';
-}
-echo '</table>';
-/*-------------------------------*/
+///* CONSULTAR CIENTE CON MAS VUELOS */
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>id</th>';
+//echo '<th>particular</th>';
+//echo '<th>agencia</th>';
+//echo '<th>cliente</th>';
+//echo '<th>cantidad</th>';
+//echo '</tr>';
+//$resultado = $controlBD->consultarClientesMasVuelos(1, '2009-01-01', '2009-05-31');
+//    while ($row = mysql_fetch_array($resultado)) {
+//    echo '<tr>';
+//    echo '<td>' . $row[id] . '</td>';
+//    echo '<td>' . $row[particular] . '</td>';
+//    echo '<td>' . $row[agencia] . '</td>';
+//    echo '<td>' . $row[cliente] . '</td>';
+//    echo '<td>' . $row[cantidad] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+///*-------------------------------*/
 
 
 ///* CONSULTAR VUELOS APARTIR DE HOY*/
