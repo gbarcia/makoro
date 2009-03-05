@@ -50,8 +50,8 @@ class controladorTipoServicioBDclass {
  */
     function consultarTodosLosTipoServicio() {
         $resultado = false;
-        $query = "SELECT * FROM TIPO_SERVICIO
-                  WHERE habilitado = 1";
+        $query = "SELECT ts.id,ts.abreviatura,ts.nombre, COUNT(r.TIPO_SERVICIO_id) numero FROM TIPO_SERVICIO ts LEFT JOIN RESERVA r ON
+ts.id = r.TIPO_SERVICIO_id GROUP BY ts.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
