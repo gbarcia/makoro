@@ -58,7 +58,8 @@ class controladorAvionBDclass {
      */
     function consultarAviones(){
         $resultado = false;
-        $query = "SELECT * FROM AVION";
+        $query = "SELECT a.matricula,a.asientos,COUNT(v.AVION_matricula) numero FROM AVION a LEFT JOIN VUELO v ON a.matricula = v.AVION_matricula
+GROUP BY a.matricula";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
