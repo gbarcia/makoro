@@ -22,9 +22,51 @@ $vueloPrueba = new Vueloclass();
 //echo $resultado;
 ///*---------------------------*/
 
-/* CONSULTAR VUELO ESPECIFICO */
-//($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia)
-$Coleccion = $controlBD->vueloEspecificoAsientosReservados('','','','','','',0,'','','','','','','','11M5');
+///* CONSULTAR VUELO ESPECIFICO CON FILTROS */
+////($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia)
+//$Coleccion = $controlBD->vueloEspecificoConFiltro('','','','','','',0,'','','','','','','','','','');
+//foreach ($Coleccion as $var) {
+//    $recursoDetalles = $var->getColeccionVuelo();
+//    $cantidadDisponible = $var->getAsientosDisponibles();
+//    $piloto = $var->getPiloto();
+//    $copiloto = $var->getCopiloto();
+//    $disponibilidad = $var->getDisponibilidad();
+//    $idVuelo = $var->getIdvuelo();
+//
+//    echo "\n";
+//    echo '<table border=1>';
+//    echo '<tr>';
+//    echo '<th>Id</th>';
+//    echo '<th>Fecha</th>';
+//    echo '<th>Hora</th>';
+//    echo '<th>Sitio Salida</th>';
+//    echo '<th>Sitio Llegada</th>';
+//    echo '<th>Avion Matricula</th>';
+//    echo '<th>Asientos Disponibles</th>';
+//    echo '<th>Disponibilidad</th>';
+//    echo '<th>Piloto</th>';
+//    echo '<th>Copiloto</th>';
+//    echo '</tr>';
+//
+//    echo '<tr>';
+//    echo '<td>' . $idVuelo. '</td>';
+//    echo '<td>' . $recursoDetalles->getFecha(). '</td>';
+//    echo '<td>' . $recursoDetalles->getHora(). '</td>';
+//    echo '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
+//    echo '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
+//    echo '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
+//    echo '<td>' . $cantidadDisponible. '</td>';
+//    echo '<td>' . $disponibilidad. '</td>';
+//    echo '<td>' . $piloto. '</td>';
+//    echo '<td>' . $copiloto. '</td>';
+//    echo '</tr>';
+//    echo '</table>';
+//}
+///*-------------------------------*/
+
+/* CONSULTAR VUELO ESPECIFICO SIN FILTRO */
+//($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia)
+$Coleccion = $controlBD->vueloEspecificoSinFiltro('2009-01-01', '2009-05-31');
 foreach ($Coleccion as $var) {
     $recursoDetalles = $var->getColeccionVuelo();
     $cantidadDisponible = $var->getAsientosDisponibles();
@@ -63,6 +105,7 @@ foreach ($Coleccion as $var) {
     echo '</table>';
 }
 /*-------------------------------*/
+
 
 //falta probarlo
 ///* CONSULTAR VUELOS POR FECHA Y RUTAS */

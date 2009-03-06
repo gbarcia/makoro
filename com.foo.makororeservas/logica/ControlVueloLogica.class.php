@@ -78,10 +78,45 @@ class ControlVueloLogicaclass {
  * @param <String> $avionMatricula
  * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
  */
-    function vueloEspecificoAsientosReservados($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud) {
+    function vueloEspecificoConFiltro($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $coleccionResultado = new ArrayObject();
-        $recurso = $this->controlBD->consultarVuelo($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud);
+        $recurso = $this->controlBD->consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado);
         
+        while ($operacion = mysql_fetch_array($recurso)) {
+            $idVuelo = $operacion[id];
+            $cantidadDisponible = $operacion[quedan];
+            $disponibilidad = $operacion[disponibilidad];
+            $idVuelo = $operacion[idVuelo];
+            $controlVueloPersonal = new controladorVueloPersonalBDclass();
+            $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
+            $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalCopiloto($idVuelo);
+            $rowVueloPiloto = mysql_fetch_array($vueloTripulacionPiloto);
+            $rowVueloCopiloto = mysql_fetch_array($vueloTripulacionCopiloto);
+            $piloto = $rowVueloPiloto[tripulante];
+            $copiloto = $rowVueloCopiloto[tripulante];
+
+            if($piloto == ''||$copiloto == ''){
+                $piloto = "No hay piloto registrado";
+                $copiloto = "No hay copiloto registrado";
+            }
+
+            $vuelo = new Vueloclass();
+            $vuelo->setId($operacion[id]);
+            $vuelo->setFecha($operacion[fecha]);
+            $vuelo->setHora($operacion[hora]);
+            $vuelo->setRutaSitioSalida($operacion[abreviaturaSalida]);
+            $vuelo->setRutaSitioLlegada($operacion[abreviaturaLlegada]);
+            $vuelo->setAvionMatricula($operacion[avionMatricula]);
+            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto,$disponibilidad,$idVuelo);
+            $coleccionResultado ->append($Objeto);
+        }
+        return $coleccionResultado;
+    }
+
+    function vueloEspecificoSinFiltro($fechaInicio,$fechaFin) {
+        $coleccionResultado = new ArrayObject();
+        $recurso = $this->controlBD->consultarVueloSinFiltros($fechaInicio,$fechaFin);
+
         while ($operacion = mysql_fetch_array($recurso)) {
             $idVuelo = $operacion[id];
             $cantidadDisponible = $operacion[quedan];
