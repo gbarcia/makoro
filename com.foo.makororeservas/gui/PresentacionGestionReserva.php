@@ -51,20 +51,20 @@ $xajax->processRequests();
                     <div class="CollapsiblePanelContent">
                         <table width="100%" border="0">
                             <tr>
-                                <td class="cleanTd">Fecha de inicio:</td>
-                                <td class="cleanTd"><input name="fechaInicio" type="text" id="f_date_c" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
-                                <td class="cleanTd">Ruta:</td>
-                                <td class="cleanTd"><div id="comboBoxRuta">
+                                <td>Fecha de inicio:</td>
+                                <td><input name="fechaInicio" type="text" id="f_date_c" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
+                                <td>Ruta:</td>
+                                <td><div id="comboBoxRuta">
                                         <script language="javascript">
                                             xajax_generarComboBoxLugar();
                                         </script>
                                 </div></td>
                             </tr>
                             <tr>
-                                <td class="cleanTd">Fecha de fin:</td>
-                                <td class="cleanTd"><input name="fechaFin" type="text" id="f_date_c2" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c2" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
-                                <td class="cleanTd"></td>
-                                <td class="cleanTd"></td>
+                                <td>Fecha de fin:</td>
+                                <td><input name="fechaFin" type="text" id="f_date_c2" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c2" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </table>
                     </div>
