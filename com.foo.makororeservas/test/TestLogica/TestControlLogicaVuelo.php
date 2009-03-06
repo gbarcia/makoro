@@ -64,6 +64,31 @@ foreach ($Coleccion as $var) {
 }
 /*-------------------------------*/
 
+//falta probarlo
+///* CONSULTAR VUELOS POR FECHA Y RUTAS */
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>Id</th>';
+//echo '<th>Fecha</th>';
+//echo '<th>Hora</th>';
+//echo '<th>Ruta Salida</th>';
+//echo '<th>Ruta Retorno</th>';
+//echo '<th>Avion Matricula</th>';
+//echo '</tr>';
+//$resultado = $controlBD->buscarVuelosPorFechaRutas('L', '2009-03-15');
+//    while ($row = mysql_fetch_array($resultado)) {
+//    echo '<tr>';
+//    echo '<td>' . $row[id] . '</td>';
+//    echo '<td>' . $row[fecha] . '</td>';
+//    echo '<td>' . $row[hora] . '</td>';
+//    echo '<td>' . $row[rutaSalida] . '</td>';
+//    echo '<td>' . $row[rutaLlegada] . '</td>';
+//    echo '<td>' . $row[matricula] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+///*-------------------------------*/
+
 ///* CONSULTAR VUELO ESPECIFICO (MAYA) */
 //    echo '<table border=1>';
 //    echo '<tr>';
