@@ -53,32 +53,85 @@ class controladorVueloBDclass {
  * @param <VUELO> $vuelo
  * @return <recurso>
  */
-    function consultarVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad) {
+    function consultarVuelo($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,
+                            $rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,
+                            $cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud) {
         $resultado = false;
-        $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
+        $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
-                         ru.abreviaturaLlegada abreviaturaLlegada,a.asientos-COUNT(vr.RESERVA_id) as quedan";
-                         if($capacidad != ""){
-                             $query .= ",if(a.asientos-(COUNT(vr.RESERVA_id)+".$capacidad.")>=0,TRUE,FALSE) as disponibilidad ";
-                         }
-                  $query .= "FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr
-                  WHERE v.RUTA_sitioSalida = ru.sitioSalida
+                         ru.abreviaturaLlegada abreviaturaLlegada,a.asientos-COUNT(vr.RESERVA_id) as quedan,
+                         if(a.asientos-(COUNT(vr.RESERVA_id)+".$capacidad.")>=0,TRUE,FALSE) as disponibilidad
+                         FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr ";
+                  if(($cedulaPasaporte != "") || ($nombrePasajero != "")){
+                    $query .= ", PASAJERO p ";
+                  }
+                  if(($cedulaPart != "") || ($nombrePart != "")){
+                      $query.=", CLIENTE_PARTICULAR cp ";
+                  }
+                  if(($rifAgencia != "") || ($nombreAgencia != "")){
+                      $query.=", CLIENTE_AGENCIA ca ";
+                  }
+                  $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
                   AND v.AVION_matricula = a.matricula
                   AND vr.VUELO_id = v.id
                   AND r.id = vr.RESERVA_id
                   AND a.habilitado = 1 ";
                   if($hora != "")
-                  $query.= "AND v.hora = '".$hora."'";
-                  if($fecha != "")
-                  $query.= "AND v.fecha = '".$fecha."'";
+                  $query.= " AND v.hora = '".$hora."' ";
+                  if (!(($fechaInicio == "")  && ($fechaFin == ""))){
+                      if(($fechaInicio != "") && ($fechaFin != "")){
+                          $query.= " AND v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."' ";
+                      }else if($fechaInicio == ""){
+                          $query.= " AND v.fecha <= '".$fechaFin."' ";
+                      }else{
+                          $query.= " AND v.fecha >= '".$fechaInicio."' ";
+                      }
+                  }
                   if($rutaSitioSalida != "")
-                  $query.= "AND ru.sitioSalida = '".$rutaSitioSalida."'";
+                  $query.= " AND ru.sitioSalida = '".$rutaSitioSalida."' ";
                   if($rutaSitioLlegada != "")
-                  $query.= "AND ru.sitioLlegada = '".$rutaSitioLlegada."'";
+                  $query.= " AND ru.sitioLlegada = '".$rutaSitioLlegada."' ";
                   if($avionMatricula != "")
-                  $query.= "AND a.matricula = '".$avionMatricula."'";
-                  $query.= " GROUP BY v.id";
+                  $query.= " AND a.matricula = '".$avionMatricula."' ";
+                  if($cedulaPasaporte != ""){
+                      $query.= " AND r.PASAJERO_id = p.id ";
+                      if(is_numeric($cedulaPasaporte)){
+                          $query.= " AND p.cedula = ".$cedulaPasaporte."";
+                      }else{
+                          $query.= " AND p.pasaporte = '".$cedulaPasaporte."' ";
+                      }
+                  }
+                  if($nombrePasajero != ""){
+                      $query.= " AND r.PASAJERO_id = p.id
+                                 AND p.nombre = '".$nombrePasajero."' ";
+                  }
+                  if($cedulaPart != ""){
+                      $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula 
+                                 AND r.CLIENTE_PARTICULAR_cedula = ".$cedulaPart." ";
+                  }
+                  if($nombrePart != ""){
+                      $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
+                                 AND cp.nombre = ".$nombrePart." ";
+                  }
+                  if($apellidoPart != ""){
+                      $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
+                                 AND cp.apellido = ".$apellidoPart." ";
+                  }
+                  if($rifAgencia != ""){
+                      $query.= " AND r.CLIENTE_AGENCIA_rif = ca.rif
+                                 AND r.CLIENTE_AGENCIA_rif = '".$rifAgencia."' ";
+                  }
+                  if($nombreAgencia != ""){
+                      $query.= " AND r.CLIENTE_AGENCIA_rif = ca.rif
+                                 AND ca.nombre = '".$nombreAgencia."' ";
+                  }
+                  if($solicitud != ""){
+                      $query.= " AND r.solicitud = '".$solicitud."' ";
+                  }
+                  $query.= " GROUP BY v.id
+                             HAVING disponibilidad = 1";
+                  echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
