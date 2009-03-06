@@ -172,7 +172,7 @@ class controladorSucursalBDclass {
      */
     function consultarEncargadoConMasReservas($fechaInicio,$fechaFin){
         $query = "SELECT s.id as idSucursal,s.nombre as nombreSucursal, e.cedula cedula,
-                         e.nombre encargadoNombre, COUNT(r.ENCARGADO_cedula) as cantidad
+                         e.nombre encargadoNombre,e.apellido, COUNT(r.ENCARGADO_cedula) as cantidad
                   FROM SUCURSAL s, RESERVA r, ENCARGADO e
                   WHERE s.id = r.SUCURSAL_id
                   AND e.cedula = r.ENCARGADO_cedula
