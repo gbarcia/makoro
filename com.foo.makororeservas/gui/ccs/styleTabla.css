@@ -20,7 +20,6 @@ thead td, thead th {
     color: #FFFFFF;
     font-weight: bold;
     border-top: solid 1px #d8d8d8;
-    border-bottom: solid 1px #d8d8d8;
     border-left: solid 1px #d8d8d8;
 }
 table tfoot tr { /*idea of Renato Cherullo to help IE*/
@@ -29,7 +28,7 @@ table tfoot tr { /*idea of Renato Cherullo to help IE*/
     top: expression(parentNode.parentNode.offsetHeight >=
     offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
 }
-tfoot td	{
+tfoot td {
     text-align: center;
     font-size: 13px;
     font-weight: bold;
@@ -37,12 +36,15 @@ tfoot td	{
     color: #FFFFFF;
     border-top: solid 1px #d8d8d8;
 }
+td:last-child {
+    padding-right: 20px; /*prevent Mozilla scrollbar from hiding cell content*/
+}
 
 /* Formularios */
 .formTable {
     width: auto;
-    border: none;
     background-color: none;
+    border-right: solid 1px #d8d8d8;
 }
 .formTable>tbody	{  /* child selector syntax which IE6 and older do not support*/
     overflow: auto;
@@ -55,13 +57,14 @@ tfoot td	{
     padding-right: 2px;
     font-size: 12px;
     text-align: left;
-    border: solid 1px #d8d8d8;
+    border-bottom: solid 1px #d8d8d8;
+    border-left: solid 1px #d8d8d8;
 }
 
 /* Tablas con scroll */
 .tableContainer {
     width: 100%;		/* table width will be 99% of this*/
-    height: 300px; 	/* must be greater than tbody*/
+    height: 295px; 	/* must be greater than tbody*/
     overflow: auto;
     margin-bottom: inherit;
     font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -84,9 +87,6 @@ tfoot td	{
     text-align: left;
     border-bottom: solid 1px #d8d8d8;
     border-left: solid 1px #d8d8d8;
-}
-.scrollTable>tbody>tr>td:last-child {
-    padding-right: 20px; /*prevent Mozilla scrollbar from hiding cell content*/
 }
 
 /* Colores Estados */
