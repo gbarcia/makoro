@@ -52,8 +52,8 @@ function generarComboBoxEncargado(){
 
 function procesarFiltros($datos){
     $arregloRuta = split("-", $datos[ruta]);
-    echo $arregloRuta[0];
-    echo $arregloRuta[1];
+//    echo $arregloRuta[0];
+//    echo $arregloRuta[1];
 
     $resultado = "";
     $objResponse = new xajaxResponse();
