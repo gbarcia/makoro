@@ -53,25 +53,26 @@ class controladorVueloBDclass {
  * @param <VUELO> $vuelo
  * @return <recurso>
  */
-    function consultarVuelo($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,
-                            $rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,
-                            $cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud) {
+    function consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,
+                                      $rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,
+                                      $apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,
+                                      $rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $resultado = false;
         $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
-                         ru.abreviaturaLlegada abreviaturaLlegada,a.asientos-COUNT(vr.RESERVA_id) as quedan,
-                         if(a.asientos-(COUNT(vr.RESERVA_id)+".$capacidad.")>=0,TRUE,FALSE) as disponibilidad
+                         ru.abreviaturaLlegada abreviaturaLlegada,ASIENTOS_DISPONIBLES(v.id,a.asientos) as quedan,
+                         VERIFICAR_DISPONIBILIDAD(v.id,a.asientos,".$capacidad.") as disponibilidad
                          FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr ";
-                  if(($cedulaPasaporte != "") || ($nombrePasajero != "")){
+                  if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
                     $query .= ", PASAJERO p ";
                   }
-                  if(($cedulaPart != "") || ($nombrePart != "")){
+                  if(($cedulaPart != "") || ($nombrePart != "")  || ($apellidoPart != "")){
                       $query.=", CLIENTE_PARTICULAR cp ";
                   }
                   if(($rifAgencia != "") || ($nombreAgencia != "")){
                       $query.=", CLIENTE_AGENCIA ca ";
                   }
-                  $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida
+                  $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida 
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
                   AND v.AVION_matricula = a.matricula
                   AND vr.VUELO_id = v.id
@@ -104,7 +105,11 @@ class controladorVueloBDclass {
                   }
                   if($nombrePasajero != ""){
                       $query.= " AND r.PASAJERO_id = p.id
-                                 AND p.nombre = '".$nombrePasajero."' ";
+                                 AND p.nombre LIKE '".$nombrePasajero."%' ";
+                  }
+                  if($apellidoPasajero != ""){
+                      $query.= " AND r.PASAJERO_id = p.id
+                                 AND p.apellido LIKE '".$apellidoPasajero."%' ";
                   }
                   if($cedulaPart != ""){
                       $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula 
@@ -112,11 +117,11 @@ class controladorVueloBDclass {
                   }
                   if($nombrePart != ""){
                       $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
-                                 AND cp.nombre = ".$nombrePart." ";
+                                 AND cp.nombre LIKE '".$nombrePart."%' ";
                   }
                   if($apellidoPart != ""){
                       $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
-                                 AND cp.apellido = ".$apellidoPart." ";
+                                 AND cp.apellido LIKE '".$apellidoPart."%' ";
                   }
                   if($rifAgencia != ""){
                       $query.= " AND r.CLIENTE_AGENCIA_rif = ca.rif
@@ -124,10 +129,40 @@ class controladorVueloBDclass {
                   }
                   if($nombreAgencia != ""){
                       $query.= " AND r.CLIENTE_AGENCIA_rif = ca.rif
-                                 AND ca.nombre = '".$nombreAgencia."' ";
+                                 AND ca.nombre LIKE '".$nombreAgencia."%' ";
                   }
                   if($solicitud != ""){
                       $query.= " AND r.solicitud = '".$solicitud."' ";
+                  }
+                  if($estado != ""){
+                      $query.= " AND r.estado = '".$estado."' ";
+                  }
+                  $query.= " GROUP BY v.id
+                             HAVING disponibilidad = 1";
+                  echo $query;
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
+        $resultado = false;
+        $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
+                         v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
+                         ru.abreviaturaLlegada abreviaturaLlegada,ASIENTOS_DISPONIBLES(v.id,a.asientos) as quedan,
+                         VERIFICAR_DISPONIBILIDAD(v.id,a.asientos,0) as disponibilidad
+                  FROM VUELO v, RUTA ru, AVION a, RESERVA r
+                  WHERE v.RUTA_sitioSalida = ru.sitioSalida
+                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                  AND v.AVION_matricula = a.matricula
+                  AND a.habilitado = 1 ";
+                  if (!(($fechaInicio == "")  && ($fechaFin == ""))){
+                      if(($fechaInicio != "") && ($fechaFin != "")){
+                          $query.= " AND v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."' ";
+                      }else if($fechaInicio == ""){
+                          $query.= " AND v.fecha <= '".$fechaFin."' ";
+                      }else{
+                          $query.= " AND v.fecha >= '".$fechaInicio."' ";
+                      }
                   }
                   $query.= " GROUP BY v.id
                              HAVING disponibilidad = 1";
@@ -271,8 +306,9 @@ class controladorVueloBDclass {
                   FROM VUELO v, RUTA ru
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
-                  AND (v.RUTA_sitioSalida LIKE '".$busqueda."%' OR v.RUTA_sitioLlegada LIKE '".$busqueda."%')
                   AND v.fecha = '".$fecha."'
+                  AND (v.RUTA_sitioSalida LIKE '".$busqueda."%' OR v.RUTA_sitioLlegada LIKE '".$busqueda."%')
+                  OR v.AVION_matricula LIKE '".$busqueda."%'
                   GROUP BY v.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
