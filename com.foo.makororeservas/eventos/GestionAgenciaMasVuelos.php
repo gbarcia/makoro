@@ -6,7 +6,7 @@ function cadenaAgenciaMasVuelos () {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="formTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>RIF</th>';
