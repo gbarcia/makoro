@@ -23,39 +23,73 @@ $vueloPrueba = new Vueloclass();
 ///*---------------------------*/
 
 /* CONSULTAR VUELO ESPECIFICO */
-$Coleccion = $controlBD->vueloEspecificoAsientosReservados('', '', '', 'Los Roques', 'Maiquetia', 11);
+//($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia)
+$Coleccion = $controlBD->vueloEspecificoAsientosReservados('','','','','','',0,'','','','','','','','11M5');
 foreach ($Coleccion as $var) {
     $recursoDetalles = $var->getColeccionVuelo();
     $cantidadDisponible = $var->getAsientosDisponibles();
     $piloto = $var->getPiloto();
     $copiloto = $var->getCopiloto();
+    $disponibilidad = $var->getDisponibilidad();
+    $idVuelo = $var->getIdvuelo();
 
     echo "\n";
     echo '<table border=1>';
     echo '<tr>';
+    echo '<th>Id</th>';
     echo '<th>Fecha</th>';
     echo '<th>Hora</th>';
     echo '<th>Sitio Salida</th>';
     echo '<th>Sitio Llegada</th>';
     echo '<th>Avion Matricula</th>';
     echo '<th>Asientos Disponibles</th>';
+    echo '<th>Disponibilidad</th>';
     echo '<th>Piloto</th>';
     echo '<th>Copiloto</th>';
     echo '</tr>';
 
     echo '<tr>';
+    echo '<td>' . $idVuelo. '</td>';
     echo '<td>' . $recursoDetalles->getFecha(). '</td>';
     echo '<td>' . $recursoDetalles->getHora(). '</td>';
     echo '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
     echo '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
     echo '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
     echo '<td>' . $cantidadDisponible. '</td>';
+    echo '<td>' . $disponibilidad. '</td>';
     echo '<td>' . $piloto. '</td>';
     echo '<td>' . $copiloto. '</td>';
     echo '</tr>';
     echo '</table>';
 }
 /*-------------------------------*/
+
+///* CONSULTAR VUELO ESPECIFICO (MAYA) */
+//    echo '<table border=1>';
+//    echo '<tr>';
+//    echo '<th>Fecha</th>';
+//    echo '<th>Hora</th>';
+//    echo '<th>Sitio Salida</th>';
+//    echo '<th>Sitio Llegada</th>';
+//    echo '<th>Avion Matricula</th>';
+//    echo '<th>Asientos Disponibles</th>';
+//    echo '<th>Diponible</th>';
+//    echo '</tr>';
+//    $resultado = $controlBD->vueloEspecificoAsientosReservados('','', '', '', '', '', 'null');
+////    while ($row = mysql_fetch_array($resultado)) {
+//    $row = mysql_fetch_array($resultado);
+//    echo '<tr>';
+//    echo '<td>' . $row[fecha] . '</td>';
+//    echo '<td>' . $row[hora] . '</td>';
+//    echo '<td>' . $row[rutaSitioSalida] . '</td>';
+//    echo '<td>' . $row[rutaSitioLlegada] . '</td>';
+//    echo '<td>' . $row[avionMatricula] . '</td>';
+//    echo '<td>' . $row[quedan] . '</td>';
+//    echo '<td>' . $row[disponibilidad] . '</td>';
+//    echo '</tr>';
+////}
+//echo '</table>';
+///*-------------------------------*/
 
 ///* CONSULTAR DETALLES VUELO */
 //echo '<table border=1>';
