@@ -255,5 +255,27 @@ class controladorVueloBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    /**
+ * Metodo para consultar un vuelo especifico, con el campo de busqueda y por fecha
+ * @param <String> $busqueda
+ * @param <Date> $fecha
+ * @return <recurso> recurso con los vuelos asociados a esa búsqueda
+ */
+    function consultarTodosVuelosPorFechaRutas($busqueda, $fecha) {
+        $resultado = false;
+        $query = "SELECT v.id id, v.fecha fecha, v.hora hora,
+                         CONCAT(ru.abreviaturaSalida,' - ',v.RUTA_sitioSalida) rutaSalida,
+                         CONCAT(ru.abreviaturaLlegada,' - ',v.RUTA_sitioLlegada) rutaLlegada,
+                         v.AVION_matricula matricula
+                  FROM VUELO v, RUTA ru
+                  WHERE v.RUTA_sitioSalida = ru.sitioSalida
+                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                  AND (v.RUTA_sitioSalida LIKE '".$busqueda."%' OR v.RUTA_sitioLlegada LIKE '".$busqueda."%')
+                  AND v.fecha = '".$fecha."'
+                  GROUP BY v.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>

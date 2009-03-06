@@ -260,5 +260,17 @@ class ControlVueloLogicaclass {
         return $recurso;
     }
 
+    /**
+ * Metodo para consultar los vuelos por busqueda y fecha
+ * @param <String> $busqueda
+ * @param <Date> $fecha
+ * @return <recurso> recurso con el vuelo especificado
+ */
+    function buscarVuelosPorFechaRutas($busqueda, $fecha) {
+        $resultado = new ArrayObject();
+        $recurso = $this->controlBD->consultarTodosVuelosPorFechaRutas($busqueda, $fecha);
+        return $resultado;
+    }
+
 }
 ?>
