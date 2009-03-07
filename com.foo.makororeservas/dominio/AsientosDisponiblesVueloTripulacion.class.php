@@ -71,7 +71,6 @@ class AsientosDisponiblesVueloTripulacionclass {
     public function setIdvuelo($idVuelo) {
         $this->idVuelo = $idVuelo;
     }
-
-
+ 
 }
 ?>

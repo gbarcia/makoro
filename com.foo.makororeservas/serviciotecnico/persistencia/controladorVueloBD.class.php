@@ -235,25 +235,33 @@ function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
      * @return <type> Los detalles de un vuelo
      */
     function consultarDetallesVuelo($idVuelo){
-        $query = "SELECT R.id,TP.id as tipoPasajero,
-                         IF(R.PASAJERO_id is not null,
-                            (SELECT CONCAT(P.cedula,' ',P.nombre,' ',P.apellido)
-                             FROM PASAJERO P
-                             WHERE P.id = R.PASAJERO_id),
-                            IF(R.CLIENTE_AGENCIA_rif is not null,
-                               CA.nombre,
-                               CONCAT(CP.nombre,' ',CP.apellido))) as pasajero,
-                         TS.nombre as servicio,E.nombre as encargadoNombre, VR.tipo,
-                         R.CLIENTE_AGENCIA_rif as agencia, R.CLIENTE_PARTICULAR_cedula as particular,
+        $query = "SELECT R.id,R.solicitud,TP.id as tipoPasajero,
+                         IF(R.PASAJERO_id is not null, (SELECT CONCAT(P.cedula,' ',P.nombre,' ',P.apellido)
+                                                        FROM PASAJERO P
+                                                        WHERE P.id = R.PASAJERO_id),
+                         IF(R.CLIENTE_AGENCIA_rif is not null, CA.nombre, CONCAT(CP.nombre,' ',CP.apellido))) as pasajero,
+                         TS.nombre as servicio,E.nombre as encargadoNombre, VR.tipo, R.CLIENTE_AGENCIA_rif as agencia,
+                         R.CLIENTE_PARTICULAR_cedula as particular,
                          IF(R.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre,
-                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E','E',P.tipo) FROM PAGO P WHERE R.PAGO_id = P.id),NULL) as pago,
-                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E',NULL,P.nombreBanco) FROM PAGO P WHERE R.PAGO_id = P.id),NULL) as banco,
-                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E',NULL,P.numeroTransaccion) FROM PAGO P WHERE R.PAGO_id = P.id),NULL) as numeroTran,
+                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E','E',P.tipo)
+                                                 FROM PAGO P
+                                                 WHERE R.PAGO_id = P.id),NULL) as pago,
+                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E',NULL,P.nombreBanco)
+                                                   FROM PAGO P
+                                                   WHERE R.PAGO_id = P.id),NULL) as banco,
+                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E',NULL,P.numeroTransaccion)
+                                                   FROM PAGO P
+                                                   WHERE R.PAGO_id = P.id),NULL) as numeroTran,
                          IF(R.PAGO_id is not null,(SELECT P.monto FROM PAGO P WHERE R.PAGO_id = P.id),NULL) as monto,
-                         IF((SELECT R.id FROM PAGO P, BOLETO B WHERE R.PAGO_id = P.id AND P.id = B.PAGO_id
-                             GROUP BY(R.id)),TRUE,FALSE) as boleto
-                  FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS,
-                       ENCARGADO E, TIPO_PASAJERO TP, CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA, BOLETO B
+                         IF((SELECT R.id FROM PAGO P, BOLETO B WHERE R.PAGO_id = P.id AND P.id = B.PAGO_id GROUP BY(R.id)),TRUE,FALSE) as boleto,
+                         IFNULL((SELECT v.fecha
+                                 FROM VUELO_RESERVA vr, VUELO v , RESERVA r
+                                 WHERE r.id = vr.RESERVA_id
+                                 AND v.id = vr.VUELO_id
+                                 AND r.solicitud = R.solicitud
+                                 AND vr.tipo = 'vuelta'
+                                 GROUP BY v.fecha),'XXXX-XX-XX') as fechaRetorno
+                  FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS, ENCARGADO E, TIPO_PASAJERO TP, CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA, BOLETO B
                   WHERE V.id = VR.VUELO_id
                   AND R.id = VR.RESERVA_id
                   AND VR.VUELO_id = ".$idVuelo."
@@ -265,6 +273,7 @@ function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
                        OR R.CLIENTE_AGENCIA_rif = CA.rif)
                   GROUP BY(R.id)
                   ORDER BY(R.id)";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
