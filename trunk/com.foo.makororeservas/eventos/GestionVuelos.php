@@ -160,4 +160,8 @@ function inicio () {
     return $objResponse;
 }
 
+function formularioNuevoVuelo () {
+   
+}
+
 ?>
