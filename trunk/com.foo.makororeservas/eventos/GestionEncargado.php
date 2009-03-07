@@ -10,6 +10,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
  * @return <type> objeto de respuesta xjax
  */
 function autoSugerir($busqueda){
+    $busqueda = limpiar($busqueda);
     $activado = false;
     $objResponse = new xajaxResponse();
     $resultado = "";
@@ -17,8 +18,9 @@ function autoSugerir($busqueda){
     $recurso = $controlBD->busquedaEncargadoAutoSugerir($busqueda);
     $numFilas = mysql_num_rows($recurso);
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table class="tabla">';
-    $resultado.= '<tr class="titulo">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
+    $resultado.= '<thead>';
+    $resultado.= '<tr>';
     $resultado.= '<th>CEDULA</th>';
     $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>APELLIDO</th>';
@@ -32,6 +34,7 @@ function autoSugerir($busqueda){
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '<th>MARCAR</th>';
     $resultado.= '</tr>';
+    $resultado.= '</thead>';
     if (isset($busqueda)) {
         if ($numFilas > 0){ //Si hay coincidencias
             $color = false;
@@ -95,14 +98,21 @@ function autoSugerir($busqueda){
 
     return $objResponse;
 }
+
+function limpiar($var){
+    $nueva_cadena = ereg_replace('%20', " ", $var);
+    return $nueva_cadena;
+}
+
 /**
  * Metodo que retorna el codigo html para mostrar todos los encargados registrados
  * @return <String> codigo HTML
  */
 function CadenaTodosLosEmpleados () {
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table class="tabla">';
-    $resultado.= '<tr class="titulo">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
+    $resultado.= '<thead>';
+    $resultado.= '<tr>';
     $resultado.= '<th>CEDULA</th>';
     $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>APELLIDO</th>';
@@ -116,6 +126,7 @@ function CadenaTodosLosEmpleados () {
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '<th>MARCAR</th>';
     $resultado.= '</tr>';
+    $resultado.= '</thead>';
     $controlBD = new controladorSeguridadBDclass();
     $recurso = $controlBD->traerTodosLosEncargados(TRUE);
     while ($row = mysql_fetch_array($recurso)) {
@@ -168,7 +179,8 @@ function inabilitado ($ina) {
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
-        $resultado.= '<table class="tabla">';
+        $resultado.= '<table class="scrollTable" cellspacing="0">';
+        $resultado.= '<thead>';
         $resultado.= '<tr class="titulo">';
         $resultado.= '<th>CEDULA</th>';
         $resultado.= '<th>NOMBRE</th>';
@@ -183,6 +195,7 @@ function inabilitado ($ina) {
         $resultado.= '<th>EDITAR</th>';
         $resultado.= '<th>MARCAR</th>';
         $resultado.= '</tr>';
+        $resultado.= '</thead>';
         $controlBD = new controladorSeguridadBDclass();
         $recurso = $controlBD->traerTodosLosEncargados(FALSE);
         $color = false;
@@ -219,8 +232,9 @@ function inabilitado ($ina) {
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
-        $resultado.= '<table class="tabla">';
-        $resultado.= '<tr class="titulo">';
+        $resultado.= '<table class="scrollTable" cellspacing="0">';
+        $resultado.= '<thead>';
+        $resultado.= '<tr>';
         $resultado.= '<th>CEDULA</th>';
         $resultado.= '<th>NOMBRE</th>';
         $resultado.= '<th>APELLIDO</th>';
@@ -234,6 +248,7 @@ function inabilitado ($ina) {
         $resultado.= '<th>EDITAR</th>';
         $resultado.= '<th>MARCAR</th>';
         $resultado.= '</tr>';
+        $resultado.= '</thead>';
         $controlBD = new controladorSeguridadBDclass();
         $recurso = $controlBD->traerTodosLosEncargados(TRUE);
         $color = false;
@@ -274,40 +289,45 @@ function inabilitado ($ina) {
  */
 function generarFormularioNuevoVendedor () {
     $controlSucursal = new ControlSucursalLogicaclass();
-    $recursoSucursal = $controlSucursal->consultarSucursales();
-    $formulario = '<form name="formularioNuevoEncargado" id = "formularioNuevoEncargado"><table cellpadding="2" cellspacing="1">
-    <tr class="titulo">
-      <td width="156">NUEVO VENDEDOR</td>
-      <td width="242"><div align="right">
-        <label>
-        <input type="button" name="cerrar" id="cerrar" value="X" onclick="xajax_cerrarVentanaEditar()" />
-        </label>
-      </div></td>
+    $recursoSucursal = $controlSucursal->consultarSucursales(true);
+    $formulario = '<form name="formularioNuevoEncargado" id = "formularioNuevoEncargado">
+                   <table class="formTable" cellspacing="0">
+        <tr>
+        <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">
+            NUEVO VENDEDOR
+            <div class="botonCerrar">
+            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>
+        </td>
+        </thead>
     </tr>
     <tr class="r1">
       <td colspan="2">Todos los campos son obligatorios</td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Cedula</td>
       <td><label>
         <input type="text" name="cedula" id="cedula" size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Apellido</td>
       <td><label>
         <input type="text" name="apellido" id="apellido" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Sexo</td>
-      <td><p>
+      <td>
         <label>
           <input type="radio" name="sexo" value="M" id="sexo_0">
           Masculino</label>
@@ -317,32 +337,32 @@ function generarFormularioNuevoVendedor () {
           Femenino</label>
       </td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Telefono</td>
       <td><label>
         <input type="text" name="telefono" id="telefono" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Estado de residencia</td>
       <td><label>
         <input type="text" name="estado" id="estado" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Ciudad de residencia</td>
       <td><label>
         <input type="text" name="ciudad" id="ciudad" onKeyUp="this.value=this.value.toUpperCase();" size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Direccion de residencia</td>
       <td><label>
         <textarea name="direccion" id="direccion" cols="23" onKeyUp="this.value=this.value.toUpperCase();" rows="3"></textarea>
       </label></td>
     </tr>
-    <tr class="r1">
-      <td>Cargo en el sistema</td>
+    <tr class="r0">
+      <td>Cargo</td>
       <td><label>
         <select name="tipo" id="tipo">
           <option value="V" selected="selected">Vendedor</option>
@@ -350,24 +370,24 @@ function generarFormularioNuevoVendedor () {
         </select>
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Fecha de Nacimiento</td>
       <td><input type="text" name="fechaNac" id="f_date_c" readonly="1" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
 </td>
     </tr>
-    <tr class="r1">
-      <td>correo electr&oacute;nico</td>
+    <tr class="r0">
+      <td>Correo electr&oacute;nico</td>
       <td><input type="text" name="correo" id="correo" size="30" onKeyUp="this.value=this.value.toLowerCase();" /></td>
     </tr>
-        <tr class="r0">
-      <td>repita correo electr&oacute;nico</td>
+        <tr class="r1">
+      <td>Confirme correo electr&oacute;nico</td>
       <td><input type="text" name="correor" id="correor" size="30" onKeyUp="this.value=this.value.toLowerCase();" /></td>
         </tr>
-    <tr class="r1">
-      <td>login</td>
+    <tr class="r0">
+      <td>Nombre de Usuario</td>
       <td><input type="text" name="login" id="login" size="30" onKeyUp="this.value=this.value.toLowerCase();" /></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Sucursal</td>
       <td><select name="sucursal" id="sucursal">';
     while ($rowS = mysql_fetch_array($recursoSucursal)) {
@@ -376,7 +396,7 @@ function generarFormularioNuevoVendedor () {
     }
     $formulario.=' </select></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td height="26" colspan="2"><div align="center"><input name="button" type="button" id="button"  value="AGREGAR" onclick = "xajax_procesarNuevoEncargado(xajax.getFormValues(\'formularioNuevoEncargado\'))">
             </div>
       </label></td>
@@ -486,18 +506,39 @@ function procesarNuevoEncargado ($datos) {
         $resultado = $controlLogica->nuevoEncargado($encargado, $datos[correor]);
         $objResponse = new xajaxResponse();
         if ($resultado){
-            $respuesta .= '<div class="exito">Nuevo Vendedor '.$datos[cedula]. ' agregado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Vendedor '.$datos[cedula]. ' agregado con exito
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
             $objResponse->addAssign("izq", "innerHTML", "");
         }
         else {
-            $respuesta .= '<div class="error">No se pudo completar la operacion. Error FE001 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+            $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique que la cedula o el nombre de usuario no este repetido. Error FE001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
         }
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
         $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
         $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
     }
     else {
-        $respuesta .= '<div class="error">No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR FGE02 <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $respuesta .= '<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique que el formulario ha sido completado correctamente. ERROR FGE02.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
     return $objResponse;
@@ -513,39 +554,43 @@ function generarFormularioEditar ($cedula) {
     $encargado = $controlBD->buscarEncargadoPorCedula($cedula);
     $recursoSucursal = $controlSucursal->consultarSucursales(TRUE);
     $formulario = '<form name="formularioEditarEncargado" id = "formularioEditarEncargado">
-  <table cellpadding="2" cellspacing="1">
-    <tr class="titulo">
-      <td width="161">EDITAR VENDEDOR</td>
-      <td width="242"><div align="right">
-        <label>
-        <input type="button" name="cerrar" id="cerrar" value="X" accesskey="X" onclick="xajax_cerrarVentanaEditar()" />
-        </label>
-      </div></td>
+  <table class="formTable" cellspacing="0">
+    <tr>
+        <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">
+            EDITAR VENDEDOR
+            <div class="botonCerrar">
+            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>
+        </td>
+        </thead>
     </tr>
     <tr class="r1">
       <td colspan="2">Todos los campos son obligatorios</td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Cedula</td>
       <td><label>
         <input name="cedula" type="text" id="cedula" value="'.$encargado->getCedula().'" READONLY size="30">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getNombre().'">
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Apellido</td>
       <td><label>
         <input type="text" name="apellido" id="apellido" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getApellido().'">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Sexo</td>
-      <td><p>
+      <td>
         <label>
           <input type="radio" name="sexo" value="M" id="sexo_0"';
     if($encargado->getSexo() == 'M'){
@@ -561,32 +606,32 @@ function generarFormularioEditar ($cedula) {
     $formulario.= '>Femenino</label>
       </td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Telefono</td>
       <td><label>
         <input type="text" name="telefono" id="telefono" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getTelefono().'">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Estado de residencia</td>
       <td><label>
         <input type="text" name="estado" id="estado" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getEstado().'">
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Ciudad de residencia</td>
       <td><label>
         <input type="text" name="ciudad" id="ciudad" size="30" onKeyUp="this.value=this.value.toUpperCase();" value="'.$encargado->getCiudad().'">
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Direccion de residencia</td>
       <td><label>
-        <textarea name="direccion" id="direccion" cols="23" rows="3"onKeyUp="this.value=this.value.toUpperCase();">'.$encargado->getDireccion().'</textarea>
+        <textarea name="direccion" id="direccion" cols="30" rows="3"onKeyUp="this.value=this.value.toUpperCase();">'.$encargado->getDireccion().'</textarea>
       </label></td>
     </tr>
-    <tr class="r1">
-      <td>Cargo en el sistema</td>
+    <tr class="r0">
+      <td>Cargo</td>
       <td><label>
         <select name="tipo" id="tipo">';
     $formulario .= '<option value="V"';
@@ -600,21 +645,21 @@ function generarFormularioEditar ($cedula) {
     $formulario .='</select>
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Fecha de Nacimiento</td>
       <td><input type="text" name="fechaNac" id="f_date_c" readonly="1" size="15" value="'.$encargado->getFechaNac().'" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
 </td>
     </tr>
-    <tr class="r1">
-      <td>correo electr&oacute;nico</td>
+    <tr class="r0">
+      <td>Correo electr&oacute;nico</td>
       <td><input type="text" name="correo" id="correo" size="30" value = "'.$encargado->getCorreo().'" onKeyUp="this.value=this.value.toLowerCase();" /></td>
     </tr>
     <tr class="r1">
-      <td>repetir correo electr&oacute;nico</td>
+      <td>Confirme correo electr&oacute;nico</td>
       <td><input type="text" name="correor" id="correor" size="30" value = "solo en caso de editar el correo" onKeyUp="this.value=this.value.toLowerCase();" onclick= "colocarEnBlanco()" /></td>
     </tr>
     <tr class="r0">
-      <td>login</td>
+      <td>Nombre de Usuario</td>
       <td><input type="text" name="login" id="login" READONLY value="'.$encargado->getLogin().'" size="30" /></td>
     </tr>
     <tr class="r1">
@@ -745,11 +790,25 @@ function procesarEditarEncargado ($datos) {
 
         $resultado = $controlSeguridad->editarEncargado($encargado, "","");
         if ($resultado){
-            $respuesta .= '<div class="exito">Nuevo Vendedor '.$datos[cedula]. ' editado con exito <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()">';
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Vendedor '.$datos[cedula]. ' editado con exito
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
             $objResponse->addAssign("izq", "innerHTML", "");
         }
         else {
-            $respuesta .= '<div class="error">No se pudo completar la operacion. Error FE001B <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+            $respuesta .=  '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Error FE001B.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
         }
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
         $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
@@ -800,14 +859,28 @@ function habilitarEncargado($listaEncargados) {
             $controlEncargado->rehabilitarEncargado($enc);
         }
         $actualizarCheck = desmarcarCheckBox();
-        $respuesta ='<div class="exito">Encargado(s) habilitado(s) con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $respuesta = '<div class="exito">
+                          <div class="textoMensaje">
+                          Encargado(s) habilitado(s) con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
         $objResponse->addAssign("check", "innerHTML", $actualizarCheck);
         $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
         $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
     }
     else {
-        $respuesta ='<div class="error">Debe marcar algun encargado para habilitar <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $respuesta = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          Debe marcar algun encargado para habilitar.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
     return $objResponse;
@@ -826,14 +899,27 @@ function inhabilitarEncargado($listaEncargados) {
         foreach ($listaEncargados[encargados] as $enc) {
             $controlEncargado->borrarEncargado($enc);
         }
-        $respuesta ='<div class="exito">Encargado(s) inhabilitado(s) con exito<input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
+        $respuesta = '<div class="exito">
+                          <div class="textoMensaje">
+                          Encargado(s) inhabilitado(s) con exito
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
         $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
         $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
     }
     else {
-        $respuesta ='<div class="error">Debe marcar algun encargado para inhabilitar <input name="button" type="button" id="button" value="X" onclick="xajax_borrarMensaje()"></div>';
-        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $respuesta = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          Debe marcar algun encargado para inhabilitar
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';$objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
     return $objResponse;
 }
@@ -854,7 +940,7 @@ function desmarcarCheckBox () {
  * @return <String> html para generar el boton
  */
 function crearBotonHabilitarTripulante () {
-    $boton = '<input type="button" name="button3" id="button3" value="HABLITAR SELECCION" onclick="xajax_habilitarEncargado(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
+    $boton = '<input type="button" name="button3" id="button3" value="HABILITAR SELECCION" onclick="xajax_habilitarEncargado(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
     return $boton;
 }
 /**
@@ -862,7 +948,7 @@ function crearBotonHabilitarTripulante () {
  * @return <String> html para generar el boton
  */
 function crearBotonInhabilitarTripulante () {
-    $boton = '<input type="button" name="button3" id="button3" value="INHABLITAR SELECCION" onclick="xajax_inhabilitarEncargado(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
+    $boton = '<input type="button" name="button3" id="button3" value="INHABILITAR SELECCION" onclick="xajax_inhabilitarEncargado(xajax.getFormValues(\'formularioEditarMarcar\'))" />';
     return $boton;
 }
 
