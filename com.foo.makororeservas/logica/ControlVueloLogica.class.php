@@ -83,9 +83,9 @@ class ControlVueloLogicaclass {
         $recurso = $this->controlBD->consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado);
         
         while ($operacion = mysql_fetch_array($recurso)) {
+            $idVuelo = $operacion[idVuelo];
             $cantidadDisponible = $operacion[quedan];
             $disponibilidad = $operacion[disponibilidad];
-            $idVuelo = $operacion[idVuelo];
             $controlVueloPersonal = new controladorVueloPersonalBDclass();
             $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
             $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalCopiloto($idVuelo);
