@@ -54,97 +54,97 @@ class controladorVueloBDclass {
  * @return <recurso>
  */
     function consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,
-                                      $rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,
-                                      $apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,
-                                      $rifAgencia,$nombreAgencia,$solicitud,$estado) {
+        $rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,
+        $apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,
+        $rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $resultado = false;
         $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
                          ru.abreviaturaLlegada abreviaturaLlegada,ASIENTOS_DISPONIBLES(v.id,a.asientos) as quedan,
                          VERIFICAR_DISPONIBILIDAD(v.id,a.asientos,".$capacidad.") as disponibilidad
                          FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr ";
-                  if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
-                    $query .= ", PASAJERO p ";
-                  }
-                  if(($cedulaPart != "") || ($nombrePart != "")  || ($apellidoPart != "")){
-                      $query.=", CLIENTE_PARTICULAR cp ";
-                  }
-                  if(($rifAgencia != "") || ($nombreAgencia != "")){
-                      $query.=", CLIENTE_AGENCIA ca ";
-                  }
-                  $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida 
+        if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
+            $query .= ", PASAJERO p ";
+        }
+        if(($cedulaPart != "") || ($nombrePart != "")  || ($apellidoPart != "")){
+            $query.=", CLIENTE_PARTICULAR cp ";
+        }
+        if(($rifAgencia != "") || ($nombreAgencia != "")){
+            $query.=", CLIENTE_AGENCIA ca ";
+        }
+        $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
                   AND v.AVION_matricula = a.matricula
                   AND vr.VUELO_id = v.id
                   AND r.id = vr.RESERVA_id
                   AND a.habilitado = 1 ";
-                  if($hora != "")
-                  $query.= " AND v.hora = '".$hora."' ";
-                  if (!(($fechaInicio == "")  && ($fechaFin == ""))){
-                      if(($fechaInicio != "") && ($fechaFin != "")){
-                          $query.= " AND v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."' ";
-                      }else if($fechaInicio == ""){
-                          $query.= " AND v.fecha <= '".$fechaFin."' ";
-                      }else{
-                          $query.= " AND v.fecha >= '".$fechaInicio."' ";
-                      }
-                  }
-                  if($rutaSitioSalida != "")
-                  $query.= " AND ru.sitioSalida = '".$rutaSitioSalida."' ";
-                  if($rutaSitioLlegada != "")
-                  $query.= " AND ru.sitioLlegada = '".$rutaSitioLlegada."' ";
-                  if($avionMatricula != "")
-                  $query.= " AND a.matricula = '".$avionMatricula."' ";
-                  if($cedulaPasaporte != ""){
-                      $query.= " AND r.PASAJERO_id = p.id ";
-                      if(is_numeric($cedulaPasaporte)){
-                          $query.= " AND p.cedula = ".$cedulaPasaporte."";
-                      }else{
-                          $query.= " AND p.pasaporte = '".$cedulaPasaporte."' ";
-                      }
-                  }
-                  if($nombrePasajero != ""){
-                      $query.= " AND r.PASAJERO_id = p.id
+        if($hora != "")
+        $query.= " AND v.hora = '".$hora."' ";
+        if (!(($fechaInicio == "")  && ($fechaFin == ""))){
+            if(($fechaInicio != "") && ($fechaFin != "")){
+                $query.= " AND v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."' ";
+            }else if($fechaInicio == ""){
+                $query.= " AND v.fecha <= '".$fechaFin."' ";
+            }else{
+                $query.= " AND v.fecha >= '".$fechaInicio."' ";
+            }
+        }
+        if($rutaSitioSalida != "")
+        $query.= " AND ru.sitioSalida = '".$rutaSitioSalida."' ";
+        if($rutaSitioLlegada != "")
+        $query.= " AND ru.sitioLlegada = '".$rutaSitioLlegada."' ";
+        if($avionMatricula != "")
+        $query.= " AND a.matricula = '".$avionMatricula."' ";
+        if($cedulaPasaporte != ""){
+            $query.= " AND r.PASAJERO_id = p.id ";
+            if(is_numeric($cedulaPasaporte)){
+                $query.= " AND p.cedula = ".$cedulaPasaporte."";
+            }else{
+                $query.= " AND p.pasaporte = '".$cedulaPasaporte."' ";
+            }
+        }
+        if($nombrePasajero != ""){
+            $query.= " AND r.PASAJERO_id = p.id
                                  AND p.nombre LIKE '".$nombrePasajero."%' ";
-                  }
-                  if($apellidoPasajero != ""){
-                      $query.= " AND r.PASAJERO_id = p.id
+        }
+        if($apellidoPasajero != ""){
+            $query.= " AND r.PASAJERO_id = p.id
                                  AND p.apellido LIKE '".$apellidoPasajero."%' ";
-                  }
-                  if($cedulaPart != ""){
-                      $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula 
+        }
+        if($cedulaPart != ""){
+            $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
                                  AND r.CLIENTE_PARTICULAR_cedula = ".$cedulaPart." ";
-                  }
-                  if($nombrePart != ""){
-                      $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
+        }
+        if($nombrePart != ""){
+            $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
                                  AND cp.nombre LIKE '".$nombrePart."%' ";
-                  }
-                  if($apellidoPart != ""){
-                      $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
+        }
+        if($apellidoPart != ""){
+            $query.= " AND r.CLIENTE_PARTICULAR_cedula = cp.cedula
                                  AND cp.apellido LIKE '".$apellidoPart."%' ";
-                  }
-                  if($rifAgencia != ""){
-                      $query.= " AND r.CLIENTE_AGENCIA_rif = ca.rif
+        }
+        if($rifAgencia != ""){
+            $query.= " AND r.CLIENTE_AGENCIA_rif = ca.rif
                                  AND r.CLIENTE_AGENCIA_rif = '".$rifAgencia."' ";
-                  }
-                  if($nombreAgencia != ""){
-                      $query.= " AND r.CLIENTE_AGENCIA_rif = ca.rif
+        }
+        if($nombreAgencia != ""){
+            $query.= " AND r.CLIENTE_AGENCIA_rif = ca.rif
                                  AND ca.nombre LIKE '".$nombreAgencia."%' ";
-                  }
-                  if($solicitud != ""){
-                      $query.= " AND r.solicitud = '".$solicitud."' ";
-                  }
-                  if($estado != ""){
-                      $query.= " AND r.estado = '".$estado."' ";
-                  }
-                  $query.= " GROUP BY v.id
+        }
+        if($solicitud != ""){
+            $query.= " AND r.solicitud = '".$solicitud."' ";
+        }
+        if($estado != ""){
+            $query.= " AND r.estado = '".$estado."' ";
+        }
+        $query.= " GROUP BY v.id
                              HAVING disponibilidad = 1";
-                  echo $query;
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 
-function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
+    function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
         $resultado = false;
         $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
@@ -155,18 +155,18 @@ function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
                   AND v.AVION_matricula = a.matricula
                   AND a.habilitado = 1 ";
-                  if (!(($fechaInicio == "")  && ($fechaFin == ""))){
-                      if(($fechaInicio != "") && ($fechaFin != "")){
-                          $query.= " AND v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."' ";
-                      }else if($fechaInicio == ""){
-                          $query.= " AND v.fecha <= '".$fechaFin."' ";
-                      }else{
-                          $query.= " AND v.fecha >= '".$fechaInicio."' ";
-                      }
-                  }
-                  $query.= " GROUP BY v.id
+        if (!(($fechaInicio == "")  && ($fechaFin == ""))){
+            if(($fechaInicio != "") && ($fechaFin != "")){
+                $query.= " AND v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."' ";
+            }else if($fechaInicio == ""){
+                $query.= " AND v.fecha <= '".$fechaFin."' ";
+            }else{
+                $query.= " AND v.fecha >= '".$fechaInicio."' ";
+            }
+        }
+        $query.= " GROUP BY v.id
                              HAVING disponibilidad = 1";
-                  echo $query;
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -196,7 +196,7 @@ function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
     function consultarVuelosRealizados() {
         $resultado = false;
         $query = "SELECT v.id,v.fecha, v.hora, v.AVION_matricula avionMatricula,
-                         v.RUTA_sitioSalida sitioSalida, v.RUTA_sitioLlegada sitioLlegada, 
+                         v.RUTA_sitioSalida sitioSalida, v.RUTA_sitioLlegada sitioLlegada,
                          ru.abreviaturaSalida abreviaturaSalida,ru.abreviaturaLlegada abreviaturaLlegada, a.asientos asientos
                   FROM VUELO v,VUELO_RESERVA vr, RESERVA r, RUTA ru, AVION a
                   WHERE v.fecha < SYSDATE(v.fecha)
@@ -240,27 +240,27 @@ function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
                                                         FROM PASAJERO P
                                                         WHERE P.id = R.PASAJERO_id),
                          IF(R.CLIENTE_AGENCIA_rif is not null, CA.nombre, CONCAT(CP.nombre,' ',CP.apellido))) as pasajero,
-                         TS.nombre as servicio,E.nombre as encargadoNombre, VR.tipo, R.CLIENTE_AGENCIA_rif as agencia,
-                         R.CLIENTE_PARTICULAR_cedula as particular,
+                         TS.nombre as servicio,E.nombre as encargadoNombre, VR.tipo, IFNULL(R.CLIENTE_AGENCIA_rif,'&nbsp') as agencia,
+                         IFNULL(R.CLIENTE_PARTICULAR_cedula,'&nbsp') as particular,
                          IF(R.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre,
                          IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E','E',P.tipo)
-                                                 FROM PAGO P
-                                                 WHERE R.PAGO_id = P.id),NULL) as pago,
-                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E',NULL,P.nombreBanco)
                                                    FROM PAGO P
-                                                   WHERE R.PAGO_id = P.id),NULL) as banco,
-                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E',NULL,P.numeroTransaccion)
+                                                   WHERE R.PAGO_id = P.id),'&nbsp') as pago,
+                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E','&nbsp',P.nombreBanco)
                                                    FROM PAGO P
-                                                   WHERE R.PAGO_id = P.id),NULL) as numeroTran,
-                         IF(R.PAGO_id is not null,(SELECT P.monto FROM PAGO P WHERE R.PAGO_id = P.id),NULL) as monto,
+                                                   WHERE R.PAGO_id = P.id),'&nbsp') as banco,
+                         IF(R.PAGO_id is not null,(SELECT IF(P.tipo='E','&nbsp',P.numeroTransaccion)
+                                                   FROM PAGO P
+                                                   WHERE R.PAGO_id = P.id),'&nbsp') as numeroTran,
+                         IF(R.PAGO_id is not null,(SELECT P.monto FROM PAGO P WHERE R.PAGO_id = P.id),'&nbsp') as monto,
                          IF((SELECT R.id FROM PAGO P, BOLETO B WHERE R.PAGO_id = P.id AND P.id = B.PAGO_id GROUP BY(R.id)),TRUE,FALSE) as boleto,
-                         IFNULL((SELECT v.fecha
-                                 FROM VUELO_RESERVA vr, VUELO v , RESERVA r
-                                 WHERE r.id = vr.RESERVA_id
-                                 AND v.id = vr.VUELO_id
-                                 AND r.solicitud = R.solicitud
-                                 AND vr.tipo = 'vuelta'
-                                 GROUP BY v.fecha),'XXXX-XX-XX') as fechaRetorno
+                         IF(VR.tipo = 'ida',IFNULL((SELECT CONCAT(v.fecha,', ',v.hora)
+                                                    FROM VUELO_RESERVA vr, VUELO v , RESERVA r
+                                                    WHERE r.id = vr.RESERVA_id
+                                                    AND v.id = vr.VUELO_id
+                                                    AND r.solicitud = R.solicitud
+                                                    AND vr.tipo = 'vuelta'
+                                                    GROUP BY v.fecha,v.hora),'XXXX-XX-XX'),'Vuelo de retorno') as vueloRetorno
                   FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS, ENCARGADO E, TIPO_PASAJERO TP, CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA, BOLETO B
                   WHERE V.id = VR.VUELO_id
                   AND R.id = VR.RESERVA_id

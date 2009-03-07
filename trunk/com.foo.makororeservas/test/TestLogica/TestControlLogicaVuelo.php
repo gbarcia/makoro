@@ -150,7 +150,7 @@ echo '<th>banco</th>';
 echo '<th>numeroTran</th>';
 echo '<th>monto</th>';
 echo '<th>boleto</th>';
-echo '<th>fechaRetorno</th>';
+echo '<th>vueloRetorno</th>';
 echo '</tr>';
 $resultado = $controlBD->consultarVuelosDetalles(9);
     while ($row = mysql_fetch_array($resultado)) {
@@ -169,7 +169,7 @@ $resultado = $controlBD->consultarVuelosDetalles(9);
     echo '<td>' . $row[numeroTran] . '</td>';
     echo '<td>' . $row[monto] . '</td>';
     echo '<td>' . $row[boleto] . '</td>';
-    echo '<td>' . $row[fechaRetorno] . '</td>';
+    echo '<td>' . $row[vueloRetorno] . '</td>';
     echo '</tr>';
 }
 echo '</table>';
