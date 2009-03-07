@@ -100,7 +100,7 @@ class ControlVueloLogicaclass {
             }
 
             $vuelo = new Vueloclass();
-            $vuelo->setId($operacion[id]);
+            $vuelo->setId($operacion[idVuelo]);
             $vuelo->setFecha($operacion[fecha]);
             $vuelo->setHora($operacion[hora]);
             $vuelo->setRutaSitioSalida($operacion[abreviaturaSalida]);
