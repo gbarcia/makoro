@@ -15,15 +15,15 @@ class ControlVueloLogicaclass {
         $this->controlBD = new controladorVueloBDclass();
     }
 
-/**
- * Metodo para agregar un nuevo vuelo
- * @param <Date> $fecha
- * @param <Date> $hora
- * @param <String> $avionMatricula
- * @param <String> $rutaSitioSalida
- * @param <String> $rutaSitioLlegada
- * @return <boolean>
- */
+    /**
+     * Metodo para agregar un nuevo vuelo
+     * @param <Date> $fecha
+     * @param <Date> $hora
+     * @param <String> $avionMatricula
+     * @param <String> $rutaSitioSalida
+     * @param <String> $rutaSitioLlegada
+     * @return <boolean>
+     */
     function nuevoVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
         $vuelo = new Vueloclass();
         $vuelo->setFecha($fecha);
@@ -35,13 +35,13 @@ class ControlVueloLogicaclass {
         return ($resultado);
     }
 
-/**
- * Metodo para actualizar los datos de un vuelo
- * @param <Date> $fecha
- * @param <Date> $hora
- * @param <String> $avionMatricula
- * @return <boolean>
- */
+    /**
+     * Metodo para actualizar los datos de un vuelo
+     * @param <Date> $fecha
+     * @param <Date> $hora
+     * @param <String> $avionMatricula
+     * @return <boolean>
+     */
     function actualizarVuelo($id,$fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
         $vuelo = new Vueloclass();
         $vuelo->setId($id);
@@ -54,11 +54,11 @@ class ControlVueloLogicaclass {
         return ($resultado);
     }
 
-/**
- * Metodo para consultar los asientos disponibles
- * @param <Integer> $id
- * @return <recurso> recurso con la cantidad disponible
- */
+    /**
+     * Metodo para consultar los asientos disponibles
+     * @param <Integer> $id
+     * @return <recurso> recurso con la cantidad disponible
+     */
     function calculoAsientosDisponibles($id) {
         $recurso = $this->controlBD->consultarVueloCantidadReserva($id);
         $row = mysql_fetch_array($recurso);
@@ -68,16 +68,16 @@ class ControlVueloLogicaclass {
         return $cantidadDisponible;
     }
 
-/**
- * Metodo para consultar los asientos disponibles, el piloto y el copiloto
- * del vuelo consultado
- * @param <Date> $hora
- * @param <Date> $fecha
- * @param <String> $rutaSitioSalida
- * @param <String> $rutaSitioLlegada
- * @param <String> $avionMatricula
- * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
- */
+    /**
+     * Metodo para consultar los asientos disponibles, el piloto y el copiloto
+     * del vuelo consultado
+     * @param <Date> $hora
+     * @param <Date> $fecha
+     * @param <String> $rutaSitioSalida
+     * @param <String> $rutaSitioLlegada
+     * @param <String> $avionMatricula
+     * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
+     */
     function vueloEspecificoConFiltro($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $coleccionResultado = new ArrayObject();
         $recurso = $this->controlBD->consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado);
@@ -113,6 +113,12 @@ class ControlVueloLogicaclass {
         return $coleccionResultado;
     }
 
+    /**
+     * Metodo para consultar informacion  de los vuelos en un intervalo de fecha
+     * @param <type> $fechaInicio La fecha de inicio a consultar
+     * @param <type> $fechaFin La fecha de fin a consultar
+     * @return <type> Los vuelos en un intervalo
+     */
     function vueloEspecificoSinFiltro($fechaInicio,$fechaFin) {
         $coleccionResultado = new ArrayObject();
         $recurso = $this->controlBD->consultarVueloSinFiltros($fechaInicio,$fechaFin);
@@ -148,10 +154,10 @@ class ControlVueloLogicaclass {
         return $coleccionResultado;
     }
 
-/**
- * Metodo para consultar los vuelos realizados comparando con la fecha actual
- * @return <$coleccion> coleccion de vuelos pasados
- */
+    /**
+     * Metodo para consultar los vuelos realizados comparando con la fecha actual
+     * @return <$coleccion> coleccion de vuelos pasados
+     */
     function buscarVuelosRealizados() {
         $resultado = new ArrayObject();
         $recurso = $this->controlBD->consultarVuelosRealizados();
@@ -170,11 +176,11 @@ class ControlVueloLogicaclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar los vuelos realizados con los piloto, copilotos y
- * asientos que fueron reservados
- * @return <Coleccion> coleccion vuelo
- */
+    /**
+     * Metodo para consultar los vuelos realizados con los piloto, copilotos y
+     * asientos que fueron reservados
+     * @return <Coleccion> coleccion vuelo
+     */
     function vuelosRealizados() {
         $recurso = $this->buscarVuelosRealizados();
         $coleccionResultado = new ArrayObject();
@@ -207,10 +213,10 @@ class ControlVueloLogicaclass {
         return $coleccionResultado;
     }
 
-/**
- * Metodo para consultar todos los vuelos para las fechas siguientes
- * @return <Coleccion> coleccion de vuelo
- */
+    /**
+     * Metodo para consultar todos los vuelos para las fechas siguientes
+     * @return <Coleccion> coleccion de vuelo
+     */
     function consultarLosVuelos(){
         $resultado = new ArrayObject();
         $recurso = $this->controlBD->consultarTodosVuelos();
@@ -229,11 +235,11 @@ class ControlVueloLogicaclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar la cantidad de asientos disponibles para las siguientes
- * fechas con el piloto, copiloto y la cantidad de asientos disponibles
- * @return <Coleccion> coleccion de objeto vuelo
- */
+    /**
+     * Metodo para consultar la cantidad de asientos disponibles para las siguientes
+     * fechas con el piloto, copiloto y la cantidad de asientos disponibles
+     * @return <Coleccion> coleccion de objeto vuelo
+     */
     function vuelosCantidadAsientosDisponibles() {
         $recurso = $this->consultarLosVuelos();
         $coleccionResultado = new ArrayObject();
@@ -296,11 +302,11 @@ class ControlVueloLogicaclass {
     }
 
     /**
- * Metodo para consultar los vuelos por busqueda y fecha
- * @param <String> $busqueda
- * @param <Date> $fecha
- * @return <recurso> recurso con el vuelo especificado
- */
+     * Metodo para consultar los vuelos por busqueda y fecha
+     * @param <String> $busqueda
+     * @param <Date> $fecha
+     * @return <recurso> recurso con el vuelo especificado
+     */
     function buscarVuelosPorFechaRutas($busqueda, $fecha) {
         $resultado = new ArrayObject();
         $recurso = $this->controlBD->consultarTodosVuelosPorFechaRutas($busqueda, $fecha);
