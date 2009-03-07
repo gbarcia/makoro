@@ -511,7 +511,7 @@ function generarFormularioEditar ($cedula) {
     $controlSucursal = new ControlSucursalLogicaclass();
     $controlBD = new controladorSeguridadBDclass();
     $encargado = $controlBD->buscarEncargadoPorCedula($cedula);
-    $recursoSucursal = $controlSucursal->consultarSucursales();
+    $recursoSucursal = $controlSucursal->consultarSucursales(TRUE);
     $formulario = '<form name="formularioEditarEncargado" id = "formularioEditarEncargado">
   <table cellpadding="2" cellspacing="1">
     <tr class="titulo">
