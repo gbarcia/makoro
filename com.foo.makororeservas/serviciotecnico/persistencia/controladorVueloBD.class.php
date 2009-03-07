@@ -138,7 +138,7 @@ class controladorVueloBDclass {
             $query.= " AND r.estado = '".$estado."' ";
         }
         $query.= " GROUP BY v.id
-                             HAVING disponibilidad = 1";
+                   HAVING disponibilidad = 1";
         echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
