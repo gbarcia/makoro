@@ -60,9 +60,21 @@ class controladorVueloBDclass {
         $resultado = false;
         $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
-                         ru.abreviaturaLlegada abreviaturaLlegada,ASIENTOS_DISPONIBLES(v.id,a.asientos) as quedan,
-                         VERIFICAR_DISPONIBILIDAD(v.id,a.asientos,".$capacidad.") as disponibilidad
-                         FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr ";
+                         ru.abreviaturaLlegada abreviaturaLlegada,
+                         IFNULL((SELECT a.asientos-COUNT(vre.RESERVA_id)
+                                 FROM VUELO_RESERVA vre, VUELO vu , RESERVA re
+                                 WHERE re.id = vre.RESERVA_id
+                                 AND vu.id = vre.VUELO_id
+                                 AND vre.VUELO_id = v.id),0) as quedan,
+                         IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$capacidad.")>=0,TRUE,FALSE)
+                                 FROM VUELO_RESERVA vre, VUELO vu, RESERVA re
+                                 WHERE re.id = vre.RESERVA_id
+                                 AND vu.id = vre.VUELO_id
+                                 AND vre.VUELO_id = v.id),0) as disponibilidad ";
+//                         ASIENTOS_DISPONIBLES(v.id,a.asientos) as quedan,
+//                         VERIFICAR_DISPONIBILIDAD(v.id,a.asientos,".$capacidad.") as disponibilidad
+
+                         $query.=" FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr ";
         if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
             $query .= ", PASAJERO p ";
         }
