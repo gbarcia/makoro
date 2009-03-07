@@ -148,8 +148,17 @@ class controladorVueloBDclass {
         $resultado = false;
         $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
-                         ru.abreviaturaLlegada abreviaturaLlegada,ASIENTOS_DISPONIBLES(v.id,a.asientos) as quedan,
-                         VERIFICAR_DISPONIBILIDAD(v.id,a.asientos,0) as disponibilidad
+                         ru.abreviaturaLlegada abreviaturaLlegada,
+                         IFNULL((SELECT a.asientos-COUNT(vre.RESERVA_id)
+                                 FROM VUELO_RESERVA vre, VUELO vu , RESERVA re
+                                 WHERE re.id = vre.RESERVA_id
+                                 AND vu.id = vre.VUELO_id
+                                 AND vre.VUELO_id = v.id),0) as quedan,
+                         IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+0)>=0,TRUE,FALSE)
+                                 FROM VUELO_RESERVA vre, VUELO vu , RESERVA re
+                                 WHERE re.id = vre.RESERVA_id
+                                 AND vu.id = vre.VUELO_id
+                                 AND vre.VUELO_id = v.id),0) as disponibilidad
                   FROM VUELO v, RUTA ru, AVION a, RESERVA r
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
