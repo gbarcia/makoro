@@ -26,6 +26,7 @@ function calculoHora($datos) {
         $resultado.= '<table width="100%" class="formTable" cellspacing="0">';
         $resultado.= '<thead>';
         $resultado.= '<tr>';
+        $resultado.= '<th>FECHA</th>';
         $resultado.= '<th>SITIO SALIDA</th>';
         $resultado.= '<th>SITIO LLEGADA</th>';
         $resultado.= '<th>TIEMPO</th>';
@@ -36,6 +37,7 @@ function calculoHora($datos) {
         $resultado.= '</thead>';
         $resultado.= '<tfoot>';
         $resultado.= '<tr>';
+        $resultado.= '<td>&nbsp</td>';
         $resultado.= '<td>&nbsp</td>';
         $resultado.= '<td>&nbsp</td>';
         $resultado.= '<td>&nbsp</td>';
@@ -53,6 +55,7 @@ function calculoHora($datos) {
             } else {
                 $resultado.= '<tr class="r1">';
             }
+            $resultado.= '<td>' . $row[fecha]. '</td>';
             $resultado.= '<td>' . $row[sitioSalida]. '</td>';
             $resultado.= '<td>' . $row[sitioLlegada] . '</td>';
             $resultado.= '<td>' . $row[tiempo]. '</td>';
