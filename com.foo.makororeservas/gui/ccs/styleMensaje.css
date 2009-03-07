@@ -1,3 +1,4 @@
+@charset "utf-8";
 /* 
 Document   : styleMensaje
 Created on : Feb 23, 2009, 6:08:45 PM
@@ -5,7 +6,6 @@ Author     : jonathan
 Description:
 Estilo para los mensajes de informacion.
 */
-@charset "utf-8";
 .advertencia {
     background-color: #FFEAAA;
     border: 1px solid #FFCF40;
