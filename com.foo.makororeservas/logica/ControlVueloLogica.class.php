@@ -83,7 +83,6 @@ class ControlVueloLogicaclass {
         $recurso = $this->controlBD->consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado);
         
         while ($operacion = mysql_fetch_array($recurso)) {
-            $idVuelo = $operacion[id];
             $cantidadDisponible = $operacion[quedan];
             $disponibilidad = $operacion[disponibilidad];
             $idVuelo = $operacion[idVuelo];
@@ -124,7 +123,6 @@ class ControlVueloLogicaclass {
         $recurso = $this->controlBD->consultarVueloSinFiltros($fechaInicio,$fechaFin);
 
         while ($operacion = mysql_fetch_array($recurso)) {
-            $idVuelo = $operacion[id];
             $cantidadDisponible = $operacion[quedan];
             $disponibilidad = $operacion[disponibilidad];
             $idVuelo = $operacion[idVuelo];
