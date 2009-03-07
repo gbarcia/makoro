@@ -70,11 +70,8 @@ class controladorVueloBDclass {
                                  FROM VUELO_RESERVA vre, VUELO vu, RESERVA re
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
-                                 AND vre.VUELO_id = v.id),0) as disponibilidad ";
-//                         ASIENTOS_DISPONIBLES(v.id,a.asientos) as quedan,
-//                         VERIFICAR_DISPONIBILIDAD(v.id,a.asientos,".$capacidad.") as disponibilidad
-
-                         $query.=" FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr ";
+                                 AND vre.VUELO_id = v.id),0) as disponibilidad
+                  FROM VUELO v, RUTA ru, AVION a, RESERVA r, VUELO_RESERVA vr ";
         if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
             $query .= ", PASAJERO p ";
         }
