@@ -1,3 +1,4 @@
+@charset "utf-8";
 /*
 Document   : styleTabla
 Created on : Feb 21, 2009, 12:38:51 AM
@@ -5,16 +6,15 @@ Author     : jonathan
 Description:
 Estilo para tablas de resultados
 */
-@charset "utf-8";
 /* Genericos */
 thead tr {
     position:relative;
     top: expression(offsetParent.scrollTop); /*IE5+ only*/
 }
 thead td, thead th {
+    text-align:left;
     padding-left: 2px;
     padding-right: 2px;
-    text-align: left;
     font-size: 14px;
     background-color: #067AC2;
     color: #FFFFFF;
@@ -29,11 +29,10 @@ table tfoot tr { /*idea of Renato Cherullo to help IE*/
     offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
 }
 tfoot td {
-    text-align: center;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: bold;
-    background-color: #BCE0E7;
-    color: #FFFFFF;
+    background-color: #DDDDDD;
+    color: #000000;
     border-top: solid 1px #d8d8d8;
 }
 td:last-child {
@@ -42,8 +41,6 @@ td:last-child {
 
 /* Formularios */
 .formTable {
-    width: auto;
-    background-color: none;
     border-right: solid 1px #d8d8d8;
 }
 .formTable>tbody	{  /* child selector syntax which IE6 and older do not support*/
@@ -56,7 +53,6 @@ td:last-child {
     padding-left: 2px;
     padding-right: 2px;
     font-size: 14px;
-    text-align: left;
     border-bottom: solid 1px #d8d8d8;
     border-left: solid 1px #d8d8d8;
 }
@@ -84,7 +80,6 @@ td:last-child {
     padding-left: 2px;
     padding-right: 2px;
     font-size: 14px;
-    text-align: left;
     border-bottom: solid 1px #d8d8d8;
     border-left: solid 1px #d8d8d8;
 }

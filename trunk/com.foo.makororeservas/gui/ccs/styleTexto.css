@@ -1,3 +1,4 @@
+@charset "utf-8";
 /* 
 Document   : styleTexto
 Created on : Mar 2, 2009, 12:21:27 AM
@@ -5,7 +6,6 @@ Author     : jonathan
 Description:
 Estilo de los titulos y bloques de texto.
 */
-@charset "utf-8";
 .tituloBlanco1{
     position:relative;
     font-size: 14px;

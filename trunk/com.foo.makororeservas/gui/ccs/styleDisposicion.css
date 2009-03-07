@@ -1,3 +1,4 @@
+@charset "utf-8";
 /*
 Document   : styleDisposicion
 Created on : Feb 23, 2009, 6:08:45 PM
@@ -5,7 +6,6 @@ Author     : jonathan
 Description:
 Disposicion de los paneles.
 */
-@charset "utf-8";
 body{
     margin: 0px;
 }
