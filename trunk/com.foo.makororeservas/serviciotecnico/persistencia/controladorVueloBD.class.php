@@ -306,19 +306,19 @@ class controladorVueloBDclass {
  * @param <Date> $fecha
  * @return <recurso> recurso con los vuelos asociados a esa búsqueda
  */
-    function consultarTodosVuelosPorFechaRutas($busqueda, $fecha) {
+    function consultarTodosVuelosPorFechaRutas($busqueda) {
         $resultado = false;
         $query = "SELECT v.id id, v.fecha fecha, v.hora hora,
-                         CONCAT(ru.abreviaturaSalida,' - ',v.RUTA_sitioSalida) rutaSalida,
-                         CONCAT(ru.abreviaturaLlegada,' - ',v.RUTA_sitioLlegada) rutaLlegada,
+                         ru.abreviaturaSalida rutaSalida,
+                         ru.abreviaturaLlegada rutaLlegada,
                          v.AVION_matricula matricula
                   FROM VUELO v, RUTA ru
-                  WHERE v.RUTA_sitioSalida = ru.sitioSalida
+                  WHERE (ru.abreviaturaSalida LIKE '%".$busqueda."%' OR ru.abreviaturaLlegada LIKE '%".$busqueda."%'
+                  OR v.AVION_matricula LIKE '%".$busqueda."%' OR v.fecha LIKE'%".$busqueda."%')
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
-                  AND v.fecha = '".$fecha."'
-                  AND (v.RUTA_sitioSalida LIKE '".$busqueda."%' OR v.RUTA_sitioLlegada LIKE '".$busqueda."%')
-                  OR v.AVION_matricula LIKE '".$busqueda."%'
-                  GROUP BY v.id";
+                  AND v.RUTA_sitioSalida = ru.sitioSalida
+                  GROUP BY v.id
+                  ORDER BY v.fecha,v.hora";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
