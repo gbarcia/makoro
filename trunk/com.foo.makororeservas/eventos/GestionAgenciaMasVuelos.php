@@ -14,7 +14,7 @@ function cadenaAgenciaMasVuelos () {
     $resultado.= '<th>TELEFONO</th>';
     $resultado.= '<th>ESTADO</th>';
     $resultado.= '<th>CIUDAD</th>';
-    $resultado.= '<th>NUMERO VUELOS</th>';
+    $resultado.= '<th>VUELOS RESERVADOS</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $controlLogica = new controladorClienteAgenciaBDclass();
@@ -31,7 +31,7 @@ function cadenaAgenciaMasVuelos () {
         $resultado.= '<td>' . $row[telefono]. '</td>';
         $resultado.= '<td>' . $row[estado]. '</td>';
         $resultado.= '<td>' . $row[ciudad]. '</td>';
-        $resultado.= '<td>' . $row[cnt].  '</td>';
+        $resultado.= '<td align="right>' . $row[cnt].  '</td>';
         $resultado.= '</tr>';
         $color = !$color;
     }

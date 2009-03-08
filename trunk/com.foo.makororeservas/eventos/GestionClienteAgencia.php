@@ -11,7 +11,7 @@ function autoSugerir($busqueda){
     $recurso = $controlLogica->busquedaClienteAgenciaRifNombre($busqueda);
     $numFilas = mysql_num_rows($recurso);
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>RIF</th>';
@@ -20,7 +20,7 @@ function autoSugerir($busqueda){
     $resultado.= '<th>ESTADO</th>';
     $resultado.= '<th>CIUDAD</th>';
     $resultado.= '<th>DIRECCION</th>';
-    $resultado.= '<th>%DESCUENTO</th>';
+    $resultado.= '<th>% DESCUENTO</th>';
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
@@ -84,7 +84,7 @@ function cadenaTodasLasAgencias () {
     $recurso = $controlBD->consultarTodasLasAgencias();
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>RIF</th>';
@@ -142,22 +142,22 @@ function generarFormularioNuevaAgencia () {
         </td>
         </thead>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td colspan="2">(*) Son campos obligatorios</td>
       </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>* RIF</td>
       <td><label>
         <input type="text" name="rif" id="rif" size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>* Nombre de la Agencia</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>* telefono</td>
       <td><label>
         <input type="text" name="telefono" id="telefono" onkeyup="this.value=this.value.toUpperCase();" size="30" />
@@ -167,7 +167,7 @@ function generarFormularioNuevaAgencia () {
       <td>Estado</td>
       <td><input type="text" name="estado" id="estado" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Ciudad</td>
       <td><input type="text" name="ciudad" id="ciudad" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
@@ -175,11 +175,11 @@ function generarFormularioNuevaAgencia () {
       <td>Direccion</td>
       <td><input type="text" name="direccion" id="direccion" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Porcentaje de Descuento</td>
       <td><input name="porcentaje" type="text" id="porcentaje" size="30" /></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td height="26" colspan="2"><div align="center">
         <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarAgencia(xajax.getFormValues(\'formNuevaAgencia\'))" />
       </div></td>
@@ -277,23 +277,23 @@ function generarFormularioEditar ($rif) {
         </td>
         </thead>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td colspan="2">(*) Son campos obligatorios</td>
       </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>* RIF</td>
       <td><label>
         <input type="text" name="rif" id="rif" value = "'.$row[rif].'" READONLY size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
-    <tr class="r0">
-      <td>* Nombre de la Agencia</td>
+    <tr class="r1">
+      <td>* Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" value = "'.$row[nombre].'" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
-    <tr class="r1">
-      <td>* telefono</td>
+    <tr class="r0">
+      <td>* Telefono</td>
       <td><label>
         <input type="text" name="telefono" id="telefono" value = "'.$row[telefono].'" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
@@ -302,7 +302,7 @@ function generarFormularioEditar ($rif) {
       <td>Estado</td>
       <td><input type="text" name="estado" id="estado" value = "'.$row[estado].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Ciudad</td>
       <td><input type="text" name="ciudad" id="ciudad" value = "'.$row[ciudad].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
@@ -310,11 +310,11 @@ function generarFormularioEditar ($rif) {
       <td>Direccion</td>
       <td><input type="text" name="direccion" id="direccion" value = "'.$row[direccion].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Porcentaje de Descuento</td>
       <td><input name="porcentaje" type="text" id="porcentaje" size="30" value = "'.$row[porcentajeComision].'" /></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td height="26" colspan="2"><div align="center">
         <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarEditar(xajax.getFormValues(\'formAgencia\'))" />
       </div></td>
@@ -386,7 +386,7 @@ function borrarMensaje(){
 function cerrarVentana() {
     $resultado = "";
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("der", "innerHTML", $resultado);
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
     $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
     return $objResponse;
 }

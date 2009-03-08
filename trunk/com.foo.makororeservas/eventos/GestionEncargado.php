@@ -869,6 +869,7 @@ function habilitarEncargado($listaEncargados) {
                           </div>';
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
         $objResponse->addAssign("check", "innerHTML", $actualizarCheck);
+        $objResponse->addScript("deseleccionar_todo()");
         $actualizarTablaPrincipalRespuesta = CadenaTodosLosEmpleados();
         $objResponse->addAssign("gestionEncargado", "innerHTML", $actualizarTablaPrincipalRespuesta);
     }
