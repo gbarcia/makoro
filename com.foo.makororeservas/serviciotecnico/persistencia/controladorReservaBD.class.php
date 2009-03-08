@@ -20,7 +20,7 @@ class controladorReservaBDclass {
      */
     function agregarReserva($reserva){
         $resultado = false;
-        $query = "INSERT INTO RESERVA (`fecha`, `estado`, `solicitud`, `TIPO_SERVICIO_id`, `SUCURSAL_id`,
+        $query = " INSERT INTO RESERVA (`fecha`, `estado`, `solicitud`, `TIPO_SERVICIO_id`, `SUCURSAL_id`,
                                        `ENCARGADO_cedula`, `CLIENTE_PARTICULAR_cedula`, `CLIENTE_AGENCIA_rif`,
                                        `PAGO_id`, `PASAJERO_id`, `POSADA_id`)
                                 VALUES('". $reserva->getFecha() ."',
@@ -54,12 +54,16 @@ class controladorReservaBDclass {
                                         }else{
                                             $query .= $reserva->getPosadaId() .")";
                                         }
+                                        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
-    function agregarReserva($reserva){
+    function editarReserva($reserva){
         $resultado = false;
-        $query = "";
+        $query = "UPDATE RESERVA r SET r.PASAJERO_id = ".$reserva->getPasajeroId().",
+                                       r.TIPO_SERVICIO_id = ".$reserva->getTipoServicioId()."
+                  WHERE r.id = ".$reserva->getId()."";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
