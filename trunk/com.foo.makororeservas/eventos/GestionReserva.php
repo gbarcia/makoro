@@ -141,10 +141,39 @@ function inicio(){
     $resultado.= '</table>';
     $resultado.= '</form>';
     if ($recursoDetalles == "") {
-        $resultado = 'No hay coincidencias con su busqueda.';
+        $resultado = 'No hay vuelos planificados para hoy (' . date("d") . "-" .
+        date("m") . '-' . date('Y') . ')';
     }
     $objResponse->addAssign("gestionReserva", "innerHTML", "$resultado");
     return $objResponse;
 }
+
+function verDetalles($idVuelo){
+    $controlVuelo = new ControlVueloLogicaclass();
+    $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
+    $objResponse = new xajaxResponse();
+    $resultado = '<form id="formularioEditarMarcar">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
+    $resultado.= '<thead>';
+    $resultado.= '<tr>';
+    $resultado.= '<th>PASAJERO</th>';
+    $resultado.= '<th>TIPO</th>';
+    $resultado.= '<th>SERVICIO</th>';
+    $resultado.= '<th>POSADA</th>';
+    $resultado.= '<th>ASIENTOS DISPONIBLES</th>';
+    $resultado.= '<th>DISPONIBILIDAD</th>';
+    $resultado.= '<th>AVION</th>';
+    $resultado.= '<th>PILOTO</th>';
+    $resultado.= '<th>COPILOTO</th>';
+    $resultado.= '<th>DETALLES</th>';
+    $resultado.= '</tr>';
+    $resultado.= '</thead>';
+    $color = false;
+    while ($row = mysql_fetch_array($recurso)){
+
+    }
+}
+
+
 
 ?>
