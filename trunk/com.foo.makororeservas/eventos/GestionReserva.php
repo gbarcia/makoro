@@ -77,7 +77,7 @@ function procesarFiltros($datos){
         $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="button" value="VER" onclick="xajax_editar('.$idVuelo.')"/></td>';
+        $resultado.= '<td><input type="button" value="VER" onclick="xajax_verDetalles('.$idVuelo.')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -134,7 +134,7 @@ function inicio(){
         $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="button" value="VER" onclick="xajax_editar('.$idVuelo.')"/></td>';
+        $resultado.= '<td><input type="button" value="VER" onclick="xajax_verDetalles('.$idVuelo.')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -150,28 +150,36 @@ function inicio(){
 
 function verDetalles($idVuelo){
     $controlVuelo = new ControlVueloLogicaclass();
-    $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
+//    $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
+    $resultado.= '<th>SOLICITUD</th>';
     $resultado.= '<th>PASAJERO</th>';
     $resultado.= '<th>TIPO</th>';
     $resultado.= '<th>SERVICIO</th>';
     $resultado.= '<th>POSADA</th>';
-    $resultado.= '<th>ASIENTOS DISPONIBLES</th>';
-    $resultado.= '<th>DISPONIBILIDAD</th>';
-    $resultado.= '<th>AVION</th>';
-    $resultado.= '<th>PILOTO</th>';
-    $resultado.= '<th>COPILOTO</th>';
-    $resultado.= '<th>DETALLES</th>';
+    $resultado.= '<th>VENDEDOR</th>';
+    $resultado.= '<th>SUCURSAL</th>';
+    $resultado.= '<th>RETORNO</th>';
+    $resultado.= '<th>RIF CLIENTE</th>';
+    $resultado.= '<th>CI CLIENTE</th>';
+    $resultado.= '<th>NOMBRE CLIENTE</th>';
+    $resultado.= '<th>TIPO PAGO</th>';
+    $resultado.= '<th>BANCO</th>';
+    $resultado.= '<th>TRANSFERENCIA</th>';
+    $resultado.= '<th>MONTO</th>';
+    $resultado.= '<th>BOLETO EMITIDO</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
-    while ($row = mysql_fetch_array($recurso)){
+//    while ($row = mysql_fetch_array($recurso)){
 
-    }
+//    }
+    $objResponse->addAssign("gestionReservaPasajeros", "innerHTML", "$resultado");
+    return $objResponse;
 }
 
 
