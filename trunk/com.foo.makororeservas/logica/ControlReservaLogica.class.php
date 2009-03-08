@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Reserva.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/Conexion.class.php';
 /**
  * Description of ControlReservaLogicaclass
  *
@@ -8,9 +9,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Reserv
  */
 class ControlReservaLogicaclass {
     private $controlBD;
+    private $controlConexion;
 
     function __construct() {
         $this->controlBD = new controladorReservaBDclass();
+        $this->controlConexion = new Conexionclass();
     }
 
     /**
@@ -29,8 +32,8 @@ class ControlReservaLogicaclass {
      * @return <type> El resultado de la operacion
      */
     function nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId,
-                          $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
-                          $pagoId, $pasajeroId, $posadaId) {
+        $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
+        $pagoId, $pasajeroId, $posadaId) {
         $reserva = new Reservaclass();
         $reserva->setFecha($fecha);
         $reserva->setEstado($estado);
@@ -46,6 +49,39 @@ class ControlReservaLogicaclass {
         $resultado = $this->controlBD->agregarReserva($reserva);
         return ($resultado);
     }
-    
+
+    function crearReserva($cantidadPasajeros,$fecha, $tipoServicioId, $sucursalId,
+                          $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
+                          $posadaId){
+        $estado = 'PP';
+        $pagoId = 'null';
+        $pasajeroId = 'null';
+        $solicitud = $this->generarSolicitud();
+        do{
+            $resultado = $this->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, 
+                                             $sucursalId, $encargadoCedula, $clienteParticularCedula,
+                                             $clienteAgenciaRif, $pagoId, $pasajeroId, $posadaId);
+                                         echo $resultado;
+                                         echo '<p></p>';
+            $cantidadPasajeros = $cantidadPasajeros - 1;
+        }while ($cantidadPasajeros != 0);
+        return $resultado;
+    }
+
+    function generarSolicitud(){
+        do{
+            $variableNumerica    = rand(000000,999999);
+            $arreglo             = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+            $variableNumericaDos = rand(0,25);
+            $variableNumericaTres = rand(0,25);
+            $codigo              = $arreglo[$variableNumericaDos].$arreglo[$variableNumericaTres].$variableNumerica;
+            $acceso              = $this->controlConexion->conectarBaseDatos();
+            $query               = "SELECT * FROM RESERVA R
+                                        WHERE R.solicitud = '".$codigo."' ";
+            $operacion           = mysql_query ($query,$acceso);
+            $row                 = mysql_num_rows($operacion);
+        } while ($row != 0);
+        return $codigo;
+    }
 }
 ?>
