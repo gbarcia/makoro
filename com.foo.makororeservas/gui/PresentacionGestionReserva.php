@@ -17,9 +17,7 @@ $xajax->processRequests();
         <?
         $xajax->printJavascript ("../serviciotecnico/utilidades/xajax/");
         ?>
-        <script src="SpryAssets/SpryColla
-
-psiblePanel.js" type="text/javascript"></script>
+        <script src="SpryAssets/SpryCollapsiblePanel.js" type="text/javascript"></script>
         <script src="SpryAssets/SpryMenuBar.js" type="text/javascript"></script>
         <script type="text/javascript" src="jscalendar/calendar.js"></script>
         <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
@@ -192,6 +190,8 @@ psiblePanel.js" type="text/javascript"></script>
                 </script>
             </div>
         </div>
-
+        <div id="resultadoPasajeros" class="cuerpo">
+            <div class="tableContainer" id="gestionReservaPasajeros"></div>
+        </div>
     </body>
 </html>
