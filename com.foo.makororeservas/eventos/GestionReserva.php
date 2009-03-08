@@ -24,37 +24,19 @@ function generarComboBoxLugar(){
     return $objResponse;
 }
 
-function generarComboBoxSucursal(){
-    $objResponse = new xajaxResponse();
-    $combo = 'Sucursal: <select name="sucursal"><option value="">TODAS</option>';
-    $controladorSucursal = new controladorSucursalBDclass();
-    $recurso = $controladorSucursal->consultarSucursales(true);
-    while ($row = mysql_fetch_array($recurso)){
-        $combo.= '<option value="' . $row[id] . '">' . $row[nombre] . '</option>';
-    }
-    $combo.= '</select>';
-    $objResponse->addAssign("comboBoxSucursal", "innerHTML", "$combo");
-    return $objResponse;
-}
-
-function generarComboBoxEncargado(){
-    $objResponse = new xajaxResponse();
-    $combo = 'Encargado: <select name="encargado"><option value="">TODAS</option>';
-    $controladorEncargado = new controladorSeguridadBDclass();
-    $recurso = $controladorEncargado->traerTodosLosEncargados(true);
-    while ($row = mysql_fetch_array($recurso)){
-        $combo.= '<option value="' . $row[cedula] . '">' . $row[apellido] . ', ' . $row[nombre] . '</option>';
-    }
-    $combo.= '</select>';
-    $objResponse->addAssign("comboBoxEncargado", "innerHTML", "$combo");
-    return $objResponse;
-}
-
 function procesarFiltros($datos){
     $arregloRuta = split("-", $datos[ruta]);
-//    echo $arregloRuta[0];
-//    echo $arregloRuta[1];
-
+    if ($datos[disponibilidad] == ""){
+        $capacidad = 0;
+    } else {
+        $capacidad = $datos[disponibilidad];
+    }
+    $controlVuelo = new ControlVueloLogicaclass();
+    $coleccionVuelo = $controlVuelo->vueloEspecificoConFiltro($datos[fechaInicio],
+        $datos[fechaFin], '', '', $arregloRuta[0], $arregloRuta[1], $capacidad,
+        $dato[cedulaPasaportePasajero], $datos[nombrePasajero], $datos[apellidoPasajero],
+        $datos[cedulaCliente], $datos[nombreParticular], $datos[apellidoParticular],
+        $datos[rifCliente], $datos[nombreAgencia], $datos[solicitud], $datos[estado]);
     $resultado = "";
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
@@ -63,38 +45,42 @@ function procesarFiltros($datos){
     $resultado.= '<tr>';
     $resultado.= '<th>FECHA</th>';
     $resultado.= '<th>HORA</th>';
-    $resultado.= '<th>RUTA</th>';
-    $resultado.= '<th>AVION</th>';
+    $resultado.= '<th>ORIGEN</th>';
+    $resultado.= '<th>DESTINO</th>';
+    $resultado.= '<th>ASIENTOS DISPONIBLES</th>';
     $resultado.= '<th>DISPONIBILIDAD</th>';
-    $resultado.= '<th>VER INFO</th>';
-    $resultado.= '<th>V</th>';
-    $resultado.= '<th></th>';
+    $resultado.= '<th>AVION</th>';
+    $resultado.= '<th>PILOTO</th>';
+    $resultado.= '<th>COPILOTO</th>';
+    $resultado.= '<th>DETALLES</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
-//    $controlLogica = new ControlVueloLogicaclass();
-//    $recurso = $controlLogica->consultarTodoPersonal(TRUE);
     $color = false;
-//    while ($row = mysql_fetch_array($recurso)) {
-    while ($i != 100) {
-        if ($color){
-            $resultado.= '<tr class="r0">';
-        } else {
-            $resultado.= '<tr class="r1">';
-        }
-        $resultado.= '<td>' . $row[a] . '</td>';
-        $resultado.= '<td>' . $row[b] . '</td>';
-        $resultado.= '<td>' . $row[c] . '</td>';
-        $resultado.= '<td>' . $row[d] . '</td>';
-        $resultado.= '<td>' . $row[e] . '</td>';
-        $resultado.= '<td>' . $row[f] . '</td>';
-        $resultado.= '<td><input type="button" value="VER MAS" onclick="xajax_editar(1)"/></td>';
-        $resultado.= '<td><input type="button" value="RESERVAR" onclick="xajax_editar(1)"/></td>';
+    foreach ($coleccionVuelo as $var) {
+        $recursoDetalles = $var->getColeccionVuelo();
+        $cantidadDisponible = $var->getAsientosDisponibles();
+        $piloto = $var->getPiloto();
+        $copiloto = $var->getCopiloto();
+        $disponibilidad = $var->getDisponibilidad();
+        $idVuelo = $var->getIdvuelo();
+        $resultado.= '<tr>';
+        $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
+        $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
+        $resultado.= '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
+        $resultado.= '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
+        $resultado.= '<td>' . $cantidadDisponible. '</td>';
+        $resultado.= '<td>' . $disponibilidad. '</td>';
+        $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
+        $resultado.= '<td>' . $piloto. '</td>';
+        $resultado.= '<td>' . $copiloto. '</td>';
+        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$idVuelo.')"/></td>';
         $resultado.= '</tr>';
-        $color = !$color;
-        $i++;
     }
     $resultado.= '</table>';
     $resultado.= '</form>';
+    if ($recursoDetalles == "") {
+        $resultado = 'No hay coincidencias con su busqueda.';
+    }
     $objResponse->addAssign("gestionReserva", "innerHTML", "$resultado");
     return $objResponse;
 }
