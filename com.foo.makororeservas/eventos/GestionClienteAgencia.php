@@ -158,7 +158,7 @@ function generarFormularioNuevaAgencia () {
       </label></td>
     </tr>
     <tr class="r0">
-      <td>* telefono</td>
+      <td>* Telefono</td>
       <td><label>
         <input type="text" name="telefono" id="telefono" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
