@@ -12,7 +12,7 @@ function autoSugerir($busqueda){
     $recurso = $controlLogica->consultarClientesParticularesCedulaNombreApellido($busqueda);
     $numFilas = mysql_num_rows($recurso);
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>CEDULA</th>';
@@ -82,7 +82,7 @@ function cadenaTodasLasPersonas () {
     $recurso = $controlBD->consultarTodoLosClientesPersonales();
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>CEDULA</th>';
