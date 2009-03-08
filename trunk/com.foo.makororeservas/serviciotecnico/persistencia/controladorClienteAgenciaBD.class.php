@@ -111,14 +111,16 @@ class controladorClienteAgenciaBDclass {
                   AND r.id=vr.RESERVA_id
                   AND r.PASAJERO_id = p.id
                   AND r.CLIENTE_AGENCIA_rif = ca.rif
-                  AND r.estado = 'PA'
+                  AND (r.estado = 'PA'
+                       OR r.estado = 'PP'
+                       OR r.estado = 'CO')
                   GROUP BY r.CLIENTE_AGENCIA_rif
                   ORDER BY cnt desc";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 /**
- * Metodo para consultar clientes agencias que no faltan por pagar
+ * Metodo para consultar clientes agencias que faltan por pagar
  * @return <coleccion> clientes agencias sin pagar
  */
     function consultarClientesAgenciasPorPagar($fechaInicio, $fechaFin){
