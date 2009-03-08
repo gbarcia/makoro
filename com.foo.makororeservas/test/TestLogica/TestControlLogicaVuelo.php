@@ -24,7 +24,7 @@ $vueloPrueba = new Vueloclass();
 
 /* CONSULTAR VUELO ESPECIFICO CON FILTROS */
 //($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado)
-$Coleccion = $controlBD->vueloEspecificoConFiltro('2009-01-01','','','','','',0,'','','','','','','','','VN533407','');
+$Coleccion = $controlBD->vueloEspecificoConFiltro('2009-01-01','','','','','',0,'','','','','','','','','','PP');
 foreach ($Coleccion as $var) {
     $recursoDetalles = $var->getColeccionVuelo();
     $cantidadDisponible = $var->getAsientosDisponibles();

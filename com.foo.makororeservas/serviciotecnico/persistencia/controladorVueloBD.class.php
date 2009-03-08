@@ -83,8 +83,8 @@ class controladorVueloBDclass {
         }
         if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "") ||
             ($cedulaPart != "") || ($nombrePart != "")  || ($apellidoPart != "") ||
-            ($rifAgencia != "") || ($nombreAgencia != "") || ($rifAgencia != "") || 
-            ($nombreAgencia != "")){
+            ($rifAgencia != "") || ($nombreAgencia != "") || ($solicitud != "") ||
+            ($estado != "")){
             
             $query.=", VUELO_RESERVA vr ";
         }
