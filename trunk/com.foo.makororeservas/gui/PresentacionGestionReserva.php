@@ -6,6 +6,7 @@ $xajax->registerFunction("generarComboBoxLugar");
 $xajax->registerFunction("generarComboBoxSucursal");
 $xajax->registerFunction("generarComboBoxEncargado");
 $xajax->registerFunction("procesarFiltros");
+$xajax->registerFunction("inicio");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -16,7 +17,9 @@ $xajax->processRequests();
         <?
         $xajax->printJavascript ("../serviciotecnico/utilidades/xajax/");
         ?>
-        <script src="SpryAssets/SpryCollapsiblePanel.js" type="text/javascript"></script>
+        <script src="SpryAssets/SpryColla
+
+psiblePanel.js" type="text/javascript"></script>
         <script src="SpryAssets/SpryMenuBar.js" type="text/javascript"></script>
         <script type="text/javascript" src="jscalendar/calendar.js"></script>
         <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
@@ -28,6 +31,16 @@ $xajax->processRequests();
             @import url(SpryAssets/SpryCollapsiblePanel.css);
             @import url(jscalendar/calendar-blue.css);
         </style>
+        <script language="JavaScript">
+            <!--
+            var nav4 = window.Event ? true : false;
+            function acceptNum(evt){
+                // NOTE: Backspace = 8, Enter = 13, '0' = 48, '9' = 57
+                var key = nav4 ? evt.which : evt.keyCode;
+                return (key <= 13 || (key >= 48 && key <= 57));
+            }
+            //-->
+        </script>
     </head>
     <body>
         <?php
@@ -78,7 +91,7 @@ $xajax->processRequests();
                                     <td>Solicitud:</td>
                                     <td><input name="solicitud" type="text" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
                                     <td>Disponibilidad:</td>
-                                    <td><input name="disponibilidad" type="text" value="" /></td>
+                                    <td><input name="disponibilidad" type="text" value="" onKeyPress="return acceptNum(event)"/></td>
                                 </tr>
                                 <tr>
                                     <td>Estado:</td>
@@ -108,7 +121,7 @@ $xajax->processRequests();
                             </tr>
                             <tr>
                                 <td>CI: </td>
-                                <td><input name="cedulaCliente" type="text" value="" /></td>
+                                <td><input name="cedulaCliente" type="text" value="" onKeyPress="return acceptNum(event)"/></td>
                                 <td>RIF: </td>
                                 <td><input type="text" name="rifCliente" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
                             </tr>
@@ -132,7 +145,7 @@ $xajax->processRequests();
                             <tbody>
                                 <tr>
                                     <td>CI/Pasaporte:</td>
-                                    <td><input type="text" name="cedulaPasaportePasajero" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
+                                    <td><input type="text" name="cedulaPasaportePasajero" value="" onKeyUp="this.value=this.value.toUpperCase();" /></td>
                                     <td>Nombre: </td>
                                     <td><input type="text" name="nombrePasajero" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
                                 </tr>
@@ -168,12 +181,15 @@ $xajax->processRequests();
                         singleClick    :    true
                     });
                 </script>
-                <div class="textoNegro1" align="right"><input type="button" value="Filtrar" onclick="xajax_procesarFiltros(xajax.getFormValues('filtros'))"/></div>
+                <div class="textoNegro1" align="center"><input type="button" value="Filtrar" onclick="xajax_procesarFiltros(xajax.getFormValues('filtros'))"/></div>
             </form>
         </div>
+        <hr size="1" width="98%" color="#067AC2">
         <div id="resultadoVuelos" class="cuerpo">
             <div class="tableContainer" id="gestionReserva">
-
+                <script language="javascript">
+                    xajax_inicio();
+                </script>
             </div>
         </div>
 
