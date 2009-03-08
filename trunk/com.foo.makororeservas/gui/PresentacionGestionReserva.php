@@ -49,10 +49,10 @@ $xajax->processRequests();
                 <div id="PanelVuelos" class="CollapsiblePanel">
                     <div class="CollapsiblePanelTab" tabindex="0">Por Vuelos</div>
                     <div class="CollapsiblePanelContent">
-                        <table border="0">
+                        <table class="textoNegro2" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td>Fecha de inicio:</td>
-                                <td><input name="fechaInicio" type="text" id="f_date_c" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
+                                <td><input name="fechaInicio" type="text" id="f_date_c" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
                                 <td>Ruta:</td>
                                 <td><div id="comboBoxRuta">
                                         <script language="javascript">
@@ -62,9 +62,9 @@ $xajax->processRequests();
                             </tr>
                             <tr>
                                 <td>Fecha de fin:</td>
-                                <td><input name="fechaFin" type="text" id="f_date_c2" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c2" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
-                                <td></td>
-                                <td></td>
+                                <td><input name="fechaFin" type="text" id="f_date_c2" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c2" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
+                                <td>&nbsp</td>
+                                <td>&nbsp</td>
                             </tr>
                         </table>
                     </div>
@@ -72,13 +72,13 @@ $xajax->processRequests();
                 <div id="PanelReservas" class="CollapsiblePanel">
                     <div class="CollapsiblePanelTab" tabindex="0">Por Reservas</div>
                     <div class="CollapsiblePanelContent">
-                        <table border="0">
+                        <table class="textoNegro2"  cellpadding="5" cellspacing="0" border="0">
                             <tbody>
                                 <tr>
                                     <td>Solicitud:</td>
-                                    <td><input type="text" name="" value="" /></td>
-                                    <td>Disponibilidad: </td>
-                                    <td><input type="text" name="" value="" /></td>
+                                    <td><input name="solicitud" type="text" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
+                                    <td>Disponibilidad:</td>
+                                    <td><input name="disponibilidad" type="text" value="" /></td>
                                 </tr>
                                 <tr>
                                     <td>Estado:</td>
@@ -91,48 +91,59 @@ $xajax->processRequests();
                                             <option value="CA">CANCELADO</option>
                                         </select>
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>&nbsp</td>
+                                    <td>&nbsp</td>
                                 </tr>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
-
                 <div id="PanelClientes" class="CollapsiblePanel">
                     <div class="CollapsiblePanelTab" tabindex="0">Por Clientes</div>
                     <div class="CollapsiblePanelContent">
-                        <table border="0">
+                        <table class="textoNegro2"  cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td colspan="2">Cliente Natural</td>
                                 <td colspan="2">Cliente Juridico</td>
                             </tr>
                             <tr>
                                 <td>CI: </td>
-                                <td><input type="text" name="" value="" /></td>
+                                <td><input name="cedulaCliente" type="text" value="" /></td>
                                 <td>RIF: </td>
-                                <td><input type="text" name="" value="" /></td>
+                                <td><input type="text" name="rifCliente" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
                             </tr>
                             <tr>
                                 <td>Nombre:</td>
-                                <td><input type="text" name="" value="" /></td>
+                                <td><input type="text" name="nombreParticular" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
                                 <td>Nombre:</td>
-                                <td><input type="text" name="" value="" /></td>
+                                <td><input type="text" name="nombreAgencia" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
                             </tr>
                             <tr>
                                 <td>Apellido:</td>
-                                <td><input type="text" name="" value="" /></td>
+                                <td><input type="text" name="apellidoParticular" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
                             </tr>
                         </table>
-                        
                     </div>
                 </div>
                 <div id="PanelPasajeros" class="CollapsiblePanel">
-                    <div class="CollapsiblePanelTab" tabindex="0">Pasajeros</div>
+                    <div class="CollapsiblePanelTab" tabindex="0">Por Pasajeros</div>
                     <div class="CollapsiblePanelContent">
-                        <div>CI/Pasaporte: <input type="text" name="" value="" /></div>
-                        <div>Nombre: <input type="text" name="" value="" /></div>
+                        <table class="textoNegro2"  cellpadding="5" cellspacing="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td>CI/Pasaporte:</td>
+                                    <td><input type="text" name="cedulaPasaportePasajero" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
+                                    <td>Nombre: </td>
+                                    <td><input type="text" name="nombrePasajero" value="" onKeyUp="this.value=this.value.toUpperCase();"/></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Apellido: </td>
+                                    <td><input type="text" name="apellidoPasajero" value="" onKeyUp="this.value=this.value.toUpperCase();" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <script type="text/javascript">
