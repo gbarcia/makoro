@@ -28,21 +28,40 @@ class controladorReservaBDclass {
                                        '". $reserva->getSolicitud() ."',
                                         ". $reserva->getTipoServicioId() .",
                                         ". $reserva->getSucursalId() .",
-                                        ". $reserva->getEncargadoCedula() .",
-                                        ". $reserva->getClienteParticularCedula() .",";
-                                        
+                                        ". $reserva->getEncargadoCedula() .",";
+                                        if(is_null($reserva->getClienteParticularCedula())){
+                                            $query .= "null,";
+                                        }else{
+                                            $query .= $reserva->getClienteParticularCedula() .",";
+                                        }
                                         if(is_null($reserva->getClienteAgenciaRif())){
                                            $query .= "null,";
                                         }else{
                                            $query .= "'". $reserva->getClienteAgenciaRif() ."',";
                                         }
-
-                                        $query .= $reserva->getPagoId() .",
-                                        ". $reserva->getPasajeroId() .",
-                                        ". $reserva->getPosadaId() .")";
+                                        if(is_null($reserva->getPagoId())){
+                                            $query .= "null,";
+                                        }else{
+                                            $query .= $reserva->getPagoId() .",";
+                                        }
+                                        if(is_null($reserva->getPasajeroId())){
+                                            $query .= "null,";
+                                        }else{
+                                            $query .= $reserva->getPasajeroId() .",";
+                                        }
+                                        if(is_null($reserva->getPosadaId())){
+                                            $query .= "null)";
+                                        }else{
+                                            $query .= $reserva->getPosadaId() .")";
+                                        }
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
-    
+    function agregarReserva($reserva){
+        $resultado = false;
+        $query = "";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>

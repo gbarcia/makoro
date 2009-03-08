@@ -14,12 +14,12 @@ $clienteTest = new ClienteParticularclass();
  */
 $fecha = '2009-03-04';
 $estado = 'PP';
-$solicitud = 'WW12';
+$solicitud = 'AA12';
 $tipoServicioId = 2;
 $sucursalId = 1;
 $encargadoCedula = 17064051;
-$clienteParticularCedula = 19012345;
-//$clienteAgenciaRif = null;
+//$clienteParticularCedula = 19012345;
+$clienteAgenciaRif = 'J-345678';
 //$PAGO_id = null;
 //$pasajeroId = null;
 //$posadaId = null;
@@ -37,7 +37,7 @@ $clienteParticularCedula = 19012345;
 //$direccion = 'La Candelaria';
 
 //$resultadoInsert = $controlPrueba->nuevoClienteParticular($clienteParticularCedula, $nombre, $apellido, $sexo, $fechaNacimiento, $telefono, $estado, $ciudad, $direccion);
-$resultado = $controlTest->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId, $encargadoCedula, $clienteParticularCedula, null, 'null', 'null', 'null');
+$resultado = $controlTest->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId, $encargadoCedula, null, $clienteAgenciaRif, null, null, null);
 //echo 'Cliente: '+$resultadoInsert+', Reserva: '+$resultado;
 echo $resultado;
 
