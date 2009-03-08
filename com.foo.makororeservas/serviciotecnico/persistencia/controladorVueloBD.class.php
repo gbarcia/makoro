@@ -175,7 +175,6 @@ class controladorVueloBDclass {
         }
         $query.= " GROUP BY v.id
                    HAVING disponibilidad = 1 ";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -324,7 +323,6 @@ class controladorVueloBDclass {
             GROUP BY(R.id)
             ORDER BY(R.id)";
 
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
