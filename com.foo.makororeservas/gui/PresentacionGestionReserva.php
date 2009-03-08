@@ -7,6 +7,7 @@ $xajax->registerFunction("generarComboBoxSucursal");
 $xajax->registerFunction("generarComboBoxEncargado");
 $xajax->registerFunction("procesarFiltros");
 $xajax->registerFunction("inicio");
+$xajax->registerFunction("verDetalles");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
