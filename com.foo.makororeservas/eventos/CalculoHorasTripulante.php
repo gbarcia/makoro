@@ -37,13 +37,7 @@ function calculoHora($datos) {
         $resultado.= '</thead>';
         $resultado.= '<tfoot>';
         $resultado.= '<tr>';
-        $resultado.= '<td>&nbsp</td>';
-        $resultado.= '<td>&nbsp</td>';
-        $resultado.= '<td>&nbsp</td>';
-        $resultado.= '<td>&nbsp</td>';
-        $resultado.= '<td>&nbsp</td>';
-        $resultado.= '<td align="center">Total:</td>';
-        $resultado.= '<td align="right">'. 'Bs. ' . $total .'</td>';
+        $resultado.= '<td colspan="7" align="right">'. 'Total: Bs. ' . $total .'</td>';
         $resultado.= '</tr>';
         $resultado.= '</tfoot>';
         $color = false;

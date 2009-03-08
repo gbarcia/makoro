@@ -17,7 +17,7 @@ function AgenciasPorPagar ($datos) {
     $resultado.= '<th>TELEFONO</th>';
     $resultado.= '<th>ESTADO</th>';
     $resultado.= '<th>CIUDAD</th>';
-    $resultado.= '<th>CANTIDAD RESERVAS</th>';
+    $resultado.= '<th>RESERVAS POR PAGAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
@@ -32,7 +32,7 @@ function AgenciasPorPagar ($datos) {
         $resultado.= '<td>' . $row[telefono]. '</td>';
         $resultado.= '<td>' . $row[estado]. '</td>';
         $resultado.= '<td>' . $row[ciudad]. '</td>';
-        $resultado.= '<td>' . $row[cn]. '</td>';
+        $resultado.= '<td align="right>' . $row[cn]. '</td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
