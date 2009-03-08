@@ -50,6 +50,18 @@ class ControlReservaLogicaclass {
         return ($resultado);
     }
 
+    /**
+     * Metodo para crear una nueva reserva en el sistema 
+     * @param <type> $cantidadPasajeros La cantidad de pasajeros que desean realizar la reserva
+     * @param <type> $fecha La fecha de reserva
+     * @param <type> $tipoServicioId El id del tipo de servicio de la reserva
+     * @param <type> $sucursalId El id de la sucursal en donde se realizo la reserva
+     * @param <type> $encargadoCedula El encargado que realizo la reserva
+     * @param <type> $clienteParticularCedula El cliente particular que realizo la reserva 
+     * @param <type> $clienteAgenciaRif El cliente agencia que realizo la reserva
+     * @param <type> $posadaId La posada en la que se hospedara el pasajero 
+     * @return <type> El resultado de la operacion 
+     */
     function crearReserva($cantidadPasajeros,$fecha, $tipoServicioId, $sucursalId,
                           $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
                           $posadaId){
@@ -68,6 +80,10 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para crear el codigo de solicitud aleatorio
+     * @return <type> Codigo solicitud
+     */
     function generarSolicitud(){
         do{
             $variableNumerica    = rand(000000,999999);
