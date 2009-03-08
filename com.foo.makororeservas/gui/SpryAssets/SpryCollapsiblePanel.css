@@ -36,7 +36,7 @@
 * CollapsiblePanel panel tab container.
 */
 .CollapsiblePanelTab {
-    font: bold 0.7em sans-serif;
+    font: bold 12px sans-serif;
     background-color: #DDD;
     border-bottom: solid 1px #CCC;
     margin: 0px;
