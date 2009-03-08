@@ -49,7 +49,7 @@ $xajax->processRequests();
                 <div id="PanelVuelos" class="CollapsiblePanel">
                     <div class="CollapsiblePanelTab" tabindex="0">Por Vuelos</div>
                     <div class="CollapsiblePanelContent">
-                        <table width="100%" border="0">
+                        <table border="0">
                             <tr>
                                 <td>Fecha de inicio:</td>
                                 <td><input name="fechaInicio" type="text" id="f_date_c" size="15" readonly="readonly" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
@@ -72,36 +72,62 @@ $xajax->processRequests();
                 <div id="PanelReservas" class="CollapsiblePanel">
                     <div class="CollapsiblePanelTab" tabindex="0">Por Reservas</div>
                     <div class="CollapsiblePanelContent">
-                        <div>Disponibilidad: <input type="text" name="" value="" /></div>
-                        <div id="comboBoxSucursal">
-                            <script language="javascript">
-                                xajax_generarComboBoxSucursal();
-                            </script>
-                        </div>
-                        <div id="comboBoxEncargado">
-                            <script language="javascript">
-                                xajax_generarComboBoxEncargado();
-                            </script>
-                        </div>
-                        <div>Solicitud: <input type="text" name="" value="" /></div>
-                        <div>Estado: <select name="estado">
-                                <option value="">TODOS</option>
-                                <option value="PA">PAGADO</option>
-                                <option value="PP">POR PAGAR</option>
-                                <option value="CO">CONFIRMADO</option>
-                                <option value="CA">CANCELADO</option>
-                        </select></div>
+                        <table border="0">
+                            <tbody>
+                                <tr>
+                                    <td>Solicitud:</td>
+                                    <td><input type="text" name="" value="" /></td>
+                                    <td>Disponibilidad: </td>
+                                    <td><input type="text" name="" value="" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Estado:</td>
+                                    <td>
+                                        <select name="estado">
+                                            <option value="">TODOS</option>
+                                            <option value="PA">PAGADO</option>
+                                            <option value="PP">POR PAGAR</option>
+                                            <option value="CO">CONFIRMADO</option>
+                                            <option value="CA">CANCELADO</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
 
                 <div id="PanelClientes" class="CollapsiblePanel">
-                    <div class="CollapsiblePanelTab" tabindex="0">Clientes</div>
+                    <div class="CollapsiblePanelTab" tabindex="0">Por Clientes</div>
                     <div class="CollapsiblePanelContent">
-                        <div>CI/RIF: <input type="text" name="" value="" /></div>
-                        <div>Nombre: <input type="text" name="" value="" /></div>
+                        <table border="0">
+                            <tr>
+                                <td colspan="2">Cliente Natural</td>
+                                <td colspan="2">Cliente Juridico</td>
+                            </tr>
+                            <tr>
+                                <td>CI: </td>
+                                <td><input type="text" name="" value="" /></td>
+                                <td>RIF: </td>
+                                <td><input type="text" name="" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td>Nombre:</td>
+                                <td><input type="text" name="" value="" /></td>
+                                <td>Nombre:</td>
+                                <td><input type="text" name="" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td>Apellido:</td>
+                                <td><input type="text" name="" value="" /></td>
+                            </tr>
+                        </table>
+                        
                     </div>
                 </div>
-
                 <div id="PanelPasajeros" class="CollapsiblePanel">
                     <div class="CollapsiblePanelTab" tabindex="0">Pasajeros</div>
                     <div class="CollapsiblePanelContent">
