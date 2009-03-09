@@ -382,7 +382,7 @@ function borrarMensaje(){
 function cerrarVentana() {
     $resultado = "";
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("der", "innerHTML", $resultado);
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
     $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
     return $objResponse;
 }
