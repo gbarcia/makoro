@@ -3,8 +3,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Reserva.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteParticularLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/ClienteParticular.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 
 $controlTest = new ControlReservaLogicaclass();
+$controlReserva = new controladorReservaBDclass();
 $sucursalTest = new Reservaclass();
 $controlPrueba = new ControlClienteParticularLogicaclass();
 $clienteTest = new ClienteParticularclass();
@@ -41,7 +43,15 @@ $clienteTest = new ClienteParticularclass();
 //echo 'Cliente: '+$resultadoInsert+', Reserva: '+$resultado;
 //echo $resultado;
 
-$controlTest->crearReserva(3, '2009-03-08', 1, 1, 17064051, 18310338, null, 'null');
+//$controlTest->crearReserva('null',3, '2009-03-08', 1, 1, 17064051, 18310338, null, 'null');
 
+//$idVuelo = 9;
+//$cantPasajeros = 1;
+//$disp = $controlTest->asientosDisponibles($idVuelo, $cantPasajeros);
+//echo $disp;
+
+
+$respuesta = $controlTest->crearReserva(3, "IDA", 3, '2009-03-08', 1, 1, 17064051, 18310338, null, 'null');
+echo $respuesta;
 
 ?>

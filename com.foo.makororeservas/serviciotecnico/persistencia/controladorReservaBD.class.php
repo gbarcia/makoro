@@ -58,14 +58,46 @@ class controladorReservaBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+    
+    /**
+     * Metodo para consultar la cantidad de asientos disponibles en un vuelo
+     * @param <type> $idVuelo El id del vuelo a verificar
+     * @param <type> $cantPasajeros La cantidad de pasajeros
+     * @return <type>
+     */
+    function asientosDisponibles($idVuelo,$cantPasajeros){
+        $query = "SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$cantPasajeros.")>=0,TRUE,FALSE) as disponibilidad
+                  FROM VUELO_RESERVA vre, VUELO vu, RESERVA re, AVION a
+                  WHERE re.id = vre.RESERVA_id
+                  AND vu.id = vre.VUELO_id
+                  AND vu.AVION_matricula = a.matricula
+                  AND vre.VUELO_id = ".$idVuelo."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        
+        return $resultado;
+    }
+
+    /**
+     * Metodo para editar una reserva en la base de datos 
+     * @param <type> $reserva la reserva a editar
+     * @return <type> El resultado de la operacion 
+     */
     function editarReserva($reserva){
         $resultado = false;
         $query = "UPDATE RESERVA r SET r.PASAJERO_id = ".$reserva->getPasajeroId().",
                                        r.TIPO_SERVICIO_id = ".$reserva->getTipoServicioId()."
                   WHERE r.id = ".$reserva->getId()."";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function buscarIdReserva($solicitud){
+        $query = "SELECT R.id idReserva
+                  FROM RESERVA R
+                  WHERE R.solicitud = '".$solicitud."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
 }
 ?>

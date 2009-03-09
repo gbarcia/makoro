@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Reserva.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloReserva.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/Conexion.class.php';
 /**
  * Description of ControlReservaLogicaclass
@@ -9,10 +11,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
  */
 class ControlReservaLogicaclass {
     private $controlBD;
+    private $controlVueloReservaBD;
     private $controlConexion;
 
     function __construct() {
         $this->controlBD = new controladorReservaBDclass();
+        $this->controlVueloReservaBD = new controladorVueloReservaBDclass;
         $this->controlConexion = new Conexionclass();
     }
 
@@ -51,32 +55,44 @@ class ControlReservaLogicaclass {
     }
 
     /**
-     * Metodo para crear una nueva reserva en el sistema 
+     * Metodo para crear una nueva reserva en el sistema
      * @param <type> $cantidadPasajeros La cantidad de pasajeros que desean realizar la reserva
      * @param <type> $fecha La fecha de reserva
      * @param <type> $tipoServicioId El id del tipo de servicio de la reserva
      * @param <type> $sucursalId El id de la sucursal en donde se realizo la reserva
      * @param <type> $encargadoCedula El encargado que realizo la reserva
-     * @param <type> $clienteParticularCedula El cliente particular que realizo la reserva 
+     * @param <type> $clienteParticularCedula El cliente particular que realizo la reserva
      * @param <type> $clienteAgenciaRif El cliente agencia que realizo la reserva
-     * @param <type> $posadaId La posada en la que se hospedara el pasajero 
-     * @return <type> El resultado de la operacion 
+     * @param <type> $posadaId La posada en la que se hospedara el pasajero
+     * @return <type> El resultado de la operacion
      */
-    function crearReserva($cantidadPasajeros,$fecha, $tipoServicioId, $sucursalId,
-                          $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
+    function crearReserva($idVuelo,$tipoViaje,$cantidadPasajeros,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
                           $posadaId){
-        $estado = 'PP';
-        $pagoId = 'null';
-        $pasajeroId = 'null';
-        $solicitud = $this->generarSolicitud();
-        do{
-            $resultado = $this->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, 
-                                             $sucursalId, $encargadoCedula, $clienteParticularCedula,
-                                             $clienteAgenciaRif, $pagoId, $pasajeroId, $posadaId);
-                                         echo $resultado;
-                                         echo '<p></p>';
-            $cantidadPasajeros = $cantidadPasajeros - 1;
-        }while ($cantidadPasajeros != 0);
+        $resultado = false;
+        $disponible = $this->asientosDisponibles($idVuelo, $cantidadPasajeros);
+        if($disponible){
+            $estado = 'PP';
+            $pagoId = 'null';
+            $pasajeroId = 'null';
+            $solicitud = $this->generarSolicitud();
+            do{
+                $resultado = $this->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId, $encargadoCedula, $clienteParticularCedula,
+                                                 $clienteAgenciaRif, $pagoId, $pasajeroId, $posadaId);
+                $cantidadPasajeros = $cantidadPasajeros - 1;
+            }while ($cantidadPasajeros != 0);
+            $recurso = $this->controlBD->buscarIdReserva($solicitud);
+            while ($row = mysql_fetch_array($recurso)) {
+                $vueloReserva = new VueloReservaclass();
+                $vueloReserva->setVueloid($idVuelo);
+                $vueloReserva->setReservaid($row[idReserva]);
+                $vueloReserva->setTipo($tipoViaje);
+                $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
+            }
+
+            return $resultado;
+        }else{
+            return $disponible;
+        }
         return $resultado;
     }
 
@@ -98,6 +114,19 @@ class ControlReservaLogicaclass {
             $row                 = mysql_num_rows($operacion);
         } while ($row != 0);
         return $codigo;
+    }
+
+    /**
+     * Metodo para consultar la disponibilidad de asientos a un vuelo determinado
+     * @param <type> $idVuelo El id del vuelo a consultar
+     * @param <type> $cantPasajeros La cantidad de pasajeros
+     * @return <type> Si la cantidad de asientos esta disponible para este vuelo
+     */
+    function asientosDisponibles($idVuelo,$cantPasajeros){
+        $recurso = $this->controlBD->asientosDisponibles($idVuelo, $cantPasajeros);
+        $row = mysql_fetch_array($recurso);
+        $disponible = $row[disponibilidad];
+        return $disponible;
     }
 }
 ?>
