@@ -86,6 +86,7 @@ class ControlVueloLogicaclass {
             $idVuelo = $operacion[idVuelo];
             $cantidadDisponible = $operacion[quedan];
             $disponibilidad = $operacion[disponibilidad];
+            $cantInfantes = $operacion[infantes];
             $controlVueloPersonal = new controladorVueloPersonalBDclass();
             $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
             $vueloTripulacionCopiloto = $controlVueloPersonal->consultarVueloPersonalCopiloto($idVuelo);
@@ -106,7 +107,7 @@ class ControlVueloLogicaclass {
             $vuelo->setRutaSitioSalida($operacion[abreviaturaSalida]);
             $vuelo->setRutaSitioLlegada($operacion[abreviaturaLlegada]);
             $vuelo->setAvionMatricula($operacion[avionMatricula]);
-            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto,$disponibilidad,$idVuelo);
+            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto,$disponibilidad,$idVuelo,$cantInfantes);
             $coleccionResultado ->append($Objeto);
         }
         return $coleccionResultado;

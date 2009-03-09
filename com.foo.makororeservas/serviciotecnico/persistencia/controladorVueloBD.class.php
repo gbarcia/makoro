@@ -58,10 +58,10 @@ class controladorVueloBDclass {
         $apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,
         $rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $resultado = false;
-        $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
+        $query = "SELECT v.id as idVuelo, v.cantidadInfantes as infantes, v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
                          ru.abreviaturaLlegada abreviaturaLlegada,
-                         IFNULL((SELECT a.asientos-COUNT(vre.RESERVA_id)
+                         IFNULL((SELECT a.asientos-COUNT(vre.RESERVA_id)+v.cantidadInfantes
                                  FROM VUELO_RESERVA vre, VUELO vu , RESERVA re
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
@@ -181,10 +181,10 @@ class controladorVueloBDclass {
 
     function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
         $resultado = false;
-        $query = "SELECT v.id as idVuelo,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
+        $query = "SELECT v.id as idVuelo, v.cantidadInfantes as infantes, v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
                          v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos,ru.abreviaturaSalida abreviaturaSalida,
                          ru.abreviaturaLlegada abreviaturaLlegada,
-                         IFNULL((SELECT a.asientos-COUNT(vre.RESERVA_id)
+                         IFNULL((SELECT a.asientos-COUNT(vre.RESERVA_id)+v.cantidadInfantes
                                  FROM VUELO_RESERVA vre, VUELO vu , RESERVA re
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
@@ -322,7 +322,6 @@ class controladorVueloBDclass {
                  OR R.CLIENTE_AGENCIA_rif = CA.rif)
             GROUP BY(R.id)
             ORDER BY(R.id)";
-
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
