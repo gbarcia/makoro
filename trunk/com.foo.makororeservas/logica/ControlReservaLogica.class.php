@@ -88,7 +88,6 @@ class ControlReservaLogicaclass {
                 $vueloReserva->setTipo($tipoViaje);
                 $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
             }
-
             return $resultado;
         }else{
             return $disponible;
