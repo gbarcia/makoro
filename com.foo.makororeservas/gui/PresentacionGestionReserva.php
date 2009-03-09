@@ -7,7 +7,7 @@ $xajax->registerFunction("generarComboBoxSucursal");
 $xajax->registerFunction("generarComboBoxEncargado");
 $xajax->registerFunction("procesarFiltros");
 $xajax->registerFunction("inicio");
-$xajax->registerFunction("verDetalles");
+$xajax->registerFunction("detalles");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -183,10 +183,10 @@ $xajax->processRequests();
                 <div class="textoNegro1" align="center"><input type="button" value="Filtrar" onclick="xajax_procesarFiltros(xajax.getFormValues('filtros'))"/></div>
             </form>
         </div>
-        <hr size="1" width="98%" color="#067AC2">
+    
         <div id="resultadoVuelos" class="cuerpo">
             <div class="tableContainer" id="gestionReserva">
-                <script language="javascript">
+                <script type="text/javascript">
                     xajax_inicio();
                 </script>
             </div>

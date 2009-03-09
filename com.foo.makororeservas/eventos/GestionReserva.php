@@ -77,7 +77,7 @@ function procesarFiltros($datos){
         $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="button" value="VER" onclick="xajax_verDetalles('.$idVuelo.')"/></td>';
+        $resultado.= '<td><input id="boton" type="button" value="VER" onclick="xajax_detalles(\''.$idVuelo.'\')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -86,7 +86,7 @@ function procesarFiltros($datos){
     if ($recursoDetalles == "") {
         $resultado = 'No hay coincidencias con su busqueda.';
     }
-    $objResponse->addAssign("gestionReserva", "innerHTML", "$resultado");
+    $objResponse->addAssign("gestionReserva", "innerHTML", $resultado);
     return $objResponse;
 }
 
@@ -134,7 +134,7 @@ function inicio(){
         $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="button" value="VER" onclick="xajax_verDetalles('.$idVuelo.')"/></td>';
+        $resultado.= '<td><input id="boton" type="button" value="VER"  onclick="xajax_detalles(\''.$idVuelo.'\')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -148,9 +148,9 @@ function inicio(){
     return $objResponse;
 }
 
-function verDetalles($idVuelo){
+function detalles($idVuelo){
     $controlVuelo = new ControlVueloLogicaclass();
-//    $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
+    $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
@@ -175,9 +175,27 @@ function verDetalles($idVuelo){
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
-//    while ($row = mysql_fetch_array($recurso)){
-
-//    }
+    while ($row = mysql_fetch_array($recurso)){
+        $resultado.= '<tr>';
+        $resultado.= '<td>' . $row[solicitud] . '</td>';
+        $resultado.= '<td>' . $row[pasajero] . '</td>';
+        $resultado.= '<td>' . $row[tipoPasajero] . '</td>';
+        $resultado.= '<td>' . $row[servicio] . '</td>';
+        $resultado.= '<td>POSADA</td>';
+        $resultado.= '<td>' . $row[encargadoNombre] . '</td>';
+        $resultado.= '<td>SUCURSAL</td>';
+        $resultado.= '<td>' . $row[particular] . '</td>';
+        $resultado.= '<td>' . $row[agencia] . '</td>';
+        $resultado.= '<td>' . $row[vueloRetorno] . '</td>';
+        $resultado.= '<td>' . $row[clienteNombre] . '</td>';
+        $resultado.= '<td>' . $row[tipo] . '</td>';
+        $resultado.= '<td>' . $row[banco] . '</td>';
+        $resultado.= '<td>' . $row[numeroTran] . '</td>';
+        $resultado.= '<td>' . $row[monto] . '</td>';
+        $resultado.= '<td>' . $row[pago] . '</td>';
+        $resultado.= '<td>' . $row[boleto] . '</td>';
+        $resultado.= '</tr>';
+    }
     $objResponse->addAssign("gestionReservaPasajeros", "innerHTML", "$resultado");
     return $objResponse;
 }
