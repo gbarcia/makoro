@@ -30,7 +30,7 @@ function accion ($datos) {
         $resultado.= '<td>' . $row[encargadoNombre]. '</td>';
         $resultado.= '<td>' . $row[apellido]. '</td>';
         $resultado.= '<td>' . $row[nombreSucursal]. '</td>';
-        $resultado.= '<td>' . $row[monto]. '</td>';
+        $resultado.= '<td align="right">' . $row[monto]. '</td>';
         $resultado.= '<td>' . $row[moneda]. '</td>';
         $resultado.= '</tr>';
         $color = !$color;

@@ -176,8 +176,8 @@ function generarFormularioNuevaAgencia () {
       <td><input type="text" name="direccion" id="direccion" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
     <tr class="r0">
-      <td>Porcentaje de Descuento</td>
-      <td><input name="porcentaje" type="text" id="porcentaje" size="30" /></td>
+      <td>* Porcentaje de Descuento</td>
+      <td><input name="porcentaje" type="text" id="porcentaje" size="30" value="0.10"/></td>
     </tr>
     <tr class="r1">
       <td height="26" colspan="2"><div align="center">
@@ -311,7 +311,7 @@ function generarFormularioEditar ($rif) {
       <td><input type="text" name="direccion" id="direccion" value = "'.$row[direccion].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
     <tr class="r0">
-      <td>Porcentaje de Descuento</td>
+      <td>* Porcentaje de Descuento</td>
       <td><input name="porcentaje" type="text" id="porcentaje" size="30" value = "'.$row[porcentajeComision].'" /></td>
     </tr>
     <tr class="r1">

@@ -1,24 +1,22 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlTipoServicioLogica.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/TipoServicio.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTipoServicioBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Avion.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorAvionBD.class.php';
 
-function cadenaTodosLosServicios () {
+function cadenaTodosLosAviones () {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
-    $resultado.= '<th>IDENTIFICADOR</th>';
-    $resultado.= '<th>NOMBRE</th>';
-    $resultado.= '<th>ABREVIATURA</th>';
-    $resultado.= '<th>VECES SOLICTADO</th>';
+    $resultado.= '<th>MATRICULA</th>';
+    $resultado.= '<th>ASIENTOS</th>';
+    $resultado.= '<th>VUELOS REALIZADOS</th>';
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
-    $controlLogica = new ControlTipoServicioLogicaclass();
-    $recurso = $controlLogica->consultarServicios();
+    $controlLogica = new controladorAvionBDclass();
+    $recurso = $controlLogica->consultarAviones();
     $color = false;
     while ($row = mysql_fetch_array($recurso)) {
         if ($color){
@@ -26,11 +24,10 @@ function cadenaTodosLosServicios () {
         } else {
             $resultado.= '<tr class="r1">';
         }
-        $resultado.= '<td>' . $row[id]. '</td>';
-        $resultado.= '<td>' . $row[nombre]. '</td>';
-        $resultado.= '<td>' . $row[abreviatura]. '</td>';
+        $resultado.= '<td>' . $row[matricula]. '</td>';
+        $resultado.= '<td>' . $row[asientos]. '</td>';
         $resultado.= '<td>' . $row[numero]. '</td>';
-        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_desplegarFormularioEditar(\''. $row[id] .'\')"/></td>';
+        $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_desplegarFormularioEditar(\''. $row[matricula] .'\')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -40,20 +37,20 @@ function cadenaTodosLosServicios () {
 }
 
 function inicio () {
-    $resultado = cadenaTodosLosServicios();
+    $resultado = cadenaTodosLosAviones();
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("gestion", "innerHTML", $resultado);
     return $objResponse;
 }
 
-function generarFormularioNuevoServicio () {
-    $formulario ='<form id="formNuevoServicio">
+function generarFormularioNuevoAvion () {
+    $formulario ='<form id="formNuevoAvion">
    <table class="formTable" cellspacing="0">
    <tr>
       <thead>
         <td colspan="2">
         <div class="tituloBlanco1">
-            NUEVO SERVICIO
+            NUEVO AVION
             <div class="botonCerrar">
             <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
         </div>
@@ -65,20 +62,20 @@ function generarFormularioNuevoServicio () {
       <td colspan="2">Todos los campos son requeridos</td>
       </tr>
     <tr class="r0">
-      <td>Nombre</td>
+      <td>Matricula</td>
       <td><label>
-        <input type="text" name="nombre" id="nombre" size="30" onkeyup="this.value=this.value.toUpperCase();" />
+        <input type="text" name="matricula" id="matricula" size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
     <tr class="r1">
-      <td>Abreviatura</td>
+      <td>Numero de asientos</td>
       <td><label>
-        <input type="text" name="abreviatura" id="abrevitura" onkeyup="this.value=this.value.toUpperCase();" size="30" />
+        <input type="text" name="asientos" id="asientos" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
     <tr class="r0">
       <td height="26" colspan="2"><div align="center">
-        <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesar(xajax.getFormValues(\'formNuevoServicio\'))" />
+        <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesar(xajax.getFormValues(\'formNuevoAvion\'))" />
       </div></td>
     </tr>
   </table>    <label></label></td>
@@ -88,19 +85,19 @@ function generarFormularioNuevoServicio () {
     return $formulario;
 }
 
-function desplegarFormularioNuevoServicio () {
-    $resultado = generarFormularioNuevoServicio();
+function desplegarFormularioNuevoAvion () {
+    $resultado = generarFormularioNuevoAvion();
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", $resultado);
     return $objResponse;
 }
 
-function validarFormularioServicio ($datos) {
+function validarFormularioAvion ($datos) {
     $resultado = false;
-    if (is_string($datos[nombre]) && $datos[nombre] != "")
+    if (is_string($datos[matricula]) && $datos[matricula] != "")
     $resultado = true;
     else return false;
-    if (is_string($datos[abreviatura]) && $datos[abreviatura] != "")
+    if (is_numeric($datos[asientos]) && $datos[asientos] != "")
     $resultado = true;
     else return false;
 
@@ -109,15 +106,19 @@ function validarFormularioServicio ($datos) {
 
 function procesar ($datos) {
     $objResponse = new xajaxResponse();
-    if (validarFormularioServicio($datos)) {
+    if (validarFormularioAvion($datos)) {
         $respuesta = "";
-        $control = new ControlTipoServicioLogicaclass();
-        $resultado = $control->nuevoTipoServicio($datos[abreviatura], $datos[nombre]);
+        $control = new controladorAvionBDclass();
+        $avion = new Avionclass();
+        $avion->setAsientos($datos[asientos]);
+        $avion->setMatricula($datos[matricula]);
+        $avion->setHabilitado(1);
+        $resultado = $control->agregarAvion($avion);
         $objResponse = new xajaxResponse();
         if ($resultado){
             $respuesta .= '<div class="exito">
                           <div class="textoMensaje">
-                          Nuevo SERVICIO agregado con exito.
+                          Nuevo AVION agregado con exito.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -127,7 +128,7 @@ function procesar ($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique que el nombre del servicio no exista.
+                          No se pudo completar la operacion. Verifique que la matricula no exista.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -135,15 +136,15 @@ function procesar ($datos) {
                           </div>';
         }
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
-        $actualizarTablaPrincipalRespuesta = cadenaTodosLosServicios();
+        $actualizarTablaPrincipalRespuesta = cadenaTodosLosAviones();
         $objResponse->addAssign("gestion", "innerHTML", $actualizarTablaPrincipalRespuesta);
         if ($resultado)
         $objResponse->addAssign("izq", "innerHTML", "");
-        }
+    }
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. No puede dejar ningun campo en blanco
+                          No se pudo completar la operacion. El campo de asientos debe ser numerico
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -154,17 +155,17 @@ function procesar ($datos) {
     return $objResponse;
 }
 
-function generarFormularioEditarServicio ($id) {
-    $control = new controladorTipoServicioBDclass();
-    $recurso = $control->consultarServicioId($id);
+function generarFormularioEditar ($matricula) {
+    $control = new controladorAvionBDclass();
+    $recurso = $control->consultarAvionesPorMatricula($matricula);
     $row = mysql_fetch_array($recurso);
-    $formulario ='<form id="formNuevoServicio">
+    $formulario ='<form id="formNuevoAvion">
    <table class="formTable" cellspacing="0">
    <tr>
       <thead>
         <td colspan="2">
         <div class="tituloBlanco1">
-            EDITAR SERVICIO <input type="hidden" name="id" id="id" value="'.$row[id].'" />
+            EDITAR AVION
             <div class="botonCerrar">
             <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
         </div>
@@ -176,20 +177,20 @@ function generarFormularioEditarServicio ($id) {
       <td colspan="2">Todos los campos son requeridos</td>
       </tr>
     <tr class="r0">
-      <td>Nombre</td>
+      <td>Matricula</td>
       <td><label>
-        <input type="text" name="nombre" id="nombre" size="30" value = "'.$row[nombre].'"onkeyup="this.value=this.value.toUpperCase();" />
+        <input type="text" name="matricula" id="matricula" size="30" value= "'.$row[matricula].'" READONLY onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
     <tr class="r1">
-      <td>Abreviatura</td>
+      <td>Numero de asientos</td>
       <td><label>
-        <input type="text" name="abreviatura" value = "'.$row[abreviatura].'" id="abrevitura" onkeyup="this.value=this.value.toUpperCase();" size="30" />
+        <input type="text" name="asientos" value= "'.$row[asientos].'" id="asientos" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
     <tr class="r0">
       <td height="26" colspan="2"><div align="center">
-        <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarEditar(xajax.getFormValues(\'formNuevoServicio\'))" />
+        <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarEditar(xajax.getFormValues(\'formNuevoAvion\'))" />
       </div></td>
     </tr>
   </table>    <label></label></td>
@@ -199,9 +200,8 @@ function generarFormularioEditarServicio ($id) {
     return $formulario;
 }
 
-
-function desplegarFormularioEditar ($id) {
-    $resultado = generarFormularioEditarServicio($id);
+function desplegarFormularioEditar ($matricula) {
+    $resultado = generarFormularioEditar($matricula);
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", $resultado);
     return $objResponse;
@@ -225,15 +225,15 @@ function borrarMensaje(){
 
 function procesarEditar ($datos) {
     $objResponse = new xajaxResponse();
-    if (validarFormularioServicio($datos)) {
+    if (validarFormularioAvion($datos)) {
         $respuesta = "";
-        $control = new ControlTipoServicioLogicaclass();
-        $resultado = $control->actualizarTipoServicio($datos[id], $datos[abreviatura], $datos[nombre], 1);
+        $control = new controladorAvionBDclass();
+        $resultado = $control->actualizarAsientos($datos[matricula], $datos[asientos]);
         $objResponse = new xajaxResponse();
         if ($resultado){
             $respuesta .= '<div class="exito">
                           <div class="textoMensaje">
-                          Servicio actualizado con exito.
+                          Avion actualizado con exito.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -243,7 +243,7 @@ function procesarEditar ($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique que el nombre del servicio no exista.
+                          No se pudo completar la operacion. Verifique que la matricula no exista.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -251,15 +251,15 @@ function procesarEditar ($datos) {
                           </div>';
         }
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
-        $actualizarTablaPrincipalRespuesta = cadenaTodosLosServicios();
+        $actualizarTablaPrincipalRespuesta = cadenaTodosLosAviones();
         $objResponse->addAssign("gestion", "innerHTML", $actualizarTablaPrincipalRespuesta);
         if ($resultado)
         $objResponse->addAssign("izq", "innerHTML", "");
-        }
+    }
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. No puede dejar ningun campo en blanco
+                          No se pudo completar la operacion. El campo de asientos debe ser numerico
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
