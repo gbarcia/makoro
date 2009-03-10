@@ -42,7 +42,7 @@ class ControlVueloLogicaclass {
      * @param <String> $avionMatricula
      * @return <boolean>
      */
-    function actualizarVuelo($id,$fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
+    function actualizarVuelo($id,$fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$cantidadInfantes) {
         $vuelo = new Vueloclass();
         $vuelo->setId($id);
         $vuelo->setFecha($fecha);
@@ -50,7 +50,16 @@ class ControlVueloLogicaclass {
         $vuelo->setAvionMatricula($avionMatricula);
         $vuelo->setRutaSitioSalida($rutaSitioSalida);
         $vuelo->setRutaSitioLlegada($rutaSitioLlegada);
+        $vuelo->setCantidadinfantes($cantidadInfantes);
         $resultado = $this->controlBD->editarVuelo($vuelo);
+        return ($resultado);
+    }
+
+    function actualizarCantidadInfantesVuelo($idVuelo, $cantidadInfantes) {
+        $vuelo = new Vueloclass();
+        $vuelo->setId($idVuelo);
+        $vuelo->setCantidadinfantes($cantidadInfantes);
+        $resultado = $this->controlBD->actualizarCantidadInfantesVuelo($vuelo);
         return ($resultado);
     }
 
@@ -308,9 +317,13 @@ class ControlVueloLogicaclass {
      * @return <recurso> recurso con el vuelo especificado
      */
     function buscarVuelosPorFechaRutas($busqueda, $fecha) {
-        $resultado = new ArrayObject();
         $recurso = $this->controlBD->consultarTodosVuelosPorFechaRutas($busqueda, $fecha);
-        return $resultado;
+        return $recurso;
+    }
+
+    function consultarCantidadInfantesVuelo($idVuelo) {
+        $recurso = $this->controlBD->consultarCantidadInfantesVuelo($idVuelo);
+        return $recurso;
     }
 
 }
