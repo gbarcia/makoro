@@ -41,5 +41,26 @@ class TransaccionBDclass {
        $this->conexion->cerrarConexion();
        return $result;
     }
+
+    /**
+ * Metodo para realizar una transaccion con la bd que retorna el id autogenerado
+ * @param <String> $query query a enviar
+ * @return <Integer> el id ingresado en la bd
+ */
+    function realizarTransaccionInsertId($query) {
+       $link = $this->conexion->conectarBaseDatos();
+       $result = mysql_query($query,$link);
+       if (!$result) {
+           $mensaje = "Transaccion: " . $query . "  " . mysql_error();
+           $this->bitacora->escribirMensaje($mensaje);
+       }
+       else if ($result) {
+           $mensaje = "Transaccion: " . $query . "  Realizada con exito";
+           $this->bitacora->escribirMensaje($mensaje);
+       }
+       $id = mysql_insert_id($this->conexion->getConexion());
+       $this->conexion->cerrarConexion();
+       return $id;
+    }
 }
 ?>

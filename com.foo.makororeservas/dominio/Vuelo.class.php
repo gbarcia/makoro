@@ -45,7 +45,10 @@ class Vueloclass {
     }
 
     public function setAvionMatricula($avionMatricula) {
+        if ($avionMatricula != 'NULL')
         $this->avionMatricula = strtoupper($avionMatricula);
+        else
+        $this->avionMatricula = NULL;
     }
 
     public function getRutaSitioSalida() {
