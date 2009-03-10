@@ -51,7 +51,7 @@ class controladorVueloPersonalBDclass {
  */
     function consultarVueloPersonalPiloto($id) {
         $resultado;
-        $query = "SELECT vp.VUELO_id idVuelo, CONCAT(p.nombre,' ',p.apellido) tripulante, tp.cargo
+        $query = "SELECT vp.VUELO_id idVuelo, CONCAT(p.nombre,' ',p.apellido) tripulante, tp.cargo,p.cedula
                   FROM VUELO_PERSONAL vp, VUELO v, PERSONAL p, TIPO_CARGO tp
                   WHERE v.id = vp.VUELO_id
                   AND v.id = ".$id."
@@ -69,7 +69,7 @@ class controladorVueloPersonalBDclass {
  */
     function consultarVueloPersonalCopiloto($id) {
         $resultado;
-        $query = "SELECT vp.VUELO_id idVuelo, CONCAT(p.nombre,' ',p.apellido) tripulante, tp.cargo
+        $query = "SELECT vp.VUELO_id idVuelo, CONCAT(p.nombre,' ',p.apellido) tripulante, tp.cargo,p.cedula
                   FROM VUELO_PERSONAL vp, VUELO v, PERSONAL p, TIPO_CARGO tp
                   WHERE v.id = vp.VUELO_id
                   AND v.id = ".$id."
