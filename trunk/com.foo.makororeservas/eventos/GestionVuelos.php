@@ -161,7 +161,86 @@ function inicio () {
 }
 
 function formularioNuevoVuelo () {
-   
+   $formulario = '<form id="formNuevaRuta">
+   <table class="formTable" cellspacing="0">
+   <tr>
+      <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">REGISTRAR NUEVO VUELO
+          <div class="botonCerrar">
+            <button name="boton" type="button" onClick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>        </td>
+        </thead>
+    </tr>
+    <tr class="r1">
+      <td colspan="2">(*) Son campos requeridos</td>
+      </tr>
+    <tr class="r0">
+      <td>*Fecha</td>
+      <td><label>
+        <input type="text" name="fechaNac" id="f_date_c" readonly="1" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
+</td>
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>*Hora</td>
+      <td><label>
+      <input type="text" name="hora" id="f_date_c4" readonly="1" size="8" />
+      (hh:mm:ss)</label></td>
+    </tr>
+    <tr class="r0">
+      <td>Matricula del avion</td>
+      <td><label>
+        <select name="posada4" id="posada4">
+          <option value="NULL">POR ASIGNAR</option>
+                </select>
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>* Ruta</td>
+      <td><select name="posada3" id="posada3">
+                  </select></td>
+    </tr>
+    <tr class="r0">
+      <td>Piloto</td>
+      <td><select name="posada" id="posada">
+        <option value="NULL">POR ASIGNAR</option>
+            </select></td>
+    </tr>
+    <tr class="r0">
+      <td>Copiloto</td>
+      <td><select name="posada2" id="posada2">
+        <option value="NULL">POR ASIGNAR</option>
+            </select></td>
+    </tr>
+    <tr class="r1">    </tr>
+    <tr class="r1">
+      <td height="26" colspan="2"><div align="center">
+        <input name="button" type="button" id="button" value="REGISTRAR" onclick= "xajax_procesarRuta(xajax.getFormValues(\'formNuevaRuta\'))" />
+      </div></td>
+    </tr>
+  </table>
+   <label></label></td>
+    </tr>
+</table>
+</form>';
+    return $formulario;
+}
+
+function desplegarFormularioNuevoVuelo () {
+    $resultado = formularioNuevoVuelo();
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addScript('
+    Calendar.setup({
+        inputField     :    "f_date_c",     // id of the input field
+        ifFormat       :    "%Y-%m-%d",      // format of the input field
+        button         :    "f_trigger_c",  // trigger for the calendar (button ID)
+        align          :    "Tl",           // alignment (defaults to "Bl")
+        singleClick    :    true
+    });');
+    return $objResponse;
 }
 
 ?>
