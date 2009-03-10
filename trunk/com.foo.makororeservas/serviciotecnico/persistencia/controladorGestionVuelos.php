@@ -22,5 +22,22 @@ class controladorGestionVuelos {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function nuevoVuelo ($fecha,$hora,$matricula,$sitioSalida,$sitioLlegada,$piloto,$copiloto) {
+           $controlVuelo = new controladorVueloBDclass();
+           $vuelo = new Vueloclass();
+           $vuelo->setFecha($fecha);
+           $vuelo->setHora($hora);
+           $vuelo->setAvionMatricula($matricula);
+           $vuelo->setRutaSitioSalida($sitioSalida);
+           $vuelo->setRutaSitioLLegada($sitioLlegada);
+           $resultadoVuelo = $controlVuelo->agregarNuevoVuelo($vuelo);
+           $controlVueloPersonal = new controladorVueloPersonalBDclass();
+           $vueloPersonalPiloto = new VueloPersonalclass();
+           $vueloPersonalPiloto->setPersonalCedula($piloto->getCedula);
+           $vueloPersonalPiloto->setCargo($piloto->getCargo);
+           $idActual = mysql_insert_id($controlVuelo->);
+           $resultadoPersona = $controlVueloPersonal->agregarVueloPersonal($vueloPersonal);
+    }
 }
 ?>
