@@ -7,7 +7,7 @@ function cadenaTodasLasRutas () {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>SITIO DE SALIDA</th>';
@@ -15,8 +15,6 @@ function cadenaTodasLasRutas () {
     $resultado.= '<th>SITIO DE LLEGADA</th>';
     $resultado.= '<th>CODIGO</th>';
     $resultado.= '<th>TIEMPO</th>';
-    $resultado.= '<th>COSTO</th>';
-    $resultado.= '<th>GENERA IVA</th>';
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
@@ -35,8 +33,6 @@ function cadenaTodasLasRutas () {
         $resultado.= '<td>' . $row->getSitioLlegada(). '</td>';
         $resultado.= '<td>' . $row->getAbreviaturaLlegada(). '</td>';
         $resultado.= '<td>' . $row->getTiempo(). '</td>';
-        $resultado.= '<td>' . $row->getCosto(). ' BS'. '</td>';
-        $resultado.= '<td>' . $row->getGeneraIVAString().'</td>';
         $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_desplegarFormularioEditarRuta(\''. $row->getSitioSalida() .'\',\''. $row->getSitioLlegada() .'\')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
@@ -72,7 +68,7 @@ function generarFormularioNuevaRuta () {
       <td colspan="2">Todos los campos son requeridos</td>
       </tr>
     <tr class="r0">
-      <td>Sitio de salida</td>
+      <td>Sitio de Salida</td>
       <td><label>
         <input type="text" name="salida" id="salida" size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
@@ -84,29 +80,18 @@ function generarFormularioNuevaRuta () {
       </label></td>
     </tr>
     <tr class="r0">
-      <td>Abreviatura Sitio de Salida</td>
+      <td>Abreviatura Sitio de Salida<br/>(Maximo tres (3) caracteres)</td>
       <td><label>
         <input type="text" name="salidaA" id="salidaA" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
     <tr class="r1">
-      <td>Abreviatura Sitio de Llegada</td>
+      <td>Abreviatura Sitio de Llegada<br/>(Maximo tres (3) caracteres)</td>
       <td><input type="text" name="llegadaA" id="llegadaA" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
     <tr class="r0">
       <td>Tiempo de vuelo</td>
       <td><input type="text" name="tiempo" id="tiempo" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
-    </tr>
-    <tr class="r1">
-      <td>Costo del viaje</td>
-      <td><input type="text" name="costo" id="costo" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
-    </tr>
-    <tr class="r0">
-      <td>Genera I.V.A</td>
-      <td><select name="iva" id="iva">
-        <option value="1" selected="selected">SI</option>
-        <option value="0">No</option>
-      </select>      </td>
     </tr>
     <tr class="r1">
       <td height="26" colspan="2"><div align="center">
@@ -141,13 +126,7 @@ function validarFormularioRuta ($datos) {
     if (is_string($datos[llegadaA]) && $datos[llegadaA] != "" && strlen($datos[llegadaA]) < 4)
     $resultado = true;
     else return false;
-    if (is_numeric($datos[costo]) && $datos[costo] != "")
-    $resultado = true;
-    else return false;
     if (is_numeric($datos[tiempo]) && $datos[tiempo] != "")
-    $resultado = true;
-    else return false;
-    if (is_numeric($datos[iva]) && $datos[iva] != "")
     $resultado = true;
     else return false;
 
@@ -159,7 +138,7 @@ function procesarRuta ($datos) {
     if (validarFormularioRuta($datos)) {
         $respuesta = "";
         $controlRuta = new ControlRutaLogicaclass();
-        $resultado = $controlRuta->nuevaRuta($datos[salida], $datos[llegada], $datos[tiempo], $datos[salidaA], $datos[llegadaA], $datos[iva],$datos[costo]);
+        $resultado = $controlRuta->nuevaRuta($datos[salida], $datos[llegada], $datos[tiempo], $datos[salidaA], $datos[llegadaA], 0,0);
         $objResponse = new xajaxResponse();
         if ($resultado){
             $respuesta .= '<div class="exito">
@@ -185,7 +164,7 @@ function procesarRuta ($datos) {
         $actualizarTablaPrincipalRespuesta = cadenaTodasLasRutas();
         $objResponse->addAssign("gestionRutas", "innerHTML", $actualizarTablaPrincipalRespuesta);
         $objResponse->addAssign("izq", "innerHTML", "");
-        }
+    }
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
@@ -234,34 +213,18 @@ function generarFormularioEditar ($sitioSalida,$sitioLlegada) {
       </label></td>
     </tr>
     <tr class="r0">
-      <td>Abreviatura Sitio de Salida</td>
+      <td>Abreviatura Sitio de Salida<br/>(Maximo tres (3) caracteres)</td>
       <td><label>
         <input type="text" name="salidaA" id="salidaA" value = "'.$rowR[abreviaturaSalida].'"onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
     <tr class="r1">
-      <td>Abreviatura Sitio de Llegada</td>
+      <td>Abreviatura Sitio de Llegada<br/>(Maximo tres (3) caracteres)</td>
       <td><input type="text" name="llegadaA" id="llegadaA" value = "'.$rowR[abreviaturaLlegada].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
     <tr class="r0">
       <td>Tiempo de vuelo</td>
       <td><input type="text" name="tiempo" id="tiempo" value = "'.$rowR[tiempo].'"onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
-    </tr>
-    <tr class="r1">
-      <td>Costo del viaje</td>
-      <td><input type="text" name="costo" id="costo" value = "'.$rowR[costo].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
-    </tr>
-    <tr class="r0">
-      <td>Genera I.V.A</td>
-      <td><select name="iva" id="iva">
-        <option value="1"';
-    if ($rowR[generaIVA] == 1)
-    $formulario.= 'selected="selected"';
-       $formulario.='>SI</option><option value="0"';
-    if ($rowR[generaIVA] == 0)
-    $formulario.= 'selected="selected"';
-       $formulario.='>No</option>
-      </select>      </td>
     </tr>
     <tr class="r1">
       <td height="26" colspan="2"><div align="center">
@@ -287,7 +250,7 @@ function procesarEditarRuta ($datos) {
     if (validarFormularioRuta($datos)) {
         $respuesta = "";
         $controlRuta = new ControlRutaLogicaclass();
-        $resultado = $controlRuta->actualizarRuta($datos[salida], $datos[llegada], $datos[tiempo], $datos[salidaA], $datos[llegadaA],$datos[costo],$datos[iva]);
+        $resultado = $controlRuta->actualizarRuta($datos[salida], $datos[llegada], $datos[tiempo], $datos[salidaA], $datos[llegadaA],0,0);
         $objResponse = new xajaxResponse();
         if ($resultado){
             $respuesta .= '<div class="exito">
