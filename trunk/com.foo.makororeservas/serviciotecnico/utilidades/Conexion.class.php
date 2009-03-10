@@ -9,7 +9,7 @@ class Conexionclass {
 
     private $configuracion;
 
-    public $conexion;
+    private $conexion;
 
     function __construct() {
         $this->configuracion = new ConfiguracionBDclass();
@@ -35,5 +35,8 @@ class Conexionclass {
         mysql_close($this->conexion);
     }
 
+    public function getConexion() {
+        return $this->conexion;
+    }
 }
 ?>
