@@ -3,6 +3,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Vuelo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/AsientosDisponiblesVueloTripulacion.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorAvionBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorRutaBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorTripulanteBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorGestionVuelos.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloPersonalBD.class.php';
 
 
 function limpiar ($cadena) {
@@ -161,7 +166,14 @@ function inicio () {
 }
 
 function formularioNuevoVuelo () {
-   $formulario = '<form id="formNuevaRuta">
+    $controlMatricula = new controladorAvionBDclass();
+    $recursoMatricula = $controlMatricula->consultarAviones();
+    $controlRuta = new controladorRutaBDclass();
+    $recursoRuta = $controlRuta->consultarRutas();
+    $controlPiloto = new controladorTripulanteBDclass();
+    $recursoPiloto = $controlPiloto->consultarPilotos();
+    $recursoCopiloto = $controlPiloto->consultarCopilotos();
+   $formulario = '<form id="formNuevoVuelo">
    <table class="formTable" cellspacing="0">
    <tr>
       <thead>
@@ -179,45 +191,57 @@ function formularioNuevoVuelo () {
     <tr class="r0">
       <td>*Fecha</td>
       <td><label>
-        <input type="text" name="fechaNac" id="f_date_c" readonly="1" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
+        <input type="text" name="fecha" id="f_date_c" readonly="1" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
 </td>
       </label></td>
     </tr>
     <tr class="r1">
       <td>*Hora</td>
       <td><label>
-      <input type="text" name="hora" id="f_date_c4" readonly="1" size="8" />
+      <input type="text" name="hora" id="hora" size="8" />
       (hh:mm:ss)</label></td>
     </tr>
     <tr class="r0">
       <td>Matricula del avion</td>
       <td><label>
-        <select name="posada4" id="posada4">
-          <option value="NULL">POR ASIGNAR</option>
-                </select>
+        <select name="matricula" id="matricula">
+          <option value="NULL">POR ASIGNAR</option>';
+    while ($rowMatricula = mysql_fetch_array($recursoMatricula)){
+        $formulario .= '<option value = '.$rowMatricula[matricula].'>"'.$rowMatricula[matricula].'"</option>';
+    }
+          $formulario .= '</select>
       </label></td>
     </tr>
     <tr class="r1">
       <td>* Ruta</td>
-      <td><select name="posada3" id="posada3">
-                  </select></td>
+      <td><select name="ruta" id="ruta">';
+      while ($rowRuta = mysql_fetch_array($recursoRuta)) {
+          $formulario .= '<option value="'.$rowRuta[sitioSalida].'-'.$rowRuta[sitioLlegada].'"> '.$rowRuta[abreviaturaSalida].' - '.$rowRuta[abreviaturaLlegada].'</option>';
+      }
+                  $formulario.='</select></td>
     </tr>
     <tr class="r0">
       <td>Piloto</td>
-      <td><select name="posada" id="posada">
-        <option value="NULL">POR ASIGNAR</option>
-            </select></td>
+      <td><select name="piloto" id="piloto">
+        <option value="NULL">POR ASIGNAR</option>';
+        while ($rowPiloto = mysql_fetch_array($recursoPiloto)){
+        $formulario .= '<option value = '.$rowPiloto[cedula].'>'.$rowPiloto[apellido].', '.$rowPiloto[nombre].'</option>';
+    }
+    $formulario .='</select></td>
     </tr>
     <tr class="r0">
       <td>Copiloto</td>
-      <td><select name="posada2" id="posada2">
-        <option value="NULL">POR ASIGNAR</option>
-            </select></td>
+      <td><select name="copiloto" id="copiloto">
+        <option value="NULL">POR ASIGNAR</option>';
+    while ($rowCopiloto = mysql_fetch_array($recursoCopiloto)){
+        $formulario .= '<option value = '.$rowCopiloto[cedula].'>'.$rowCopiloto[apellido].', '.$rowCopiloto[nombre].'</option>';
+    }
+            $formulario.= '</select></td>
     </tr>
     <tr class="r1">    </tr>
     <tr class="r1">
       <td height="26" colspan="2"><div align="center">
-        <input name="button" type="button" id="button" value="REGISTRAR" onclick= "xajax_procesarRuta(xajax.getFormValues(\'formNuevaRuta\'))" />
+        <input name="button" type="button" id="button" value="REGISTRAR" onclick= "xajax_procesarRuta(xajax.getFormValues(\'formNuevoVuelo\'))" />
       </div></td>
     </tr>
   </table>
@@ -230,6 +254,128 @@ function formularioNuevoVuelo () {
 
 function desplegarFormularioNuevoVuelo () {
     $resultado = formularioNuevoVuelo();
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addScript('
+    Calendar.setup({
+        inputField     :    "f_date_c",     // id of the input field
+        ifFormat       :    "%Y-%m-%d",      // format of the input field
+        button         :    "f_trigger_c",  // trigger for the calendar (button ID)
+        align          :    "Tl",           // alignment (defaults to "Bl")
+        singleClick    :    true
+    });');
+    return $objResponse;
+}
+
+function formularioEditarVuelo ($id) {
+    $controlMatricula = new controladorAvionBDclass();
+    $recursoMatricula = $controlMatricula->consultarAviones();
+    $controlRuta = new controladorRutaBDclass();
+    $recursoRuta = $controlRuta->consultarRutas();
+    $controlPiloto = new controladorTripulanteBDclass();
+    $recursoPiloto = $controlPiloto->consultarPilotos();
+    $recursoCopiloto = $controlPiloto->consultarCopilotos();
+    $controlVuelo = new controladorGestionVuelos();
+    $recursoVuelo = $controlVuelo->ConsultarVueloPorId($id);
+    $rowVuelo = mysql_fetch_array($recursoVuelo);
+    $controlVueloPersonal = new controladorVueloPersonalBDclass();
+    $recursoPilotoVueloActual = $controlVueloPersonal->consultarVueloPersonalPiloto($id);
+    $rowPilotoActual = mysql_fetch_array($recursoPilotoVueloActual);
+    $recursoCopilotoActual = $controlVueloPersonal->consultarVueloPersonalCopiloto($id);
+    $rowCopilotoActual = mysql_fetch_array($recursoCopilotoActual);
+   $formulario = '<form id="formNuevoVuelo">
+   <table class="formTable" cellspacing="0">
+   <tr>
+      <thead>
+        <td colspan="2">
+        <div class="tituloBlanco1">EDITAR VUELO<input type="hidden" name="id" id="id" value ="'.$rowVuelo[id].'">
+          <div class="botonCerrar">
+            <button name="boton" type="button" onClick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
+        </div>
+        </div>        </td>
+        </thead>
+    </tr>
+    <tr class="r1">
+      <td colspan="2">(*) Son campos requeridos</td>
+      </tr>
+    <tr class="r0">
+      <td>*Fecha</td>
+      <td><label>
+        <input type="text" value ="'.$rowVuelo[fecha].'" name="fecha" id="f_date_c" readonly="1" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector"
+</td>
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>*Hora</td>
+      <td><label>
+      <input type="text" name="hora" id="f_date_c4" value ="'.$rowVuelo[hora].'" size="8" />
+      (hh:mm:ss)</label></td>
+    </tr>
+    <tr class="r0">
+      <td>Matricula del avion</td>
+      <td><label>
+        <select name="matricula" id="matricula">
+          <option value="NULL">POR ASIGNAR</option>';
+    while ($rowMatricula = mysql_fetch_array($recursoMatricula)){
+        $formulario .= '<option value = '.$rowMatricula[matricula];
+        if ($rowVuelo['matricula'] == $rowMatricula['matricula'])
+        $formulario .= '"selected';
+    $formulario .= '>'.$rowMatricula[matricula].'</option>';
+    }
+          $formulario .= '</select>
+      </label></td>
+    </tr>
+    <tr class="r1">
+      <td>* Ruta</td>
+      <td><select name="ruta" id="ruta">';
+      while ($rowRuta = mysql_fetch_array($recursoRuta)) {
+          $formulario .= '<option value="'.$rowRuta[sitioSalida].'-'.$rowRuta[sitioLlegada];
+          if ($rowVuelo['salida'] == $rowRuta['sitioSalida'] && $rowVuelo['llegada'] == $rowRuta['sitioLlegada'] )
+        $formulario .= '"selected';
+        $formulario .= '"> '.$rowRuta[abreviaturaSalida].' - '.$rowRuta[abreviaturaLlegada].'</option>';
+      }
+                  $formulario.='</select></td>
+    </tr>
+    <tr class="r0">
+      <td>Piloto</td>
+      <td><select name="piloto" id="piloto">
+        <option value="NULL">POR ASIGNAR</option>';
+        while ($rowPiloto = mysql_fetch_array($recursoPiloto)){
+        $formulario .= '<option value = "$rowPiloto[cedula]"';
+        if ($rowPilotoActual['cedula'] == $rowPiloto['cedula'])
+        $formulario .= 'selected';
+    $formulario .= '>'.$rowPiloto[apellido].', '.$rowPiloto[nombre].'</option>';
+    }
+    $formulario .='</select></td>
+    </tr>
+    <tr class="r0">
+      <td>Copiloto</td>
+      <td><select name="copiloto" id="copiloto">
+        <option value="NULL">POR ASIGNAR</option>';
+    while ($rowCopiloto = mysql_fetch_array($recursoCopiloto)){
+        $formulario .= '<option value = "$rowCopiloto[cedula]"';
+        if ($rowCopilotoActual['cedula'] == $rowCopiloto['cedula'])
+        $formulario .= 'selected';
+        $formulario .= '>'.$rowCopiloto[apellido].', '.$rowCopiloto[nombre].'</option>';
+    }
+            $formulario.= '</select></td>
+    </tr>
+    <tr class="r1">    </tr>
+    <tr class="r1">
+      <td height="26" colspan="2"><div align="center">
+        <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarEditarRuta(xajax.getFormValues(\'formNuevoVuelo\'))" />
+      </div></td>
+    </tr>
+  </table>
+   <label></label></td>
+    </tr>
+</table>
+</form>';
+    return $formulario;
+}
+
+function editar ($idVuelo) {
+    $resultado = formularioEditarVuelo($idVuelo);
     $objResponse = new xajaxResponse();
     $objResponse->addAssign("izq", "innerHTML", $resultado);
     $objResponse->addScript('

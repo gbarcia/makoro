@@ -379,7 +379,7 @@ class controladorVueloBDclass {
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
                   AND v.RUTA_sitioSalida = ru.sitioSalida
                   GROUP BY v.id
-                  ORDER BY v.fecha,v.hora";
+                  ORDER BY v.fecha DESC ,v.hora DESC";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

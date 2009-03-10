@@ -176,5 +176,21 @@ class controladorTripulanteBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function consultarPilotos () {
+        $resultado = false;
+        $query = "SELECT p.nombre,p.apellido,p.cedula FROM PERSONAL p
+                  WHERE p.TIPO_CARGO_id =1 AND habilitado =1 ORDER BY apellido,nombre";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function consultarCopilotos () {
+        $resultado = false;
+        $query = "SELECT p.nombre,p.apellido,p.cedula FROM PERSONAL p
+                  WHERE p.TIPO_CARGO_id =2 AND habilitado =1 ORDER BY apellido,nombre";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
