@@ -56,5 +56,12 @@ class controladorPosadaBDclass {
         return $resultado;
     }
 
+     function consultarPosadaID($id){
+        $resultado = false;
+        $query = "SELECT * FROM POSADA WHERE id = $id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
 }
 ?>
