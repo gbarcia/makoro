@@ -21,12 +21,13 @@ class controladorVueloBDclass {
  */
     function agregarNuevoVuelo($vuelo) {
         $resultado = false;
-        $query = "INSERT INTO VUELO (fecha,hora,AVION_matricula,RUTA_sitioSalida,RUTA_sitioLlegada)
+        $query = "INSERT INTO VUELO (fecha,hora,AVION_matricula,RUTA_sitioSalida,RUTA_sitioLlegada,cantidadInfantes)
                   VALUES ('".$vuelo->getFecha()."',
                           '".$vuelo->getHora()."',
                           '".$vuelo->getAvionMatricula()."',
                           '".$vuelo->getRutaSitioSalida()."',
-                          '".$vuelo->getRutaSitioLlegada()."')";
+                          '".$vuelo->getRutaSitioLlegada()."',
+                             0)";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -42,7 +43,8 @@ class controladorVueloBDclass {
                                      v.hora = '".$vuelo->getHora()."',
                                      v.AVION_matricula = '".$vuelo->getAvionMatricula()."',
                                      v.RUTA_sitioSalida = '".$vuelo->getRutaSitioSalida()."',
-                                     v.RUTA_sitioLlegada = '".$vuelo->getRutaSitioLlegada()."'
+                                     v.RUTA_sitioLlegada = '".$vuelo->getRutaSitioLlegada()."',
+                                     v.cantidadInfantes = ".$vuelo->getCantidadinfantes()."
                   WHERE v.id = ".$vuelo->getId()."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -54,7 +56,7 @@ class controladorVueloBDclass {
  * @return <recurso>
  */
     function consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,
-        $rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,
+        $rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,
         $apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,
         $rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $resultado = false;
@@ -66,11 +68,14 @@ class controladorVueloBDclass {
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
                                  AND vre.VUELO_id = v.id),0) as quedan,
-                         IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$capacidad.")>=0,TRUE,FALSE)
+                         IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$cantidadAdultosNinos.")>=0,TRUE,FALSE)
                                  FROM VUELO_RESERVA vre, VUELO vu, RESERVA re
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
-                                 AND vre.VUELO_id = v.id),0) as disponibilidad
+                                 AND vre.VUELO_id = v.id),0) as disponibilidadAdulto,
+                         IFNULL((SELECT IF(2-(vu.cantidadInfantes+".$cantidadInfantes.")>=0,TRUE,FALSE)
+                                 FROM VUELO vu
+                                 WHERE vu.id = v.id),0) as disponibilidadInfante
                   FROM VUELO v, RUTA ru, AVION a, RESERVA r ";
         if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
             $query .= ", PASAJERO p ";
@@ -174,7 +179,8 @@ class controladorVueloBDclass {
                        AND r.id = vr.RESERVA_id ";
         }
         $query.= " GROUP BY v.id
-                   HAVING disponibilidad = 1 ";
+                   HAVING disponibilidadAdulto = 1 ";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

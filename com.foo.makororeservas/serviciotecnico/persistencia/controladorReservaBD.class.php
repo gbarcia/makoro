@@ -65,7 +65,7 @@ class controladorReservaBDclass {
      * @param <type> $cantPasajeros La cantidad de pasajeros
      * @return <type>
      */
-    function asientosDisponibles($idVuelo,$cantPasajeros){
+    function asientosDisponiblesAdultoNino($idVuelo,$cantPasajeros){
         $query = "SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$cantPasajeros.")>=0,TRUE,FALSE) as disponibilidad
                   FROM VUELO_RESERVA vre, VUELO vu, RESERVA re, AVION a
                   WHERE re.id = vre.RESERVA_id
@@ -74,6 +74,15 @@ class controladorReservaBDclass {
                   AND vre.VUELO_id = ".$idVuelo."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         
+        return $resultado;
+    }
+    
+    function asientosDisponiblesInfante($idVuelo,$cantInfantes){
+        $query = "SELECT IF(2-(vu.cantidadInfantes+".$cantInfantes.")>=0,TRUE,FALSE) as disponibilidad
+                  FROM VUELO vu
+                  WHERE vu.id  = ".$idVuelo."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+
         return $resultado;
     }
 
