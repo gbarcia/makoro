@@ -50,6 +50,14 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
+    function actualizarCantidadInfantesVuelo($vuelo) {
+        $resultado = false;
+        $query = "UPDATE VUELO v SET v.cantidadInfantes = ".$vuelo->getCantidadinfantes()."
+                  WHERE v.id = ".$vuelo->getId()."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
 /**
  * Metodo para consultar los vuelos
  * @param <VUELO> $vuelo
@@ -180,7 +188,6 @@ class controladorVueloBDclass {
         }
         $query.= " GROUP BY v.id
                    HAVING disponibilidadAdulto = 1 ";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -376,5 +383,16 @@ class controladorVueloBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function consultarCantidadInfantesVuelo($idVuelo) {
+        $resultado = false;
+        $query = "SELECT v.cantidadInfantes
+                  FROM VUELO v
+                  WHERE v.id = ".$idVuelo."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+
 }
 ?>

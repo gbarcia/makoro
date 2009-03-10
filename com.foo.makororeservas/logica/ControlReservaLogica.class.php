@@ -1,8 +1,10 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloReservaBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlVueloLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Reserva.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloReserva.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Vuelo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/Conexion.class.php';
 /**
  * Description of ControlReservaLogicaclass
@@ -13,11 +15,13 @@ class ControlReservaLogicaclass {
     private $controlBD;
     private $controlVueloReservaBD;
     private $controlConexion;
+    private $controlVuelo;
 
     function __construct() {
         $this->controlBD = new controladorReservaBDclass();
         $this->controlVueloReservaBD = new controladorVueloReservaBDclass;
         $this->controlConexion = new Conexionclass();
+        $this->controlVuelo = new ControlVueloLogicaclass();
     }
 
     /**
@@ -66,11 +70,16 @@ class ControlReservaLogicaclass {
      * @param <type> $posadaId La posada en la que se hospedara el pasajero
      * @return <type> El resultado de la operacion
      */
-    function crearReserva($idVuelo,$tipoViaje,$cantidadPasajeros,$cantidadInfantes,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
+    function crearReserva($idVuelo,$tipoViaje,$cantAdultoNino,$cantidadInfantes,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
                           $posadaId){
         $resultado = false;
-        $disponible = $this->asientosDisponibles($idVuelo, $cantidadPasajeros);
-        if($disponible){
+        $disponibleAdultoNino = $this->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino);
+        $disponibleInfante = $this->asientosDisponiblesInfante($idVuelo, $cantidadInfantes);
+        $cantidadPasajeros = $cantAdultoNino+$cantidadInfantes;
+
+        echo ' Adulto: '.$disponibleAdultoNino.' Infante: '.$disponibleInfante;
+
+        if($disponibleAdultoNino && $disponibleInfante){
             $estado = 'PP';
             $pagoId = 'null';
             $pasajeroId = 'null';
@@ -88,6 +97,11 @@ class ControlReservaLogicaclass {
                 $vueloReserva->setTipo($tipoViaje);
                 $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
             }
+            $infantesVuelo = $this->controlVuelo->consultarCantidadInfantesVuelo($idVuelo);
+            $row = mysql_fetch_array($infantesVuelo);
+            $cantidadInfantesVuelo = $row[cantidadInfantes];
+            $cantidadNueva = $cantidadInfantesVuelo+$cantidadInfantes;
+            $cambio = $this->controlVuelo->actualizarCantidadInfantesVuelo($idVuelo, $cantidadNueva);
             return $resultado;
         }else{
             return $disponible;
@@ -121,10 +135,17 @@ class ControlReservaLogicaclass {
      * @param <type> $cantPasajeros La cantidad de pasajeros
      * @return <type> Si la cantidad de asientos esta disponible para este vuelo
      */
-    function asientosDisponiblesAdultoNino($idVuelo,$cantPasajeros){
-        $recurso = $this->controlBD->asientosDisponiblesAdultoNino($idVuelo, $cantPasajeros);
+    function asientosDisponiblesAdultoNino($idVuelo,$cantAdultoNino){
+        $recurso = $this->controlBD->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino);
         $row = mysql_fetch_array($recurso);
-        $disponible = $row[disponibilidad];
+        $disponible = $row[disponibleAdultoNino];
+        return $disponible;
+    }
+
+    function asientosDisponiblesInfante($idVuelo,$cantInfantes){
+        $recurso = $this->controlBD->asientosDisponiblesInfante($idVuelo, $cantInfantes);
+        $row = mysql_fetch_array($recurso);
+        $disponible = $row[disponibleInfante];
         return $disponible;
     }
 }
