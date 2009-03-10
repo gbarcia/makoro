@@ -11,16 +11,18 @@ class AsientosDisponiblesVueloTripulacionclass {
     private $asientosDisponibles;
     private $piloto;
     private $copiloto;
-    private $disponibilidad;
+    private $disponibilidadAdulto;
+    private $disponibilidadInfante;
     private $idVuelo;
     private $cantInfantes;
 
-    function __construct($coleccionVuelo, $asientosDisponibles, $piloto, $copiloto, $disponibilidad, $idVuelo, $cantInfantes) {
+    function __construct($coleccionVuelo, $asientosDisponibles, $piloto, $copiloto, $disponibilidadAdulto, $disponibilidadInfante, $idVuelo, $cantInfantes) {
         $this->coleccionVuelo = $coleccionVuelo;
         $this->asientosDisponibles = $asientosDisponibles;
         $this->piloto = $piloto;
         $this->copiloto = $copiloto;
-        $this->disponibilidad = $disponibilidad;
+        $this->disponibilidadAdulto = $disponibilidadAdulto;
+        $this->disponibilidadInfante = $disponibilidadInfante;
         $this->idVuelo = $idVuelo;
         $this->cantInfantes = $cantInfantes;
     }
@@ -58,14 +60,6 @@ class AsientosDisponiblesVueloTripulacionclass {
         $this->copiloto = $copiloto;
     }
 
-    public function getDisponibilidad() {
-        return $this->disponibilidad;
-    }
-
-    public function setDisponibilidad($disponibilidad) {
-        $this->disponibilidad = $disponibilidad;
-    }
-
     public function getIdvuelo() {
         return $this->idVuelo;
     }
@@ -81,6 +75,22 @@ class AsientosDisponiblesVueloTripulacionclass {
     public function setCantinfantes($cantInfantes) {
         $this->cantInfantes = $cantInfantes;
     }
-       
+
+    public function getDisponibilidadadulto() {
+        return $this->disponibilidadAdulto;
+    }
+
+    public function setDisponibilidadadulto($disponibilidadAdulto) {
+        $this->disponibilidadAdulto = $disponibilidadAdulto;
+    }
+
+    public function getDisponibilidadinfante() {
+        return $this->disponibilidadInfante;
+    }
+
+    public function setDisponibilidadinfante($disponibilidadInfante) {
+        $this->disponibilidadInfante = $disponibilidadInfante;
+    }
+
 }
 ?>

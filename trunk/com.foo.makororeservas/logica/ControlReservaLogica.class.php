@@ -66,7 +66,7 @@ class ControlReservaLogicaclass {
      * @param <type> $posadaId La posada en la que se hospedara el pasajero
      * @return <type> El resultado de la operacion
      */
-    function crearReserva($idVuelo,$tipoViaje,$cantidadPasajeros,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
+    function crearReserva($idVuelo,$tipoViaje,$cantidadPasajeros,$cantidadInfantes,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
                           $posadaId){
         $resultado = false;
         $disponible = $this->asientosDisponibles($idVuelo, $cantidadPasajeros);
@@ -121,8 +121,8 @@ class ControlReservaLogicaclass {
      * @param <type> $cantPasajeros La cantidad de pasajeros
      * @return <type> Si la cantidad de asientos esta disponible para este vuelo
      */
-    function asientosDisponibles($idVuelo,$cantPasajeros){
-        $recurso = $this->controlBD->asientosDisponibles($idVuelo, $cantPasajeros);
+    function asientosDisponiblesAdultoNino($idVuelo,$cantPasajeros){
+        $recurso = $this->controlBD->asientosDisponiblesAdultoNino($idVuelo, $cantPasajeros);
         $row = mysql_fetch_array($recurso);
         $disponible = $row[disponibilidad];
         return $disponible;

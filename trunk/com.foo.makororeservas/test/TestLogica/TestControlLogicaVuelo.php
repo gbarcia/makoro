@@ -23,14 +23,15 @@ $vueloPrueba = new Vueloclass();
 ///*---------------------------*/
 
 /* CONSULTAR VUELO ESPECIFICO CON FILTROS */
-//($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado)
-$Coleccion = $controlBD->vueloEspecificoConFiltro('2009-01-01','','','','','',0,'','','','','','','','','','');
+//($fechaInicio, $fechaFin, $hora, $avionMatricula, $rutaSitioSalida, $rutaSitioLlegada, $cantidadAdultosNinos, $cantidadInfantes, $cedulaPasaporte, $nombrePasajero, $apellidoPasajero, $cedulaPart, $nombrePart, $apellidoPart, $rifAgencia, $nombreAgencia, $solicitud, $estado)
+$Coleccion = $controlBD->vueloEspecificoConFiltro('2009-01-01', '', '', '', '', '', 0, 0, '', '', '', '', '', '', '', '', '', '');
 foreach ($Coleccion as $var) {
     $recursoDetalles = $var->getColeccionVuelo();
     $cantidadDisponible = $var->getAsientosDisponibles();
     $piloto = $var->getPiloto();
     $copiloto = $var->getCopiloto();
-    $disponibilidad = $var->getDisponibilidad();
+    $disponibilidadAdulto = $var->getDisponibilidadadulto();
+    $disponibilidadInfante = $var->getDisponibilidadinfante();
     $idVuelo = $var->getIdvuelo();
     $cantInfantes = $var->getCantinfantes();
 
@@ -45,7 +46,8 @@ foreach ($Coleccion as $var) {
     echo '<th>Sitio Llegada</th>';
     echo '<th>Avion Matricula</th>';
     echo '<th>Asientos Disponibles</th>';
-    echo '<th>Disponibilidad</th>';
+    echo '<th>Disponibilidad Adulto</th>';
+    echo '<th>Disponibilidad Infante</th>';
     echo '<th>Piloto</th>';
     echo '<th>Copiloto</th>';
     echo '</tr>';
@@ -59,7 +61,8 @@ foreach ($Coleccion as $var) {
     echo '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
     echo '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
     echo '<td>' . $cantidadDisponible. '</td>';
-    echo '<td>' . $disponibilidad. '</td>';
+    echo '<td>' . $disponibilidadAdulto. '</td>';
+    echo '<td>' . $disponibilidadInfante. '</td>';
     echo '<td>' . $piloto. '</td>';
     echo '<td>' . $copiloto. '</td>';
     echo '</tr>';

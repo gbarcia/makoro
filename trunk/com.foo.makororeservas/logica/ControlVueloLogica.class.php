@@ -78,14 +78,15 @@ class ControlVueloLogicaclass {
      * @param <String> $avionMatricula
      * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
      */
-    function vueloEspecificoConFiltro($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado) {
+    function vueloEspecificoConFiltro($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $coleccionResultado = new ArrayObject();
-        $recurso = $this->controlBD->consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado);
+        $recurso = $this->controlBD->consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado);
         
         while ($operacion = mysql_fetch_array($recurso)) {
             $idVuelo = $operacion[idVuelo];
             $cantidadDisponible = $operacion[quedan];
-            $disponibilidad = $operacion[disponibilidad];
+            $disponibilidadAdulto = $operacion[disponibilidadAdulto];
+            $disponibilidadInfante = $operacion[disponibilidadInfante];
             $cantInfantes = $operacion[infantes];
             $controlVueloPersonal = new controladorVueloPersonalBDclass();
             $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
@@ -107,7 +108,7 @@ class ControlVueloLogicaclass {
             $vuelo->setRutaSitioSalida($operacion[abreviaturaSalida]);
             $vuelo->setRutaSitioLlegada($operacion[abreviaturaLlegada]);
             $vuelo->setAvionMatricula($operacion[avionMatricula]);
-            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto,$disponibilidad,$idVuelo,$cantInfantes);
+            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto,$disponibilidadAdulto,$disponibilidadInfante,$idVuelo,$cantInfantes);
             $coleccionResultado ->append($Objeto);
         }
         return $coleccionResultado;
