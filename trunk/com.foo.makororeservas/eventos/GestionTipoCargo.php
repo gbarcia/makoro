@@ -6,7 +6,7 @@ function cadenaTodasLosCargos () {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>IDENTIFICADOR</th>';

@@ -138,23 +138,23 @@ function generarFormularioNuevoClientePersona () {
         </td>
         </thead>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td colspan="2">(*) Son campos obligatorios</td>
       </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>* Cedula</td>
       <td><label>
         <input type="text" name="cedula" id="cedula" size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
-    <tr class="r0">
-      <td>* Nombre de la Persona</td>
+    <tr class="r1">
+      <td>* Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
-    <tr class="r1">
-      <td>* Apellido de la Persona</td>
+    <tr class="r0">
+      <td>* Apellido</td>
       <td><label>
         <input type="text" name="apellido" id="apellido" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
@@ -163,7 +163,7 @@ function generarFormularioNuevoClientePersona () {
       <td>* Telefono</td>
       <td><input type="text" name="telefono" id="telefono" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Estado</td>
       <td><input type="text" name="estado" id="estado" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
@@ -171,11 +171,11 @@ function generarFormularioNuevoClientePersona () {
       <td>Ciudad</td>
       <td><input type="text" name="ciudad" id="ciudad" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Direccion</td>
       <td><input name="direccion" type="text" id="direccion" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td height="26" colspan="2"><div align="center">
         <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarCliente(xajax.getFormValues(\'formNuevoCliente\'))" />
       </div></td>
@@ -265,7 +265,7 @@ function generarFormularioEditar ($cedula) {
         <thead>
         <td colspan="2">
         <div class="tituloBlanco1">
-            NUEVO CLIENTE NATURAL
+            EDITAR CLIENTE NATURAL
             <div class="botonCerrar">
             <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
         </div>
@@ -273,23 +273,23 @@ function generarFormularioEditar ($cedula) {
         </td>
         </thead>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td colspan="2">(*) Son campos obligatorios</td>
       </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>* Cedula</td>
       <td><label>
         <input type="text" name="cedula" id="cedula" size="30" value="'.$row[cedula].'" READONLY onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
-    <tr class="r0">
-      <td>* Nombre de la Persona</td>
+    <tr class="r1">
+      <td>* Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" value="'.$row[nombre].'"onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
-    <tr class="r1">
-      <td>* Apellido de la Persona</td>
+    <tr class="r0">
+      <td>* Apellido</td>
       <td><label>
         <input type="text" name="apellido" id="apellido"  value="'.$row[apellido].'" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
@@ -298,7 +298,7 @@ function generarFormularioEditar ($cedula) {
       <td>* Telefono</td>
       <td><input type="text" name="telefono" id="telefono" value="'.$row[telefono].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Estado</td>
       <td><input type="text" name="estado" id="estado" value="'.$row[estado].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
@@ -306,11 +306,11 @@ function generarFormularioEditar ($cedula) {
       <td>Ciudad</td>
       <td><input type="text" name="ciudad" id="ciudad" value="'.$row[ciudad].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
-      <td>Direccion</td>
-      <td><input name="direccion" type="text" id="direccion" value="'.$row[ciudad].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
-    </tr>
     <tr class="r0">
+      <td>Direccion</td>
+      <td><input name="direccion" type="text" id="direccion" value="'.$row[direccion].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
+    </tr>
+    <tr class="r1">
       <td height="26" colspan="2"><div align="center">
         <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarEditar(xajax.getFormValues(\'formCliente\'))" />
       </div></td>

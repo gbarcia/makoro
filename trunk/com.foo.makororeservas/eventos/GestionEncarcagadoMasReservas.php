@@ -15,7 +15,7 @@ function accion ($datos) {
     $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>APELLIDO</th>';
     $resultado.= '<th>SUCURSAL</th>';
-    $resultado.= '<th>CANTIDAD</th>';
+    $resultado.= '<th>CANTIDAD RESERVAS</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
@@ -29,7 +29,7 @@ function accion ($datos) {
         $resultado.= '<td>' . $row[encargadoNombre]. '</td>';
         $resultado.= '<td>' . $row[apellido]. '</td>';
         $resultado.= '<td>' . $row[nombreSucursal]. '</td>';
-        $resultado.= '<td>' . $row[cantidad]. '</td>';
+        $resultado.= '<td  align="right">' . $row[cantidad]. '</td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
