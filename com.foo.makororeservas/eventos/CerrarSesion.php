@@ -7,6 +7,6 @@ $objResponse = new xajaxResponse();
 $objResponse->addConfirmCommands(3, "Confirma que desea salir del sistema?");
 $_SESSION = array();
 session_destroy();
-$objResponse->addRedirect($sURL);
+$objResponse->addRedirect($_SERVER['DOCUMENT_ROOT'] .'/com.foo.makororeservas/');
 }
 ?>
