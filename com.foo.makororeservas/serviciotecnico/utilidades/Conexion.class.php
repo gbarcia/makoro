@@ -9,7 +9,7 @@ class Conexionclass {
 
     private $configuracion;
 
-    private $conexion;
+    public $conexion;
 
     function __construct() {
         $this->configuracion = new ConfiguracionBDclass();

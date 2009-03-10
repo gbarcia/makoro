@@ -7,7 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloP
  * @author Diana Uribe
  */
 class controladorVueloPersonalBDclass {
-    private $transaccion;
+    public $transaccion;
 
     function __construct() {
         $this->transaccion = new TransaccionBDclass();
