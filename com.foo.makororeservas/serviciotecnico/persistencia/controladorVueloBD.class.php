@@ -320,11 +320,16 @@ class controladorVueloBDclass {
      */
     function consultarDetallesVuelo($idVuelo){
         $query = "SELECT R.id,R.solicitud,TP.id as tipoPasajero,
-                  IF(R.PASAJERO_id is not null, (SELECT CONCAT(PA.cedula,' ',PA.nombre,' ',PA.apellido)
+                  IF(R.PASAJERO_id is not null, (SELECT IF(PA.cedula is not null,
+                                                        CONCAT(PA.cedula,' ',PA.nombre,' ',PA.apellido),
+                                                        CONCAT(PA.pasaporte,' ',PA.nombre,' ',PA.apellido))
                                                  FROM PASAJERO PA
                                                  WHERE PA.id = R.PASAJERO_id),
                   IF(R.CLIENTE_AGENCIA_rif is not null, CA.nombre, CONCAT(CP.nombre,' ',CP.apellido))) as pasajero,
-                  TS.nombre as servicio,E.nombre as encargadoNombre, VR.tipo, IFNULL(R.CLIENTE_AGENCIA_rif,'&nbsp') as agencia,
+                  TS.nombre as servicio, IF(R.POSADA_id is not null,(SELECT PO.nombrePosada
+                                                                     FROM POSADA PO
+                                                                     WHERE PO.id = R.POSADA_id),'&nbsp') as posada,
+                  E.nombre as encargadoNombre, S.nombre as sucursal, VR.tipo, IFNULL(R.CLIENTE_AGENCIA_rif,'&nbsp') as agencia,
                   IFNULL(R.CLIENTE_PARTICULAR_cedula,'&nbsp') as particular,
                   IF(R.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre,
                   IF(R.PAGO_id is not null,(SELECT IF(PAG.tipo='E','E',PAG.tipo)
@@ -351,7 +356,8 @@ class controladorVueloBDclass {
                                              AND RE.solicitud = R.solicitud
                                              AND VRE.tipo = 'vuelta'
                                              GROUP BY VU.fecha,VU.hora),'XXXX-XX-XX'),'Vuelo de retorno') as vueloRetorno
-            FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS, ENCARGADO E, TIPO_PASAJERO TP, CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA, BOLETO B
+            FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS, ENCARGADO E, TIPO_PASAJERO TP,
+                 CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA, BOLETO B
             WHERE V.id = VR.VUELO_id
             AND R.id = VR.RESERVA_id
             AND VR.VUELO_id = ".$idVuelo."
