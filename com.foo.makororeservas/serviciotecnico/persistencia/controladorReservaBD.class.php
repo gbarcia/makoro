@@ -61,7 +61,7 @@ class controladorReservaBDclass {
     /**
      * Metodo para consultar la cantidad de asientos disponibles en un vuelo
      * @param <type> $idVuelo El id del vuelo a verificar
-     * @param <type> $cantPasajeros La cantidad de pasajeros
+     * @param <type> $cantPasajeros La cantidad de pasajeros adultos o ninos
      * @return <type>
      */
     function asientosDisponiblesAdultoNino($idVuelo,$cantAdultoNino){
@@ -74,11 +74,64 @@ class controladorReservaBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
-    
+
+    /**
+     * Metodo para consultar la cantidad de asientos disponibles en un vuelo
+     * @param <type> $idVuelo El id del vuelo a verificar
+     * @param <type> $cantInfantes La cantidad de pasajeros infantes
+     * @return <type>
+     */
     function asientosDisponiblesInfante($idVuelo,$cantInfantes){
         $query = "SELECT IF(2-(vu.cantidadInfantes+".$cantInfantes.")>=0,TRUE,FALSE) as disponibleInfante
                   FROM VUELO vu
                   WHERE vu.id  = ".$idVuelo."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para verificar la existencia de un pasajero
+     * @param <type> $cedula La cedula del pasajero
+     * @param <type> $pasaporte el pasaporte del pasajero 
+     * @return <type> El resultado de la operacion 
+     */
+    function existePasajero($cedula,$pasaporte){
+        $query = "";
+        if($cedula != ""){
+            $query = "SELECT IF((".$cedula.") = PA.cedula,TRUE,FALSE) as existePasajero
+                      FROM PASAJERO PA
+                      WHERE PA.cedula  = ".$cedula."";
+        }else if(($pasaporte != "") && ($cedula == "")){
+            $query = "SELECT IF((".$pasaporte.") = PA.pasaporte,TRUE,FALSE) as existePasajero
+                      FROM PASAJERO PA
+                      WHERE PA.pasaporte  = ".$pasaporte."";
+        }
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para verificar la existencia de un cliente agencia
+     * @param <type> $rif El rif del cliente a verificar
+     * @return <type> Si el cliente existe o no 
+     */
+    function existeClienteAgencia($rif){
+        $query = "SELECT IF(('".$rif."') = CA.rif,TRUE,FALSE) as existeAgencia
+                  FROM CLIENTE_AGENCIA CA
+                  WHERE CA.rif  = '".$rif."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para verificar la existencia de un cliente particular
+     * @param <type> $cedula La cedula del cliente a verificar
+     * @return <type> Si el cliente existe o no
+     */
+    function existeClienteParticular($cedula){
+        $query = "SELECT IF((".$cedula.") = CP.cedula,TRUE,FALSE) as existeParticular
+                  FROM CLIENTE_PARTICULAR CP
+                  WHERE CP.cedula  = ".$cedula."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -97,10 +150,26 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para buscar los identificadores de las reservas de una solicitud
+     * @param <type> $solicitud la solicitud a consultar
+     * @return <type> los id de las reservas 
+     */
     function buscarIdReserva($solicitud){
         $query = "SELECT R.id idReserva
                   FROM RESERVA R
                   WHERE R.solicitud = '".$solicitud."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para actualizar reserva, asignar un pasajero a una reserva
+     * @param <type> $idPasajero El id del pasajero a asignar
+     * @return <type> El resultado de la operacion 
+     */
+    function actualizarIdReserva($idPasajero){
+        $query = "UPDATE RESERVA R SET R.PASAJERO_id = ".$idPasajero."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

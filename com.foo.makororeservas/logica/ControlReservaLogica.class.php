@@ -109,6 +109,32 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
+    function actualizarPasajeroReserva($pasajero,$solicitud){
+        $controlPasajero = new ControlPasajeroLogicaclass();
+        // verificar si ya existe el pasajero
+        $resultado = $controlPasajero->nuevoPasajero($pasajero->getNombre(), $pasajero->getApellido(),
+                                                     $pasajero->getSexo(), $pasajero->getCedula(),
+                                                     $pasajero->getPasaporte(), $pasajero->getNacionalidad(),
+                                                     $pasajero->getTipoPasajeroId());
+        $ultimoId = mysql_insert_id();
+        $recurso = $this->controlBD->buscarIdReserva($solicitud);
+        while ($row = mysql_fetch_array($recurso)) {
+
+        }
+        
+    }
+
+    function asignarPasajeros($cantidad,$pasajeros,$solicitud){
+//        for($i;$i<$cantidad;$i++){
+//           $this->actualizarPasajeroReserva();
+//        }
+    }
+
+    function actualizarIdPasajeroReserva($ultimoId){
+
+    }
+
+
     /**
      * Metodo para crear el codigo de solicitud aleatorio
      * @return <type> Codigo solicitud
@@ -130,9 +156,46 @@ class ControlReservaLogicaclass {
     }
 
     /**
+     * Metodo para comprobar la existencia de un pasajero
+     * @param <type> $cedula La cedula del pasajero
+     * @param <type> $pasaporte El pasaporte del pasajero
+     * @return <type> El resultado de la operacion 
+     */
+    function existePasajero($cedula, $pasaporte){
+        $recurso = $this->controlBD->existePasajero($cedula, $pasaporte);
+        $row = mysql_fetch_array($recurso);
+        $disponible = $row[existePasajero];
+        return $disponible;
+    }
+
+    /**
+     * Metodo para comprobar la existencia de un cliente agencia
+     * @param <type> $rif El rif del cliente agencia
+     * @return <type> El resultado de la operacion 
+     */
+    function existeClienteAgencia($rif){
+        $recurso = $this->controlBD->existeClienteAgencia($rif);
+        $row = mysql_fetch_array($recurso);
+        $disponible = $row[existeAgencia];
+        return $disponible;
+    }
+
+    /**
+     * Metodo para comprobar la existencia de un cliente particular
+     * @param <type> $cedula La cedula del cliente particular
+     * @return <type> El resultado de la operacion 
+     */
+    function existeClienteParticular($cedula){
+        $recurso = $this->controlBD->existeClienteParticular($cedula);
+        $row = mysql_fetch_array($recurso);
+        $disponible = $row[existeParticular];
+        return $disponible;
+    }
+
+    /**
      * Metodo para consultar la disponibilidad de asientos a un vuelo determinado
      * @param <type> $idVuelo El id del vuelo a consultar
-     * @param <type> $cantPasajeros La cantidad de pasajeros
+     * @param <type> $cantAdultoNino La cantidad de pasajeros adultos o ninos
      * @return <type> Si la cantidad de asientos esta disponible para este vuelo
      */
     function asientosDisponiblesAdultoNino($idVuelo,$cantAdultoNino){
@@ -142,6 +205,12 @@ class ControlReservaLogicaclass {
         return $disponible;
     }
 
+    /**
+     * Metodo para consultar la disponibilidad de asientos a un vuelo determinado
+     * @param <type> $idVuelo El id del vuelo a consultar
+     * @param <type> $cantInfantes La cantidad de pasajeros infantes
+     * @return <type> Si la cantidad de asientos esta disponible para este vuelo
+     */
     function asientosDisponiblesInfante($idVuelo,$cantInfantes){
         $recurso = $this->controlBD->asientosDisponiblesInfante($idVuelo, $cantInfantes);
         $row = mysql_fetch_array($recurso);
