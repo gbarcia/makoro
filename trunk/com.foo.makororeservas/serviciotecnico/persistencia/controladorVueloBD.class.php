@@ -59,9 +59,29 @@ class controladorVueloBDclass {
     }
 
 /**
- * Metodo para consultar los vuelos
- * @param <VUELO> $vuelo
- * @return <recurso>
+ * Metodo para consultar uno o varios vuelos, dependiendo del filtro. Los datos
+ * proporcionados pueden ser: por rango de fechas, hora, matricula del avion,
+ * rutas, cedula o pasaporte, nombre o apellido del pasajero, nombre o apellido
+ * del cliente que hizo la reserva, solicitud y por el estado de la reserva
+ * @param <Date> $fechaInicio Fecha inicio del vuelo a consultar
+ * @param <Date> $fechaFin Fecha fin del vuelo a consultar
+ * @param <Time> $hora Hora del vuelo a consultar
+ * @param <String> $avionMatricula Matricula del avion a consultar
+ * @param <String> $rutaSitioSalida Ruta de ida
+ * @param <String> $rutaSitioLlegada Ruta de vuelta
+ * @param <Integer> $cantidadAdultosNinos Cantidad de adultos más cantidad de ninos a viajar
+ * @param <Integer> $cantidadInfantes Cantidad de infantes a viajar
+ * @param <String> $cedulaPasaporte Cedula o pasaporte del pasajero
+ * @param <String> $nombrePasajero Nombre del pasajero
+ * @param <String> $apellidoPasajero Apellido del pasajero
+ * @param <Integer> $cedulaPart Cedula del cliente particular
+ * @param <String> $nombrePart Nombre del cliente particular
+ * @param <String> $apellidoPart Apellido del cliente particular
+ * @param <String> $rifAgencia RIF del cliente agencia
+ * @param <String> $nombreAgencia Nombre del cliente agencia
+ * @param <String> $solicitud Localizador de la reserva
+ * @param <String> $estado Estado de la reserva: PP, PA, CO y CA
+ * @return <coleccion> coleccion de vuelos de acuerdo a los datos suministrados
  */
     function consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,
         $rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,
@@ -229,8 +249,8 @@ class controladorVueloBDclass {
 
 /**
  * Metodo para consultar la cantidad de asientos reservados
- * @param <Integer> $id
- * @return <recurso>
+ * @param <Integer> $id Identificador del vuelo a consultar
+ * @return <recurso> recurso con el vuelo consultado
  */
     function consultarVueloCantidadReserva($id) {
         $resultado = false;
@@ -247,7 +267,7 @@ class controladorVueloBDclass {
 
 /**
  * Metodo para consultar los vuelos realizados
- * @return <recurso>
+ * @return <coleccion> coleccion con los vuelos realizados
  */
     function consultarVuelosRealizados() {
         $resultado = false;
@@ -267,12 +287,20 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-
+/**
+ * Metodo para consultar todos los vuelos apartir del dia actual
+ * @return <coleccion> coleccion con todo lo vuelos de la base de datos
+ */
     function consultarTodosVuelos() {
         $resultado = false;
-        $query = "SELECT v.id id,v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
-                         v.RUTA_sitioLlegada rutaSitioLlegada,a.asientos asientos,
-                         ru.abreviaturaSalida abreviaturaSalida,ru.abreviaturaLlegada abreviaturaLlegada
+        $query = "SELECT v.id id,v.fecha,v.hora,
+                         v.AVION_matricula avionMatricula,
+                         v.RUTA_sitioSalida rutaSitioSalida,
+                         v.RUTA_sitioLlegada rutaSitioLlegada,
+                         ru.abreviaturaSalida abreviaturaSalida,
+                         ru.abreviaturaLlegada abreviaturaLlegada,
+                         a.asientos asientos,
+                         v.cantidadInfantes cantidadInfantes
                   FROM VUELO v, RUTA ru, AVION a
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
@@ -363,8 +391,7 @@ class controladorVueloBDclass {
 
     /**
  * Metodo para consultar un vuelo especifico, con el campo de busqueda y por fecha
- * @param <String> $busqueda
- * @param <Date> $fecha
+ * @param <String> $busqueda Parametro que contiene la busqueda correspondiente
  * @return <recurso> recurso con los vuelos asociados a esa búsqueda
  */
     function consultarTodosVuelosPorFechaRutas($busqueda) {
@@ -384,6 +411,11 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar la cantidad de infantes por vuelo
+ * @param <Integer> $idVuelo Identificador del vuelo
+ * @return <recurso> recurso con la cantidad de infantes del vuelo
+ */
     function consultarCantidadInfantesVuelo($idVuelo) {
         $resultado = false;
         $query = "SELECT v.cantidadInfantes
@@ -393,6 +425,21 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar las horas de los vuelos
+ * @return <recurso> recurso con la cantidad de horas de los vuelos
+ */
+    function consultarHorasDeVuelo() {
+        $resultado = false;
+        $query = "SELECT SUM(r.tiempo) horasVuelo
+                  FROM VUELO v, RUTA r
+                  WHERE v.RUTA_sitioSalida = r.sitioSalida
+                  AND v.RUTA_sitioLlegada = r.sitioLlegada
+                  AND v.id IN (SELECT VUELO_id
+                               FROM VUELO_RESERVA)";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 
 }
 ?>

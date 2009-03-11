@@ -312,19 +312,32 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para consultar los vuelos por busqueda y fecha
-     * @param <String> $busqueda
-     * @param <Date> $fecha
+     * @param <String> $busqueda Parametro con la busqueda determinada
      * @return <recurso> recurso con el vuelo especificado
      */
-    function buscarVuelosPorFechaRutas($busqueda, $fecha) {
-        $recurso = $this->controlBD->consultarTodosVuelosPorFechaRutas($busqueda, $fecha);
+    function buscarVuelosPorFechaRutas($busqueda) {
+        $recurso = $this->controlBD->consultarTodosVuelosPorFechaRutas($busqueda);
         return $recurso;
     }
 
+/**
+ * Metodo para consultar la cantidad de infantes en un vuelo
+ * @param <Integer> $idVuelo Identificador del vuelo
+ * @return <recurso> recurso con la cantidad de infantes en el vuelo
+ */
     function consultarCantidadInfantesVuelo($idVuelo) {
         $recurso = $this->controlBD->consultarCantidadInfantesVuelo($idVuelo);
         return $recurso;
     }
 
+/**
+ * Metodo para saber la cantidad de horas de vuelo
+ */
+    function sumaHorasDeVuelos() {
+        $recurso = $this->controlBD->consultarHorasDeVuelo();
+        $row = mysql_fetch_array($recurso);
+        $total = $row[horasVuelo];
+        return (round($total, 2));
+    }
 }
 ?>
