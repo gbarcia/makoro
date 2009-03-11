@@ -336,8 +336,10 @@ class ControlVueloLogicaclass {
     function sumaHorasDeVuelos() {
         $recurso = $this->controlBD->consultarHorasDeVuelo();
         $row = mysql_fetch_array($recurso);
-        $total = $row[horasVuelo];
-        return (round($total, 2));
+        $horas = $row[horasVuelo];
+        $separar = explode('.', $horas);
+        $total = (round($horas,2)).' '.'='.' '.$separar[0].' horas y'.' '.(substr($separar[1],0,2)).' minutos';
+        return $total;
     }
 }
 ?>
