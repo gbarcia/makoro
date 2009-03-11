@@ -13,6 +13,7 @@ class Vueloclass {
     private $avionMatricula;
     private $asientos;
     private $cantidadInfantes;
+    private $observaciones;
 
     public function getId() {
         return $this->id;
@@ -84,6 +85,15 @@ class Vueloclass {
     public function setCantidadinfantes($cantidadInfantes) {
         $this->cantidadInfantes = $cantidadInfantes;
     }
+
+    public function getObservaciones() {
+        return $this->observaciones;
+    }
+
+    public function setObservaciones($observaciones) {
+        $this->observaciones = strtoupper($observaciones);
+    }
+
         
 }
 ?>

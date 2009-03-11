@@ -13,6 +13,7 @@ class ClienteAgenciaclass {
     private $estado;
     private $ciudad;
     private $porcentajeComision;
+    private $correo;
 
     public function getRif() {
         return $this->rif;
@@ -70,5 +71,15 @@ class ClienteAgenciaclass {
         if (is_numeric($porcentajeComision))
             $this->porcentajeComision = $porcentajeComision;
     }
+
+    public function getCorreo() {
+        return $this->correo;
+    }
+
+    public function setCorreo($correo) {
+        $this->correo = $correo;
+    }
+
+
 }
 ?>
