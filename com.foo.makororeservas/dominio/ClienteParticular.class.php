@@ -6,22 +6,15 @@
  */
 class ClienteParticularclass {
     private $cedula;
-
     private $nombre;
-
     private $apellido;
-
     private $sexo;
-
     private $fechaNacimiento;
-
     private $telefono;
-
     private $estado;
-
     private $ciudad;
-    
     private $direccion;
+    private $correo;
 
     public function getCedula() {
         return $this->cedula;
@@ -97,6 +90,14 @@ class ClienteParticularclass {
         $this->direccion = strtoupper($direccion);
     }
 
+    public function getCorreo() {
+        return $this->correo;
+    }
+
+    public function setCorreo($correo) {
+        $this->correo = $correo;
+    }
+        
 
 }
 ?>
