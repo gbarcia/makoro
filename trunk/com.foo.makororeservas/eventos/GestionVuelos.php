@@ -407,7 +407,7 @@ function procesarVuelo ($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique que la ruta no exista. GRBD001.
+                          No se pudo completar la operacion. Verifique que  no exista. GRBD001.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
