@@ -72,6 +72,31 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+    function existePersonal ($idVuelo,$cedula) {
+        $resultado = false;
+        $query = "vr.PERSONAL_cedula cedula
+                  FROM VUELO_PERSONAL vr
+                  WHERE vr.VUELO_id = $idVuelo AND vr.PERSONAL_cedula = $cedula";
+        $recurso = $this->transaccion->realizarTransaccion($query);
+        $cantidad = mysql_num_rows($recurso);
+        if ($cantidad > 0) {
+            $resultado = true;
+        }
+        return $resultado;
+    }
+
+    function borrarPersonalVuelo ($idVuelo) {
+        $resultado = false;
+        $query = "DELETE FROM VUELO_PERSONAL WHERE VUELO_id = $idVuelo";
+        $recurso = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function actualizarMatriculaAvion ($idVuelo, $matricula) {
+        $resultado = false;
+        $query = "UPDATE VUELO v SET AVION_matricula = 'YV 307T' WHERE id = 15";
+    }
+
     function nuevoVuelo ($fecha,$hora,$matricula,$sitioSalida,$sitioLlegada,$piloto,$copiloto) {
         $resultado = false;
         if (!$this->existeVuelo($fecha, $hora, $matricula, $sitioSalida, $sitioLlegada)) {
