@@ -384,9 +384,37 @@ function editar ($idVuelo) {
     return $objResponse;
 }
 
+function validarHorario ($hora) {
+    $resultado = false;
+    if ($hora != "") {
+        $arregloHora = split(':', $hora);
+        if (count($arregloHora) == 3){
+            if (is_numeric($arregloHora[0]) && is_numeric($arregloHora[1]) && is_numeric($arregloHora[2]) ) {
+                if ($arregloHora[0] <= 23 && $arregloHora[1] <= 59 && $arregloHora[2] <= 59 &&
+                    $arregloHora[0] >=0 && $arregloHora[1] >=0 && $arregloHora[2] >=0) {
+                        $resultado = true;
+                }
+            }
+        }
+    }
+    return $resultado;
+}
+
+function validarVuelo ($datos) {
+    $resultado = false;
+    if ($datos[fecha] != "")
+    $resultado = true;
+    else return false;
+    if (validarHorario($datos[hora]))
+    $resultado = true;
+    else return false;
+
+    return $resultado;
+}
+
 function procesarVuelo ($datos) {
     $objResponse = new xajaxResponse();
-    if (true) {
+    if (validarVuelo($datos)) {
         $respuesta = "";
         $control = new controladorGestionVuelos();
         $arregloRuta = split('-', $datos[ruta]);
