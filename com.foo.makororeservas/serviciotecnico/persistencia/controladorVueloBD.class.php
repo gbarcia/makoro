@@ -21,13 +21,12 @@ class controladorVueloBDclass {
  */
     function agregarNuevoVuelo($vuelo) {
         $resultado = false;
-        $query = "INSERT INTO VUELO (fecha,hora,AVION_matricula,RUTA_sitioSalida,RUTA_sitioLlegada,cantidadInfantes)
+        $query = "INSERT INTO VUELO (fecha,hora,AVION_matricula,RUTA_sitioSalida,RUTA_sitioLlegada)
                   VALUES ('".$vuelo->getFecha()."',
                           '".$vuelo->getHora()."',
                           '".$vuelo->getAvionMatricula()."',
                           '".$vuelo->getRutaSitioSalida()."',
-                          '".$vuelo->getRutaSitioLlegada()."',
-                             0)";
+                          '".$vuelo->getRutaSitioLlegada()."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

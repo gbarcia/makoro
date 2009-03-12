@@ -75,7 +75,7 @@ class controladorPasajeroBDclass {
     function consultarPasajeroNombreApellidoCedulaPasaporte($busqueda) {
         $resultado = false;
         $query = "SELECT CONCAT(p.cedula,' ',p.pasaporte,' ',p.nombre,' ',p.apellido,' '),
-                                p.cedula,p.pasaporte,p.nombre,p.apellido
+                                p.id idPasajero,p.cedula,p.pasaporte,p.nombre,p.apellido
                   FROM PASAJERO p
                   WHERE ( p.cedula LIKE '".$busqueda."%'
                   OR p.pasaporte LIKE '".$busqueda."%'
