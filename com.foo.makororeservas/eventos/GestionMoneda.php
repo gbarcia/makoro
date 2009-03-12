@@ -6,7 +6,7 @@ function cadenaTodasLasMonedas () {
     $resultado = "";
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>ID</th>';
@@ -63,7 +63,7 @@ function generarFormularioNuevaMoneda() {
         <input type="text" name="moneda" id="moneda" size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td height="26" colspan="2"><div align="center">
         <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarMoneda(xajax.getFormValues(\'formNuevaMoneda\'))" />
       </div></td>
