@@ -2,9 +2,11 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlVueloLogica.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlPasajeroLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Reserva.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloReserva.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Vuelo.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pasajero.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/Conexion.class.php';
 /**
  * Description of ControlReservaLogicaclass
@@ -16,12 +18,14 @@ class ControlReservaLogicaclass {
     private $controlVueloReservaBD;
     private $controlConexion;
     private $controlVuelo;
+    private $controlPasajero;
 
     function __construct() {
         $this->controlBD = new controladorReservaBDclass();
         $this->controlVueloReservaBD = new controladorVueloReservaBDclass;
         $this->controlConexion = new Conexionclass();
         $this->controlVuelo = new ControlVueloLogicaclass();
+        $this->controlPasajero = new ControlPasajeroLogicaclass();
     }
 
     /**
@@ -71,7 +75,7 @@ class ControlReservaLogicaclass {
      * @return <type> El resultado de la operacion
      */
     function crearReserva($idVuelo,$tipoViaje,$cantAdultoNino,$cantidadInfantes,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
-                          $posadaId){
+        $posadaId){
         $resultado = false;
         $disponibleAdultoNino = $this->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino);
         $disponibleInfante = $this->asientosDisponiblesInfante($idVuelo, $cantidadInfantes);
@@ -86,7 +90,7 @@ class ControlReservaLogicaclass {
             $solicitud = $this->generarSolicitud();
             do{
                 $resultado = $this->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId, $encargadoCedula, $clienteParticularCedula,
-                                                 $clienteAgenciaRif, $pagoId, $pasajeroId, $posadaId);
+                    $clienteAgenciaRif, $pagoId, $pasajeroId, $posadaId);
                 $cantidadPasajeros = $cantidadPasajeros - 1;
             }while ($cantidadPasajeros != 0);
             $recurso = $this->controlBD->buscarIdReserva($solicitud);
@@ -112,25 +116,39 @@ class ControlReservaLogicaclass {
     function actualizarPasajeroReserva($pasajero,$solicitud){
         $controlPasajero = new ControlPasajeroLogicaclass();
         // verificar si ya existe el pasajero
-        $resultado = $controlPasajero->nuevoPasajero($pasajero->getNombre(), $pasajero->getApellido(),
-                                                     $pasajero->getSexo(), $pasajero->getCedula(),
-                                                     $pasajero->getPasaporte(), $pasajero->getNacionalidad(),
-                                                     $pasajero->getTipoPasajeroId());
-        $ultimoId = mysql_insert_id();
+        $existePasajero = $this->controlBD->existePasajero($pasajero->getCedula(), $pasajero->getPasaporte());
+        if($existePasajero == 1){//el pasajero existe se busca el id del pasajero
+            if($pasajero->getCedula() != ''){
+                $busqueda = $pasajero->getCedula();
+            }else if($pasajero->getPasaporte() != ''){
+                $busqueda = $pasajero->getPasaporte();
+            }
+            $recursoPasajero = $this->controlPasajero->busquedaPasajeroNombreApellidoCedulaPasaporte($busqueda);
+            $row = mysql_fetch_array($recursoPasajero);
+            $idPasajero = $row[idPasajero];
+        }
+        if($existePasajero == 0){//no existe el pasajero en la base de datos
+
+            $resultado = $controlPasajero->nuevoPasajero($pasajero->getNombre(), $pasajero->getApellido(),
+                                                         $pasajero->getSexo(), $pasajero->getCedula(),
+                                                         $pasajero->getPasaporte(), $pasajero->getNacionalidad(),
+                                                         $pasajero->getTipoPasajeroId());
+            $ultimoIdPasajero = mysql_insert_id();
+        }
         $recurso = $this->controlBD->buscarIdReserva($solicitud);
         while ($row = mysql_fetch_array($recurso)) {
-
+               
         }
-        
+
     }
 
     function asignarPasajeros($cantidad,$pasajeros,$solicitud){
-//        for($i;$i<$cantidad;$i++){
-//           $this->actualizarPasajeroReserva();
-//        }
+        //        for($i;$i<$cantidad;$i++){
+        //           $this->actualizarPasajeroReserva();
+        //        }
     }
 
-    function actualizarIdPasajeroReserva($ultimoId){
+    function actualizarIdPasajeroReserva($ultimoIdPasajero){
 
     }
 
@@ -159,7 +177,7 @@ class ControlReservaLogicaclass {
      * Metodo para comprobar la existencia de un pasajero
      * @param <type> $cedula La cedula del pasajero
      * @param <type> $pasaporte El pasaporte del pasajero
-     * @return <type> El resultado de la operacion 
+     * @return <type> El resultado de la operacion
      */
     function existePasajero($cedula, $pasaporte){
         $recurso = $this->controlBD->existePasajero($cedula, $pasaporte);
@@ -171,7 +189,7 @@ class ControlReservaLogicaclass {
     /**
      * Metodo para comprobar la existencia de un cliente agencia
      * @param <type> $rif El rif del cliente agencia
-     * @return <type> El resultado de la operacion 
+     * @return <type> El resultado de la operacion
      */
     function existeClienteAgencia($rif){
         $recurso = $this->controlBD->existeClienteAgencia($rif);
@@ -183,7 +201,7 @@ class ControlReservaLogicaclass {
     /**
      * Metodo para comprobar la existencia de un cliente particular
      * @param <type> $cedula La cedula del cliente particular
-     * @return <type> El resultado de la operacion 
+     * @return <type> El resultado de la operacion
      */
     function existeClienteParticular($cedula){
         $recurso = $this->controlBD->existeClienteParticular($cedula);

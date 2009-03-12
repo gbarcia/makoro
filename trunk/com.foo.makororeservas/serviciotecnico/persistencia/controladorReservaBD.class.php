@@ -102,9 +102,9 @@ class controladorReservaBDclass {
                       FROM PASAJERO PA
                       WHERE PA.cedula  = ".$cedula."";
         }else if(($pasaporte != "") && ($cedula == "")){
-            $query = "SELECT IF((".$pasaporte.") = PA.pasaporte,TRUE,FALSE) as existePasajero
+            $query = "SELECT IF(('".$pasaporte."') = PA.pasaporte,TRUE,FALSE) as existePasajero
                       FROM PASAJERO PA
-                      WHERE PA.pasaporte  = ".$pasaporte."";
+                      WHERE PA.pasaporte  = '".$pasaporte."'";
         }
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
