@@ -90,7 +90,7 @@ class ControlVueloLogicaclass {
     function vueloEspecificoConFiltro($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $coleccionResultado = new ArrayObject();
         $recurso = $this->controlBD->consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado);
-        
+
         while ($operacion = mysql_fetch_array($recurso)) {
             $idVuelo = $operacion[idVuelo];
             $cantidadDisponible = $operacion[quedan];
@@ -338,7 +338,13 @@ class ControlVueloLogicaclass {
         $row = mysql_fetch_array($recurso);
         $horas = $row[horasVuelo];
         $separar = explode('.', $horas);
-        $total = (round($horas,2)).' '.'='.' '.$separar[0].' horas y'.' '.(substr($separar[1],0,2)).' minutos';
+        $hora = $separar[0];
+        $minutos = substr($separar[1],0,2);
+        if ($minutos > 60) {
+            $minutos = $minutos - 60;
+            $hora = $hora + 1;
+        }
+        $total = (round($horas,2)).' '.'='.' '.$hora.' horas y'.' '.$minutos.' minutos';
         return $total;
     }
 }
