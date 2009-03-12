@@ -94,7 +94,13 @@ class controladorGestionVuelos {
 
     function actualizarMatriculaAvion ($idVuelo, $matricula) {
         $resultado = false;
-        $query = "UPDATE VUELO v SET AVION_matricula = 'YV 307T' WHERE id = 15";
+        $query = "UPDATE VUELO v SET AVION_matricula = '".$matricula."' WHERE id = $idVuelo";
+        $recurso = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function editarVuelo ($idVuelo,$matricula,$piloto,$copiloto) {
+        $resultado = false;
     }
 
     function nuevoVuelo ($fecha,$hora,$matricula,$sitioSalida,$sitioLlegada,$piloto,$copiloto) {
