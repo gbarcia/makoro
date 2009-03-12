@@ -12,10 +12,9 @@ function autoSugerir($busqueda){
     $recurso = $controlLogica->consultarSucursalIdNombreEstadoCiudad($busqueda);
     $numFilas = mysql_num_rows($recurso);
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
-    $resultado.= '<th>ID</th>';
     $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>ESTADO</th>';
     $resultado.= '<th>CIUDAD</th>';
@@ -23,7 +22,7 @@ function autoSugerir($busqueda){
     $resultado.= '<th>HABLITADO</th>';
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '<th>MARCAR</th>';
-    $resultado.= '<th>OPCION</th>';
+    $resultado.= '<th>VER PERSONAL</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     if (isset($busqueda)) {
@@ -37,7 +36,6 @@ function autoSugerir($busqueda){
                 }
                 $SucursalMay = new Sucursalclass();
                 $SucursalMay->setHabilitadoString($row[habilitado]);
-                $resultado.= '<td>' . $row[id]. '</td>';
                 $resultado.= '<td>' . $row[nombre]. '</td>';
                 $resultado.= '<td>' . $row[estado]. '</td>';
                 $resultado.= '<td>' . $row[ciudad]. '</td>';
@@ -66,7 +64,6 @@ function autoSugerir($busqueda){
             }
             $SucursalMay = new Sucursalclass();
             $SucursalMay->setHabilitadoString($row[habilitado]);
-            $resultado.= '<td>' . $row[id]. '</td>';
             $resultado.= '<td>' . $row[nombre]. '</td>';
             $resultado.= '<td>' . $row[estado]. '</td>';
             $resultado.= '<td>' . $row[ciudad]. '</td>';
@@ -93,10 +90,9 @@ function cadenaTodasLasSucursales () {
     $recurso = $controlLogica->consultarSucursales(TRUE);
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table cellspacing="0">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
-    $resultado.= '<th>ID</th>';
     $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>ESTADO</th>';
     $resultado.= '<th>CIUDAD</th>';
@@ -104,7 +100,7 @@ function cadenaTodasLasSucursales () {
     $resultado.= '<th>HABLITADO</th>';
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '<th>MARCAR</th>';
-    $resultado.= '<th>OPCION</th>';
+    $resultado.= '<th>VER PERSONAL</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
@@ -116,7 +112,6 @@ function cadenaTodasLasSucursales () {
         }
         $SucursalMay = new Sucursalclass();
         $SucursalMay->setHabilitadoString($row[habilitado]);
-        $resultado.= '<td>' . $row[id]. '</td>';
         $resultado.= '<td>' . $row[nombre]. '</td>';
         $resultado.= '<td>' . $row[estado]. '</td>';
         $resultado.= '<td>' . $row[ciudad]. '</td>';
@@ -146,10 +141,9 @@ function inabilitado ($ina) {
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
-        $resultado.= '<table cellspacing="0">';
+        $resultado.= '<table class="scrollTable" cellspacing="0">';
         $resultado.= '<thead>';
         $resultado.= '<tr>';
-        $resultado.= '<th>ID</th>';
         $resultado.= '<th>NOMBRE</th>';
         $resultado.= '<th>ESTADO</th>';
         $resultado.= '<th>CIUDAD</th>';
@@ -157,7 +151,7 @@ function inabilitado ($ina) {
         $resultado.= '<th>HABLITADO</th>';
         $resultado.= '<th>EDITAR</th>';
         $resultado.= '<th>MARCAR</th>';
-        $resultado.= '<th>OPCION</th>';
+        $resultado.= '<th>VER PERSONAL</th>';
         $resultado.= '</tr>';
         $resultado.= '</thead>';
         $controlLogica = new ControlSucursalLogicaclass();
@@ -171,7 +165,6 @@ function inabilitado ($ina) {
             }
             $SucursalMay = new Sucursalclass();
             $SucursalMay->setHabilitadoString($row[habilitado]);
-            $resultado.= '<td>' . $row[id]. '</td>';
             $resultado.= '<td>' . $row[nombre]. '</td>';
             $resultado.= '<td>' . $row[estado]. '</td>';
             $resultado.= '<td>' . $row[ciudad]. '</td>';
@@ -194,10 +187,9 @@ function inabilitado ($ina) {
         $resultado = "";
         $objResponse = new xajaxResponse();
         $resultado = '<form id="formularioEditarMarcar">';
-        $resultado.= '<table cellspacing="0">';
+        $resultado.= '<table class="scrollTable" cellspacing="0">';
         $resultado.= '<thead>';
         $resultado.= '<tr>';
-        $resultado.= '<th>ID</th>';
         $resultado.= '<th>NOMBRE</th>';
         $resultado.= '<th>ESTADO</th>';
         $resultado.= '<th>CIUDAD</th>';
@@ -205,7 +197,7 @@ function inabilitado ($ina) {
         $resultado.= '<th>HABLITADO</th>';
         $resultado.= '<th>EDITAR</th>';
         $resultado.= '<th>MARCAR</th>';
-        $resultado.= '<th>OPCION</th>';
+        $resultado.= '<th>VER PERSONAL</th>';
         $resultado.= '</tr>';
         $resultado.= '</thead>';
         $controlLogica = new ControlSucursalLogicaclass();
@@ -219,7 +211,6 @@ function inabilitado ($ina) {
             }
             $SucursalMay = new Sucursalclass();
             $SucursalMay->setHabilitadoString($row[habilitado]);
-            $resultado.= '<td>' . $row[id]. '</td>';
             $resultado.= '<td>' . $row[nombre]. '</td>';
             $resultado.= '<td>' . $row[estado]. '</td>';
             $resultado.= '<td>' . $row[ciudad]. '</td>';
@@ -356,20 +347,24 @@ function generarFormularioNuevaSucursal () {
         </div>
         </td>
         </thead>
+<tr class="r1">
+      <td colspan="2">Todos los campos son requeridos
+        <input type="hidden" name="id" id="id" value= '.$row[id].' /></td>
+      </tr>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Estado</td>
       <td><label>
         <input type="text" name="estado" id="estado" onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Ciudad</td>
       <td><label>
         <input type="text" name="ciudad" id="ciudad" onkeyup="this.value=this.value.toUpperCase();" size="30" />
@@ -379,11 +374,11 @@ function generarFormularioNuevaSucursal () {
       <td>Direccion</td>
       <td><input type="text" name="direccion" id="direccion" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Telefono</td>
       <td><input type="text" name="telefono" id="telefono" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td height="26" colspan="2"><div align="center">
         <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarSucursal(xajax.getFormValues(\'formNuevoCargo\'))" />
       </div></td>
@@ -427,10 +422,10 @@ function procesarSucursal($datos) {
     $repuesta = "";
     $objResponse = new xajaxResponse();
     if (validarSucursal($datos)) {
-    $control = new ControlSucursalLogicaclass();
-    $resultado = $control->nuevaSucursal($datos[nombre], $datos[estado], $datos[ciudad], $datos[direccion], $datos[telefono], 1);
-    if ($resultado) {
-        $respuesta .= '<div class="exito">
+        $control = new ControlSucursalLogicaclass();
+        $resultado = $control->nuevaSucursal($datos[nombre], $datos[estado], $datos[ciudad], $datos[direccion], $datos[telefono], 1);
+        if ($resultado) {
+            $respuesta .= '<div class="exito">
                           <div class="textoMensaje">
                           Nueva sucursal '.$datos[nombre]. ' agregada con exito.
                           </div>
@@ -438,9 +433,9 @@ function procesarSucursal($datos) {
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
-    }
-    else {
-        $respuesta .= '<div class="error">
+        }
+        else {
+            $respuesta .= '<div class="error">
                           <div class="textoMensaje">
                           No se pudo completar la operacion.Verifique el manual del usuario. CODIGO GSBD001.
                           </div>
@@ -448,7 +443,7 @@ function procesarSucursal($datos) {
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
-    }
+        }
     }
     else {
         $respuesta ='<div class="advertencia">
@@ -484,23 +479,23 @@ function generarFormularioEditarSucursal ($id) {
         </td>
         </thead>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td colspan="2">Todos los campos son requeridos
         <input type="hidden" name="id" id="id" value= '.$row[id].' /></td>
       </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" value= "'.$row[nombre].'"size="30" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td>Estado</td>
       <td><label>
         <input type="text" name="estado" id="estado" value= "'.$row[estado].'"onkeyup="this.value=this.value.toUpperCase();" size="30" />
       </label></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Ciudad</td>
       <td><label>
         <input type="text" name="ciudad" id="ciudad" value= "'.$row[ciudad].'"onkeyup="this.value=this.value.toUpperCase();" size="30" />
@@ -510,11 +505,11 @@ function generarFormularioEditarSucursal ($id) {
       <td>Direccion</td>
       <td><input type="text" name="direccion" id="direccion" value= "'.$row[direccion].'"onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r1">
+    <tr class="r0">
       <td>Telefono</td>
       <td><input type="text" name="telefono" id="telefono"value= "'.$row[telefono].'" onkeyup="this.value=this.value.toUpperCase();" size="30" /></td>
     </tr>
-    <tr class="r0">
+    <tr class="r1">
       <td height="26" colspan="2"><div align="center">
         <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarSucursalEditar(xajax.getFormValues(\'formEditar\'))" />
       </div></td>
@@ -538,11 +533,11 @@ function procesarSucursalEditar ($datos) {
     $repuesta = "";
     $objResponse = new xajaxResponse();
     if (validarSucursal($datos)) {
-    $objResponse->addConfirmCommands(20, "Esta seguro de editar ".$datos[nombre]." ?");
-    $control = new ControlSucursalLogicaclass();
-    $resultado = $control->editarSucursal($datos[id],$datos[nombre], $datos[estado], $datos[ciudad], $datos[direccion], $datos[telefono], 1);
-    if ($resultado) {
-        $respuesta .= '<div class="exito">
+        $objResponse->addConfirmCommands(20, "Esta seguro de editar ".$datos[nombre]." ?");
+        $control = new ControlSucursalLogicaclass();
+        $resultado = $control->editarSucursal($datos[id],$datos[nombre], $datos[estado], $datos[ciudad], $datos[direccion], $datos[telefono], 1);
+        if ($resultado) {
+            $respuesta .= '<div class="exito">
                           <div class="textoMensaje">
                           Sucursal '.$datos[nombre]. ' editada con exito.
                           </div>
@@ -550,9 +545,9 @@ function procesarSucursalEditar ($datos) {
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
-    }
-    else {
-        $respuesta .= '<div class="error">
+        }
+        else {
+            $respuesta .= '<div class="error">
                           <div class="textoMensaje">
                           No se pudo completar la operacion.Verifique el manual del usuario. CODIGO GSBD001.
                           </div>
@@ -560,7 +555,7 @@ function procesarSucursalEditar ($datos) {
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
-    }
+        }
     }
     else {
         $respuesta ='<div class="advertencia">
@@ -580,7 +575,7 @@ function procesarSucursalEditar ($datos) {
 
 function generarTablaEmpleados ($id) {
     $resultado = '<form id="formularioEditarMarcar">';
-    $resultado .= '<table cellspacing="0">';
+    $resultado .= '<table class="formTable" cellspacing="0">';
     $resultado .= '<thead>';
     $resultado .= '<tr>';
     $resultado .= '<th>CEDULA</th>';
