@@ -8,7 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Ruta.c
  * @author Diana Uribe
  */
 class controladorVueloBDclass {
-    private $transaccion;
+    public $transaccion;
 
     function __construct() {
         $this->transaccion = new TransaccionBDclass();
@@ -23,11 +23,14 @@ class controladorVueloBDclass {
         $resultado = false;
         $query = "INSERT INTO VUELO (fecha,hora,AVION_matricula,RUTA_sitioSalida,RUTA_sitioLlegada)
                   VALUES ('".$vuelo->getFecha()."',
-                          '".$vuelo->getHora()."',
-                          '".$vuelo->getAvionMatricula()."',
-                          '".$vuelo->getRutaSitioSalida()."',
-                          '".$vuelo->getRutaSitioLlegada()."'";
-        $resultado = $this->transaccion->realizarTransaccion($query);
+                          '".$vuelo->getHora()."',";
+        if ($vuelo->getAvionMatricula() == NULL)
+        $query .= "NULL,";
+        else
+        $query .= "'".$vuelo->getAvionMatricula()."',";
+        $query .= "'".$vuelo->getRutaSitioSalida()."',
+                          '".$vuelo->getRutaSitioLlegada()."')";
+        $resultado = $this->transaccion->realizarTransaccionInsertId($query);
         return $resultado;
     }
 
@@ -117,13 +120,13 @@ class controladorVueloBDclass {
             ($cedulaPart != "") || ($nombrePart != "")  || ($apellidoPart != "") ||
             ($rifAgencia != "") || ($nombreAgencia != "") || ($solicitud != "") ||
             ($estado != "")){
-            
+
             $query.=", VUELO_RESERVA vr ";
         }
         $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
                   AND v.AVION_matricula = a.matricula ";
-                  $query .= "AND a.habilitado = 1 ";
+        $query .= "AND a.habilitado = 1 ";
         if($hora != "")
         $query.= " AND v.hora = '".$hora."' ";
         if (!(($fechaInicio == "")  && ($fechaFin == ""))){
