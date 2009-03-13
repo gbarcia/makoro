@@ -8,7 +8,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pasaje
  */
 class controladorPasajeroBDclass {
     private $transaccion;
-
     /**
      * Constructor de la clase
      */
@@ -27,10 +26,15 @@ class controladorPasajeroBDclass {
                   VALUES ('".$pasajero->getNombre()."',
                           '".$pasajero->getApellido()."',
                           '".$pasajero->getSexo()."',
-                           ".$pasajero->getCedula().",
-                          '".$pasajero->getPasaporte()."',
-                          '".$pasajero->getNacionalidad()."',
+                           ".$pasajero->getCedula().",";
+                          if($pasajero->getPasaporte() == ''){
+                            $query .= " null,";
+                          }else{
+                            $query .= "'".$pasajero->getPasaporte()."',";
+                          }
+                          $query .= "'".$pasajero->getNacionalidad()."',
                           '".$pasajero->getTipoPasajeroId()."')";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
