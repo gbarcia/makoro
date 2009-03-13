@@ -186,5 +186,13 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
+    public function getTransaccion() {
+        return $this->transaccion;
+    }
+
+    public function setTransaccion($transaccion) {
+        $this->transaccion = $transaccion;
+    }
+        
 }
 ?>
