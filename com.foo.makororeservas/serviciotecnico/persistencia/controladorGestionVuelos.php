@@ -55,6 +55,21 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+    function avionOcupadoEditar ($fecha,$hora,$matricula,$idVuelo) {
+        $resultado = false;
+        $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula
+                  FROM vuelo v WHERE v.fecha= '".$fecha."'
+                  AND v.hora= '".$hora."'
+                  AND v.AVION_matricula = '".$matricula."'";
+        $recurso = $this->transaccion->realizarTransaccion($query);
+        $cantidad = mysql_num_rows($recurso);
+        $row = mysql_fetch_array($recurso);
+        if ($cantidad > 0 && $idVuelo != $row[id]) {
+            $resultado = true;
+        }
+        return $resultado;
+    }
+
     function personalNoDisponible ($cedula,$fecha,$hora) {
         $resultado = false;
         $query = "SELECT  p.cedula
@@ -102,27 +117,29 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
-    function editarVuelo ($idVuelo,$matricula,$piloto,$copiloto) {
+    function editarVuelo ($idVuelo,$matricula,$piloto,$copiloto,$fecha,$hora) {
         $resultado = false;
-        $resultado = $this->actualizarMatriculaAvion($idVuelo, $matricula);
-        $this->borrarPersonalVuelo($idVuelo);
+        if (!$this->avionOcupadoEditar($fecha, $hora, $matricula,$idVuelo)) {
+            $resultado = $this->actualizarMatriculaAvion($idVuelo, $matricula);
+            $this->borrarPersonalVuelo($idVuelo);
 
-        if ($piloto !='NULL' && $copiloto !='NULL'){
-            $controlVueloPersonal = new controladorVueloPersonalBDclass();
-            $vueloPersonalPiloto = new VueloPersonalclass();
-            $vueloPersonalPiloto->setPersonalCedula($piloto);
-            $vueloPersonalPiloto->setCargo(1);
-            $vueloPersonalPiloto->setVueloId($idVuelo);
-            $vueloPersonalPiloto->setVueloId($idActual);
-            $vueloPersonalCopiloto = new VueloPersonalclass();
-            $vueloPersonalCopiloto->setPersonalCedula($copiloto);
-            $vueloPersonalCopiloto->setVueloId($idVuelo);
-            $vueloPersonalCopiloto->setCargo(2);
-            $vueloPersonalCopiloto->setVueloId($idActual);
-            $resultadoPersona = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalPiloto);
-            if ($resultadoPersona)
-            $resultado = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalCopiloto);
-        } else $resultado = true;
+            if ($piloto !='NULL' && $copiloto !='NULL'){
+                $controlVueloPersonal = new controladorVueloPersonalBDclass();
+                $vueloPersonalPiloto = new VueloPersonalclass();
+                $vueloPersonalPiloto->setPersonalCedula($piloto);
+                $vueloPersonalPiloto->setCargo(1);
+                $vueloPersonalPiloto->setVueloId($idVuelo);
+                $vueloPersonalPiloto->setVueloId($idActual);
+                $vueloPersonalCopiloto = new VueloPersonalclass();
+                $vueloPersonalCopiloto->setPersonalCedula($copiloto);
+                $vueloPersonalCopiloto->setVueloId($idVuelo);
+                $vueloPersonalCopiloto->setCargo(2);
+                $vueloPersonalCopiloto->setVueloId($idActual);
+                $resultadoPersona = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalPiloto);
+                if ($resultadoPersona)
+                $resultado = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalCopiloto);
+            } else $resultado = true;               
+        }
         return $resultado;
     }
 
