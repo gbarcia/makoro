@@ -333,8 +333,8 @@ class ControlVueloLogicaclass {
 /**
  * Metodo para saber la cantidad de horas de vuelo
  */
-    function sumaHorasDeVuelos() {
-        $recurso = $this->controlBD->consultarHorasDeVuelo();
+    function sumaHorasDeVuelos($fechaIni,$fechaFin) {
+        $recurso = $this->controlBD->consultarHorasDeVuelo($fechaIni,$fechaFin);
         $row = mysql_fetch_array($recurso);
         $horas = $row[horasVuelo];
         $separar = explode('.', $horas);
