@@ -62,5 +62,14 @@ class TransaccionBDclass {
        $this->conexion->cerrarConexion();
        return $id;
     }
+
+    public function getConexion() {
+        return $this->conexion;
+    }
+
+    public function setConexion($conexion) {
+        $this->conexion = $conexion;
+    }
+        
 }
 ?>

@@ -121,13 +121,14 @@ class ControlReservaLogicaclass {
         if(!(is_null($existePasajero))){
             $split = explode(', ', $existePasajero);
             $idPasajero = $split[0];
-            echo $idPasajero;
+//            echo $idPasajero;
         }
         if(is_null($existePasajero)){
             $recurso = $controlPasajero->nuevoPasajero($nombre,$apellido,$sexo,$cedula,
                                                          $pasaporte,$nacionalidad,$tipoPasajeroId);
                                                      
-            $idPasajero = mysql_insert_id($this->controlConexion->getConexion());
+            $idPasajero = mysql_insert_id();
+            echo $idPasajero;
         }
         $resultado = $this->actualizarIdReserva($idPasajero, $idReserva);
         return $resultado;
