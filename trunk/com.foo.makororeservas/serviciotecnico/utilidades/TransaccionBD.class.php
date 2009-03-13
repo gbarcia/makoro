@@ -9,7 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 class TransaccionBDclass {
 
     /*Variable para el manejo de la conexion*/
-    private $conexion;
+    public $conexion;
 
     /*Variable para el manejo de la bitacora*/
     private $bitacora;

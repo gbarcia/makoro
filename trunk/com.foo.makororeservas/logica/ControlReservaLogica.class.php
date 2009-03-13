@@ -127,7 +127,7 @@ class ControlReservaLogicaclass {
             $recurso = $controlPasajero->nuevoPasajero($nombre,$apellido,$sexo,$cedula,
                                                          $pasaporte,$nacionalidad,$tipoPasajeroId);
                                                      
-            $idPasajero = mysql_insert_id();
+            $idPasajero = mysql_insert_id($this->controlBD->transaccion->conexion->getConexion());
             echo $idPasajero;
         }
         $resultado = $this->actualizarIdReserva($idPasajero, $idReserva);
