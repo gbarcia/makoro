@@ -94,7 +94,10 @@ class controladorGestionVuelos {
 
     function actualizarMatriculaAvion ($idVuelo, $matricula) {
         $resultado = false;
+        if ($matricula != 'NULL')
         $query = "UPDATE VUELO SET AVION_matricula = '".$matricula."' WHERE id = $idVuelo";
+        else
+        $query = "UPDATE VUELO SET AVION_matricula = NULL WHERE id = $idVuelo";
         $recurso = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
