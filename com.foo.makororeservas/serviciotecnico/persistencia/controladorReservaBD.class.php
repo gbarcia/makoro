@@ -158,7 +158,8 @@ class controladorReservaBDclass {
     function buscarIdReserva($solicitud){
         $query = "SELECT R.id idReserva
                   FROM RESERVA R
-                  WHERE R.solicitud = '".$solicitud."'";
+                  WHERE R.solicitud = '".$solicitud."'
+                  AND R.PASAJERO_id is null";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
