@@ -408,6 +408,16 @@ function validarVuelo ($datos) {
     if (validarHorario($datos[hora]))
     $resultado = true;
     else return false;
+    if ($datos[piloto] == 'NULL') {
+        if ($datos[copiloto] == 'NULL')
+        $resultado = true;
+        else return false;
+    }
+     if ($datos[copiloto] == 'NULL') {
+        if ($datos[piloto] == 'NULL')
+        $resultado = true;
+        else return false;
+    }
 
     return $resultado;
 }

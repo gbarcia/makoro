@@ -101,6 +101,27 @@ class controladorGestionVuelos {
 
     function editarVuelo ($idVuelo,$matricula,$piloto,$copiloto) {
         $resultado = false;
+        $resultadoM = $this->actualizarMatriculaAvion($idVuelo, $matricula);
+        if ($resultadoM) {
+            if ($this->existePersonal($idVuelo, $piloto) || $this->existePersonal($idVuelo, $copiloto)) {
+                $this->borrarPersonalVuelo($idVuelo);
+            }
+            if ($piloto !='NULL' && $copiloto !='NULL'){
+                $controlVueloPersonal = new controladorVueloPersonalBDclass();
+                $vueloPersonalPiloto = new VueloPersonalclass();
+                $vueloPersonalPiloto->setPersonalCedula($piloto);
+                $vueloPersonalPiloto->setCargo(1);
+                $vueloPersonalPiloto->setVueloId($idActual);
+                $vueloPersonalCopiloto = new VueloPersonalclass();
+                $vueloPersonalCopiloto->setPersonalCedula($copiloto);
+                $vueloPersonalCopiloto->setCargo(2);
+                $vueloPersonalCopiloto->setVueloId($idActual);
+                $resultadoPersona = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalPiloto);
+                if ($resultadoPersona)
+                $resultado = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalCopiloto);
+            } else $resultado = true;
+        }
+        return $resultado;
     }
 
     function nuevoVuelo ($fecha,$hora,$matricula,$sitioSalida,$sitioLlegada,$piloto,$copiloto) {
