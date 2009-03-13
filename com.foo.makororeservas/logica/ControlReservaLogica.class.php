@@ -16,7 +16,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 class ControlReservaLogicaclass {
     private $controlBD;
     private $controlVueloReservaBD;
-    private $controlConexion;
+    public $controlConexion;
     private $controlVuelo;
     private $controlPasajero;
 
@@ -113,43 +113,29 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
-    function actualizarPasajeroReserva($pasajero,$solicitud){
+    function actualizarPasajeroReserva($nombre,$apellido,$sexo,$cedula,$pasaporte,$nacionalidad,$tipoPasajeroId,$idReserva){
         $controlPasajero = new ControlPasajeroLogicaclass();
         // verificar si ya existe el pasajero
-        $existePasajero = $this->controlBD->existePasajero($pasajero->getCedula(), $pasajero->getPasaporte());
-        if($existePasajero == 1){//el pasajero existe se busca el id del pasajero
-            if($pasajero->getCedula() != ''){
-                $busqueda = $pasajero->getCedula();
-            }else if($pasajero->getPasaporte() != ''){
-                $busqueda = $pasajero->getPasaporte();
-            }
-            $recursoPasajero = $this->controlPasajero->busquedaPasajeroNombreApellidoCedulaPasaporte($busqueda);
-            $row = mysql_fetch_array($recursoPasajero);
-            $idPasajero = $row[idPasajero];
+        $existePasajero = $this->existePasajero($cedula, $pasaporte);
+        echo $existePasajero;
+        if(!(is_null($existePasajero))){
+            $split = explode(', ', $existePasajero);
+            $idPasajero = $split[0];
+            echo $idPasajero;
         }
-        if($existePasajero == 0){//no existe el pasajero en la base de datos
-
-            $resultado = $controlPasajero->nuevoPasajero($pasajero->getNombre(), $pasajero->getApellido(),
-                                                         $pasajero->getSexo(), $pasajero->getCedula(),
-                                                         $pasajero->getPasaporte(), $pasajero->getNacionalidad(),
-                                                         $pasajero->getTipoPasajeroId());
-            $ultimoIdPasajero = mysql_insert_id();
+        if(is_null($existePasajero)){
+            $recurso = $controlPasajero->nuevoPasajero($nombre,$apellido,$sexo,$cedula,
+                                                         $pasaporte,$nacionalidad,$tipoPasajeroId);
+                                                     
+            $idPasajero = mysql_insert_id($this->controlConexion->getConexion());
         }
-        $recurso = $this->controlBD->buscarIdReserva($solicitud);
-        while ($row = mysql_fetch_array($recurso)) {
-               $idReserva = $row[idReserva];
-        }
-
+        $resultado = $this->actualizarIdReserva($idPasajero, $idReserva);
+        return $resultado;
     }
 
-    function asignarPasajeros($cantidad,$pasajeros,$solicitud){
-        //        for($i;$i<$cantidad;$i++){
-        //           $this->actualizarPasajeroReserva();
-        //        }
-    }
-
-    function actualizarIdPasajeroReserva($ultimoIdPasajero){
-
+    function actualizarIdReserva($idPasajero,$idReserva){
+        $recurso = $this->controlBD->actualizarIdReserva($idPasajero, $idReserva);
+        return $recurso;
     }
 
 
@@ -182,7 +168,7 @@ class ControlReservaLogicaclass {
     function existePasajero($cedula, $pasaporte){
         $recurso = $this->controlBD->existePasajero($cedula, $pasaporte);
         $row = mysql_fetch_array($recurso);
-        $disponible = $row[existePasajero];
+        $disponible = $row[pasajero];
         return $disponible;
     }
 

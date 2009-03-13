@@ -98,11 +98,21 @@ class controladorReservaBDclass {
     function existePasajero($cedula,$pasaporte){
         $query = "";
         if($cedula != ""){
-            $query = "SELECT IF((".$cedula.") = PA.cedula,TRUE,FALSE) as existePasajero
+            $query = "SELECT IF((".$cedula.") = PA.cedula,
+                             (SELECT CONCAT(PAS.id,', ',PAS.cedula,', ',PAS.nombre,', ',PAS.apellido,', ',PAS.sexo,
+                                            ', ',PAS.nacionalidad,', ',PAS.TIPO_PASAJERO_id)
+                              FROM PASAJERO PAS
+                              WHERE PAS.cedula = ".$cedula."),
+                             NULL) as pasajero
                       FROM PASAJERO PA
                       WHERE PA.cedula  = ".$cedula."";
         }else if(($pasaporte != "") && ($cedula == "")){
-            $query = "SELECT IF(('".$pasaporte."') = PA.pasaporte,TRUE,FALSE) as existePasajero
+            $query = "SELECT IF(('".$pasaporte."') = PA.pasaporte,
+                             (SELECT CONCAT(PAS.id,', ',PAS.pasaporte,', ',PAS.nombre,', ',PAS.apellido,', ',PAS.sexo,
+                                            ', ',PAS.nacionalidad,', ',PAS.TIPO_PASAJERO_id)
+                              FROM PASAJERO PAS
+                              WHERE PAS.pasaporte = ".$pasaporte."),
+                             NULL) as pasajero
                       FROM PASAJERO PA
                       WHERE PA.pasaporte  = '".$pasaporte."'";
         }
@@ -169,8 +179,9 @@ class controladorReservaBDclass {
      * @param <type> $idPasajero El id del pasajero a asignar
      * @return <type> El resultado de la operacion 
      */
-    function actualizarIdReserva($idPasajero){
-        $query = "UPDATE RESERVA R SET R.PASAJERO_id = ".$idPasajero."";
+    function actualizarIdReserva($idPasajero, $idReserva){
+        $query = "UPDATE RESERVA R SET R.PASAJERO_id = ".$idPasajero."
+                                   WHERE R.id = ".$idReserva."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

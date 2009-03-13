@@ -51,8 +51,25 @@ $clienteTest = new ClienteParticularclass();
 //echo $disp;
 
 //(3, "IDA", 3, '2009-03-08', 1, 1, 17064051, 18310338, null, 'null');
-$respuesta = $controlTest->crearReserva(7, 'IDA', 2, 1, '2009-03-09', 1, 1, 17064051, 18310338, NULL, 'NULL');
-echo '<p></p>';
-echo $respuesta;
+//$respuesta = $controlTest->crearReserva(7, 'IDA', 2, 1, '2009-03-09', 1, 1, 17064051, 18310338, NULL, 'NULL');
+//echo '<p></p>';
+//echo $respuesta;
+
+/**
+ * Existe pasajero
+ */
+
+//$resultado = $controlTest->existePasajero(81271000, '');
+//if(is_null($resultado)){
+//    echo 'Valor Nulo!';
+//}
+//echo $resultado;
+
+/* ASIGNAR PASAJERO A RESERVA */
+$resultado = $controlTest->actualizarPasajeroReserva('CUCHI', 'CUCHI', 'F', 4411116, null, 'Italiana', 'ADL', 32712);
+
+//echo $resultado;
+
+/*----------------------------*/
 
 ?>
