@@ -74,7 +74,7 @@ class controladorGestionVuelos {
 
     function existePersonal ($idVuelo,$cedula) {
         $resultado = false;
-        $query = "vr.PERSONAL_cedula cedula
+        $query = "SELECT vr.PERSONAL_cedula cedula
                   FROM VUELO_PERSONAL vr
                   WHERE vr.VUELO_id = $idVuelo AND vr.PERSONAL_cedula = $cedula";
         $recurso = $this->transaccion->realizarTransaccion($query);
@@ -94,33 +94,32 @@ class controladorGestionVuelos {
 
     function actualizarMatriculaAvion ($idVuelo, $matricula) {
         $resultado = false;
-        $query = "UPDATE VUELO v SET AVION_matricula = '".$matricula."' WHERE id = $idVuelo";
+        $query = "UPDATE VUELO SET AVION_matricula = '".$matricula."' WHERE id = $idVuelo";
         $recurso = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 
     function editarVuelo ($idVuelo,$matricula,$piloto,$copiloto) {
         $resultado = false;
-        $resultadoM = $this->actualizarMatriculaAvion($idVuelo, $matricula);
-        if ($resultadoM) {
-            if ($this->existePersonal($idVuelo, $piloto) || $this->existePersonal($idVuelo, $copiloto)) {
-                $this->borrarPersonalVuelo($idVuelo);
-            }
-            if ($piloto !='NULL' && $copiloto !='NULL'){
-                $controlVueloPersonal = new controladorVueloPersonalBDclass();
-                $vueloPersonalPiloto = new VueloPersonalclass();
-                $vueloPersonalPiloto->setPersonalCedula($piloto);
-                $vueloPersonalPiloto->setCargo(1);
-                $vueloPersonalPiloto->setVueloId($idActual);
-                $vueloPersonalCopiloto = new VueloPersonalclass();
-                $vueloPersonalCopiloto->setPersonalCedula($copiloto);
-                $vueloPersonalCopiloto->setCargo(2);
-                $vueloPersonalCopiloto->setVueloId($idActual);
-                $resultadoPersona = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalPiloto);
-                if ($resultadoPersona)
-                $resultado = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalCopiloto);
-            } else $resultado = true;
-        }
+        $resultado = $this->actualizarMatriculaAvion($idVuelo, $matricula);
+        $this->borrarPersonalVuelo($idVuelo);
+
+        if ($piloto !='NULL' && $copiloto !='NULL'){
+            $controlVueloPersonal = new controladorVueloPersonalBDclass();
+            $vueloPersonalPiloto = new VueloPersonalclass();
+            $vueloPersonalPiloto->setPersonalCedula($piloto);
+            $vueloPersonalPiloto->setCargo(1);
+            $vueloPersonalPiloto->setVueloId($idVuelo);
+            $vueloPersonalPiloto->setVueloId($idActual);
+            $vueloPersonalCopiloto = new VueloPersonalclass();
+            $vueloPersonalCopiloto->setPersonalCedula($copiloto);
+            $vueloPersonalCopiloto->setVueloId($idVuelo);
+            $vueloPersonalCopiloto->setCargo(2);
+            $vueloPersonalCopiloto->setVueloId($idActual);
+            $resultadoPersona = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalPiloto);
+            if ($resultadoPersona)
+            $resultado = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalCopiloto);
+        } else $resultado = true;
         return $resultado;
     }
 

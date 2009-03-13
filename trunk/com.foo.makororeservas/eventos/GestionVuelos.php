@@ -324,10 +324,10 @@ function formularioEditarVuelo ($id) {
         <select name="matricula" id="matricula">
           <option value="NULL">POR ASIGNAR</option>';
     while ($rowMatricula = mysql_fetch_array($recursoMatricula)){
-        $formulario .= '<option value = '.$rowMatricula[matricula];
+        $formulario .= '<option value = "'.$rowMatricula[matricula];
         if ($rowVuelo['matricula'] == $rowMatricula['matricula'])
-        $formulario .= '"selected';
-        $formulario .= '>'.$rowMatricula[matricula].'</option>';
+        $formulario .= ' "selected';
+        $formulario .= '">'.$rowMatricula[matricula].'</option>';
     }
     $formulario .= '</select>
       </label></td>
@@ -344,7 +344,7 @@ function formularioEditarVuelo ($id) {
       <td><select name="piloto" id="piloto">
         <option value="NULL">POR ASIGNAR</option>';
     while ($rowPiloto = mysql_fetch_array($recursoPiloto)){
-        $formulario .= '<option value = "$rowPiloto[cedula]"';
+        $formulario .= '<option value = "'.$rowPiloto[cedula].'"';
         if ($rowPilotoActual['cedula'] == $rowPiloto['cedula'])
         $formulario .= 'selected';
         $formulario .= '>'.$rowPiloto[apellido].', '.$rowPiloto[nombre].'</option>';
@@ -356,7 +356,7 @@ function formularioEditarVuelo ($id) {
       <td><select name="copiloto" id="copiloto">
         <option value="NULL">POR ASIGNAR</option>';
     while ($rowCopiloto = mysql_fetch_array($recursoCopiloto)){
-        $formulario .= '<option value = "$rowCopiloto[cedula]"';
+        $formulario .= '<option value = "'.$rowCopiloto[cedula].'"';
         if ($rowCopilotoActual['cedula'] == $rowCopiloto['cedula'])
         $formulario .= 'selected';
         $formulario .= '>'.$rowCopiloto[apellido].', '.$rowCopiloto[nombre].'</option>';
@@ -366,7 +366,7 @@ function formularioEditarVuelo ($id) {
     <tr class="r1">    </tr>
     <tr class="r1">
       <td height="26" colspan="2"><div align="center">
-        <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarEditarRuta(xajax.getFormValues(\'formNuevoVuelo\'))" />
+        <input name="button" type="button" id="button" value="EDITAR" onclick= "xajax_procesarEditarVuelo(xajax.getFormValues(\'formNuevoVuelo\'))" />
       </div></td>
     </tr>
   </table>
@@ -436,6 +436,55 @@ function procesarVuelo ($datos) {
             $respuesta .= '<div class="exito">
                           <div class="textoMensaje">
                           Nuevo VUELO agregado con exito.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique que  no exista. GRBD001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+        $actualizarTablaPrincipalRespuesta = cadenaTodosLosVuelos();
+        $objResponse->addAssign("gestion", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        $objResponse->addAssign("izq", "innerHTML", "");
+    }
+    else {
+        $respuesta .= '<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR GRF001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    }
+    return $objResponse;
+}
+
+function procesarEditarVuelo ($datos) {
+    $objResponse = new xajaxResponse();
+    if (validarVuelo($datos)) {
+        $respuesta = "";
+        $control = new controladorGestionVuelos();
+        $arregloRuta = split('-', $datos[ruta]);
+        $sitioSalida =$arregloRuta[0];
+        $sitioLlegada =$arregloRuta[1];
+        $resultado = $control->editarVuelo($datos[id], $datos[matricula], $datos[piloto], $datos[copiloto]);
+        $objResponse = new xajaxResponse();
+        if ($resultado){
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Vuelo actualizado exito.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
