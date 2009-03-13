@@ -137,7 +137,7 @@ class ControlReservaLogicaclass {
         }
         $recurso = $this->controlBD->buscarIdReserva($solicitud);
         while ($row = mysql_fetch_array($recurso)) {
-               
+               $idReserva = $row[idReserva];
         }
 
     }
