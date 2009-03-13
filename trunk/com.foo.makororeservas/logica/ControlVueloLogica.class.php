@@ -344,7 +344,7 @@ class ControlVueloLogicaclass {
             $minutos = $minutos - 60;
             $hora = $hora + 1;
         }
-        $total = (round($horas,2)).' '.'='.' '.$hora.' horas y'.' '.$minutos.' minutos';
+        $total =' '.$hora.' horas y'.' '.$minutos.' minutos';
         return $total;
     }
 }
