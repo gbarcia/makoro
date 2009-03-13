@@ -326,7 +326,7 @@ function formularioEditarVuelo ($id) {
     while ($rowMatricula = mysql_fetch_array($recursoMatricula)){
         $formulario .= '<option value = "'.$rowMatricula[matricula];
         if ($rowVuelo['matricula'] == $rowMatricula['matricula'])
-        $formulario .= ' "selected';
+        $formulario .= '"selected';
         $formulario .= '">'.$rowMatricula[matricula].'</option>';
     }
     $formulario .= '</select>
@@ -445,7 +445,7 @@ function procesarVuelo ($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique que  no exista. GRBD001.
+                          No se pudo completar la operacion. Consulte el Manual de Ayuda. CODIGO ERROR: GV001.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -460,7 +460,7 @@ function procesarVuelo ($datos) {
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR GRF001.
+                          No se pudo completar la operacion. Los datos del formulario no son correctos. CODIGO ERROR GVF001.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -494,7 +494,7 @@ function procesarEditarVuelo ($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique que  no exista. GRBD001.
+                          No se pudo completar la operacion. Consulte el Manual de Ayuda. CODIGO ERROR: GV001.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -509,7 +509,7 @@ function procesarEditarVuelo ($datos) {
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Los datos del formulario no son correctos. ERROR GRF001.
+                          No se pudo completar la operacion. Los datos del formulario no son correctos. CODIGO ERROR GVF001.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -517,6 +517,21 @@ function procesarEditarVuelo ($datos) {
                           </div>';
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     }
+    return $objResponse;
+}
+
+function cerrarVentana() {
+    $resultado = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("izq", "innerHTML", $resultado);
+    $objResponse->addAssign("Mensaje", "innerHTML", $resultado);
+    return $objResponse;
+}
+
+function borrarMensaje(){
+    $respuesta = "";
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
 }
 ?>
