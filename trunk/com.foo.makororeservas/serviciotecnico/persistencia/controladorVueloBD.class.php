@@ -437,14 +437,15 @@ class controladorVueloBDclass {
  * Metodo para consultar las horas de los vuelos
  * @return <recurso> recurso con la cantidad de horas de los vuelos
  */
-    function consultarHorasDeVuelo() {
+    function consultarHorasDeVuelo($fechaIni,$fechaFin) {
         $resultado = false;
         $query = "SELECT SUM(r.tiempo) horasVuelo
                   FROM VUELO v, RUTA r
                   WHERE v.RUTA_sitioSalida = r.sitioSalida
                   AND v.RUTA_sitioLlegada = r.sitioLlegada
                   AND v.id IN (SELECT VUELO_id
-                               FROM VUELO_RESERVA)";
+                               FROM VUELO_RESERVA)
+                  AND v.fecha  BETWEEN '".$fechaIni."' AND '".$fechaFin."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
