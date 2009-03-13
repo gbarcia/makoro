@@ -479,7 +479,7 @@ function procesarEditarVuelo ($datos) {
         $arregloRuta = split('-', $datos[ruta]);
         $sitioSalida =$arregloRuta[0];
         $sitioLlegada =$arregloRuta[1];
-        $resultado = $control->editarVuelo($datos[id], $datos[matricula], $datos[piloto], $datos[copiloto]);
+        $resultado = $control->editarVuelo($datos[id], $datos[matricula], $datos[piloto], $datos[copiloto],$datos[fecha],$datos[hora]);
         $objResponse = new xajaxResponse();
         if ($resultado){
             $respuesta .= '<div class="exito">
