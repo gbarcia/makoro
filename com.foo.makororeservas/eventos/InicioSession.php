@@ -12,7 +12,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 function IniciarSession ($datos) {
     $objResponse = new xajaxResponse();
     $control = new ControlSeguridadclass();
-    $resultado = $control->validarSession($datos[login], $datos[pass]);
+    $resultado = $control->validarSession(strtolower($datos[login]), strtolower($datos[pass]));
     if ($resultado == true) {
         $objResponse->addRedirect("gui/PresentacionGestionTripulantes.php");
     }
