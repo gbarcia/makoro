@@ -42,20 +42,21 @@ $xajax->processRequests();
         </script>
     </head>
     <body>
-        <?php
-        // put your code here
-        ?>
+
         <div class="encabezado" id="encabezado">
             <img src="imagenes/encabezado.png" width="900" height="65" alt="encabezado"/>
         </div>
+
         <div class="panelSesion">
             <? echo $_SESSION['EncargadoLogin']; ?> | <? echo $_SESSION['FechaActual']; ?> | salir
         </div>
+
         <div id="sesion" class="cuerpo">
             <?
             include 'menu.php';
             ?>
         </div>
+
         <div class="cuerpo">
             <form id="filtros">
                 <div id="PanelVuelos" class="CollapsiblePanel">
@@ -158,41 +159,41 @@ $xajax->processRequests();
                         </table>
                     </div>
                 </div>
-                <script type="text/javascript">
-                    <!--
-                    var CollapsiblePanel1 = new Spry.Widget.CollapsiblePanel("PanelVuelos", {enableAnimation:false, contentIsOpen:true});
-                    var CollapsiblePanel2 = new Spry.Widget.CollapsiblePanel("PanelReservas", {enableAnimation:false, contentIsOpen:true});
-                    var CollapsiblePanel3 = new Spry.Widget.CollapsiblePanel("PanelClientes", {enableAnimation:false, contentIsOpen:false});
-                    var CollapsiblePanel4 = new Spry.Widget.CollapsiblePanel("PanelPasajeros", {enableAnimation:false, contentIsOpen:false});
-                    //-->
-                    Calendar.setup({
-                        inputField     :    "f_date_c",     // id of the input field
-                        ifFormat       :    "%Y-%m-%d",      // format of the input field
-                        button         :    "f_trigger_c",  // trigger for the calendar (button ID)
-                        align          :    "Tl",           // alignment (defaults to "Bl")
-                        singleClick    :    true
-                    });
-                    Calendar.setup({
-                        inputField     :    "f_date_c2",     // id of the input field
-                        ifFormat       :    "%Y-%m-%d",      // format of the input field
-                        button         :    "f_trigger_c2",  // trigger for the calendar (button ID)
-                        align          :    "Tl",           // alignment (defaults to "Bl")
-                        singleClick    :    true
-                    });
-                </script>
-                <div class="textoNegro1" align="center"><input type="button" value="Filtrar" onclick="xajax_procesarFiltros(xajax.getFormValues('filtros'))"/></div>
+                <div class="textoNegro1" align="center">
+                    <input type="button" value="Filtrar" onclick="xajax_procesarFiltros(xajax.getFormValues('filtros'))"/>
+                </div>
             </form>
         </div>
-    
-        <div id="resultadoVuelos" class="cuerpo">
-            <div class="tableContainer" id="gestionReserva">
+
+        <div class="cuerpo">
+            <div class="tableContainer" id="vuelos">
                 <script type="text/javascript">
                     xajax_inicio();
                 </script>
             </div>
         </div>
-        <div id="resultadoPasajeros" class="cuerpo">
-            <div class="tableContainer" id="gestionReservaPasajeros"></div>
-        </div>
+
+        <script type="text/javascript">
+            <!--
+            var CollapsiblePanel1 = new Spry.Widget.CollapsiblePanel("PanelVuelos", {enableAnimation:false, contentIsOpen:true});
+            var CollapsiblePanel2 = new Spry.Widget.CollapsiblePanel("PanelReservas", {enableAnimation:false, contentIsOpen:true});
+            var CollapsiblePanel3 = new Spry.Widget.CollapsiblePanel("PanelClientes", {enableAnimation:false, contentIsOpen:false});
+            var CollapsiblePanel4 = new Spry.Widget.CollapsiblePanel("PanelPasajeros", {enableAnimation:false, contentIsOpen:false});
+            //-->
+            Calendar.setup({
+                inputField     :    "f_date_c",     // id of the input field
+                ifFormat       :    "%Y-%m-%d",      // format of the input field
+                button         :    "f_trigger_c",  // trigger for the calendar (button ID)
+                align          :    "Tl",           // alignment (defaults to "Bl")
+                singleClick    :    true
+            });
+            Calendar.setup({
+                inputField     :    "f_date_c2",     // id of the input field
+                ifFormat       :    "%Y-%m-%d",      // format of the input field
+                button         :    "f_trigger_c2",  // trigger for the calendar (button ID)
+                align          :    "Tl",           // alignment (defaults to "Bl")
+                singleClick    :    true
+            });
+        </script>
     </body>
 </html>
