@@ -28,39 +28,45 @@ class TransaccionBDclass {
  * @return <Recurso> resultado del query
  */
     function realizarTransaccion($query) {
-       $link = $this->conexion->conectarBaseDatos();
-       $result = mysql_query($query,$link);
-       if (!$result) {
-           $mensaje = "Transaccion: " . $query . "  " . mysql_error();
-           $this->bitacora->escribirMensaje($mensaje);
-       }
-       else if ($result) {
-           $mensaje = "Transaccion: " . $query . "  Realizada con exito";
-           $this->bitacora->escribirMensaje($mensaje);
-       }
-       $this->conexion->cerrarConexion();
-       return $result;
+        $link = $this->conexion->conectarBaseDatos();
+        $result = mysql_query($query,$link);
+        if (!$result) {
+            $mensaje = $query. '  '.mysql_error();
+            $this->bitacora->escribirMensajeBD($mensaje,1);
+        }
+        $this->conexion->cerrarConexion();
+        return $result;
     }
 
-    /**
+ /**
  * Metodo para realizar una transaccion con la bd que retorna el id autogenerado
  * @param <String> $query query a enviar
  * @return <Integer> el id ingresado en la bd
  */
     function realizarTransaccionInsertId($query) {
-       $link = $this->conexion->conectarBaseDatos();
-       $result = mysql_query($query,$link);
-       if (!$result) {
-           $mensaje = "Transaccion: " . $query . "  " . mysql_error();
-           $this->bitacora->escribirMensaje($mensaje);
-       }
-       else if ($result) {
-           $mensaje = "Transaccion: " . $query . "  Realizada con exito";
-           $this->bitacora->escribirMensaje($mensaje);
-       }
-       $id = mysql_insert_id($this->conexion->getConexion());
-       $this->conexion->cerrarConexion();
-       return $id;
+        $id = -1;
+        $link = $this->conexion->conectarBaseDatos();
+        $result = mysql_query($query,$link);
+        if (!$result) {
+            $mensaje = $query. '  '.mysql_error();
+            $this->bitacora->escribirMensajeBD($mensaje,1);
+        }
+        else if ($result) {
+            $id = mysql_insert_id($this->conexion->getConexion());
+        }
+        $this->conexion->cerrarConexion();
+        return $id;
+    }
+/**
+ * Metodo para realizar transacciones de bitacora
+ * @param <String> $query query a ejecutar
+ * @return <boolean> resultado de la operacion
+ */
+    function realizarTransaccionBitacora($query) {
+        $link = $this->conexion->conectarBaseDatos();
+        $result = mysql_query($query,$link);
+        $this->conexion->cerrarConexion();
+        return $result;
     }
 
     public function getConexion() {
@@ -70,6 +76,6 @@ class TransaccionBDclass {
     public function setConexion($conexion) {
         $this->conexion = $conexion;
     }
-        
+
 }
 ?>
