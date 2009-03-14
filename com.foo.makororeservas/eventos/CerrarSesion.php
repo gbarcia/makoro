@@ -4,6 +4,7 @@ session_start();
 
 function salirDelSistema() {
 $objResponse = new xajaxResponse();
+$objResponse->addScript("");
 $objResponse->addConfirmCommands(3, "Confirma que desea salir del sistema?");
 $_SESSION = array();
 session_destroy();
