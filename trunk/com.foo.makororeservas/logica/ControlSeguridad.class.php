@@ -46,7 +46,7 @@ class ControlSeguridadclass {
  */
     private function autoGenerarClave () {
         $variableNumerica    = rand(0000,9999);
-        $arreglo             = array('A','B','C','D','E','F','G','H','I','J','K');
+        $arreglo             = array('a','b','c','d','e','f','g','h','i','j','k');
         $variableNumericaDos = rand(0,10);
         $clave              = $arreglo[$variableNumericaDos].$variableNumerica;
         return $clave;
@@ -85,7 +85,7 @@ class ControlSeguridadclass {
             if ($resultado) {
                 $cuerpo = "<font size='2' face='Arial'><P>Estimado: ". $encargado->getNombre(). "</P>";
                 $cuerpo .= "<P>Lo siguiente, son los datos de acceso al Sistema:</P>";
-                $cuerpo .= "Nombre de Usuario: ".$encargado->getNombre()." <br>";
+                $cuerpo .= "Nombre de Usuario: ".$encargado->getLogin()." <br>";
                 $cuerpo .= "Clave: ".$claveReal." <br>";
                 $cuerpo .= "<P>La clave de Usuario es provisional y podrá ser cambiada una vez que ingrese al sistema. En caso de tener alguna consulta en referencia a ésta página por favor no dude en contactarnos.</P>";
                 $cuerpo .= "Soporte@makoroenlinea.com";
