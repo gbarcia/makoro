@@ -332,43 +332,50 @@ class controladorVueloBDclass {
      * @return <type> Los detalles de un vuelo
      */
     function consultarDetallesVuelo($idVuelo){
-        $query = "SELECT R.id,R.solicitud,TP.id as tipoPasajero,
-                  IF(R.PASAJERO_id is not null, (SELECT IF(PA.cedula is not null,
-                                                        CONCAT(PA.cedula,' ',PA.nombre,' ',PA.apellido),
-                                                        CONCAT(PA.pasaporte,' ',PA.nombre,' ',PA.apellido))
+        $query = "SELECT R.id,R.solicitud,IF(R.PASAJERO_id is not null,(SELECT PA.TIPO_PASAJERO_id
                                                  FROM PASAJERO PA
-                                                 WHERE PA.id = R.PASAJERO_id),
-                  IF(R.CLIENTE_AGENCIA_rif is not null, CA.nombre, CONCAT(CP.nombre,' ',CP.apellido))) as pasajero,
-                  TS.nombre as servicio, IF(R.POSADA_id is not null,(SELECT PO.nombrePosada
-                                                                     FROM POSADA PO
-                                                                     WHERE PO.id = R.POSADA_id),'&nbsp') as posada,
-                  E.nombre as encargadoNombre, S.nombre as sucursal, VR.tipo, IFNULL(R.CLIENTE_AGENCIA_rif,'&nbsp') as agencia,
-                  IFNULL(R.CLIENTE_PARTICULAR_cedula,'&nbsp') as particular,
-                  IF(R.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre,
-                  IF(R.PAGO_id is not null,(SELECT IF(PAG.tipo='E','E',PAG.tipo)
-                                            FROM PAGO PAG
-                                            WHERE R.PAGO_id = PAG.id),'&nbsp') as pago,
-                  IF(R.PAGO_id is not null,(SELECT IF(PAG.tipo='E','&nbsp',PAG.nombreBanco)
-                                            FROM PAGO PAG
-                                            WHERE R.PAGO_id = PAG.id),'&nbsp') as banco,
-                  IF(R.PAGO_id is not null,(SELECT IF(PAG.tipo='E','&nbsp',PAG.numeroTransaccion)
-                                            FROM PAGO PAG
-                                            WHERE R.PAGO_id = PAG.id),'&nbsp') as numeroTran,
-                  IF(R.PAGO_id is not null,(SELECT PAG.monto
-                                            FROM PAGO PAG
-                                            WHERE R.PAGO_id = PAG.id),'&nbsp') as monto,
-                  IF((SELECT R.id
-                      FROM PAGO PAG, BOLETO BOL
-                      WHERE R.PAGO_id = PAG.id
-                      AND PAG.id = BOL.PAGO_id
-                      GROUP BY(R.id)),TRUE,FALSE) as boleto,
-                  IF(VR.tipo = 'ida',IFNULL((SELECT CONCAT(VU.fecha,', ',VU.hora)
-                                             FROM VUELO_RESERVA VRE, VUELO VU , RESERVA RE
-                                             WHERE RE.id = VRE.RESERVA_id
-                                             AND VU.id = VRE.VUELO_id
-                                             AND RE.solicitud = R.solicitud
-                                             AND VRE.tipo = 'vuelta'
-                                             GROUP BY VU.fecha,VU.hora),'XXXX-XX-XX'),'Vuelo de retorno') as vueloRetorno
+                                                 WHERE PA.id = R.PASAJERO_id),'') as tipoPasajero,
+                         IF(R.PASAJERO_id is not null,(SELECT IF(PA.cedula is not null,
+                                                        PA.cedula,
+                                                        PA.pasaporte)
+                                                       FROM PASAJERO PA
+                                                       WHERE PA.id = R.PASAJERO_id),'') as cedulaPasaporte,
+                         IF(R.PASAJERO_id is not null, (SELECT IF(PA.cedula is not null,
+                                                        CONCAT(PA.nombre,' ',PA.apellido),
+                                                        CONCAT(PA.nombre,' ',PA.apellido))
+                                                        FROM PASAJERO PA
+                                                        WHERE PA.id = R.PASAJERO_id),
+                         IF(R.CLIENTE_AGENCIA_rif is not null, CA.nombre, CONCAT(CP.nombre,' ',CP.apellido))) as pasajero,
+                         TS.nombre as servicio, IF(R.POSADA_id is not null,(SELECT PO.nombrePosada
+                                                                            FROM POSADA PO
+                                                                            WHERE PO.id = R.POSADA_id),'&nbsp') as posada,
+                         E.nombre as encargadoNombre, S.nombre as sucursal, VR.tipo, IFNULL(R.CLIENTE_AGENCIA_rif,'&nbsp') as agencia,
+                         IFNULL(R.CLIENTE_PARTICULAR_cedula,'&nbsp') as particular,
+                         IF(R.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre,
+                         IF(R.PAGO_id is not null,(SELECT IF(PAG.tipo='E','E',PAG.tipo)
+                                                   FROM PAGO PAG
+                                                   WHERE R.PAGO_id = PAG.id),'&nbsp') as pago,
+                         IF(R.PAGO_id is not null,(SELECT IF(PAG.tipo='E','&nbsp',PAG.nombreBanco)
+                                                   FROM PAGO PAG
+                                                   WHERE R.PAGO_id = PAG.id),'&nbsp') as banco,
+                         IF(R.PAGO_id is not null,(SELECT IF(PAG.tipo='E','&nbsp',PAG.numeroTransaccion)
+                                                   FROM PAGO PAG
+                                                   WHERE R.PAGO_id = PAG.id),'&nbsp') as numeroTran,
+                         IF(R.PAGO_id is not null,(SELECT PAG.monto
+                                                   FROM PAGO PAG
+                                                   WHERE R.PAGO_id = PAG.id),'&nbsp') as monto,
+                         IF((SELECT R.id
+                             FROM PAGO PAG, BOLETO BOL
+                             WHERE R.PAGO_id = PAG.id
+                             AND PAG.id = BOL.PAGO_id
+                             GROUP BY(R.id)),TRUE,FALSE) as boleto,
+                         IF(VR.tipo = 'ida',IFNULL((SELECT CONCAT(VU.fecha,', ',VU.hora)
+                                                    FROM VUELO_RESERVA VRE, VUELO VU , RESERVA RE
+                                                    WHERE RE.id = VRE.RESERVA_id
+                                                    AND VU.id = VRE.VUELO_id
+                                                    AND RE.solicitud = R.solicitud
+                                                    AND VRE.tipo = 'vuelta'
+                                                    GROUP BY VU.fecha,VU.hora),'XXXX-XX-XX'),'Vuelo de retorno') as vueloRetorno
             FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS, ENCARGADO E, TIPO_PASAJERO TP,
                  CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA, BOLETO B
             WHERE V.id = VR.VUELO_id
