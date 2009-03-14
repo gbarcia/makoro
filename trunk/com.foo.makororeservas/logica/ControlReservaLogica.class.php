@@ -16,7 +16,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 class ControlReservaLogicaclass {
     private $controlBD;
     private $controlVueloReservaBD;
-    public $controlConexion;
+    private $controlConexion;
     private $controlVuelo;
     private $controlPasajero;
 
