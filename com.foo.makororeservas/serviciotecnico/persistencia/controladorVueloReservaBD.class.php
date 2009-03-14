@@ -15,8 +15,8 @@ class controladorVueloReservaBDclass {
 
 /**
  * Metodo para agregar asignar un vuelo a una reserva
- * @param <type> $vueloReserva El vuelo y la reserva a agregar
- * @return <type> El resultado de la operacion 
+ * @param <VUELO_RESERVA> $vueloReserva El vuelo y la reserva a agregar
+ * @return <boolean> El resultado de la operacion
  */
     function agregarVueloReserva($vueloReserva){
         $resultado = false;
@@ -24,6 +24,19 @@ class controladorVueloReservaBDclass {
                   VALUES (". $vueloReserva->getVueloId() .",
                           ". $vueloReserva->getReservaId() .",
                           '". $vueloReserva->getTipo()."')";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para eliminar un vuelo reserva
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @return <boolean> El resultado de la operacion
+ */
+    function eliminarVueloReserva($idReserva) {
+        $resultado = false;
+        $query = "DELETE vr FROM VUELO_RESERVA vr
+                  WHERE vr.RESERVA_id = ". $idReserva ."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

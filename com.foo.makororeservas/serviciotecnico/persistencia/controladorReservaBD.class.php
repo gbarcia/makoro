@@ -155,15 +155,31 @@ class controladorReservaBDclass {
     }
 
     /**
-     * Metodo para editar una reserva en la base de datos 
-     * @param <type> $reserva la reserva a editar
-     * @return <type> El resultado de la operacion 
+     * Metodo para editar el estado de una reserva a pagado
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <String> $estado Nuevo estado
+     * @param <Integer> $pagoId Identificador del pago realizado
+     * @return <boolean> resultado de la operacion
      */
-    function editarReserva($reserva){
+    function editarEstadoPagadoReserva($idReserva, $estado, $pagoId){
         $resultado = false;
-        $query = "UPDATE RESERVA r SET r.PASAJERO_id = ".$reserva->getPasajeroId().",
-                                       r.TIPO_SERVICIO_id = ".$reserva->getTipoServicioId()."
-                  WHERE r.id = ".$reserva->getId()."";
+        $query = "UPDATE RESERVA r SET r.estado = '".$estado."',
+                                       r.PAGO_id = ".$pagoId."
+                  WHERE r.id = ".$idReserva."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para editar el estado de una reserva
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @param <String> $estado Nuevo estado
+ * @return <type>
+ */
+    function editarEstadoReserva($idReserva, $estado){
+        $resultado = false;
+        $query = "UPDATE RESERVA r SET r.estado = '".$estado."'
+                                   WHERE r.id = ".$idReserva."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -178,6 +194,19 @@ class controladorReservaBDclass {
                   FROM RESERVA R
                   WHERE R.solicitud = '".$solicitud."'
                   AND R.PASAJERO_id is null";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar el estado de una reserva
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @return <recurso> estado de la reserva
+ */
+    function consultarEstadoReserva($idReserva){
+        $query = "SELECT R.estado estado
+                  FROM RESERVA R
+                  WHERE R.id = ".$idReserva."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

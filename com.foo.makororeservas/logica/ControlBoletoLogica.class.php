@@ -120,9 +120,9 @@ class ControlBoletoLogicaclass {
         $retorno = $rowVueloVueltaInfo[sitioSalida].'-'.$rowVueloVueltaInfo[sitioLlegada];
 
         if($fechaVuelta == ''||$horaVuelta == ''|$retorno==''){
-            $fechaVuelta = "XXXX/XX/XX";
+            $fechaVuelta = "XXXX-XX-XX";
             $horaVuelta = "XX:XX";
-            $retorno = "No hay retorno";
+            $retorno = "No reservado";
         }
         if($rifAgencia == null){
             $identificadorCliente = $particularCedula;
@@ -158,7 +158,6 @@ class ControlBoletoLogicaclass {
         $recursoAdultos = $this->consultarCantidadAdultosNinos($solicitud, "ADL", "IDA");
         $rowCantidadAdultos = mysql_fetch_array($recursoAdultos);
         $cantidadAdultos = $rowCantidadAdultos[cantidad];
-        echo $cantidadAdultos;
 
         $recursoNinos = $this->consultarCantidadAdultosNinos($solicitud, "CHD", "IDA");
         $rowCantidadNinos = mysql_fetch_array($recursoNinos);
