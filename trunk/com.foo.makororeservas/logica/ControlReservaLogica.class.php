@@ -118,6 +118,18 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
+/**
+ * Metodo para actualizar un pasajero en una reserva determinada
+ * @param <String> $nombre Nombre del pasajero
+ * @param <String> $apellido Apellido del pasajero
+ * @param <String> $sexo Sexo del pasajero
+ * @param <Integer> $cedula Cedula del pasajero
+ * @param <String> $pasaporte Pasaporte del pasajero
+ * @param <String> $nacionalidad Nacionalidad del pasajero
+ * @param <Integer> $tipoPasajeroId Clasificacion del pasajero
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @return <recurso> resultado de la operacion
+ */
     function actualizarPasajeroReserva($nombre,$apellido,$sexo,$cedula,$pasaporte,$nacionalidad,$tipoPasajeroId,$idReserva){
         $controlPasajero = new ControlPasajeroLogicaclass();
         $existePasajero = $this->existePasajero($cedula, $pasaporte);
@@ -133,6 +145,12 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
+/**
+ * Metodo para actualizar un pasajero de una reserva
+ * @param <Integer> $idPasajero Identificador del pasajero
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @return <recurso> resultado de la operacion
+ */
     function actualizarIdReserva($idPasajero,$idReserva){
         $recurso = $this->controlBD->actualizarIdReserva($idPasajero, $idReserva);
         return $recurso;
