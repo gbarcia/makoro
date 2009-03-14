@@ -130,7 +130,7 @@ class controladorClienteAgenciaBDclass {
                   FROM CLIENTE_AGENCIA ca, RESERVA r
                   WHERE r.CLIENTE_AGENCIA_rif = ca.rif
                   AND   r.estado = 'PP'
-                  AND   r.fecha BETWEEN '" . $fechaInicio . "' AND '" . $fechaFin . "'
+                  AND   r.fecha BETWEEN '%" . $fechaInicio . "%' AND '%" . $fechaFin . "%'
                   GROUP BY ca.rif";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
