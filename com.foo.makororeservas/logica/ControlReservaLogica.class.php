@@ -124,7 +124,7 @@ class ControlReservaLogicaclass {
         }
         if(is_null($existePasajero)){
             $idPasajero = $controlPasajero->nuevoPasajero($nombre,$apellido,$sexo,$cedula,
-                                                          $pasaporte,$nacionalidad,$tipoPasajeroId);
+                $pasaporte,$nacionalidad,$tipoPasajeroId);
         }
         $resultado = $this->actualizarIdReserva($idPasajero, $idReserva);
         return $resultado;
