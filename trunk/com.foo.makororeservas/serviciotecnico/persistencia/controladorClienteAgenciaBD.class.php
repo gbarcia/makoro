@@ -32,7 +32,6 @@ class controladorClienteAgenciaBDclass {
                           '".$clienteAgencia->getCiudad()."',
                           '".$clienteAgencia->getPorcentajeComision()."')";
         $resultado = $this->transaccion->realizarTransaccion($query);
-//        echo $resultado;
         return $resultado;
     }
 
@@ -58,7 +57,7 @@ class controladorClienteAgenciaBDclass {
     /**
      * Metodo que consulta los clientes agencia por su rif, nombre
      * @param <string> $busqueda la busqueda que se desea realizar
-     * @return <recurso>
+     * @return <recurso> cliente agencia segun la busqueda realizada
      */
     function consultarClienteAgenciaRifNombre ($busqueda) {
         $resultado = false;
@@ -72,7 +71,7 @@ class controladorClienteAgenciaBDclass {
 
     /**
      * Metodo para consultar el cliente agencia con mas vuelos
-     * @return <coleccion>
+     * @return <recurso> cliente agencia con mas vuelos realizados
      */
     function consultarClienteAgenciaConMasVuelos(){
        $resultado = false;
@@ -100,7 +99,8 @@ class controladorClienteAgenciaBDclass {
     /**
      * Metodo para consultar clientes agencias que hayan realizado
      * mas vuelos, en orden descendente
-     * @return <coleccion>
+     * @return <coleccion> clientes agencias con vuelos reservados y
+     * ordenados descendentemente
      */
     function consultarClientesAgenciasVuelosDescendente(){
         $resultado = false;
@@ -136,6 +136,10 @@ class controladorClienteAgenciaBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar todas los cliente agencias
+ * @return <Coleccion> clientes agencias
+ */
     function consultarTodasLasAgencias () {
         $resultado = false;
         $query = "SELECT * FROM CLIENTE_AGENCIA";
@@ -143,6 +147,11 @@ class controladorClienteAgenciaBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar un cliente agencia en especifico, segun el RIF
+ * @param <String> $rif Identificador del cliente agencia
+ * @return <recurso> cliente agencia con sus datos
+ */
     function consultarAgencia ($rif) {
         $resultado = false;
         $query = "SELECT * FROM CLIENTE_AGENCIA WHERE rif = '".$rif."'";

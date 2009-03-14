@@ -16,7 +16,7 @@ class controladorAvionBDclass {
 
     /**
      * Metodo para agregar un avion en la base de datos
-     * @param <AVION> $avion
+     * @param <AVION> $avion Coleccion de datos sobre el avion
      * @return <boolean> existe o no la operacion
      */
     function agregarAvion($avion){
@@ -32,7 +32,7 @@ class controladorAvionBDclass {
 
     /**
      * Metodo para modificar los datos del avion en la base de datos
-     * @param <AVION> $avion
+     * @param <AVION> $avion Coleccion de datos sobre el avion
      * @return <boolean> resultado de la operacion
      */
     function editarAvion($avion){
@@ -44,6 +44,12 @@ class controladorAvionBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para actualizar la cantidad de asientos en el avion
+ * @param <String> $matricula Metricula del avion
+ * @param <Integer> $asientos Capacidad de asientos que tiene el avion
+ * @return <recurso> resultado de la operacion true o false
+ */
     function actualizarAsientos($matricula, $asientos){
         $resultado = false;
         $query = "UPDATE AVION a SET a.asientos = '".$asientos."'
@@ -58,16 +64,17 @@ class controladorAvionBDclass {
      */
     function consultarAviones(){
         $resultado = false;
-        $query = "SELECT a.matricula,a.asientos,COUNT(v.AVION_matricula) numero FROM AVION a LEFT JOIN VUELO v ON a.matricula = v.AVION_matricula
-GROUP BY a.matricula";
+        $query = "SELECT a.matricula,a.asientos,COUNT(v.AVION_matricula) numero
+                  FROM AVION a LEFT JOIN VUELO v ON a.matricula = v.AVION_matricula
+                  GROUP BY a.matricula";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 
     /**
      * Metodo para consultar aviones, segun si estan habilitados o no
-     * @param <type> $habilitado Habilitado o no
-     * @return <type> Los aviones que estan o no habilitados, de acuerdo a
+     * @param <boolean> $habilitado Habilitado o no
+     * @return <Coleccion> Los aviones que estan o no habilitados, de acuerdo a
      * la consulta
      */
     function consultarAvionesHab($habilitado){
@@ -83,8 +90,8 @@ GROUP BY a.matricula";
 
     /**
      * Metodo para consultar aviones por matricula
-     * @param <type> $matricula La matricula a consultar
-     * @return <type> El avion con la matricula consultada
+     * @param <String> $matricula La matricula a consultar
+     * @return <recurso> El avion con la matricula consultada
      */
     function consultarAvionesPorMatricula($matricula){
         $resultado = false;
@@ -97,8 +104,8 @@ GROUP BY a.matricula";
 
     /**
      * Metodo para consultar aviones por su matricula
-     * @param <type> $busqueda La matricula a consultar
-     * @return <type> Aviones segun la matricula
+     * @param <String> $busqueda La matricula a consultar
+     * @return <Coleccion> Aviones segun la matricula
      */
     function consultarAvionesMat($busqueda){
         $resultado = false;

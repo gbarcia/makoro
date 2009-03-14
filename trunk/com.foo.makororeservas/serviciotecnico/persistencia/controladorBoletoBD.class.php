@@ -16,8 +16,8 @@ class controladorBoletoBDclass {
 
 /**
  * Metodo para agegar un boleto en la base de datos
- * @param <BOLETO> $boleto
- * @return <boolean> resultado de la operacion 
+ * @param <BOLETO> $boleto Coleccion de datos del boleto
+ * @return <boolean> resultado de la operacion true o false
  */
     function agregarBoleto($boleto) {
         $resultado = false;
@@ -29,7 +29,7 @@ class controladorBoletoBDclass {
 
 /**
  * Metodo para consultar todos los boletos
- * @return <Coleccion> boletos
+ * @return <Coleccion> todos los boletos
  */
     function consultarBoletos(){
         $resultado = false;
@@ -54,9 +54,8 @@ class controladorBoletoBDclass {
 /**
  * Metodo para consultar un boleto en especifico segun la fecha de
  * reserva y solicitud
- * @param <Date> $fecha
- * @param <String> $solicitud
- * @return <recurso>
+ * @param <String> $solicitud Localizador de la reserva
+ * @return <recurso> boleto segun el localizador
  */
     function consultarBoletoEspecifico($solicitud) {
         $resultado = false;
@@ -77,9 +76,10 @@ class controladorBoletoBDclass {
     }
 
 /**
- * Metodo para consultar la informacion de los pasajeros
- * @param <Integer> $pagoId
- * @return <Coleccion> coleccion de pasajeros
+ * Metodo para consultar la informacion de los pasajeros segun la solicitud,
+ * es decir, el localizador de la reserva
+ * @param <String> $solicitud Localizador de la reserva
+ * @return <Coleccion> coleccion de pasajeros que pertenecen a la solicitud
  */
     function consultarPasajeros($solicitud){
         $resultado = false;
@@ -94,8 +94,9 @@ class controladorBoletoBDclass {
 
 /**
  * Metodo para consultar la cantidad de adultos y niños que iran en el viaje
- * @param <Integer> $pagoId
- * @param <String> $tipoPasajero
+ * @param <Integer> $pagoId Identificador del pago realizado
+ * @param <String> $tipoPasajero Tipo del pasajero, los cuales pueden ser: ADL, CHD o INF
+ * @param <Integer> $tipoVuelo Descripcion del vuelo, si es IDA o VUELTA
  * @return <recurso> recurso con la cantidad de adultos o niños
  */
     function cantidadAdultosNinos($solicitud, $tipoPasajero, $tipoVuelo){
@@ -115,8 +116,8 @@ class controladorBoletoBDclass {
 /**
  * Metodo para consultar el vuelo dependiendo del numero de la solicitud y
  * el tipo de vuelo, ya sea de ida o vuelta
- * @param <String> $solicitud
- * @param <String> $tipoVuelo
+ * @param <String> $solicitud Localizador de la reserva
+ * @param <String> $tipoVuelo Descripcion del vuelo, si es IDA o VUELTA
  * @return <recurso> recurso con detalles del vuelo
  */
     function consultarRutaFechaHoraVuelo($solicitud,$tipoVuelo) {
