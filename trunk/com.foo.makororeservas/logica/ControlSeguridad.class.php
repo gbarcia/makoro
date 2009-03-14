@@ -83,11 +83,11 @@ class ControlSeguridadclass {
             $encargado->setClave(md5($claveReal));
             $resultado = $this->controlPruebaSeguridad->agregarEncargado($encargado);
             if ($resultado) {
-                $cuerpo = "<font size='2' face='Arial'><P>Estimado: ". $encargado->getNombre(). "</P>";
+                $cuerpo = "<font size='2' face='Arial'><P>Sr o Sra: ". $encargado->getNombre(). "</P>";
                 $cuerpo .= "<P>Lo siguiente, son los datos de acceso al Sistema:</P>";
                 $cuerpo .= "Nombre de Usuario: ".$encargado->getLogin()." <br>";
                 $cuerpo .= "Clave: ".$claveReal." <br>";
-                $cuerpo .= "<P>La clave de Usuario es provisional y podrá ser cambiada una vez que ingrese al sistema. En caso de tener alguna consulta en referencia a ésta página por favor no dude en contactarnos.</P>";
+                $cuerpo .= "<P>En caso de tener alguna consulta en referencia a ésta página por favor no dude en contactarnos.</P>";
                 $cuerpo .= "Soporte@makoroenlinea.com";
                 $resultadoAdministrador = $this->enviarMail('gerardobarciap@gmail.com', $cuerpo);
                 if ($resultadoAdministrador)
