@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/TransaccionBD.class.php';
 /**
  * Description of Bitacoraclass
  * Clase manejadora de la bitacora
@@ -14,6 +15,8 @@ class Bitacoraclass {
     private $hora;
     // variable que contiene la instacia de la clase
     static $_instance;
+    // variable para realizar transacciones con la base de datos
+    private $transaccion;
 
 /**
  * Constructor privado para uso de Singletons
@@ -37,7 +40,7 @@ class Bitacoraclass {
  * @param <String> $mensaje el mensaje a escribir
  * @return <boolean> resultado de la operacion
  */
-    public function escribirMensaje($mensaje) {
+    public function escribirMensajeTxt($mensaje) {
         $resultado = false;
         $archivo = fopen(self::$nombreArchivo,'a+');
         if (!$archivo) return $resultado;
@@ -52,20 +55,34 @@ class Bitacoraclass {
         }
         return $resultado;
     }
+    /**
+     * Metodo para escribir el log en la base de datos
+     * @param <String> $mensaje el mensaje a escribir
+     * @param <boolean> $error booleano que indica si fue error o no
+     */
+    public function escribirMensajeBD($mensaje, $error) {
+        $this->transaccion = new TransaccionBDclass();
+        $resultado = false;
+        $mensaje = mysql_real_escape_string($mensaje);
+        $this->setFecha();
+        $this->setHora();
+        $query = "INSERT INTO BITACORA VALUES (NULL,'".$this->fecha."','".$this->hora."',$error,'$mensaje')";
+        $resultado = $this->transaccion->realizarTransaccionBitacora($query);
+        return $resultado;
+    }
 
 /**
  * Metodo para establecer la fecha actual del sistema
  */
     public function setFecha() {
-        $this->fecha = date("d/m/Y");
+        $this->fecha = date("Y-m-d");
     }
 
 /**
  * Metodo para establecer la hora actual del sistema
  */
     public function setHora() {
-        $ahora = getdate();
-        $this->hora = $ahora["hours"] . ":" . $ahora["minutes"] .  "\n";
+        $this->hora = date("G:H:s");
     }
 }
 ?>
