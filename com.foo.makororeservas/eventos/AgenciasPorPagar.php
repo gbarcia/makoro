@@ -8,8 +8,8 @@ function AgenciasPorPagar ($datos) {
     $recurso = $control->consultarClientesAgenciasPorPagar($datos[fechaInicio], $datos[fechaFin]);
     $cant = mysql_num_rows($recurso);
     $resultado = "";
-    if ($cant > 0) {
     $objResponse = new xajaxResponse();
+    if ($cant > 0) {
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table cellspacing="0" class="formTable">';
     $resultado.= '<thead>';
