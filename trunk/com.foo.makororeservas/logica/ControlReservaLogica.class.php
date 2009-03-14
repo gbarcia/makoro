@@ -80,7 +80,7 @@ class ControlReservaLogicaclass {
      * @return <type> El resultado de la operacion
      */
     function crearReserva($idVuelo,$tipoViaje,$cantAdultoNino,$cantidadInfantes,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
-        $posadaId){
+        $posadaId,$solicitud){
         $resultado = false;
         $disponibleAdultoNino = $this->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino);
         $disponibleInfante = $this->asientosDisponiblesInfante($idVuelo, $cantidadInfantes);
@@ -92,7 +92,9 @@ class ControlReservaLogicaclass {
             $estado = 'PP';
             $pagoId = 'null';
             $pasajeroId = 'null';
-            $solicitud = $this->generarSolicitud();
+            if($solicitud == ''){
+                $solicitud = $this->generarSolicitud();
+            }
             do{
                 $resultado = $this->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId, $encargadoCedula, $clienteParticularCedula,
                     $clienteAgenciaRif, $pagoId, $pasajeroId, $posadaId);
