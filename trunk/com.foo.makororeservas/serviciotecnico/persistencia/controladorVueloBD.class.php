@@ -105,7 +105,10 @@ class controladorVueloBDclass {
                                  AND vre.VUELO_id = v.id),0) as disponibilidadAdulto,
                          IFNULL((SELECT IF(2-(vu.cantidadInfantes+".$cantidadInfantes.")>=0,TRUE,FALSE)
                                  FROM VUELO vu
-                                 WHERE vu.id = v.id),0) as disponibilidadInfante
+                                 WHERE vu.id = v.id),0) as disponibilidadInfante,
+                         IFNULL((SELECT 2-vu.cantidadInfantes
+                                 FROM VUELO vu
+                                 WHERE vu.id = v.id),0) as infantesQuedan
                   FROM VUELO v, RUTA ru, AVION a, RESERVA r ";
         if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
             $query .= ", PASAJERO p ";
@@ -229,9 +232,12 @@ class controladorVueloBDclass {
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
                                  AND vre.VUELO_id = v.id),0) as disponibilidadAdulto,
-                         IFNULL((SELECT IF(2-(vu.cantidadInfantes+0)>=0,TRUE,FALSE)
+                         IFNULL((SELECT IF(vu.cantidadInfantes=2,FALSE,TRUE)
                                  FROM VUELO vu
-                                 WHERE vu.id = v.id),0) as disponibilidadInfante
+                                 WHERE vu.id = v.id),0) as disponibilidadInfante,
+                         IFNULL((SELECT 2-vu.cantidadInfantes
+                                 FROM VUELO vu
+                                 WHERE vu.id = v.id),0) as infantesQuedan
                   FROM VUELO v, RUTA ru, AVION a, RESERVA r
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
