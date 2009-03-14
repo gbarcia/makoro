@@ -24,11 +24,14 @@ class controladorPagoBDclass {
         $query = "INSERT INTO PAGO (tipo,monto,nombreBanco,numeroTransaccion,
                                     MONEDA_id) VALUES ('".$pago->getTipo()."',
                                                        ".$pago->getMonto().",
-                                                       '".$pago->getNombreBanco()."',
-                                                       ".$pago->getNumeroTransaccion().",
-                                                       ".$pago->getMonedaId().")";
-        echo $query;
-        $resultado = $this->transaccion->realizarTransaccion($query);
+                                                       '".$pago->getNombreBanco()."',";
+                                                       if($pago->getNumeroTransaccion()== ''){
+                                                           $query .= "null,";
+                                                       }else{
+                                                           $query .= $pago->getNumeroTransaccion() .",";
+                                                       }
+                                                       $query .= "".$pago->getMonedaId().")";
+        $resultado = $this->transaccion->realizarTransaccionInsertId($query);
         return $resultado;
     }
 

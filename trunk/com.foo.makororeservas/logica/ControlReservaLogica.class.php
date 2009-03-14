@@ -1,12 +1,15 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloReservaBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPagoBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlPagoLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlVueloLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlPasajeroLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Reserva.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloReserva.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Vuelo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pasajero.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pago.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/Conexion.class.php';
 /**
  * Description of ControlReservaLogicaclass
@@ -19,12 +22,14 @@ class ControlReservaLogicaclass {
     private $controlConexion;
     private $controlVuelo;
     private $controlPasajero;
+    private $controlPago;
 
     function __construct() {
         $this->controlBD = new controladorReservaBDclass();
         $this->controlVueloReservaBD = new controladorVueloReservaBDclass;
         $this->controlConexion = new Conexionclass();
         $this->controlVuelo = new ControlVueloLogicaclass();
+        $this->controlPago = new ControlPagoLogicaclass();
         $this->controlPasajero = new ControlPasajeroLogicaclass();
     }
 
@@ -215,6 +220,55 @@ class ControlReservaLogicaclass {
         $row = mysql_fetch_array($recurso);
         $disponible = $row[disponibleInfante];
         return $disponible;
+    }
+
+/**
+ * Metodo para pagar una reserva, además se actualiza el estado a PA (pagado)
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @param <String> $tipo Tipo de pago
+ * @param <double> $monto Monto a pagar
+ * @param <String> $nombreBanco Nombre del banco
+ * @param <Integer> $numeroTransaccion Numero de la transaccion del pago
+ * @param <Integer> $monedaId Identificador de la moneda
+ * @return <boolean> resultado de la operacion
+ */
+    function pagarReserva($idReserva,$tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId){
+        $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
+       echo $pagoId;
+       if($padoId > 0){
+            $estado = "PA";
+            $resultado = $this->controlBD->editarEstadoPagadoReserva($idReserva, $estado, $pagoId);
+        }
+            return $resultado;
+    }
+
+/**
+ * Metodo para consultar el estado de una reserva
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @return <recurso> estado de la reserva
+ */
+    function estadoReserva($idReserva) {
+        $recurso = $this->controlBD->consultarEstadoReserva($idReserva);
+        $row = mysql_fetch_array($recurso);
+        $estado = $row[estado];
+        return $estado;
+    }
+
+/**
+ * Metodo para actualizar el estado de una reserva
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @param <String> $estado Estado de la reserva
+ * @return <recurso> resultado de la operacion
+ */
+    function actualizarEstadoReserva($idReserva, $estado) {
+        $estadoBD = $this->estadoReserva($idReserva);
+        if($estadoBD != 'CA'){
+            $resultado = $this->controlBD->editarEstadoReserva($idReserva, $estado);
+        }
+        if($estado == 'CA'){
+            $resultado = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
+        }
+        return $resultado;
     }
 }
 ?>

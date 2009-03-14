@@ -176,6 +176,7 @@ class ControlPagoLogicaclass {
         return $comisionTotal;
     }
 
+
 /**
  * Metodo para consultar los detalles del recibo de pago. Informacion acerca de:
  * costo del pasaje de ida y vuelta, si el vuelo genera iva de ida o de vuelta,
