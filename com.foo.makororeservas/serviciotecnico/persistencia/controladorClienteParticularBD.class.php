@@ -59,7 +59,7 @@ class controladorClienteParticularBDclass {
     /**
      * Metodo que consulta los clientes particulares por su cedula, nombre o apellido
      * @param <string> $busqueda la busqueda que se desea realizar
-     * @return <recurso>
+     * @return <recurso> cliente particular segun la busqueda
      */
     function consultarClienteParticularCedulaNombreApellido ($busqueda) {
         $query = "SELECT CONCAT(cp.cedula,' ',cp.nombre,' ',cp.apellido), 
@@ -76,7 +76,7 @@ class controladorClienteParticularBDclass {
 
     /**
      * Metodo para consultar el cliente particular con mas vuelos
-     * @return <coleccion>
+     * @return <recurso> cliente particular con mas vuelos
      */
     function consultarClienteParticularConMasVuelos(){
        $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.sexo,cp.fechaNacimiento,
@@ -107,7 +107,8 @@ class controladorClienteParticularBDclass {
     /**
      * Metodo para consultar clientes particulares que hayan realizado
      * mas vuelos, en orden descendente
-     * @return <coleccion>
+     * @return <coleccion> clientes particulares con vuelos reservados ordenados
+     *                     descentemente
      */
     function consultarClientesParticularesVuelosDescendente(){
         $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.sexo,cp.fechaNacimiento,
@@ -126,6 +127,12 @@ class controladorClienteParticularBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar los clientes por pagar la reservacion, en un rango de tiempo
+ * @param <Date> $fechaInicio Fecha inicio de la busqueda
+ * @param <Date> $fechaFin Fecha fin de la busqueda
+ * @return <coleccion> clientes particulares que hacen falta por pagar
+ */
     function consultarClientesParticularesPorPagar($fechaInicio,$fechaFin){
        $query = "SELECT cp.cedula,cp.nombre,cp.apellido,cp.sexo,cp.fechaNacimiento,
                         cp.telefono,cp.estado,cp.ciudad,cp.direccion,r.fecha,COUNT(r.CLIENTE_PARTICULAR_cedula) cn
@@ -138,12 +145,21 @@ class controladorClienteParticularBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar todos los cliente particulares
+ * @return <Coleccion> clientes particulares con sus datos
+ */
     function consultarTodoLosClientesPersonales () {
         $query = "SELECT * FROM CLIENTE_PARTICULAR";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 
+/**
+ * Metodo para consultar un cliente particular especifico
+ * @param <Integer> $cedula Cedula del cliente particular
+ * @return <recurso> cliente particular segun la busqueda
+ */
     function consultarClienteParticular ($cedula) {
         $query = "SELECT * FROM CLIENTE_PARTICULAR WHERE cedula = $cedula";
         $resultado = $this->transaccion->realizarTransaccion($query);
