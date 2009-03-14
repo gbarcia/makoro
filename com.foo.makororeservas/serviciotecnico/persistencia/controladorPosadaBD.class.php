@@ -56,6 +56,11 @@ class controladorPosadaBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar una posada segun su identificador
+ * @param <Integer> $id Identificador de la posada
+ * @return <recurso> datos de la posada
+ */
      function consultarPosadaID($id){
         $resultado = false;
         $query = "SELECT * FROM POSADA WHERE id = $id";

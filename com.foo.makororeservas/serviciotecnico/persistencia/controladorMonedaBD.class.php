@@ -15,7 +15,7 @@ class controladorMonedaBDclass {
 
 /**
  * Metodo para agregar una nueva moneda en la base de datos
- * @param <MONEDA> $moneda
+ * @param <MONEDA> $moneda Coleccion con los datos de moneda
  * @return <boolean> resultado de la operacion
  */
     function agregarMoneda($moneda) {
@@ -27,7 +27,7 @@ class controladorMonedaBDclass {
 
 /**
  * Metodo para actulizar los datos de la moneda
- * @param <MONEDA> $moneda
+ * @param <MONEDA> $moneda Coleccion con los datos de la moneda
  * @return <boolean> resultado de la operacion
  */
     function editarMoneda($moneda) {

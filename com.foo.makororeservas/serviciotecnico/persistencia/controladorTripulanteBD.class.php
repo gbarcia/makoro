@@ -62,11 +62,11 @@ class controladorTripulanteBDclass {
 /**
  * Metodo para consultar el pago del personal dependiendo de su fecha inicio,
  * fecha fin, cedula, cargo y tarifa en un rango de tiempo
- * @param <Date> $fechaini
- * @param <Date> $fechafin
- * @param <Integer> $cedula
- * @param <String> $cargo
- * @param <double> $tarifa
+ * @param <Date> $fechaini Fecha inicio de la busqueda del pago
+ * @param <Date> $fechafin Fecha fin de la busqueda del pago
+ * @param <Integer> $cedula Cedula del tripulante
+ * @param <String> $cargo Cargo del tripulante
+ * @param <double> $tarifa Tarifa que cobra el tripulante
  * @return <double> monto total
  */
     function consultarTotalPagoPersonal($fechaini, $fechafin, $cedula, $cargo, $tarifa){
@@ -89,9 +89,9 @@ class controladorTripulanteBDclass {
 /**
  * Metodo para consultar en detalle el pago del personal en un rango de tiempo
  * fecha fin, cedula, cargo y tarifa
- * @param <Date> $fechaini
- * @param <Date> $fechafin
- * @param <Integer> $cedula
+ * @param <Date> $fechaini Fecha inicio de la busqueda del pago
+ * @param <Date> $fechafin Fecha fin de la busqueda del pago
+ * @param <Integer> $cedula Cedula del tripulante
  * @return <recurso> registros de la consulta
  */
 
@@ -132,7 +132,7 @@ class controladorTripulanteBDclass {
 
 /**
  * Metodo para consultar un persona por cedula o completacion de datos(nombre, apellido)
- * @param <String> $busqueda
+ * @param <String> $busqueda Descripcion de la busqueda
  * @return <recurso> recurso con todos los registros si existen de la busqueda
  */
     function consultarPersonaCedulaNombreApellido ($busqueda) {
@@ -177,6 +177,10 @@ class controladorTripulanteBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar los pilotos
+ * @return <boolean> resultado de la operacion
+ */
     function consultarPilotos () {
         $resultado = false;
         $query = "SELECT p.nombre,p.apellido,p.cedula FROM PERSONAL p
@@ -185,6 +189,10 @@ class controladorTripulanteBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar los copilotos
+ * @return <boolean> resultado de la operacion
+ */
     function consultarCopilotos () {
         $resultado = false;
         $query = "SELECT p.nombre,p.apellido,p.cedula FROM PERSONAL p

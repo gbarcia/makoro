@@ -16,7 +16,7 @@ class controladorPasajeroBDclass {
     }
 /**
  * Metodo para agregar un nuevo pasajero
- * @param <PASAJERO> $pasajero
+ * @param <PASAJERO> $pasajero Coleccion con los datos del pasajero
  * @return <boolean> resultado de la operacion
  */
     function agregarPasajero($pasajero){
@@ -40,7 +40,7 @@ class controladorPasajeroBDclass {
 
 /**
  * Metodo para editar un pasajero en la base de datos
- * @param <PASAJERO> $pasajero
+ * @param <PASAJERO> $pasajero Coleccion con los datos del pasajero
  * @return <boolean> resultado de la operacion
  */
     function editarPasajero($pasajero){
@@ -72,7 +72,7 @@ class controladorPasajeroBDclass {
 
 /**
  * Metodo para consultar un pasajero segun la busqueda
- * @param <String> $busqueda
+ * @param <String> $busqueda Palabra, letra o numero
  * @return <recurso> recurso con todos los registros de los pasajeros
  */
     function consultarPasajeroNombreApellidoCedulaPasaporte($busqueda) {
@@ -89,9 +89,9 @@ class controladorPasajeroBDclass {
     }
 
 /**
- * Metodo para consultar pasajeros con viajes realizados
- * @param <Date> $fechaini
- * @param <Date> $fechafin
+ * Metodo para consultar pasajeros con viajes realizados por un rango de fecha
+ * @param <Date> $fechaini Fecha inicio del vuelo
+ * @param <Date> $fechafin Fecha fin del vuelo
  * @return <recurso> registros de la busqueda
  */
     function consultarPasajerosConViajesRealizados($fechaini,$fechafin) {

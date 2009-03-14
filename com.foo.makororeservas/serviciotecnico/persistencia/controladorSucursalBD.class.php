@@ -184,12 +184,23 @@ class controladorSucursalBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para habilitar o deshabilitar una sucursal
+ * @param <Integer> $valor Valor 1 para habilitar o 0 para deshabilitar
+ * @param <Integer> $id Identificador de la sucursal
+ * @return <boolean> resultado de la operacion
+ */
     function eliminarRegenerarSucursal ($valor,$id) {
         $query = "UPDATE SUCURSAL SET habilitado=$valor WHERE id = $id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 
+/**
+ * Metodo para consultar una sucursal determinada
+ * @param <Integer> $id Identificador de la sucursal
+ * @return <boolean> resultado de la operacion true o false
+ */
     function consultarSucursal ($id) {
         $query = "SELECT * FROM SUCURSAL WHERE id=$id";
         $resultado = $this->transaccion->realizarTransaccion($query);

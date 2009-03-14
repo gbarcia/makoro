@@ -15,8 +15,8 @@ class controladorTipoCargoBDclass {
 
     /**
      * Metodo para insertar un nuevo cargo
-     * @param <TIPO_CARGO> $tipoCargo
-     * @return <resultado>
+     * @param <TIPO_CARGO> $tipoCargo Coleccion con los datos del cargo
+     * @return <boolean> resultado de la operacion true o false
      */
     function agregarTipoCargo($tipoCargo){
         $resultado = false;

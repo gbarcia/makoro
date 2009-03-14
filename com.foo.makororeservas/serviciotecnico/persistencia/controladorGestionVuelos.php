@@ -13,11 +13,18 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/VueloP
  */
 class controladorGestionVuelos {
     private $transaccion;
-
+    /**
+     * Constructor de la clase
+     */
     function __construct() {
         $this->transaccion = new TransaccionBDclass();
     }
 
+/**
+ * Metodo para consultar un vuelo por su identificador determinado 
+ * @param <Integer> $idVuelo Identificador del vuelo
+ * @return <recurso> vuelo especificado por la busqueda
+ */
     function ConsultarVueloPorId ($idVuelo) {
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula, v.RUTA_sitioSalida salida,v.RUTA_sitioLlegada llegada
                   FROM vuelo v WHERE id=$idVuelo";
@@ -25,6 +32,15 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar si el vuelo a insertar existe o no
+ * @param <Date> $fecha Fecha del vuelo
+ * @param <Time> $hora Hora del vuelo
+ * @param <String> $matricula Matricula del avion
+ * @param <String> $sitioSalida Lugar de salida
+ * @param <String> $sitioLlegada Lugar de retorno
+ * @return <boolean> resultado de la operacion true o false
+ */
     function existeVuelo($fecha,$hora,$matricula,$sitioSalida,$sitioLlegada) {
         $resultado = false;
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula, v.RUTA_sitioSalida salida,v.RUTA_sitioLlegada llegada
@@ -41,6 +57,14 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar si un avion determinado esta ocupado para una fecha
+ * y hora especifica
+ * @param <Date> $fecha Fecha del vuelo
+ * @param <Time> $hora Hora del vuelo
+ * @param <String> $matricula Matricula del avion
+ * @return <recurso>  cantidad de vuelos para ese vuelo
+ */
     function avionOcupado ($fecha,$hora,$matricula) {
         $resultado = false;
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula
@@ -55,6 +79,15 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+/**
+ * Metodo para actualizar un avion determinado por la fecha, hora, matricula y
+ * el identificador del vuelo
+ * @param <Date> $fecha Fecha del vuelo
+ * @param <Time> $hora Hora del vuelo
+ * @param <String> $matricula Matricula del avion
+ * @param <Integer> $idVuelo Identificador del vuelo
+ * @return <boolean> resultado de la operacion true o false
+ */
     function avionOcupadoEditar ($fecha,$hora,$matricula,$idVuelo) {
         $resultado = false;
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula
@@ -70,6 +103,13 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar un personal que no este disponible en un vuelo
+ * @param <Integer> $cedula Cedula del personal
+ * @param <Date> $fecha Fecha del vuelo
+ * @param <Time> $hora Hora del vuelo
+ * @return <boolean> resultado de la operacion true o false
+ */
     function personalNoDisponible ($cedula,$fecha,$hora) {
         $resultado = false;
         $query = "SELECT  p.cedula
@@ -87,6 +127,12 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+/**
+ * Metodo para confirmar si existe un personal en la base de datos
+ * @param <Integer> $idVuelo Identificador del vuelo
+ * @param <Integer> $cedula Cedula del personal
+ * @return <boolean> resultado de la operacion true o false
+ */
     function existePersonal ($idVuelo,$cedula) {
         $resultado = false;
         $query = "SELECT vr.PERSONAL_cedula cedula
@@ -100,12 +146,25 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+/**
+ * Metodo para eliminar un tripulante en un vuelo
+ * @param <Integer> $idVuelo Identificador del vuelo
+ * @return <boolean> resultado de la operacion true o false
+ */
     function borrarPersonalVuelo ($idVuelo) {
         $resultado = false;
         $query = "DELETE FROM VUELO_PERSONAL WHERE VUELO_id = $idVuelo";
         $recurso = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+/**
+ * Metodo para actualizar la matricula del avion en el vuelo solo si ésta es
+ * diferente de null, sino que la defina como null
+ * @param <Integer> $idVuelo Identificador del vueo
+ * @param <String> $matricula Matricula del avion
+ * @return <boolean> resultado de la operacion true o false
+ */
 
     function actualizarMatriculaAvion ($idVuelo, $matricula) {
         $resultado = false;
@@ -117,6 +176,16 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+/**
+ * Metodo para actualizar los datos del vuelo
+ * @param <Integer> $idVuelo Identificador del vuelo
+ * @param <String> $matricula Matricula del avion
+ * @param <String> $piloto Coleccion de datos del piloto
+ * @param <String> $copiloto Coleccion de datos del copiloto
+ * @param <Date> $fecha Fecha del vuelo
+ * @param <Time> $hora Hora del vuelo
+ * @return <boolean> resultado de la operacion true o false
+ */
     function editarVuelo ($idVuelo,$matricula,$piloto,$copiloto,$fecha,$hora) {
         $resultado = false;
         if (!$this->avionOcupadoEditar($fecha, $hora, $matricula,$idVuelo)) {
@@ -143,6 +212,17 @@ class controladorGestionVuelos {
         return $resultado;
     }
 
+/**
+ * Metodo para agregar un nuevo vuelo
+ * @param <Date> $fecha Fecha del vuelo
+ * @param <Time> $hora Hora del vuelo
+ * @param <String> $matricula Matricula del avion
+ * @param <String> $sitioSalida Lugar de salida
+ * @param <String> $sitioLlegada Lugar de retorno
+ * @param <Coleccion> $piloto Coleccion con los datos del piloto
+ * @param <Coleccion> $copiloto Coleccion con los datos del copiloto
+ * @return <boolean> resultado de la operacion true o false
+ */
     function nuevoVuelo ($fecha,$hora,$matricula,$sitioSalida,$sitioLlegada,$piloto,$copiloto) {
         $resultado = false;
         if (!$this->existeVuelo($fecha, $hora, $matricula, $sitioSalida, $sitioLlegada)) {
