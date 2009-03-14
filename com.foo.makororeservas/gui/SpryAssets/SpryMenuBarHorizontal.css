@@ -50,7 +50,7 @@ ul.MenuBarHorizontal ul
 	font-size: 100%;
 	z-index: 1020;
 	cursor: default;
-	width: 8.2em;
+	width: 10.2em;
 	position: absolute;
 	left: -1000em;
 }
@@ -62,7 +62,7 @@ ul.MenuBarHorizontal ul.MenuBarSubmenuVisible
 /* Menu item containers are same fixed width as parent */
 ul.MenuBarHorizontal ul li
 {
-	width: 8.2em;
+	width: 10.2em;
 }
 /* Submenus should appear slightly overlapping to the right (95%) and up (-5%) */
 ul.MenuBarHorizontal ul ul
@@ -83,11 +83,6 @@ ul.MenuBarHorizontal ul.MenuBarSubmenuVisible ul.MenuBarSubmenuVisible
 
  *******************************************************************************/
 
-/* Submenu containers have borders on all sides */
-ul.MenuBarHorizontal ul
-{
-	border: 1px solid #CCC;
-}
 /* Menu items are a light gray block with padding and no text decoration */
 ul.MenuBarHorizontal a
 {
