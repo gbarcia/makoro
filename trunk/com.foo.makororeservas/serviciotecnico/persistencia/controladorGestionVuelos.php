@@ -27,7 +27,7 @@ class controladorGestionVuelos {
  */
     function ConsultarVueloPorId ($idVuelo) {
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula, v.RUTA_sitioSalida salida,v.RUTA_sitioLlegada llegada
-                  FROM vuelo v WHERE id=$idVuelo";
+                  FROM VUELO v WHERE id=$idVuelo";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -44,7 +44,7 @@ class controladorGestionVuelos {
     function existeVuelo($fecha,$hora,$matricula,$sitioSalida,$sitioLlegada) {
         $resultado = false;
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula, v.RUTA_sitioSalida salida,v.RUTA_sitioLlegada llegada
-                  FROM vuelo v WHERE v.fecha= '".$fecha."'
+                  FROM VUELO v WHERE v.fecha= '".$fecha."'
                   AND v.hora= '".$hora."'
                   AND v.AVION_matricula = '".$matricula."'
                   AND v.RUTA_sitioSalida = '".$sitioSalida."'
@@ -68,7 +68,7 @@ class controladorGestionVuelos {
     function avionOcupado ($fecha,$hora,$matricula) {
         $resultado = false;
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula
-                  FROM vuelo v WHERE v.fecha= '".$fecha."'
+                  FROM VUELO v WHERE v.fecha= '".$fecha."'
                   AND v.hora= '".$hora."'
                   AND v.AVION_matricula = '".$matricula."'";
         $recurso = $this->transaccion->realizarTransaccion($query);
@@ -91,7 +91,7 @@ class controladorGestionVuelos {
     function avionOcupadoEditar ($fecha,$hora,$matricula,$idVuelo) {
         $resultado = false;
         $query = "SELECT v.id,v.fecha,v.hora,v.AVION_matricula matricula
-                  FROM vuelo v WHERE v.fecha= '".$fecha."'
+                  FROM VUELO v WHERE v.fecha= '".$fecha."'
                   AND v.hora= '".$hora."'
                   AND v.AVION_matricula = '".$matricula."'";
         $recurso = $this->transaccion->realizarTransaccion($query);
