@@ -48,7 +48,6 @@ function procesarFiltros($datos){
     $resultado.= '<th>ORIGEN</th>';
     $resultado.= '<th>DESTINO</th>';
     $resultado.= '<th>ASIENTOS DISPONIBLES</th>';
-    $resultado.= '<th>DISPONIBILIDAD</th>';
     $resultado.= '<th>AVION</th>';
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
@@ -73,7 +72,6 @@ function procesarFiltros($datos){
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
         $resultado.= '<td>' . $cantidadDisponible. '</td>';
-        $resultado.= '<td>' . $disponibilidad. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
@@ -105,7 +103,6 @@ function inicio(){
     $resultado.= '<th>ORIGEN</th>';
     $resultado.= '<th>DESTINO</th>';
     $resultado.= '<th>ASIENTOS DISPONIBLES</th>';
-    $resultado.= '<th>DISPONIBILIDAD</th>';
     $resultado.= '<th>AVION</th>';
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
@@ -118,7 +115,8 @@ function inicio(){
         $cantidadDisponible = $var->getAsientosDisponibles();
         $piloto = $var->getPiloto();
         $copiloto = $var->getCopiloto();
-        $disponibilidad = $var->getDisponibilidad();
+        $disponibilidadaAdulto = $var->getDisponibilidadadulto();
+        $disponibilidadaInfante = $var->getDisponibilidadinfante();
         $idVuelo = $var->getIdvuelo();
         if ($color){
             $resultado.= '<tr class="r0">';
@@ -130,11 +128,10 @@ function inicio(){
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
         $resultado.= '<td>' . $cantidadDisponible. '</td>';
-        $resultado.= '<td>' . $disponibilidad. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input id="boton" type="button" value="VER"  onclick="xajax_detalles(\''.$idVuelo.'\')"/></td>';
+        $resultado.= '<td><input type="submit" value="" /></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -144,7 +141,7 @@ function inicio(){
         $resultado = 'No hay vuelos planificados para hoy (' . date("d") . "-" .
         date("m") . '-' . date('Y') . ')';
     }
-    $objResponse->addAssign("gestionReserva", "innerHTML", "$resultado");
+    $objResponse->addAssign("vuelos", "innerHTML", "$resultado");
     return $objResponse;
 }
 
@@ -199,7 +196,5 @@ function detalles($idVuelo){
     $objResponse->addAssign("gestionReservaPasajeros", "innerHTML", "$resultado");
     return $objResponse;
 }
-
-
 
 ?>
