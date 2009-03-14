@@ -34,8 +34,7 @@ class controladorPasajeroBDclass {
                           }
                           $query .= "'".$pasajero->getNacionalidad()."',
                           '".$pasajero->getTipoPasajeroId()."')";
-        echo $query;
-        $resultado = $this->transaccion->realizarTransaccion($query);
+        $resultado = $this->transaccion->realizarTransaccionInsertId($query);
         return $resultado;
     }
 

@@ -66,7 +66,7 @@ $clienteTest = new ClienteParticularclass();
 //echo $resultado;
 
 /* ASIGNAR PASAJERO A RESERVA *///($nombre, $apellido, $sexo, $cedula, $pasaporte, $nacionalidad, $tipoPasajeroId, $idReserva)
-$resultado = $controlTest->actualizarPasajeroReserva('JOHNNY', 'TRUJI', 'M', 17706708, null, 'VENEZUELAN', 'ADL', 24);
+$resultado = $controlTest->actualizarPasajeroReserva('joniii', 'TRUJI-truji', 'M', 17706709, null, 'VENEZOLANO', 'ADL', 23);
 
 //echo $resultado;
 
