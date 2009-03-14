@@ -19,7 +19,7 @@ class controladorTipoPasajeroBDclass {
 
 /**
  * Metodo para actualizar el porcentaje de descuento de los tipos de pasajeros
- * @param <TIPO_PASAJERO> $tipoPasajero
+ * @param <TIPO_PASAJERO> $tipoPasajero Coleccion de datos con el tipo pasajero
  * @return <boolean> resultado de la operacion
  */
     function editarTipoPasajero($tipoPasajero){

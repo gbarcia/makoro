@@ -15,8 +15,8 @@ class controladorVueloPersonalBDclass {
 
 /**
  * Metodo para agregar el personal al vuelo
- * @param <VUELO_PERSONAL> $vueloPersonal
- * @return <boolean>
+ * @param <VUELO_PERSONAL> $vueloPersonal Coleccion de datos del personal y el vuelo
+ * @return <boolean> resultado de la operacion
  */
     function agregarVueloPersonal($vueloPersonal) {
         $resultado = false;
@@ -30,8 +30,8 @@ class controladorVueloPersonalBDclass {
 
 /**
  * Metodo para actualizar el personal del vuelo o cambiarlos de vuelo
- * @param <type> $vueloPersonal
- * @return <type>
+ * @param <VUELO_PERSONAL> $vueloPersonal Coleccion de datos del personal y el vuelo
+ * @return <boolean> resultado de la operacion
  */
     function editarVueloPersonal($vueloPersonal) {
         $resultado = false;
@@ -46,7 +46,7 @@ class controladorVueloPersonalBDclass {
 
 /**
  * Metodo para consultar el piloto del vuelo
- * @param <Integer> $id
+ * @param <Integer> $id Identificador del vuelo
  * @return <recurso> vuelo con el piloto
  */
     function consultarVueloPersonalPiloto($id) {
@@ -64,7 +64,7 @@ class controladorVueloPersonalBDclass {
 
 /**
  * Metodo para consultar el copiloto del vuelo
- * @param <Integer> $id
+ * @param <Integer> $id Identificador del vuelo
  * @return <recurso> vuelo con el copiloto
  */
     function consultarVueloPersonalCopiloto($id) {

@@ -16,8 +16,8 @@ class controladorPagoBDclass {
 
 /**
  * Metodo para agregar un nuevo pago en la besa de datos
- * @param <PAGO> $pago
- * @return <boolean> resultado de la operacion
+ * @param <PAGO> $pago Coleccion con los datos del pago
+ * @return <boolean> resultado de la operacion true o false
  */
     function agregarPago($pago) {
         $resultado = false;
@@ -34,8 +34,8 @@ class controladorPagoBDclass {
 
 /**
  * Metodo para editar algun pago en la base de datos
- * @param <PAGO> $pago
- * @return <boolean> resultado de la operacion
+ * @param <PAGO> $pago Coleccion con los datos del pago
+ * @return <boolean> resultado de la operacion true o false
  */
     function editarPago($pago) {
         $resultado = false;
@@ -63,12 +63,11 @@ class controladorPagoBDclass {
 
 /**
  * Metodo para eliminar el pago de un cliente particular en la base de datos
- * @param <Integer> $cedula
- * @param <Date> $fechaini
- * @param <Date> $fechafin
+ * @param <Integer> $cedula Cedula del cliente particular
+ * @param <Date> $fecha Fecha de la reserva a anular
  * @return <boolean> resultado de la operacion
  */
-    function cancelarPagoRealizadoClienteParticular($cedula, $fechaini, $fechafin) {
+    function cancelarPagoRealizadoClienteParticular($cedula, $fecha) {
         $resultado = false;
         $query = "DELETE PAGO p
                   FROM RESERVA re, CLIENTE_PARTICULAR cp, PAGO p
@@ -83,9 +82,8 @@ class controladorPagoBDclass {
 
 /**
  * Metodo para eliminar el pago de un cliente agencia en la base de datos
- * @param <String> $rif
- * @param <Date> $fechaini
- * @param <Date> $fechafin
+ * @param <String> $rif RIF de la agencia
+ * @param <Date> $fecha Fecha de la reserva
  * @return <boolean> resultado de la operacion
  */
     function cancelarPagoRealizadoClienteAgencia($rif, $fecha) {
@@ -101,6 +99,13 @@ class controladorPagoBDclass {
         return $resultado;
     }
 
+/**
+ * Metodo para consultar la cantidad de ninos y adultos en una reservacion segun el localizador
+ * @param <String> $solicitud Localizador de la reserva
+ * @param <String> $tipoPasajero Clasificacion del pasajero puede ser: ADL, CHD o INF
+ * @param <String> $tipoVuelo Descripcion del tipo de vuelo puede ser: IDA o VUELTA
+ * @return <boolean> resultado de la operacion true o false
+ */
     function cantidadAdultosNinosPorSolicitud($solicitud, $tipoPasajero, $tipoVuelo){
         $resultado = false;
         $query = "SELECT COUNT(TIPO_PASAJERO_id) cantidad, t.porcentajeDescuento descuento

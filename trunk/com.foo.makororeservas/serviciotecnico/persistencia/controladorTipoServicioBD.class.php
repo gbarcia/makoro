@@ -15,7 +15,7 @@ class controladorTipoServicioBDclass {
 
 /**
  * Metodo para agregar un nuevo tipo servicio
- * @param <String> $tipoServicio
+ * @param <String> $tipoServicio Coleccion de datos del servicio
  * @return <boolean> resultado de la operacion
  */
     function agregarTipoServicio($tipoServicio) {
@@ -30,7 +30,7 @@ class controladorTipoServicioBDclass {
 
 /**
  * Metodo para modificar un tipo servicio
- * @param <String> $tipoServicio
+ * @param <String> $tipoServicio Coleccion de datos del servicio
  * @return <boolean> resultado de la operacion
  */
     function editarTipoServicio($tipoServicio) {
@@ -58,7 +58,7 @@ ts.id = r.TIPO_SERVICIO_id GROUP BY ts.id";
 
 /**
  * Metodo para consultar un servicio en especifico
- * @param <Integer> $id
+ * @param <Integer> $id Identificador del servicio
  * @return <recurso> recurso con el servicio solicitado
  */
     function consultarServicioId($id) {
@@ -72,8 +72,8 @@ ts.id = r.TIPO_SERVICIO_id GROUP BY ts.id";
 
 /**
  * Metodo para consultar un servicio seleccionado
- * @param <String> $busqueda
- * @return <recurso>
+ * @param <String> $busqueda Descripcion del tipo de busqueda
+ * @return <recurso> recurso con los datos del servicio determinado
  */
     function consultarServicio($busqueda) {
         $resultado = false;
