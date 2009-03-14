@@ -6,7 +6,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 function AgenciasPorPagar ($datos) {
     $control = new controladorClienteAgenciaBDclass();
     $recurso = $control->consultarClientesAgenciasPorPagar($datos[fechaInicio], $datos[fechaFin]);
+    $cant = mysql_num_rows($recurso);
     $resultado = "";
+    if ($cant > 0) {
     $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table cellspacing="0" class="formTable">';
@@ -37,7 +39,10 @@ function AgenciasPorPagar ($datos) {
         $color = !$color;
     }
     $resultado.= '</table>';
-    $resultado.= '</form>';
+    $resultado.= '</form>'; }
+    else {
+        $resultado = 'No hay pagos pendientes para este período';
+    }
     $objResponse->addAssign("ResultadoCa", "innerHTML", $resultado);
     return $objResponse;
 }
