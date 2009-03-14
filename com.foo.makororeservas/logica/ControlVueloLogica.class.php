@@ -162,8 +162,8 @@ class ControlVueloLogicaclass {
             $copiloto = $rowVueloCopiloto[tripulante];
 
             if($piloto == ''||$copiloto == ''){
-                $piloto = "No hay piloto registrado";
-                $copiloto = "No hay copiloto registrado";
+                $piloto = "No asignado";
+                $copiloto = "No asignado";
             }
 
             $vuelo = new Vueloclass();
