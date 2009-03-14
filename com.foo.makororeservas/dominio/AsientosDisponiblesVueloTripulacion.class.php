@@ -15,8 +15,9 @@ class AsientosDisponiblesVueloTripulacionclass {
     private $disponibilidadInfante;
     private $idVuelo;
     private $cantInfantes;
+    private $cantInfantesQuedan;
 
-    function __construct($coleccionVuelo, $asientosDisponibles, $piloto, $copiloto, $disponibilidadAdulto, $disponibilidadInfante, $idVuelo, $cantInfantes) {
+    function __construct($coleccionVuelo, $asientosDisponibles, $piloto, $copiloto, $disponibilidadAdulto, $disponibilidadInfante, $idVuelo, $cantInfantes, $cantInfantesQuedan) {
         $this->coleccionVuelo = $coleccionVuelo;
         $this->asientosDisponibles = $asientosDisponibles;
         $this->piloto = $piloto;
@@ -25,6 +26,7 @@ class AsientosDisponiblesVueloTripulacionclass {
         $this->disponibilidadInfante = $disponibilidadInfante;
         $this->idVuelo = $idVuelo;
         $this->cantInfantes = $cantInfantes;
+        $this->cantInfantesQuedan = $cantInfantesQuedan;
     }
 
 
@@ -90,6 +92,14 @@ class AsientosDisponiblesVueloTripulacionclass {
 
     public function setDisponibilidadinfante($disponibilidadInfante) {
         $this->disponibilidadInfante = $disponibilidadInfante;
+    }
+
+    public function getCantinfantesquedan() {
+        return $this->cantInfantesQuedan;
+    }
+        
+    public function setCantinfantesquedan($cantInfantesQuedan) {
+        $this->cantInfantesQuedan = $cantInfantesQuedan;
     }
 
 }
