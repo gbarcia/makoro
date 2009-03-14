@@ -31,9 +31,14 @@ function procesarFiltros($datos){
     } else {
         $capacidad = $datos[disponibilidad];
     }
+    if ($datos[disponibilidadInfantes] == ""){
+        $capacidadInfantes = 0;
+    } else {
+        $capacidadInfantes = $datos[disponibilidad];
+    }
     $controlVuelo = new ControlVueloLogicaclass();
     $coleccionVuelo = $controlVuelo->vueloEspecificoConFiltro($datos[fechaInicio],
-        $datos[fechaFin], '', '', $arregloRuta[0], $arregloRuta[1], $capacidad,
+        $datos[fechaFin], '', '', $arregloRuta[0], $arregloRuta[1], $capacidad, 0,
         $datos[cedulaPasaportePasajero], $datos[nombrePasajero], $datos[apellidoPasajero],
         $datos[cedulaCliente], $datos[nombreParticular], $datos[apellidoParticular],
         $datos[rifCliente], $datos[nombreAgencia], $datos[solicitud], $datos[estado]);
@@ -47,20 +52,23 @@ function procesarFiltros($datos){
     $resultado.= '<th>HORA</th>';
     $resultado.= '<th>ORIGEN</th>';
     $resultado.= '<th>DESTINO</th>';
-    $resultado.= '<th>ASIENTOS DISPONIBLES</th>';
     $resultado.= '<th>AVION</th>';
+    $resultado.= '<th>ADL/CHD DISPONIBLES</th>';
+    $resultado.= '<th>INF DISPONIBLES</th>';
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
-    $resultado.= '<th>DETALLES</th>';
+    $resultado.= '<th>EDITAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
     foreach ($coleccionVuelo as $var) {
         $recursoDetalles = $var->getColeccionVuelo();
         $cantidadDisponible = $var->getAsientosDisponibles();
+        $cantidadDisponibleInfantes = $var->getCantinfantesquedan();
         $piloto = $var->getPiloto();
         $copiloto = $var->getCopiloto();
-        $disponibilidad = $var->getDisponibilidad();
+        $disponibilidadaAdulto = $var->getDisponibilidadadulto();
+        $disponibilidadaInfante = $var->getDisponibilidadinfante();
         $idVuelo = $var->getIdvuelo();
         if ($color){
             $resultado.= '<tr class="r0">';
@@ -71,11 +79,12 @@ function procesarFiltros($datos){
         $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
-        $resultado.= '<td>' . $cantidadDisponible. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
+        $resultado.= '<td>' . $cantidadDisponible. '</td>';
+        $resultado.= '<td>' . $cantidadDisponibleInfantes. '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input id="boton" type="button" value="VER" onclick="xajax_detalles(\''.$idVuelo.'\')"/></td>';
+        $resultado.= '<td><input type="button" value="DETALLES" onclick="xajax_detalles(1)"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -84,7 +93,7 @@ function procesarFiltros($datos){
     if ($recursoDetalles == "") {
         $resultado = 'No hay coincidencias con su busqueda.';
     }
-    $objResponse->addAssign("gestionReserva", "innerHTML", $resultado);
+    $objResponse->addAssign("vuelos", "innerHTML", $resultado);
     return $objResponse;
 }
 
@@ -102,8 +111,9 @@ function inicio(){
     $resultado.= '<th>HORA</th>';
     $resultado.= '<th>ORIGEN</th>';
     $resultado.= '<th>DESTINO</th>';
-    $resultado.= '<th>ASIENTOS DISPONIBLES</th>';
     $resultado.= '<th>AVION</th>';
+    $resultado.= '<th>ADL/CHD DISPONIBLES</th>';
+    $resultado.= '<th>INF DISPONIBLES</th>';
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
     $resultado.= '<th>DETALLES</th>';
@@ -113,6 +123,7 @@ function inicio(){
     foreach ($coleccionVuelo as $var) {
         $recursoDetalles = $var->getColeccionVuelo();
         $cantidadDisponible = $var->getAsientosDisponibles();
+        $cantidadDisponibleInfantes = $var->getCantinfantesquedan();
         $piloto = $var->getPiloto();
         $copiloto = $var->getCopiloto();
         $disponibilidadaAdulto = $var->getDisponibilidadadulto();
@@ -127,11 +138,12 @@ function inicio(){
         $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioLLegada(). '</td>';
-        $resultado.= '<td>' . $cantidadDisponible. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
+        $resultado.= '<td>' . $cantidadDisponible. '</td>';
+        $resultado.= '<td>' . $cantidadDisponibleInfantes. '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="submit" value="" /></td>';
+        $resultado.= '<td><input type="button" value="DETALLES" onclick="xajax_detalles(1)"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -173,27 +185,31 @@ function detalles($idVuelo){
     $resultado.= '</thead>';
     $color = false;
     while ($row = mysql_fetch_array($recurso)){
-        $resultado.= '<tr>';
+        if ($color){
+            $resultado.= '<tr class="r0">';
+        } else {
+            $resultado.= '<tr class="r1">';
+        }
         $resultado.= '<td>' . $row[solicitud] . '</td>';
         $resultado.= '<td>' . $row[pasajero] . '</td>';
         $resultado.= '<td>' . $row[tipoPasajero] . '</td>';
         $resultado.= '<td>' . $row[servicio] . '</td>';
-        $resultado.= '<td>POSADA</td>';
+        $resultado.= '<td>' . $row[posada] . '</td>';
         $resultado.= '<td>' . $row[encargadoNombre] . '</td>';
-        $resultado.= '<td>SUCURSAL</td>';
-        $resultado.= '<td>' . $row[particular] . '</td>';
-        $resultado.= '<td>' . $row[agencia] . '</td>';
+        $resultado.= '<td>' . $row[sucursal] . '</td>';
         $resultado.= '<td>' . $row[vueloRetorno] . '</td>';
+        $resultado.= '<td>' . $row[agencia] . '</td>';
+        $resultado.= '<td>' . $row[particular] . '</td>';
         $resultado.= '<td>' . $row[clienteNombre] . '</td>';
         $resultado.= '<td>' . $row[tipo] . '</td>';
         $resultado.= '<td>' . $row[banco] . '</td>';
         $resultado.= '<td>' . $row[numeroTran] . '</td>';
         $resultado.= '<td>' . $row[monto] . '</td>';
-        $resultado.= '<td>' . $row[pago] . '</td>';
         $resultado.= '<td>' . $row[boleto] . '</td>';
         $resultado.= '</tr>';
+        $color = !$color;
     }
-    $objResponse->addAssign("gestionReservaPasajeros", "innerHTML", "$resultado");
+    $objResponse->addAssign("pasajeros", "innerHTML", "$resultado");
     return $objResponse;
 }
 
