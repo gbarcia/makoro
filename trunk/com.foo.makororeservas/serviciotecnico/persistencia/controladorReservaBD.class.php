@@ -126,7 +126,11 @@ class controladorReservaBDclass {
      * @return <type> Si el cliente existe o no 
      */
     function existeClienteAgencia($rif){
-        $query = "SELECT IF(('".$rif."') = CA.rif,TRUE,FALSE) as existeAgencia
+        $query = "SELECT IF(('".$rif."') = CA.rif,
+                            (SELECT CLA.nombre
+                              FROM CLIENTE_AGENCIA CLA
+                              WHERE CLA.rif = '".$rif."'),
+                             NULL) as existeAgencia
                   FROM CLIENTE_AGENCIA CA
                   WHERE CA.rif  = '".$rif."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
@@ -139,7 +143,11 @@ class controladorReservaBDclass {
      * @return <type> Si el cliente existe o no
      */
     function existeClienteParticular($cedula){
-        $query = "SELECT IF((".$cedula.") = CP.cedula,TRUE,FALSE) as existeParticular
+        $query = "SELECT IF((".$cedula.") = CP.cedula,
+                            (SELECT CONCAT(CLP.apellido,', ',CLP.nombre)
+                              FROM CLIENTE_PARTICULAR CLP
+                              WHERE CLP.cedula = ".$cedula."),
+                             NULL) as existeParticular
                   FROM CLIENTE_PARTICULAR CP
                   WHERE CP.cedula  = ".$cedula."";
         $resultado = $this->transaccion->realizarTransaccion($query);
