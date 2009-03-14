@@ -332,7 +332,7 @@ class controladorVueloBDclass {
      * @return <type> Los detalles de un vuelo
      */
     function consultarDetallesVuelo($idVuelo){
-        $query = "SELECT R.id,R.solicitud,IF(R.PASAJERO_id is not null,(SELECT PA.TIPO_PASAJERO_id
+        $query = "SELECT R.id,R.estado,R.solicitud,IF(R.PASAJERO_id is not null,(SELECT PA.TIPO_PASAJERO_id
                                                  FROM PASAJERO PA
                                                  WHERE PA.id = R.PASAJERO_id),'') as tipoPasajero,
                          IF(R.PASAJERO_id is not null,(SELECT IF(PA.cedula is not null,
