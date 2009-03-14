@@ -44,8 +44,8 @@ class ControlReservaLogicaclass {
      * @return <type> El resultado de la operacion
      */
     function nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId,
-        $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
-        $pagoId, $pasajeroId, $posadaId) {
+        $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,$pagoId,
+        $pasajeroId, $posadaId) {
         $reserva = new Reservaclass();
         $reserva->setFecha($fecha);
         $reserva->setEstado($estado);
@@ -115,9 +115,7 @@ class ControlReservaLogicaclass {
 
     function actualizarPasajeroReserva($nombre,$apellido,$sexo,$cedula,$pasaporte,$nacionalidad,$tipoPasajeroId,$idReserva){
         $controlPasajero = new ControlPasajeroLogicaclass();
-        // verificar si ya existe el pasajero
         $existePasajero = $this->existePasajero($cedula, $pasaporte);
-        echo $existePasajero;
         if(!(is_null($existePasajero))){
             $split = explode(', ', $existePasajero);
             $idPasajero = $split[0];
