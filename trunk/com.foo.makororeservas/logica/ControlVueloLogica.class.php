@@ -78,14 +78,26 @@ class ControlVueloLogicaclass {
     }
 
     /**
-     * Metodo para consultar los asientos disponibles, el piloto y el copiloto
-     * del vuelo consultado
-     * @param <Date> $hora
-     * @param <Date> $fecha
-     * @param <String> $rutaSitioSalida
-     * @param <String> $rutaSitioLlegada
-     * @param <String> $avionMatricula
-     * @return <Coleccion> coleccion de vuelo con los asientos y la tripulacion
+     * Metodo para consultar la informacion en forma detallada de los vuelos 
+     * @param <type> $fechaInicio Fecha inicio en la que se quiere realizar la consulta
+     * @param <type> $fechaFin Fecha fin en la que se quiere realizar la consulta
+     * @param <type> $hora Hora que se desea consultar
+     * @param <type> $avionMatricula La matricula del avion que se desea consultar
+     * @param <type> $rutaSitioSalida La ruta de la que sale el vuelo
+     * @param <type> $rutaSitioLlegada La ruta a la que llega el vuelo
+     * @param <type> $cantidadAdultosNinos Cantidad de pasajeros adultos y ninos
+     * @param <type> $cantidadInfantes Cantidad de pasajeros infantes
+     * @param <type> $cedulaPasaporte La cedula o pasaporte del pasajero
+     * @param <type> $nombrePasajero El nombre del pasajero que se encuentra en el(los) vuelo(s)
+     * @param <type> $apellidoPasajero El apellido del pasajero que se encuentra en el(los) vuelo(s)
+     * @param <type> $cedulaPart La cedula del cliente particular que compro el(los) vuelo(s)
+     * @param <type> $nombrePart El nombre del cliente particular que compro el(los) vuelo(s)
+     * @param <type> $apellidoPart El apellido del cliente particular que compro el(los) vuelo(s)
+     * @param <type> $rifAgencia El rif del cliente agencia que compro el(los) vuelo(s)
+     * @param <type> $nombreAgencia El nombre del cliente agencia que compro el(los) vuelo(s)
+     * @param <type> $solicitud El codigo de solicitud de la(s) reserva(s)
+     * @param <type> $estado El estado de la reserva
+     * @return <type> Los vuelos que cumplan con los filtros seleccionados 
      */
     function vueloEspecificoConFiltro($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $coleccionResultado = new ArrayObject();
@@ -135,7 +147,8 @@ class ControlVueloLogicaclass {
 
         while ($operacion = mysql_fetch_array($recurso)) {
             $cantidadDisponible = $operacion[quedan];
-            $disponibilidad = $operacion[disponibilidad];
+            $disponibilidadAdulto = $operacion[disponibilidadAdulto];
+            $disponibilidadInfante = $operacion[disponibilidadInfante];
             $idVuelo = $operacion[idVuelo];
             $controlVueloPersonal = new controladorVueloPersonalBDclass();
             $vueloTripulacionPiloto = $controlVueloPersonal->consultarVueloPersonalPiloto($idVuelo);
@@ -157,7 +170,7 @@ class ControlVueloLogicaclass {
             $vuelo->setRutaSitioSalida($operacion[abreviaturaSalida]);
             $vuelo->setRutaSitioLlegada($operacion[abreviaturaLlegada]);
             $vuelo->setAvionMatricula($operacion[avionMatricula]);
-            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto,$disponibilidad,$idVuelo);
+            $Objeto = new AsientosDisponiblesVueloTripulacionclass($vuelo,$cantidadDisponible,$piloto,$copiloto,$disponibilidadAdulto,$disponibilidadInfante,$idVuelo,$cantInfantes);
             $coleccionResultado ->append($Objeto);
         }
         return $coleccionResultado;

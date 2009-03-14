@@ -225,10 +225,13 @@ class controladorVueloBDclass {
                                  AND vu.id = vre.VUELO_id
                                  AND vre.VUELO_id = v.id),0) as quedan,
                          IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+0)>=0,TRUE,FALSE)
-                                 FROM VUELO_RESERVA vre, VUELO vu , RESERVA re
+                                 FROM VUELO_RESERVA vre, VUELO vu, RESERVA re
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
-                                 AND vre.VUELO_id = v.id),0) as disponibilidad
+                                 AND vre.VUELO_id = v.id),0) as disponibilidadAdulto,
+                         IFNULL((SELECT IF(2-(vu.cantidadInfantes+0)>=0,TRUE,FALSE)
+                                 FROM VUELO vu
+                                 WHERE vu.id = v.id),0) as disponibilidadInfante
                   FROM VUELO v, RUTA ru, AVION a, RESERVA r
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
@@ -244,7 +247,7 @@ class controladorVueloBDclass {
             }
         }
         $query.= " GROUP BY v.id
-                             HAVING disponibilidad = 1";
+                   HAVING disponibilidadAdulto = 1";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
