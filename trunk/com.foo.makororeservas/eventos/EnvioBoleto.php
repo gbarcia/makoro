@@ -19,10 +19,10 @@ function procesarCorreo ($datos) {
     $direccion = $datos[solicitud] . autoGenerarCodigo();
     $cuerpo = "<font size='2' face='Arial'><P>Estimado Cliente(a) de Makoro:</P>";
     $cuerpo .= "<P>La siguiente direccion, es para obtener el boleto electrónico, deacuerdo a la solicitud
-               número '".$datos[solicitud]."' a nombre de '".$datos[cliente]."':</P>";
+               número ".$datos[solicitud]." a nombre de ".$datos[cliente].":</P>";
     $cuerpo .= "Dirección Web : http://www.makoroenlinea.com/com.foo.makororeservas/gui/boletoConsultas.php?nsolicitud=".$direccion. "<br>";
     $cuerpo .= "<P>En caso de tener alguna consulta en referencia a ésta página por favor no dude en contactarnos.</P>";
-    $cuerpo .= "<P>Soporte@makoroenlinea.com</P>";
+    $cuerpo .= "<P>soporte@makoroenlinea.com</P>";
     $cuerpo .= "<P>Gracias por preferirnos</P>";
     $cuerpo .= "<P>Equipo WEB de Makoro</P>";
     $control = new ControlSeguridadclass();
