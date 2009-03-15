@@ -32,15 +32,15 @@ foreach ($Coleccion as $var) {
     $cantidadInfantes = $var->getCantidadInfantes();
 }
 echo "\n";
-echo 'Solicitud: ' . $solicitud;
+echo 'Localizador: ' . $solicitud;
 echo '<p></p>';
 echo 'Fecha de Emision: ' . $fechaEmision;
 echo '<p></p>';
 echo 'Agente: ' . $agente;
 echo '<p></p>';
-echo 'Servicio: ' . $servicio.'   |   '.'ADL: '.$cantidadAdultos.'  '.'CHD: '.$cantidadNinos.'  '.'INF: '.$cantidadInfantes;
-echo '<p></p>';
 echo 'Cliente: ' . $cliente .'   |   '. 'C.I. o Rif: '. $identificadorCliente;
+echo '<p></p>';
+echo 'Servicio: ' . $servicio.'   |   '.'ADL: '.$cantidadAdultos.'  '.'CHD: '.$cantidadNinos.'  '.'INF: '.$cantidadInfantes;
 echo '<p></p>';
 echo '<p></p>';
 echo '<p></p>';
@@ -58,7 +58,7 @@ echo '<td>'. $fechaIda .'</td>';
 echo '<td>'. $horaIda .'</td>';
 echo '</tr>';
 echo '<tr>';
-echo '<td>VUELTA</td>';
+echo '<td>RETORNO</td>';
 echo '<td>'. $lugarLlegada .'</td>';
 echo '<td>'. $fechaVuelta .'</td>';
 echo '<td>'. $horaVuelta .'</td>';
