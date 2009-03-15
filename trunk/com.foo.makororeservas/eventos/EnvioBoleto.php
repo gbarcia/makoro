@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 function generarFormBoleto($solicitud,$cliente) {
     $objResponse = new xajaxResponse();
     $formulario = ' <form id="formulario" name="formulario"><input type="hidden" name="solicitud" id="hiddenField" value="'.$solicitud.'" />
-                              <input type="hidden" name="cliente" id="hiddenField" value="'.$cliente.'" /><input type="text" name="correo" id="correo" />
+                              <input type="hidden" name="cliente" id="hiddenField" value="'.$cliente.'" /><input type="text" name="correo" id="correo" onKeyUp="this.value=this.value.toLowerCase();" />
                    <input type="button" name="button" id="button" value="ENVIAR"
                 onclick= "xajax_procesarCorreo(xajax.getFormValues(\'formulario\'))" />
                             </form>';
