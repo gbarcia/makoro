@@ -18,6 +18,8 @@ $boletoClass = new Boletoclass();
 $numeroSolicitud = $_GET[nsolicitud];
 
 $Coleccion = $controlBoleto->informacionGeneralReciboBoleto($numeroSolicitud);
+if (is_null($Coleccion))
+die ("Numero de solicitud invalido");
 foreach ($Coleccion as $var) {
     $agente = $var->getAgente();
     $solicitud = $var->getSolicitud();

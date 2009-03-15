@@ -96,7 +96,9 @@ class ControlBoletoLogicaclass {
  * identificador de la solicitud
  */
     function informacionGeneralReciboBoleto($solicitud) {
+        $coleccionResultado = null;
         $recurso = $this->busquedaBoletoEspecifico($solicitud);
+        $cant = mysql_num_rows($recurso);
         $rowRecurso = mysql_fetch_array($recurso);
 
         $agente = $rowRecurso[agente];
@@ -131,6 +133,7 @@ class ControlBoletoLogicaclass {
             $identificadorCliente = $rifAgencia;
         }
         $pasajeroInfo = $this->buscarPasajerosBoletoEspecifico($solicitud);
+        if ($cant > 0)
         $coleccionResultado = new ArrayObject();
         foreach ($pasajeroInfo as $var) {
             $pasajero = new Pasajeroclass();
