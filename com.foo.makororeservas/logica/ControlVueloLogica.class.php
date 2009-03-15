@@ -17,12 +17,12 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para agregar un nuevo vuelo
-     * @param <Date> $fecha
-     * @param <Date> $hora
-     * @param <String> $avionMatricula
-     * @param <String> $rutaSitioSalida
-     * @param <String> $rutaSitioLlegada
-     * @return <boolean>
+     * @param <Date> $fecha Fecha del nuevo vuelo
+     * @param <Date> $hora Hora del nuevo vuelo
+     * @param <String> $avionMatricula La matricula del avion que realizara el vuelo
+     * @param <String> $rutaSitioSalida El sitio de salida del nuevo vuelo
+     * @param <String> $rutaSitioLlegada El sitio de llegada del nuevo vuelo
+     * @return <boolean> El resultado de la operacion 
      */
     function nuevoVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
         $vuelo = new Vueloclass();
@@ -37,10 +37,14 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para actualizar los datos de un vuelo
-     * @param <Date> $fecha
-     * @param <Date> $hora
-     * @param <String> $avionMatricula
-     * @return <boolean>
+     * @param <INTEGER> $id El id del vuelo a actualizar
+     * @param <DATE> $fecha La nueva fecha del vuelo
+     * @param <TIME> $hora La neuva hora del vuelo
+     * @param <STRING> $avionMatricula La nueva matricula del avion que realizara el vuelo
+     * @param <STRING> $rutaSitioSalida El sitio de salida del vuelo
+     * @param <STRING> $rutaSitioLlegada El sitio de llegada del vuelo
+     * @param <INTEGER> $cantidadInfantes La cantidad de infantes del vuelo
+     * @return <BOOLEAN> El resultado de la operacion 
      */
     function actualizarVuelo($id,$fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$cantidadInfantes) {
         $vuelo = new Vueloclass();
