@@ -14,7 +14,7 @@ function IniciarSession ($datos) {
     $control = new ControlSeguridadclass();
     $resultado = $control->validarSession(strtolower($datos[login]), strtolower($datos[pass]));
     if ($resultado == true) {
-        $objResponse->addRedirect("gui/PresentacionGestionReserva.php");
+        $objResponse->addScript("window.open('gui/PresentacionGestionReserva.php','mywindow','menubar=0,resizable=yes,scrollbars=1,width=1280,height=800');void(0)");
     }
     else {
         $mensaje = "Fallo de Atenticacion. No autorizado";
