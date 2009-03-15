@@ -55,7 +55,7 @@ class ControlSeguridadclass {
  * Funciar para enviar un correo Electronico
  * @param <type> $correo direccion del correo a enviar
  */
-    private function enviarMail($correo, $cuerpo)
+    public function enviarMail($correo, $cuerpo)
     {
         $resultado = true;
         $mail = new PHPMailer();
@@ -65,7 +65,6 @@ class ControlSeguridadclass {
         $mail->MsgHTML($cuerpo);
         $mail->AddAddress($correo);
         if(!$mail->Send()) {
-            print "mail no enviado";
             $resultado = false;
         }
         return $resultado;

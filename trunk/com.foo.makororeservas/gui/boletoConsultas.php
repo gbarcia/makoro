@@ -1,20 +1,14 @@
 <?php
-session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlBoletoLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Boleto.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/InformacionGeneralBoletoRecibo.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/DetallesEmitirBoleto.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'] .'/com.foo.makororeservas/serviciotecnico/utilidades/xajax/xajax.inc.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/EnvioBoleto.php';
-
-$xajax = new xajax();
-$xajax->registerFunction("generarFormBoleto");
-$xajax->processRequests();
 
 $controlBoleto = new ControlBoletoLogicaclass();
 $boletoClass = new Boletoclass();
 
-$numeroSolicitud = $_GET[nsolicitud];
+$numeroRecibido = $_GET[nsolicitud];
+$numeroSolicitud = substr($numeroRecibido, 0, 4);
 
 $Coleccion = $controlBoleto->informacionGeneralReciboBoleto($numeroSolicitud);
 foreach ($Coleccion as $var) {
@@ -45,9 +39,6 @@ foreach ($Coleccion as $var) {
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Boleto</title>
-        <?
-        $xajax->printJavascript ("../serviciotecnico/utilidades/xajax/");
-        ?>
         <style type="text/css">
             <!--
             .style1 {
@@ -198,22 +189,6 @@ foreach ($Coleccion as $var) {
                         </tr>
                         <tr>
                           <td><input type="button" name="button2" id="button2" value="IMPRIMIR" onclick="window.print();" />&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td><input name="button" type="button" id="button" onclick="xajax_generarFormBoleto('<?=$numeroSolicitud?>','<?=$cliente?>')" value="ENVIAR POR CORREO" /></td>
-                        </tr>
-                        <tr>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td><div id="correo">
-                            </div></td>
-                        </tr>
-                        <tr>
-                          <td><div id="mensaje"></div></td>
                         </tr>
               </table></td>
             </tr>
