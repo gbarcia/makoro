@@ -32,15 +32,15 @@ foreach ($Coleccion as $var) {
     $cantidadInfantes = $var->getCantidadInfantes();
 }
 echo "\n";
-echo '<th>Localizador:</th> ' . $solicitud;
+echo '<b>Localizador:</b> ' . $solicitud;
 echo '<p></p>';
-echo '<th>Fecha de Emision</th>: ' . $fechaEmision;
+echo '<b>Fecha de Emision:</b> ' . $fechaEmision;
 echo '<p></p>';
-echo '<th>Agente</th>: ' . $agente;
+echo '<b>Agente:</b> ' . $agente;
 echo '<p></p>';
-echo '<th>Cliente</th>: ' . $cliente .'   |   '. '<th>C.I. o Rif:</th> '. $identificadorCliente;
+echo '<b>Cliente:</b> ' . $cliente .' <b>&nbsp</b> | <b>&nbsp</b> '. '<b>C.I. o RIF:</b> '. $identificadorCliente;
 echo '<p></p>';
-echo '<th>Servicio</th>: ' . $servicio.'   |   '.'<th>ADL:</th> '.$cantidadAdultos.'  '.'<th>CHD:</th> '.$cantidadNinos.'  '.'<th>INF:</th> '.$cantidadInfantes;
+echo '<b>Servicio:</b>' . $servicio.' <b>&nbsp</b> | <b>&nbsp</b> '.'<b>ADL:</b> '.$cantidadAdultos.'  '.'<b>CHD:</b> '.$cantidadNinos.'  '.'<b>INF:</b> '.$cantidadInfantes;
 echo '<p></p>';
 echo '<p></p>';
 echo '<p></p>';
