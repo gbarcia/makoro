@@ -9,6 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/EnvioB
 
 $xajax = new xajax();
 $xajax->registerFunction("generarFormBoleto");
+$xajax->registerFunction("procesarCorreo");
 $xajax->processRequests();
 
 $controlBoleto = new ControlBoletoLogicaclass();
