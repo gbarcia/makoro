@@ -170,12 +170,12 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para editar el estado de una reserva
- * @param <Integer> $idReserva Identificador de la reserva
- * @param <String> $estado Nuevo estado
- * @return <type>
- */
+    /**
+     * Metodo para editar el estado de una reserva
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <String> $estado Nuevo estado
+     * @return <type> El resultado de la operacion 
+     */
     function editarEstadoReserva($idReserva, $estado){
         $resultado = false;
         $query = "UPDATE RESERVA r SET r.estado = '".$estado."'
@@ -198,11 +198,11 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar el estado de una reserva
- * @param <Integer> $idReserva Identificador de la reserva
- * @return <recurso> estado de la reserva
- */
+    /**
+     * Metodo para consultar el estado de una reserva
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @return <recurso> estado de la reserva
+     */
     function consultarEstadoReserva($idReserva){
         $query = "SELECT R.estado estado
                   FROM RESERVA R
