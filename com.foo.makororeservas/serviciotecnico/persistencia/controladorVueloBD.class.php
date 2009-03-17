@@ -14,11 +14,11 @@ class controladorVueloBDclass {
         $this->transaccion = new TransaccionBDclass();
     }
 
-/**
- * Metodo para agregar un nuevo vuelo en la base de datos
- * @param <VUELO> $vuelo
- * @return <boolean>
- */
+    /**
+     * Metodo para agregar un nuevo vuelo en la base de datos
+     * @param <VUELO> $vuelo El vuelo a insertar en la base de datos
+     * @return <boolean> El resultado de la operacion
+     */
     function agregarNuevoVuelo($vuelo) {
         $resultado = false;
         $query = "INSERT INTO VUELO (fecha,hora,AVION_matricula,RUTA_sitioSalida,RUTA_sitioLlegada)
@@ -34,11 +34,11 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para modificar cualquier dato del vuelo
- * @param <VUELO> $vuelo
- * @return <boolean>
- */
+    /**
+     * Metodo para modificar cualquier dato del vuelo
+     * @param <VUELO> $vuelo
+     * @return <boolean>
+     */
     function editarVuelo($vuelo) {
         $resultado = false;
         $query = "UPDATE VUELO v SET v.fecha = '".$vuelo->getFecha()."',
@@ -60,31 +60,31 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar uno o varios vuelos, dependiendo del filtro. Los datos
- * proporcionados pueden ser: por rango de fechas, hora, matricula del avion,
- * rutas, cedula o pasaporte, nombre o apellido del pasajero, nombre o apellido
- * del cliente que hizo la reserva, solicitud y por el estado de la reserva
- * @param <Date> $fechaInicio Fecha inicio del vuelo a consultar
- * @param <Date> $fechaFin Fecha fin del vuelo a consultar
- * @param <Time> $hora Hora del vuelo a consultar
- * @param <String> $avionMatricula Matricula del avion a consultar
- * @param <String> $rutaSitioSalida Ruta de ida
- * @param <String> $rutaSitioLlegada Ruta de vuelta
- * @param <Integer> $cantidadAdultosNinos Cantidad de adultos más cantidad de ninos a viajar
- * @param <Integer> $cantidadInfantes Cantidad de infantes a viajar
- * @param <String> $cedulaPasaporte Cedula o pasaporte del pasajero
- * @param <String> $nombrePasajero Nombre del pasajero
- * @param <String> $apellidoPasajero Apellido del pasajero
- * @param <Integer> $cedulaPart Cedula del cliente particular
- * @param <String> $nombrePart Nombre del cliente particular
- * @param <String> $apellidoPart Apellido del cliente particular
- * @param <String> $rifAgencia RIF del cliente agencia
- * @param <String> $nombreAgencia Nombre del cliente agencia
- * @param <String> $solicitud Localizador de la reserva
- * @param <String> $estado Estado de la reserva: PP, PA, CO y CA
- * @return <coleccion> coleccion de vuelos de acuerdo a los datos suministrados
- */
+    /**
+     * Metodo para consultar uno o varios vuelos, dependiendo del filtro. Los datos
+     * proporcionados pueden ser: por rango de fechas, hora, matricula del avion,
+     * rutas, cedula o pasaporte, nombre o apellido del pasajero, nombre o apellido
+     * del cliente que hizo la reserva, solicitud y por el estado de la reserva
+     * @param <Date> $fechaInicio Fecha inicio del vuelo a consultar
+     * @param <Date> $fechaFin Fecha fin del vuelo a consultar
+     * @param <Time> $hora Hora del vuelo a consultar
+     * @param <String> $avionMatricula Matricula del avion a consultar
+     * @param <String> $rutaSitioSalida Ruta de ida
+     * @param <String> $rutaSitioLlegada Ruta de vuelta
+     * @param <Integer> $cantidadAdultosNinos Cantidad de adultos más cantidad de ninos a viajar
+     * @param <Integer> $cantidadInfantes Cantidad de infantes a viajar
+     * @param <String> $cedulaPasaporte Cedula o pasaporte del pasajero
+     * @param <String> $nombrePasajero Nombre del pasajero
+     * @param <String> $apellidoPasajero Apellido del pasajero
+     * @param <Integer> $cedulaPart Cedula del cliente particular
+     * @param <String> $nombrePart Nombre del cliente particular
+     * @param <String> $apellidoPart Apellido del cliente particular
+     * @param <String> $rifAgencia RIF del cliente agencia
+     * @param <String> $nombreAgencia Nombre del cliente agencia
+     * @param <String> $solicitud Localizador de la reserva
+     * @param <String> $estado Estado de la reserva: PP, PA, CO y CA
+     * @return <coleccion> coleccion de vuelos de acuerdo a los datos suministrados
+     */
     function consultarVueloConFiltros($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,
         $rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,
         $apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,
@@ -258,11 +258,11 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar la cantidad de asientos reservados
- * @param <Integer> $id Identificador del vuelo a consultar
- * @return <recurso> recurso con el vuelo consultado
- */
+    /**
+     * Metodo para consultar la cantidad de asientos reservados
+     * @param <Integer> $id Identificador del vuelo a consultar
+     * @return <recurso> recurso con el vuelo consultado
+     */
     function consultarVueloCantidadReserva($id) {
         $resultado = false;
         $query = "SELECT COUNT(vr.vuelo_id) cantidadReservada, a.asientos asientos, a.matricula
@@ -276,10 +276,10 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar los vuelos realizados
- * @return <coleccion> coleccion con los vuelos realizados
- */
+    /**
+     * Metodo para consultar los vuelos realizados
+     * @return <coleccion> coleccion con los vuelos realizados
+     */
     function consultarVuelosRealizados() {
         $resultado = false;
         $query = "SELECT v.id,v.fecha, v.hora, v.AVION_matricula avionMatricula,
@@ -298,10 +298,10 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar todos los vuelos apartir del dia actual
- * @return <coleccion> coleccion con todo lo vuelos de la base de datos
- */
+    /**
+     * Metodo para consultar todos los vuelos apartir del dia actual
+     * @return <coleccion> coleccion con todo lo vuelos de la base de datos
+     */
     function consultarTodosVuelos() {
         $resultado = false;
         $query = "SELECT v.id id,v.fecha,v.hora,
@@ -344,7 +344,7 @@ class controladorVueloBDclass {
                                                         FROM PASAJERO PA
                                                         WHERE PA.id = R.PASAJERO_id),
                          IF(R.CLIENTE_AGENCIA_rif is not null, CA.nombre, CONCAT(CP.nombre,' ',CP.apellido))) as pasajero,
-                         TS.nombre as servicio, IF(R.POSADA_id is not null,(SELECT PO.nombrePosada
+                         TS.abreviatura as servicio, IF(R.POSADA_id is not null,(SELECT PO.nombrePosada
                                                                             FROM POSADA PO
                                                                             WHERE PO.id = R.POSADA_id),'&nbsp') as posada,
                          E.nombre as encargadoNombre, S.nombre as sucursal, VR.tipo, IFNULL(R.CLIENTE_AGENCIA_rif,'&nbsp') as agencia,
