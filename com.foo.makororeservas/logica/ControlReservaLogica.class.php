@@ -82,11 +82,9 @@ class ControlReservaLogicaclass {
     function crearReserva($idVuelo,$cantAdultoNino,$cantidadInfantes,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
         $posadaId,$solicitud){
         $resultado = false;
-        $disponibleAdultoNino = $this->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino);
+        $disponibleAdultoNino = $this->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino, $cantidadInfantes);
         $disponibleInfante = $this->asientosDisponiblesInfante($idVuelo, $cantidadInfantes);
         $cantidadPasajeros = $cantAdultoNino+$cantidadInfantes;
-
-        echo ' Adulto: '.$disponibleAdultoNino.' Infante: '.$disponibleInfante;
 
         if($disponibleAdultoNino && $disponibleInfante){
             $estado = 'PP';
@@ -226,8 +224,8 @@ class ControlReservaLogicaclass {
      * @param <type> $cantAdultoNino La cantidad de pasajeros adultos o ninos
      * @return <type> Si la cantidad de asientos esta disponible para este vuelo
      */
-    function asientosDisponiblesAdultoNino($idVuelo,$cantAdultoNino){
-        $recurso = $this->controlBD->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino);
+    function asientosDisponiblesAdultoNino($idVuelo,$cantAdultoNino, $cantInfantes){
+        $recurso = $this->controlBD->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino, $cantInfantes);
         $row = mysql_fetch_array($recurso);
         $disponible = $row[disponibleAdultoNino];
         return $disponible;
@@ -258,12 +256,12 @@ class ControlReservaLogicaclass {
  */
     function pagarReserva($idReserva,$tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId){
         $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
-       echo $pagoId;
-       if($padoId > 0){
+        echo $pagoId;
+        if($padoId > 0){
             $estado = "PA";
             $resultado = $this->controlBD->editarEstadoPagadoReserva($idReserva, $estado, $pagoId);
         }
-            return $resultado;
+        return $resultado;
     }
 
 /**
