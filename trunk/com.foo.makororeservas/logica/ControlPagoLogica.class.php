@@ -19,15 +19,15 @@ class ControlPagoLogicaclass {
         $this->controlReservaBD = new controladorReservaBDclass();
     }
 
-/**
- * Metodo para agregar un nuevo pago
- * @param <String> $tipo
- * @param <double> $monto
- * @param <String> $nombreBanco
- * @param <Integer> $numeroTransaccion
- * @param <Integer> $monedaId
- * @return <boolean> resultado de la operacion
- */
+    /**
+     * Metodo para agregar un nuevo pago
+     * @param <String> $tipo Tipo de pago insertar
+     * @param <double> $monto El monto total del pago
+     * @param <String> $nombreBanco El nombre del banco
+     * @param <Integer> $numeroTransaccion El numero de la transaccion
+     * @param <Integer> $monedaId El identificador de la moneda
+     * @return <boolean> Resultado de la operacion
+     */
     function nuevoPago($tipo,$monto,$nombreBanco,$numeroTransaccion,$monedaId) {
         $pago = new Pagoclass();
         $pago->setTipo($tipo);
@@ -40,16 +40,16 @@ class ControlPagoLogicaclass {
         return ($resultado);
     }
 
-/**
- * Metodo para actulizar los datos del pago
- * @param <Integer> $id
- * @param <String> $tipo
- * @param <double> $monto
- * @param <String> $nombreBanco
- * @param <Integer> $numeroTransaccion
- * @param <Integer> $monedaId
- * @return <boolean> resultado de la operacion
- */
+    /**
+     * Metodo para actulizar los datos del pago
+     * @param <Integer> $id El identificador del pago a editar
+     * @param <String> $tipo El tipo de pago que se desea modificar
+     * @param <double> $monto El monto del pago que se desea modificar
+     * @param <String> $nombreBanco El nombre del banco que se desea modificar 
+     * @param <Integer> $numeroTransaccion El numero de transaccion que se desea modificar
+     * @param <Integer> $monedaId El id de la moneda que se desea modificar
+     * @return <boolean> El resultado de la operacion 
+     */
     function actualizarPago($id,$tipo,$monto,$nombreBanco,$numeroTransaccion,$monedaId) {
         $pago = new Pagoclass();
         $pago->setId($id);
@@ -62,60 +62,60 @@ class ControlPagoLogicaclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar todos los pagos
- * @return <recurso>
- */
+    /**
+     * Metodo para consultar todos los pagos
+     * @return <recurso>
+     */
     function buscarPagos() {
         $recurso = false;
         $recurso = $this->controlPagoBD->consultarPagos();
         return $recurso;
     }
 
-/**
- * Metodo para consultar la cantidad de adultos y niños que van a viajar
- * @param <String> $solicitud
- * @param <String> $tipoPasajero
- * @param <String> $tipoVuelo
- * @return <recurso>
- */
+    /**
+     * Metodo para consultar la cantidad de adultos y niños que van a viajar
+     * @param <String> $solicitud El numero de solicitud a consultar
+     * @param <String> $tipoPasajero El tipo de pasajero a consultar
+     * @param <String> $tipoVuelo El tipo de vuelo a consultar 
+     * @return <recurso> La cantidad de adultos y niños que van a viajar 
+     */
     function consultarCantidadAdultosNinosPorSolicitud($solicitud, $tipoPasajero, $tipoVuelo) {
         $resultado = new ArrayObject();
         $resultado = $this->controlPagoBD->cantidadAdultosNinosPorSolicitud($solicitud, $tipoPasajero, $tipoVuelo);
         return $resultado;
     }
 
-/**
- * Metodo para calcular el subtotal del pasaje de salida de los adultos
- * @param <Integer> $cantidadAdultos
- * @param <double> $costoSalida
- * @return <recurso> subtotal del pasaje de salida de los adultos
- */
+    /**
+     * Metodo para calcular el subtotal del pasaje de salida de los adultos
+     * @param <Integer> $cantidadAdultos La cantidad de adultos a calcular
+     * @param <double> $costoSalida El costo del pasaje salida de los adultos
+     * @return <recurso> Subtotal del pasaje de salida de los adultos 
+     */
     function calculoSubtotalPasajeAdultosSalida($cantidadAdultos, $costoSalida) {
         $subtotalAdultosSalida = false;
         $subtotalAdultosSalida = $cantidadAdultos*$costoSalida;
         return $subtotalAdultosSalida;
     }
 
-/**
- * Metodo para calcular el subtotal del pasaje de retorno de los adultos
- * @param <Integer> $cantidadAdultos
- * @param <double> $costoLlegada
- * @return <recurso> subtotal del pasaje de retorno de los adultos
- */
+    /**
+     * Metodo para calcular el subtotal del pasaje de retorno de los adultos
+     * @param <Integer> $cantidadAdultos La cantidad de adultos a calcular
+     * @param <double> $costoLlegada El costo del pasaje llegada de los adultos
+     * @return <recurso> Subtotal del pasaje de retorno de los adultos
+     */
     function calculoSubtotalPasajeAdultosLlegada($cantidadAdultos, $costoLlegada) {
         $subtotalAdultosLlegada = false;
         $subtotalAdultosLlegada = $cantidadAdultos*$costoLlegada;
         return $subtotalAdultosLlegada;
     }
 
-/**
- * Metodo para calcular el subtotal del pasaje de salida de los niños con el descuento
- * @param <Integer> $cantidadNinos
- * @param <double> $costoSalida
- * @param <double> $descuentoNinos
- * @return <recurso> subtotal del pasaje de salida de los niños
- */
+    /**
+     * Metodo para calcular el subtotal del pasaje de salida de los niños con el descuento
+     * @param <Integer> $cantidadNinos La cantidad de ninos a calcular
+     * @param <double> $costoSalida El costo del pasaje llegada de los ninos
+     * @param <double> $descuentoNinos El descuento para ninos
+     * @return <recurso> Subtotal del pasaje de salida de los niños
+     */
     function calculoSubtotalPasajeNinosSalida($cantidadNinos, $costoSalida, $descuentoNinos) {
         $subtotalNinosSalida = false;
         $descuentoPasajeNino = $descuentoNinos*$costoSalida;
@@ -124,12 +124,12 @@ class ControlPagoLogicaclass {
         return $subtotalNinosSalida;
     }
 
-/**
- * Metodo para calcular el costo del pasaje de salida de los niños con el descuento
- * @param <double> $costoSalida
- * @param <double> $descuentoNinos
- * @return <recurso> costo del pasaje de salida de los niños
- */
+    /**
+     * Metodo para calcular el costo del pasaje de salida de los niños con el descuento
+     * @param <double> $costoSalida El costo del pasaje salida de los ninos
+     * @param <double> $descuentoNinos El descuento para ninos
+     * @return <recurso> Costo del pasaje de salida de los niños
+     */
     function calculoCostoPasajeNinosSalida($costoSalida, $descuentoNinos) {
         $costoPasajeNinoSalida = false;
         $descuentoPasajeNino = $descuentoNinos*$costoSalida;
@@ -137,13 +137,13 @@ class ControlPagoLogicaclass {
         return $costoPasajeNinoSalida;
     }
 
-/**
- * Metodo para calcular el subtotal del pasaje de retorno de los niños con el descuento
- * @param <Integer> $cantidadNinos
- * @param <double> $costoLlegada
- * @param <double> $descuentoNinos
- * @return <recurso> subtotal del pasaje de retorno de los niños
- */
+    /**
+     * Metodo para calcular el subtotal del pasaje de retorno de los niños con el descuento
+     * @param <Integer> $cantidadNinos La cantidad de ninos a calcular
+     * @param <double> $costoLlegada El costo del pasaje llegada de los ninos
+     * @param <double> $descuentoNinos El descuento para ninos
+     * @return <recurso> Subtotal del pasaje de retorno de los niños
+     */
     function calculoSubtotalPasajeNinosLlegada($cantidadNinos, $costoLlegada, $descuentoNinos) {
         $subtotalNinosLlegada = false;
         $descuentoPasajeNino = $descuentoNinos*$costoLlegada;
@@ -152,12 +152,12 @@ class ControlPagoLogicaclass {
         return $subtotalNinosLlegada;
     }
 
-/**
- * Metodo para calcular el costo del pasaje de retorno de los niños con el descuento
- * @param <double> $costoLlegada
- * @param <double> $descuentoNinos
- * @return <recurso> costo del pasaje de retorno de los niños
- */
+    /**
+     * Metodo para calcular el costo del pasaje de retorno de los niños con el descuento
+     * @param <double> $costoLlegada El costo del pasaje llegada de los ninos
+     * @param <double> $descuentoNinos El descuento para ninos
+     * @return <recurso> Costo del pasaje de retorno de los niños 
+     */
     function calculoCostoPasajeNinosLlegada($costoLlegada, $descuentoNinos) {
         $costoPasajeNinoLlegada = false;
         $descuentoPasajeNino = $descuentoNinos*$costoLlegada;
@@ -165,26 +165,26 @@ class ControlPagoLogicaclass {
         return $costoPasajeNinoLlegada;
     }
 
-/**
- * Metodo para consultar si la agencia tiene comisión, es decir algún tipo de descuento
- * @param <double> $porcentajeComision
- * @param <double> $totalApagar
- * @return <recurso> comision de la agencia
- */
+    /**
+     * Metodo para consultar si la agencia tiene comisión, es decir algún tipo de descuento 
+     * @param <double> $porcentajeComision El porcentaje comision de la agencia 
+     * @param <double> $totalApagar El total a pagar
+     * @return <recurso> La comision de la agencia
+     */
     function buscarComisionAgencia($porcentajeComision, $totalApagar) {
         $comisionTotal = $totalApagar*$porcentajeComision;
         return $comisionTotal;
     }
 
 
-/**
- * Metodo para consultar los detalles del recibo de pago. Informacion acerca de:
- * costo del pasaje de ida y vuelta, si el vuelo genera iva de ida o de vuelta,
- * cantidad de adultos, niños e infantes que van a viajar, subtotales, descuentos
- * y total a pagar.
- * @param <String> $solicitud
- * @return <Coleccion> coleccion con los detalles del recibo de pago
- */
+    /**
+     * Metodo para consultar los detalles del recibo de pago. Informacion acerca de:
+     * costo del pasaje de ida y vuelta, si el vuelo genera iva de ida o de vuelta,
+     * cantidad de adultos, niños e infantes que van a viajar, subtotales, descuentos
+     * y total a pagar. 
+     * @param <String> $solicitud El numero de solicitud
+     * @return <Coleccion> Coleccion con los detalles del recibo de pago
+     */
     function detallesReciboDePago($solicitud) {
         $recurso = $this->controlBoletoLogica->busquedaBoletoEspecifico($solicitud);
         $rowRecurso = mysql_fetch_array($recurso);
