@@ -18,7 +18,7 @@ function IniciarSession ($datos) {
         $objResponse->addScript("window.open('gui/PresentacionGestionReserva.php','mywindow','menubar=0,resizable=yes,scrollbars=1,width=1280,height=800');void(0)");
     }
     else {
-        $mensaje = "Fallo de Atenticacion. No autorizado";
+        $mensaje = "<span class='textoRojo'>Fallo de Atenticacion.No Autorizado</span>";
         $objResponse->addAssign("mensaje", "innerHTML", "$mensaje");
     }
     return $objResponse;
