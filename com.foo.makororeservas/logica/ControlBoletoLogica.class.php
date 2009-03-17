@@ -16,12 +16,12 @@ class ControlBoletoLogicaclass {
         $this->controlBD = new controladorBoletoBDclass();
     }
 
-/**
- * Metodo para agregar un nuevo boleto
- * @param <Integer> $pagoId
- * @param <Integer> $pasajeroId
- * @return <boolean> resultado de la operacion
- */
+    /**
+     * Metodo para agregar un nuevo boleto
+     * @param <Integer> $pagoId
+     * @param <Integer> $pasajeroId
+     * @return <boolean> resultado de la operacion
+     */
     function nuevoBoleto($pagoId, $pasajeroId) {
         $boleto = new Boletoclass();
         $boleto->setPagoId($pagoId);
@@ -30,44 +30,44 @@ class ControlBoletoLogicaclass {
         return ($resultado);
     }
 
-/**
- * Metodo para consultar todos los boletos de la base de datos
- * @return <Coleccion> coleccion de boletos de los pasajeros
- */
+    /**
+     * Metodo para consultar todos los boletos de la base de datos
+     * @return <Coleccion> coleccion de boletos de los pasajeros
+     */
     function buscarBoletos() {
         $recurso = false;
         $recurso = $this->controlBD->consultarBoletos();
         return $recurso;
     }
 
-/**
- * Metodo para consultar el pago de un boleto especifico de una reserva
- * @param <String> $solicitud
- * @return <recurso> boleto de una reserva en especifico
- */
+    /**
+     * Metodo para consultar el pago de un boleto especifico de una reserva
+     * @param <String> $solicitud
+     * @return <recurso> boleto de una reserva en especifico
+     */
     function busquedaBoletoEspecifico($solicitud) {
         $resultado = new ArrayObject();
         $resultado = $this->controlBD->consultarBoletoEspecifico($solicitud);
         return $resultado;
     }
 
-/**
- * Metodo para consultar la cantidad de adultos y niños de la reserva
- * @param <Integer> $idPago
- * @param <String> $tipoPasajero
- * @return <recurso> recurso con la cantidad de adultos o niños
- */
+    /**
+     * Metodo para consultar la cantidad de adultos y niños de la reserva
+     * @param <Integer> $idPago
+     * @param <String> $tipoPasajero
+     * @return <recurso> recurso con la cantidad de adultos o niños
+     */
     function consultarCantidadAdultosNinos($solicitud, $tipoPasajero, $tipoVuelo) {
         $resultado = new ArrayObject();
         $resultado = $this->controlBD->cantidadAdultosNinos($solicitud, $tipoPasajero, $tipoVuelo);
         return $resultado;
     }
 
-/**
- * Metodo para consultar los pasajeros de un boleto especifico
- * @param <Integer> $idPago
- * @return <Coleccion> coleccion de pasajeros
- */
+    /**
+     * Metodo para consultar los pasajeros de un boleto especifico
+     * @param <Integer> $idPago
+     * @return <Coleccion> coleccion de pasajeros
+     */
     function buscarPasajerosBoletoEspecifico($solicitud) {
         $resultado = new ArrayObject();
         $recurso = $this->controlBD->consultarPasajeros($solicitud);
@@ -87,14 +87,14 @@ class ControlBoletoLogicaclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar la informacion acerca de los pasajeros, servicio, cliente,
- * agente, vuelo. Esta información puede ser utilizada tanto para los recibos de pagos
- * como para los boletos a generar
- * @param <String> $solicitud
- * @return <Coleccion> coleccion con toda loa información necesaria según el
- * identificador de la solicitud
- */
+    /**
+     * Metodo para consultar la informacion acerca de los pasajeros, servicio, cliente,
+     * agente, vuelo. Esta información puede ser utilizada tanto para los recibos de pagos
+     * como para los boletos a generar
+     * @param <String> $solicitud
+     * @return <Coleccion> coleccion con toda loa información necesaria según el
+     * identificador de la solicitud
+     */
     function informacionGeneralReciboBoleto($solicitud) {
         $coleccionResultado = null;
         $recurso = $this->busquedaBoletoEspecifico($solicitud);
@@ -151,12 +151,12 @@ class ControlBoletoLogicaclass {
         return $coleccionResultado;
     }
 
-/**
- * Metodo para consultar los detalles de los boletos como la cantidad de adultos,
- * niños e infantes que hay en la reserva del cliente
- * @param <String> $solicitud
- * @return <Coleccion> coleccion de detalles de la emisión del boleto
- */
+    /**
+     * Metodo para consultar los detalles de los boletos como la cantidad de adultos,
+     * niños e infantes que hay en la reserva del cliente
+     * @param <String> $solicitud
+     * @return <Coleccion> coleccion de detalles de la emisión del boleto
+     */
     function detallesEmitirBoleto($solicitud) {
         $recursoAdultos = $this->consultarCantidadAdultosNinos($solicitud, "ADL", "IDA");
         $rowCantidadAdultos = mysql_fetch_array($recursoAdultos);
