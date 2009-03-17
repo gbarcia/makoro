@@ -260,7 +260,7 @@ function detalles($idVuelo){
 function generarFormularioNuevaReserva($idVuelo) {
     $contenido = "";
     $contenido .= '<form id="formNuevaReserva">
-    <input type="hidden" name="idVuelo" value="' . $idVuelo . '" />
+    <input name="idVuelo" value="' . $idVuelo . '" />
     <table class="formTable" cellspacing="0">
         <tr>
             <thead>
