@@ -428,12 +428,26 @@ function agregarReserva($datos){
         1, 17706708, $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], '');
 
     if ($respuesta){
-        $mensaje = 'Se Agrego';
+        $mensaje = '<div class="exito">
+                          <div class="textoMensaje">
+                          Se realizo la reserva satisfactoriamente.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
     } else {
-        $mensaje = 'No se Agrego';
+        $mensaje = '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo realizar la reserva.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
     }
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("tres", "innerHTML", $mensaje);
+    $objResponse->addAssign("mensaje", "innerHTML", $mensaje);
     return $objResponse;
 }
 

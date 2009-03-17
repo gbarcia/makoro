@@ -192,6 +192,8 @@ $xajax->processRequests();
             <div class="tableContainer" id="pasajeros"></div>
         </div>
 
+        <div id="mensaje" class="cuerpo"></div>
+
         <div class="cuerpo">
             <div class="izq" id="izquierda">uno</div>
             <div class="der" id="derecha">dos</div>
