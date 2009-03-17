@@ -64,8 +64,8 @@ class controladorReservaBDclass {
      * @param <type> $cantPasajeros La cantidad de pasajeros adultos o ninos
      * @return <type>
      */
-    function asientosDisponiblesAdultoNino($idVuelo,$cantAdultoNino,$cantInfantes){
-        $query = "SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$cantAdultoNino."-".$cantInfantes.")>=0,TRUE,FALSE) as disponibleAdultoNino
+    function asientosDisponiblesAdultoNino($idVuelo,$cantAdultoNino){
+        $query = "SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$cantAdultoNino."-vu.cantidadInfantes)>=0,TRUE,FALSE) as disponibleAdultoNino
                   FROM VUELO_RESERVA vre, VUELO vu, RESERVA re, AVION a
                   WHERE re.id = vre.RESERVA_id
                   AND vu.id = vre.VUELO_id
