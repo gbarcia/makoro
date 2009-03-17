@@ -212,7 +212,6 @@ class controladorVueloBDclass {
                        AND r.id = vr.RESERVA_id ";
         }
         $query.= " GROUP BY v.id
-                   HAVING disponibilidadAdulto = 1
                    ORDER BY v.fecha,v.hora ASC";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
@@ -254,7 +253,6 @@ class controladorVueloBDclass {
             }
         }
         $query.= " GROUP BY v.id
-                   HAVING disponibilidadAdulto = 1
                    ORDER BY v.fecha,v.hora ASC";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;

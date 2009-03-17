@@ -6,6 +6,9 @@ $xajax->registerFunction("generarComboBoxLugar");
 $xajax->registerFunction("inicio");
 $xajax->registerFunction("procesarFiltros");
 $xajax->registerFunction("detalles");
+$xajax->registerFunction("desplegarNuevaReserva");
+$xajax->registerFunction("buscarCliente");
+$xajax->registerFunction("agregarReserva");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -150,7 +153,7 @@ $xajax->processRequests();
                     </div>
                 </div>
                 <div class="textoNegro1" align="center">
-                    <input type="button" value="Filtrar" onclick="xajax_procesarFiltros(xajax.getFormValues('filtros'))"/>
+                    <input type="button" value="ACTUALIZAR" onclick="xajax_procesarFiltros(xajax.getFormValues('filtros'))"/>
                 </div>
             </form>
         </div>
@@ -182,13 +185,33 @@ $xajax->processRequests();
             <div class="tableContainer" id="vuelos">
                 <script type="text/javascript">
                     xajax_inicio();
+                    xajax_desplegarNuevaReserva(1);
                 </script>
             </div>
         </div>
 
         <div class="cuerpo">
-            <div class="tableContainer" id="pasajeros">
-            </div>
+            <div class="tableContainer" id="pasajeros"></div>
+        </div>
+
+        <div class="cuerpo">
+            <div class="izq" id="izquierda">uno</div>
+            <div class="der" id="derecha">dos</div>
+        </div>
+
+        <div class="cuerpo">
+            <div class="izq" id="tres">tres</div>
+            <div class="der" id="cuatro">cuatro</div>
+        </div>
+
+        <div class="cuerpo">
+            <div class="izq" id="cinco">cinco</div>
+            <div class="der" id="seis">seis</div>
+        </div>
+
+        <div class="cuerpo">
+            <div class="izq" id="siete">siete</div>
+            <div class="der" id="ocho">ocho</div>
         </div>
 
     </body>
