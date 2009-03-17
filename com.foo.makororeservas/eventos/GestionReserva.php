@@ -31,7 +31,7 @@ function generarComboBoxServicio(){
     $controladorServicio = new ControlTipoServicioLogicaclass();
     $recurso = $controladorServicio->consultarServicios();
     while ($row = mysql_fetch_array($recurso)) {
-        $combo.= '<option value="' . $row[id] .'">' . $row[abreviatura] . '</option>';
+        $combo.= '<option value="' . $row[id] .'">' . $row[nombre] . '</option>';
     }
     $combo.= '</select>';
     return $combo;
@@ -46,6 +46,13 @@ function generarComboBoxPosada(){
     }
     $combo.= '</select>';
     return $combo;
+}
+
+function desplegarBusqueda($datos){
+    $objResponse = new xajaxResponse();
+    $resultado = procesarFiltros($datos);
+    $objResponse->addAssign("vuelos", "innerHTML", $resultado);
+    return $objResponse;
 }
 
 /**
@@ -72,7 +79,6 @@ function procesarFiltros($datos){
         $datos[cedulaCliente], $datos[nombreParticular], $datos[apellidoParticular],
         $datos[rifCliente], $datos[nombreAgencia], $datos[solicitud], $datos[estado]);
     $resultado = "";
-    $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
@@ -113,7 +119,7 @@ function procesarFiltros($datos){
         $resultado.= '<td>' . $cantidadDisponibleInfantes. '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="button" value="DETALLES" onclick="xajax_detalles(' . $idVuelo . ')"/></td>';
+        $resultado.= '<td><input type="button" value="DETALLES" onclick="xajax_desplegarDetalles(' . $idVuelo . ')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -122,20 +128,21 @@ function procesarFiltros($datos){
     if ($recursoDetalles == "") {
         $resultado = 'No hay coincidencias con su busqueda.';
     }
-    $objResponse->addAssign("vuelos", "innerHTML", $resultado);
+    return $resultado;
+}
+
+function desplegarInicio(){
+    $objResponse = new xajaxResponse();
+    $resultado = inicio();
+    $objResponse->addAssign("vuelos", "innerHTML", "$resultado");
     return $objResponse;
 }
 
-/**
- * Muestra los vuelos de la fecha actual
- * <xajaxResponse> Respuesta xajax
- */
 function inicio(){
     $controlVuelo = new ControlVueloLogicaclass();
     $coleccionVuelo = $controlVuelo->vueloEspecificoSinFiltro(date("Y")."-".date("m").'-'.date('d'),
         date("Y")."-".date("m").'-'.date('d'));
     $resultado = "";
-    $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
@@ -176,7 +183,7 @@ function inicio(){
         $resultado.= '<td>' . $cantidadDisponibleInfantes. '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="button" value="DETALLES" onclick="xajax_detalles(' . $idVuelo . ')"/></td>';
+        $resultado.= '<td><input type="button" value="DETALLES" onclick="desplegarDetalles(' . $idVuelo . ')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -186,7 +193,15 @@ function inicio(){
         $resultado = 'No hay vuelos planificados para hoy (' . date("d") . "-" .
         date("m") . '-' . date('Y') . ')';
     }
-    $objResponse->addAssign("vuelos", "innerHTML", "$resultado");
+    return $resultado;
+}
+
+function desplegarDetalles($idVuelo){
+    $objResponse = new xajaxResponse();
+    $detalles = detalles($idVuelo);
+    $formulario = generarFormularioNuevaReserva($idVuelo);
+    $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
+    $objResponse->addAssign("izquierda", "innerHTML", $formulario);
     return $objResponse;
 }
 
@@ -198,7 +213,6 @@ function inicio(){
 function detalles($idVuelo){
     $controlVuelo = new ControlVueloLogicaclass();
     $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
-    $objResponse = new xajaxResponse();
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
@@ -235,8 +249,7 @@ function detalles($idVuelo){
         $resultado.= '<td>' . $row[clienteNombre] . '</td>';
         $resultado.= '</tr>';
     }
-    $objResponse->addAssign("pasajeros", "innerHTML", "$resultado");
-    return $objResponse;
+    return $resultado;
 }
 
 /**
@@ -283,19 +296,6 @@ function generarFormularioNuevaReserva($idVuelo) {
     return $contenido;
 }
 
-/**
- * Despliega el formulario de agregar reserva
- * @param <int> $idVuelo el identificador del vuelo
- * @return <xajaxResponse> Respuesta xajax
- */
-function desplegarNuevaReserva($idVuelo){
-    $idVuelo = 3;
-    $respuesta = generarFormularioNuevaReserva($idVuelo);
-    $objResponse = new xajaxResponse();
-    $objResponse->addAssign("izquierda", "innerHTML", $respuesta);
-    return $objResponse;
-}
-
 function buscarClienteJuridico($rif){
     $control = new ControlReservaLogicaclass();
     return $control->existeClienteAgencia($rif);
@@ -326,6 +326,18 @@ function buscarCliente($datos){
             //agregar Cliente Particular
         }
     }
+}
+
+/**
+ * Despliega el formulario de confirmar reserva
+ * @param <form> $datos el formulario anterior
+ * @return <xajaxResponse> Respuesta xajax
+ */
+function desplegarConfirmarReserva($datos){
+    $respuesta = generarFormularioConfirmarReserva($datos);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
+    return $objResponse;
 }
 
 /**
@@ -402,18 +414,6 @@ function generarFormularioConfirmarReserva($datos) {
     return $contenido;
 }
 
-/**
- * Despliega el formulario de confirmar reserva
- * @param <form> $datos el formulario anterior
- * @return <xajaxResponse> Respuesta xajax
- */
-function desplegarConfirmarReserva($datos){
-    $respuesta = generarFormularioConfirmarReserva($datos);
-    $objResponse = new xajaxResponse();
-    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
-    return $objResponse;
-}
-
 function agregarReserva($datos){
     $controlReserva = new ControlReservaLogicaclass();
 
@@ -436,6 +436,5 @@ function agregarReserva($datos){
     $objResponse->addAssign("tres", "innerHTML", $mensaje);
     return $objResponse;
 }
-
 
 ?>

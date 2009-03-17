@@ -3,10 +3,9 @@ require $_SERVER['DOCUMENT_ROOT'] .'/com.foo.makororeservas/serviciotecnico/util
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/GestionReserva.php';
 $xajax = new xajax();
 $xajax->registerFunction("generarComboBoxLugar");
-$xajax->registerFunction("inicio");
-$xajax->registerFunction("procesarFiltros");
-$xajax->registerFunction("detalles");
-$xajax->registerFunction("desplegarNuevaReserva");
+$xajax->registerFunction("desplegarInicio");
+$xajax->registerFunction("desplegarBusqueda");
+$xajax->registerFunction("desplegarDetalles");
 $xajax->registerFunction("buscarCliente");
 $xajax->registerFunction("agregarReserva");
 $xajax->processRequests();
@@ -153,7 +152,7 @@ $xajax->processRequests();
                     </div>
                 </div>
                 <div class="textoNegro1" align="center">
-                    <input type="button" value="ACTUALIZAR" onclick="xajax_procesarFiltros(xajax.getFormValues('filtros'))"/>
+                    <input type="button" value="ACTUALIZAR" onclick="xajax_desplegarBusqueda(xajax.getFormValues('filtros'))"/>
                 </div>
             </form>
         </div>
@@ -184,8 +183,7 @@ $xajax->processRequests();
         <div class="cuerpo">
             <div class="tableContainer" id="vuelos">
                 <script type="text/javascript">
-                    xajax_inicio();
-                    xajax_desplegarNuevaReserva(1);
+                    xajax_desplegarInicio();
                 </script>
             </div>
         </div>
