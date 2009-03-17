@@ -447,7 +447,7 @@ function agregarReserva($datos){
                           </div>';
     }
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("mensaje", "innerHTML", $mensaje);
+    $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
     return $objResponse;
 }
 

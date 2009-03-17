@@ -152,6 +152,7 @@ $xajax->processRequests();
                     </div>
                 </div>
                 <div class="textoNegro1" align="center">
+                    <input type="reset" value="LIMPIAR FORMULARIO" />
                     <input type="button" value="ACTUALIZAR" onclick="xajax_desplegarBusqueda(xajax.getFormValues('filtros'))"/>
                 </div>
             </form>
