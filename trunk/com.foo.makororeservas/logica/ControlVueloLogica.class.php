@@ -17,12 +17,12 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para agregar un nuevo vuelo
-     * @param <Date> $fecha Fecha del nuevo vuelo
-     * @param <Date> $hora Hora del nuevo vuelo
-     * @param <String> $avionMatricula La matricula del avion que realizara el vuelo
-     * @param <String> $rutaSitioSalida El sitio de salida del nuevo vuelo
-     * @param <String> $rutaSitioLlegada El sitio de llegada del nuevo vuelo
-     * @return <boolean> El resultado de la operacion 
+     * @param <DATE> $fecha Fecha del nuevo vuelo
+     * @param <TIME> $hora Hora del nuevo vuelo
+     * @param <STRING> $avionMatricula La matricula del avion que realizara el vuelo
+     * @param <STRING> $rutaSitioSalida El sitio de salida del nuevo vuelo
+     * @param <STRING> $rutaSitioLlegada El sitio de llegada del nuevo vuelo
+     * @return <BOOLEAN> El resultado de la operacion
      */
     function nuevoVuelo($fecha,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada) {
         $vuelo = new Vueloclass();
@@ -59,6 +59,12 @@ class ControlVueloLogicaclass {
         return ($resultado);
     }
 
+    /**
+     * Metodo para actualizar la cantidad de infantes en un vuelo 
+     * @param <INTEGER> $idVuelo El id del vuelo que se desea actualizar
+     * @param <INTEGER> $cantidadInfantes La nueva cantidad de infantes
+     * @return <BOOLEAN> El resultado de la operacion
+     */
     function actualizarCantidadInfantesVuelo($idVuelo, $cantidadInfantes) {
         $vuelo = new Vueloclass();
         $vuelo->setId($idVuelo);
@@ -69,8 +75,8 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para consultar los asientos disponibles
-     * @param <Integer> $id
-     * @return <recurso> recurso con la cantidad disponible
+     * @param <INTEGER> $id
+     * @return <RECURSO> recurso con la cantidad disponible
      */
     function calculoAsientosDisponibles($id) {
         $recurso = $this->controlBD->consultarVueloCantidadReserva($id);
@@ -83,25 +89,25 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para consultar la informacion en forma detallada de los vuelos 
-     * @param <type> $fechaInicio Fecha inicio en la que se quiere realizar la consulta
-     * @param <type> $fechaFin Fecha fin en la que se quiere realizar la consulta
-     * @param <type> $hora Hora que se desea consultar
-     * @param <type> $avionMatricula La matricula del avion que se desea consultar
-     * @param <type> $rutaSitioSalida La ruta de la que sale el vuelo
-     * @param <type> $rutaSitioLlegada La ruta a la que llega el vuelo
-     * @param <type> $cantidadAdultosNinos Cantidad de pasajeros adultos y ninos
-     * @param <type> $cantidadInfantes Cantidad de pasajeros infantes
-     * @param <type> $cedulaPasaporte La cedula o pasaporte del pasajero
-     * @param <type> $nombrePasajero El nombre del pasajero que se encuentra en el(los) vuelo(s)
-     * @param <type> $apellidoPasajero El apellido del pasajero que se encuentra en el(los) vuelo(s)
-     * @param <type> $cedulaPart La cedula del cliente particular que compro el(los) vuelo(s)
-     * @param <type> $nombrePart El nombre del cliente particular que compro el(los) vuelo(s)
-     * @param <type> $apellidoPart El apellido del cliente particular que compro el(los) vuelo(s)
-     * @param <type> $rifAgencia El rif del cliente agencia que compro el(los) vuelo(s)
-     * @param <type> $nombreAgencia El nombre del cliente agencia que compro el(los) vuelo(s)
-     * @param <type> $solicitud El codigo de solicitud de la(s) reserva(s)
-     * @param <type> $estado El estado de la reserva
-     * @return <type> Los vuelos que cumplan con los filtros seleccionados 
+     * @param <DATE> $fechaInicio Fecha inicio en la que se quiere realizar la consulta
+     * @param <DATE> $fechaFin Fecha fin en la que se quiere realizar la consulta
+     * @param <TIME> $hora Hora que se desea consultar
+     * @param <STRING> $avionMatricula La matricula del avion que se desea consultar
+     * @param <STRING> $rutaSitioSalida La ruta de la que sale el vuelo
+     * @param <STRING> $rutaSitioLlegada La ruta a la que llega el vuelo
+     * @param <INTEGER> $cantidadAdultosNinos Cantidad de pasajeros adultos y ninos
+     * @param <INTEGER> $cantidadInfantes Cantidad de pasajeros infantes
+     * @param <STRING> $cedulaPasaporte La cedula o pasaporte del pasajero
+     * @param <STRING> $nombrePasajero El nombre del pasajero que se encuentra en el(los) vuelo(s)
+     * @param <STRING> $apellidoPasajero El apellido del pasajero que se encuentra en el(los) vuelo(s)
+     * @param <INTEGER> $cedulaPart La cedula del cliente particular que compro el(los) vuelo(s)
+     * @param <STRING> $nombrePart El nombre del cliente particular que compro el(los) vuelo(s)
+     * @param <STRING> $apellidoPart El apellido del cliente particular que compro el(los) vuelo(s)
+     * @param <STRING> $rifAgencia El rif del cliente agencia que compro el(los) vuelo(s)
+     * @param <STRING> $nombreAgencia El nombre del cliente agencia que compro el(los) vuelo(s)
+     * @param <STRING> $solicitud El codigo de solicitud de la(s) reserva(s)
+     * @param <STRING> $estado El estado de la reserva
+     * @return <COLECCION> Los vuelos que cumplan con los filtros seleccionados
      */
     function vueloEspecificoConFiltro($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$cantidadAdultosNinos,$cantidadInfantes,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia,$solicitud,$estado) {
         $coleccionResultado = new ArrayObject();
@@ -142,9 +148,9 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para consultar informacion  de los vuelos en un intervalo de fecha
-     * @param <type> $fechaInicio La fecha de inicio a consultar
-     * @param <type> $fechaFin La fecha de fin a consultar
-     * @return <type> Los vuelos en un intervalo
+     * @param <DATE> $fechaInicio La fecha de inicio a consultar
+     * @param <DATE> $fechaFin La fecha de fin a consultar
+     * @return <COLECCION> Los vuelos en un intervalo
      */
     function vueloEspecificoSinFiltro($fechaInicio,$fechaFin) {
         $coleccionResultado = new ArrayObject();
@@ -185,7 +191,7 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para consultar los vuelos realizados comparando con la fecha actual
-     * @return <$coleccion> coleccion de vuelos pasados
+     * @return <COLECCION> coleccion de vuelos pasados
      */
     function buscarVuelosRealizados() {
         $resultado = new ArrayObject();
@@ -208,7 +214,7 @@ class ControlVueloLogicaclass {
     /**
      * Metodo para consultar los vuelos realizados con los piloto, copilotos y
      * asientos que fueron reservados
-     * @return <Coleccion> coleccion vuelo
+     * @return <COLECCION> coleccion vuelo
      */
     function vuelosRealizados() {
         $recurso = $this->buscarVuelosRealizados();
@@ -244,7 +250,7 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para consultar todos los vuelos para las fechas siguientes
-     * @return <Coleccion> coleccion de vuelo
+     * @return <COLECCION> coleccion de vuelo
      */
     function consultarLosVuelos(){
         $resultado = new ArrayObject();
@@ -267,7 +273,7 @@ class ControlVueloLogicaclass {
     /**
      * Metodo para consultar la cantidad de asientos disponibles para las siguientes
      * fechas con el piloto, copiloto y la cantidad de asientos disponibles
-     * @return <Coleccion> coleccion de objeto vuelo
+     * @return <COLECCION> coleccion de objeto vuelo
      */
     function vuelosCantidadAsientosDisponibles() {
         $recurso = $this->consultarLosVuelos();
@@ -309,8 +315,8 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para consultar los detalles de un vuelo especifico
-     * @param <type> $idVuelo Identificador del vuelo a consultar
-     * @param <type> $idSucursal Identificador de la sucursal a consultar
+     * @param <INTEGER> $idVuelo Identificador del vuelo a consultar
+     * @param <INTEGER> $idSucursal Identificador de la sucursal a consultar
      * @return <type> Los detalles del vuelo especificado
      */
     function consultarVuelosDetalles($idVuelo){
