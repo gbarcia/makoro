@@ -13,7 +13,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pago.c
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/Conexion.class.php';
 /**
  * Description of ControlReservaLogicaclass
- *
+ * Clase para el manejo de las reservas del sistema 
  * @author maya
  */
 class ControlReservaLogicaclass {
@@ -122,18 +122,18 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
-/**
- * Metodo para actualizar un pasajero en una reserva determinada
- * @param <String> $nombre Nombre del pasajero
- * @param <String> $apellido Apellido del pasajero
- * @param <String> $sexo Sexo del pasajero
- * @param <Integer> $cedula Cedula del pasajero
- * @param <String> $pasaporte Pasaporte del pasajero
- * @param <String> $nacionalidad Nacionalidad del pasajero
- * @param <Integer> $tipoPasajeroId Clasificacion del pasajero
- * @param <Integer> $idReserva Identificador de la reserva
- * @return <recurso> resultado de la operacion
- */
+    /**
+     * Metodo para actualizar un pasajero en una reserva determinada
+     * @param <String> $nombre Nombre del pasajero
+     * @param <String> $apellido Apellido del pasajero
+     * @param <String> $sexo Sexo del pasajero
+     * @param <Integer> $cedula Cedula del pasajero
+     * @param <String> $pasaporte Pasaporte del pasajero
+     * @param <String> $nacionalidad Nacionalidad del pasajero
+     * @param <Integer> $tipoPasajeroId Clasificacion del pasajero
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @return <recurso> resultado de la operacion
+     */
     function actualizarPasajeroReserva($nombre,$apellido,$sexo,$cedula,$pasaporte,$nacionalidad,$tipoPasajeroId,$idReserva){
         $controlPasajero = new ControlPasajeroLogicaclass();
         $existePasajero = $this->existePasajero($cedula, $pasaporte);
@@ -149,12 +149,12 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
-/**
- * Metodo para actualizar un pasajero de una reserva
- * @param <Integer> $idPasajero Identificador del pasajero
- * @param <Integer> $idReserva Identificador de la reserva
- * @return <recurso> resultado de la operacion
- */
+    /**
+     * Metodo para actualizar un pasajero de una reserva
+     * @param <Integer> $idPasajero Identificador del pasajero
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @return <recurso> resultado de la operacion
+     */
     function actualizarIdReserva($idPasajero,$idReserva){
         $recurso = $this->controlBD->actualizarIdReserva($idPasajero, $idReserva);
         return $recurso;
@@ -244,16 +244,16 @@ class ControlReservaLogicaclass {
         return $disponible;
     }
 
-/**
- * Metodo para pagar una reserva, además se actualiza el estado a PA (pagado)
- * @param <Integer> $idReserva Identificador de la reserva
- * @param <String> $tipo Tipo de pago
- * @param <double> $monto Monto a pagar
- * @param <String> $nombreBanco Nombre del banco
- * @param <Integer> $numeroTransaccion Numero de la transaccion del pago
- * @param <Integer> $monedaId Identificador de la moneda
- * @return <boolean> resultado de la operacion
- */
+    /**
+     * Metodo para pagar una reserva, además se actualiza el estado a PA (pagado)
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <String> $tipo Tipo de pago
+     * @param <double> $monto Monto a pagar
+     * @param <String> $nombreBanco Nombre del banco
+     * @param <Integer> $numeroTransaccion Numero de la transaccion del pago
+     * @param <Integer> $monedaId Identificador de la moneda
+     * @return <boolean> resultado de la operacion
+     */
     function pagarReserva($idReserva,$tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId){
         $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
         echo $pagoId;
@@ -264,11 +264,11 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar el estado de una reserva
- * @param <Integer> $idReserva Identificador de la reserva
- * @return <recurso> estado de la reserva
- */
+    /**
+     * Metodo para consultar el estado de una reserva
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @return <recurso> estado de la reserva
+     */
     function estadoReserva($idReserva) {
         $recurso = $this->controlBD->consultarEstadoReserva($idReserva);
         $row = mysql_fetch_array($recurso);
@@ -276,12 +276,12 @@ class ControlReservaLogicaclass {
         return $estado;
     }
 
-/**
- * Metodo para actualizar el estado de una reserva
- * @param <Integer> $idReserva Identificador de la reserva
- * @param <String> $estado Estado de la reserva
- * @return <recurso> resultado de la operacion
- */
+    /**
+     * Metodo para actualizar el estado de una reserva
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <String> $estado Estado de la reserva
+     * @return <recurso> resultado de la operacion
+     */
     function actualizarEstadoReserva($idReserva, $estado) {
         $estadoBD = $this->estadoReserva($idReserva);
         if($estadoBD != 'CA'){
