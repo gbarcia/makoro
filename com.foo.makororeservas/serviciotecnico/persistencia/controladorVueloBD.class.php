@@ -52,6 +52,11 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para actualizar la cantidad de infantes en un vuelo
+     * @param <type> $vuelo El vuelo a editar
+     * @return <type> El resultado de la operacion 
+     */
     function actualizarCantidadInfantesVuelo($vuelo) {
         $resultado = false;
         $query = "UPDATE VUELO v SET v.cantidadInfantes = ".$vuelo->getCantidadinfantes()."
@@ -217,6 +222,14 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para consultar uno o varios vuelos
+     * @param <type> $fechaInicio La fecha de inicio a partir de la cual se
+     * desea hacer la consulta
+     * @param <type> $fechaFin La fecha de fin hasta donde se desea hacer la
+     * consulta
+     * @return <type> El o los vuelos dentrodel rango de fechas indicados 
+     */
     function consultarVueloSinFiltros($fechaInicio,$fechaFin) {
         $resultado = false;
         $query = "SELECT v.id as idVuelo, v.cantidadInfantes as infantes, v.fecha,v.hora,v.AVION_matricula avionMatricula,v.RUTA_sitioSalida rutaSitioSalida,
@@ -414,10 +427,10 @@ class controladorVueloBDclass {
     }
 
     /**
- * Metodo para consultar un vuelo especifico, con el campo de busqueda y por fecha
- * @param <String> $busqueda Parametro que contiene la busqueda correspondiente
- * @return <recurso> recurso con los vuelos asociados a esa búsqueda
- */
+     * Metodo para consultar un vuelo especifico, con el campo de busqueda y por fecha
+     * @param <String> $busqueda Parametro que contiene la busqueda correspondiente
+     * @return <recurso> recurso con los vuelos asociados a esa búsqueda
+     */
     function consultarTodosVuelosPorFechaRutas($busqueda) {
         $resultado = false;
         $query = "SELECT v.id id, v.fecha fecha, v.hora hora,
@@ -435,11 +448,11 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar la cantidad de infantes por vuelo
- * @param <Integer> $idVuelo Identificador del vuelo
- * @return <recurso> recurso con la cantidad de infantes del vuelo
- */
+    /**
+     * Metodo para consultar la cantidad de infantes por vuelo
+     * @param <Integer> $idVuelo Identificador del vuelo
+     * @return <recurso> recurso con la cantidad de infantes del vuelo
+     */
     function consultarCantidadInfantesVuelo($idVuelo) {
         $resultado = false;
         $query = "SELECT v.cantidadInfantes
@@ -449,10 +462,14 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar las horas de los vuelos
- * @return <recurso> recurso con la cantidad de horas de los vuelos
- */
+    /**
+     * Metodo para consultar las horas de los vuelos
+     * @param <type> $fechaIni La fecha de inicio a partir de la cual se desea
+     * hacer la consulta
+     * @param <type> $fechaFin La fecha de fin hasta la cual se desea hacer la
+     * consulta
+     * @return <recurso> Recurso con la cantidad de horas de los vuelos
+     */
     function consultarHorasDeVuelo($fechaIni,$fechaFin) {
         $resultado = false;
         $query = "SELECT SUM(r.tiempo) horasVuelo
@@ -465,6 +482,5 @@ class controladorVueloBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
-
 }
 ?>
