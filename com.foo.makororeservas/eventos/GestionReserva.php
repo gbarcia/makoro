@@ -4,15 +4,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlSucursalLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlTipoServicioLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPosadaBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorGestionVuelos.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlVueloLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlReservaLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorSeguridadBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlSeguridad.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteParticularLogica.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteAgenciaLogica.class.php';
 
-/**
- * Funcion que genera el Combo Box con las rutas de los vuelos
- * @return <xajaxResponse> Respuesta xajax
- */
 function generarComboBoxLugar(){
     $objResponse = new xajaxResponse();
     $combo = '<select name="ruta"><option value="">TODAS</option>';
@@ -84,7 +83,7 @@ function procesarFiltros($datos){
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
-    $resultado.= '<th>FECHA</th>';
+     $resultado.= '<th>FECHA</th>';
     $resultado.= '<th>HORA</th>';
     $resultado.= '<th>ORIGEN</th>';
     $resultado.= '<th>DESTINO</th>';
@@ -93,7 +92,7 @@ function procesarFiltros($datos){
     $resultado.= '<th>INF DISPONIBLES</th>';
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
-    $resultado.= '<th>EDITAR</th>';
+    $resultado.= '<th>DETALLES</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
@@ -201,9 +200,37 @@ function desplegarDetalles($idVuelo){
     $objResponse = new xajaxResponse();
     $detalles = detalles($idVuelo);
     $formulario = generarFormularioNuevaReserva($idVuelo);
+    $fichaVuelo = generarFichaVuelo($idVuelo);
     $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
     $objResponse->addAssign("izquierda", "innerHTML", $formulario);
+    $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
     return $objResponse;
+}
+
+function generarFichaVuelo($idVuelo){
+    $controlVuelo = new controladorGestionVuelos();
+    $datos = $controlVuelo->ConsultarVueloPorId($idVuelo);
+    $row = mysql_fetch_array($datos);
+    $resultado = '<table class="fichaTable" cellspacing="0">
+        <thead><td colspan="2">DATOS DEL VUELO</td></thead>
+        <tr class="r1">
+        <td>FECHA</td>
+        <td>'.$row[fecha].'</td>
+        </tr>
+        <tr class="r0">
+        <td>HORA</td>
+        <td>'.$row[hora].'</td>
+        </tr>
+        <tr class="r1">
+        <td>RUTA</td>
+        <td>'.$row[salida].' - '.$row[llegada].'</td>
+        </tr>
+        <tr class="r0">
+        <td>AVION</td>
+        <td>'.$row[matricula].'</td>
+        </tr>
+        </table>';
+    return $resultado;
 }
 
 function buscarClienteJuridico($rif){
@@ -228,7 +255,7 @@ function buscarCliente($datos){
         if ((buscarClienteParticular($datos[cedula])) != ""){
             return desplegarConfirmarReserva($datos);
         } else {
-            //agregar Cliente Particular
+            return desplegarFormularioAgregarClienteParticular($datos[cedula]);
         }
     }
 }
@@ -309,5 +336,112 @@ function desplegarFormularioAgregarClienteJuridico($rif){
     $objResponse->addAssign("derecha", "innerHTML", $respuesta);
     return $objResponse;
 }
+
+function desplegarFormularioAgregarClienteParticular($cedula){
+    $respuesta = generarFormularioAgregarClienteParticular($cedula);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function procesarAgencia($datos) {
+    $repuesta = "";
+    if (validarAgencia($datos)) {
+        $control = new ControlClienteAgenciaLogicaclass();
+        $resultado = $control->nuevoClienteAgencia($datos[rif], $datos[nombre], $datos[telefono], $datos[direccion], $datos[estado], $datos[ciudad], $datos[porcentaje]);
+        if ($resultado) {
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Agencia '.$datos[nombre]. ' agregada con exito.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique el manual del usuario.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+    }
+    else {
+        $respuesta ='<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique que el formulario se ha llenado correctamente.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+    }
+    $objResponse = new xajaxResponse();
+    $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function procesarCliente($datos) {
+    $repuesta = "";
+    $objResponse = new xajaxResponse();
+    if (validarPersona($datos)) {
+        $control = new ControlClienteParticularLogicaclass();
+        $resultado = $control->nuevoClienteParticular($datos[cedula], $datos[nombre], $datos[apellido], 'M', '0000-00-00', $datos[telefono], $datos[estado], $datos[ciudad], $datos[direccion]);
+        if ($resultado) {
+            $respuesta .= '<div class="exito">
+                          <div class="textoMensaje">
+                          Cliente '.$datos[nombre] .' '. $datos[apellido]. ' agregado con exito.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+        else {
+            $respuesta .= '<div class="error">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. Verifique el manual del usuario.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        }
+    }
+    else {
+        $respuesta ='<div class="advertencia">
+                          <div class="textoMensaje">
+                          No se pudo completar la operacion. El formulario no es correcro. CODIGO GCPF001.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+    }
+    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function validarAgencia ($datos) {
+    $resultado = false;
+    if (is_string($datos[rif]) && $datos[rif] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[nombre]) && $datos[nombre] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[telefono]) && $datos[telefono] != "")
+    $resultado = true;
+    else return false;
+    if (is_numeric($datos[porcentaje]) && $datos[porcentaje] != "")
+    $resultado = true;
+    else return false;
+    return $resultado;
+}
+
 
 ?>
