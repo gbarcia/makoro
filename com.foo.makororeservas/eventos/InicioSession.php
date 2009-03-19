@@ -15,7 +15,7 @@ function IniciarSession ($datos) {
     $resultado = $control->validarSession(strtolower($datos[login]), strtolower($datos[pass]));
     if ($resultado == true) {
         $objResponse->addScript("document.getElementById('formularioEntrada').reset();");
-        $objResponse->addScript("window.open('gui/PresentacionGestionReserva.php','mywindow','menubar=0,resizable=yes,scrollbars=1,width=1280,height=800');void(0)");
+        $objResponse->addScript("window.open('gui/PresentacionGestionReservas.php','mywindow','menubar=0,resizable=yes,scrollbars=1,width=1280,height=800');void(0)");
     }
     else {
         $mensaje = "<span class='textoRojo'>Fallo de Atenticacion.No Autorizado</span>";
