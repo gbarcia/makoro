@@ -83,7 +83,7 @@ function procesarFiltros($datos){
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
-     $resultado.= '<th>FECHA</th>';
+    $resultado.= '<th>FECHA</th>';
     $resultado.= '<th>HORA</th>';
     $resultado.= '<th>ORIGEN</th>';
     $resultado.= '<th>DESTINO</th>';
@@ -239,7 +239,7 @@ function buscarClienteJuridico($rif){
 }
 
 function buscarClienteParticular($cedula){
-    $control = new ControlReservaLogicaclass();
+    $control = new ControlReservaLogicaclass();return desplegarConfirmarReserva($datos);
     return $control->existeClienteParticular($cedula);
 }
 
@@ -249,7 +249,7 @@ function buscarCliente($datos){
         if ((buscarClienteJuridico($datos[rif])) != ""){
             return desplegarConfirmarReserva($datos);
         } else {
-            return desplegarFormularioAgregarClienteJuridico($datos[rif]);
+            return desplegarFormularioAgregarClienteJuridico($datos);
         }
     } else {
         if ((buscarClienteParticular($datos[cedula])) != ""){
@@ -263,7 +263,7 @@ function buscarCliente($datos){
 function desplegarConfirmarReserva($datos){
     $respuesta = generarFormularioConfirmarReserva($datos);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
+    $objResponse->addAssign("tres", "innerHTML", $respuesta);
     return $objResponse;
 }
 
@@ -298,12 +298,12 @@ function agregarReserva($datos){
 
         $respuesta = $controlReserva->crearReserva($datos[idVuelo], $datos[cantidadAdlChd],
             $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
-            1, 17706708, $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], '', $datos[estado]);
+            $_SESSION['EncargadoSucursal'], $_SESSION['EncargadoCedula'], $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], '', $datos[estado]);
 
-        if ($respuesta){
+        if ($respuesta != ''){
             $mensaje = '<div class="exito">
                           <div class="textoMensaje">
-                          Se realizo la reserva satisfactoriamente.
+                          Se realizo la reserva satisfactoriamente. Localizador: '. $respuesta .'
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -345,10 +345,11 @@ function desplegarFormularioAgregarClienteParticular($cedula){
 }
 
 function procesarAgencia($datos) {
+    $objResponse = new xajaxResponse();
     $repuesta = "";
     if (validarAgencia($datos)) {
         $control = new ControlClienteAgenciaLogicaclass();
-        $resultado = $control->nuevoClienteAgencia($datos[rif], $datos[nombre], $datos[telefono], $datos[direccion], $datos[estado], $datos[ciudad], $datos[porcentaje]);
+        $resultado = $control->nuevoClienteAgencia($datos[rif], $datos[nombre], $datos[telefono], '', '', '', 0);
         if ($resultado) {
             $respuesta .= '<div class="exito">
                           <div class="textoMensaje">
@@ -358,6 +359,8 @@ function procesarAgencia($datos) {
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
+            $form = generarFormularioConfirmarReserva($datos);
+            $objResponse->addAssign("derecha", "innerHTML", $form);
         }
         else {
             $respuesta .= '<div class="error">
@@ -380,7 +383,6 @@ function procesarAgencia($datos) {
                           </div>
                           </div>';
     }
-    $objResponse = new xajaxResponse();
     $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
     return $objResponse;
 }
@@ -435,9 +437,6 @@ function validarAgencia ($datos) {
     $resultado = true;
     else return false;
     if (is_string($datos[telefono]) && $datos[telefono] != "")
-    $resultado = true;
-    else return false;
-    if (is_numeric($datos[porcentaje]) && $datos[porcentaje] != "")
     $resultado = true;
     else return false;
     return $resultado;

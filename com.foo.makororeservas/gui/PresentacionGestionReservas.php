@@ -1,4 +1,5 @@
 <?php
+session_start();
 require $_SERVER['DOCUMENT_ROOT'] .'/com.foo.makororeservas/serviciotecnico/utilidades/xajax/xajax.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/GestionReserva.php';
 $xajax = new xajax();
@@ -9,6 +10,7 @@ $xajax->registerFunction("desplegarDetalles");
 $xajax->registerFunction("buscarCliente");
 $xajax->registerFunction("agregarReserva");
 $xajax->registerFunction("borrarMensaje");
+$xajax->registerFunction("procesarAgencia");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

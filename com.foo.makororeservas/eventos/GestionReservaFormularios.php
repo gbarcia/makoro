@@ -22,44 +22,51 @@ function detalles($idVuelo){
     $resultado.= '<th>TRANSACCION</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
-    while ($row = mysql_fetch_array($recurso)){
-        if ($row[estado] == "CO"){
-            $resultado.= '<tr class="confirmado">';
-        } else if ($row[estado] == "PP"){
-            $resultado.= '<tr class="porPagar">';
-        } else{
-            $resultado.= '<tr class="r1">';
+
+    $cant = mysql_num_rows($recurso);
+    if($cant == 0){
+        $resultado = tablaVacia();
+    }
+    else{
+        while ($row = mysql_fetch_array($recurso)){
+            if ($row[estado] == "CO"){
+                $resultado.= '<tr class="confirmado">';
+            } else if ($row[estado] == "PP"){
+                $resultado.= '<tr class="porPagar">';
+            } else{
+                $resultado.= '<tr class="r1">';
+            }
+            $resultado.= '<td><input type="checkbox" name="" value="ON" /></td>';
+            $resultado.= '<td>' . $row[solicitud] . '</td>';
+            if ($row[cedulaPasaporte] != ''){
+                $cedulaPasaporte = $row[cedulaPasaporte];
+            } else {
+                $cedulaPasaporte = '&nbsp';
+            }
+            $resultado.= '<td>' . $cedulaPasaporte . '</td>';
+            $resultado.= '<td>' . $row[pasajero] . '</td>';
+            if ($row[cedulaPasaporte] != ''){
+                $tipoPasajero = $row[tipoPasajero];
+            } else {
+                $tipoPasajero = '&nbsp';
+            }
+            $resultado.= '<td>' . $tipoPasajero . '</td>';
+            $resultado.= '<td>' . $row[servicio] . '</td>';
+            if ($row[posada] != ''){
+                $posada = $row[posada];
+            } else {
+                $posada = '&nbsp';
+            }
+            $resultado.= '<td>' . $posada . '</td>';
+            $resultado.= '<td>' . $row[encargadoNombre] . '</td>';
+            $resultado.= '<td>' . $row[sucursal] . '</td>';
+            $resultado.= '<td>' . $row[vueloRetorno] . '</td>';
+            $resultado.= '<td>' . $row[clienteNombre] . '</td>';
+            $resultado.= '<td>' . $row[pago] . '</td>';
+            $resultado.= '<td>' . $row[banco] . '</td>';
+            $resultado.= '<td>' . $row[numeroTran] . '</td>';
+            $resultado.= '</tr>';
         }
-        $resultado.= '<td><input type="checkbox" name="" value="ON" /></td>';
-        $resultado.= '<td>' . $row[solicitud] . '</td>';
-        if ($row[cedulaPasaporte] != ''){
-            $cedulaPasaporte = $row[cedulaPasaporte];
-        } else {
-            $cedulaPasaporte = '&nbsp';
-        }
-        $resultado.= '<td>' . $cedulaPasaporte . '</td>';
-        $resultado.= '<td>' . $row[pasajero] . '</td>';
-        if ($row[cedulaPasaporte] != ''){
-            $tipoPasajero = $row[tipoPasajero];
-        } else {
-            $tipoPasajero = '&nbsp';
-        }
-        $resultado.= '<td>' . $tipoPasajero . '</td>';
-        $resultado.= '<td>' . $row[servicio] . '</td>';
-        if ($row[posada] != ''){
-            $posada = $row[posada];
-        } else {
-            $posada = '&nbsp';
-        }
-        $resultado.= '<td>' . $posada . '</td>';
-        $resultado.= '<td>' . $row[encargadoNombre] . '</td>';
-        $resultado.= '<td>' . $row[sucursal] . '</td>';
-        $resultado.= '<td>' . $row[vueloRetorno] . '</td>';
-        $resultado.= '<td>' . $row[clienteNombre] . '</td>';
-        $resultado.= '<td>' . $row[pago] . '</td>';
-        $resultado.= '<td>' . $row[banco] . '</td>';
-        $resultado.= '<td>' . $row[numeroTran] . '</td>';
-        $resultado.= '</tr>';
     }
     return $resultado;
 }
@@ -99,12 +106,14 @@ function generarFormularioNuevaReserva($idVuelo) {
             </td>
         </tr>
     </table>
-<table class="formTable" cellspacing="0">
+    </form>
+    <form id="formLocalizadorExistente">
+    <table class="formTable" cellspacing="0">
         <tr>
             <thead>
                 <td colspan="3">
                     <div class="tituloBlanco1">
-                        RESERVA EXISTENTE
+                        LOCALIZADOR EXISTENTE
                         <div class="botonCerrar">
                             <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
                         </div>
@@ -113,7 +122,7 @@ function generarFormularioNuevaReserva($idVuelo) {
             </thead>
         </tr>
         <tr class="r1">
-            <td><input type="radio" name="grupo" value="juridico" checked="checked" /></td>
+            <td><input type="radio" name="grupo" value="localizador" checked="checked" /></td>
             <td>Localizador</td>
             <td><input type="text" name="rif" id="rif"></td>
         </tr>
@@ -132,8 +141,8 @@ function generarFormularioNuevaReserva($idVuelo) {
 function generarFormularioConfirmarReserva($datos) {
     $contenido = "";
     $contenido .= '<form id="formConfirmarReserva">
-    <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
-    <input type="hidden" name="tipoCliente" value="'.$datos[grupo].'" />
+    <input  name="idVuelo" value="'.$datos[idVuelo].'" />
+    <input  name="tipoCliente" value="'.$datos[grupo].'" />
         <table class="formTable" cellspacing="0">
         <tr>
             <thead>
@@ -207,9 +216,11 @@ function generarFormularioConfirmarReserva($datos) {
     return $contenido;
 }
 
-function generarFormularioAgregarClienteJuridico($rif) {
+function generarFormularioAgregarClienteJuridico($datos) {
     $contenido = '<form id="formNuevaAgencia">
-  <table class="formTable" cellspacing="0">
+    <input type="text" name="idVuelo" value="'.$datos[idVuelo].'" />
+    <input type="text" name="grupo" value="'.$datos[grupo].'" />
+    <table class="formTable" cellspacing="0">
     <tr>
         <thead>
         <td colspan="2">
@@ -223,41 +234,25 @@ function generarFormularioAgregarClienteJuridico($rif) {
         </thead>
     </tr>
     <tr class="r1">
-      <td colspan="2">(*) Son campos obligatorios</td>
+      <td colspan="2">Todos los campos son obligatorios</td>
       </tr>
     <tr class="r0">
       <td>RIF</td>
       <td><label>
-        <input type="text" name="rif" id="rif" readonly="readonly" value="' . $rif . '" />
+        <input type="text" name="rif" id="rif" readonly="readonly" value="' . $datos[rif] . '" />
       </label></td>
     </tr>
     <tr class="r1">
-      <td>(*) Nombre</td>
+      <td>Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
     <tr class="r0">
-      <td>(*) Telefono</td>
+      <td>Telefono</td>
       <td><label>
         <input type="text" name="telefono" id="telefono" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
-    </tr>
-    <tr class="r1">
-      <td>Estado</td>
-      <td><input type="text" name="estado" id="estado" onkeyup="this.value=this.value.toUpperCase();" /></td>
-    </tr>
-    <tr class="r0">
-      <td>Ciudad</td>
-      <td><input type="text" name="ciudad" id="ciudad" onkeyup="this.value=this.value.toUpperCase();" /></td>
-    </tr>
-    <tr class="r1">
-      <td>Direccion</td>
-      <td><textarea name="direccion" id="direccion" cols="23" onkeyup="this.value=this.value.toUpperCase();"></textarea></td>
-    </tr>
-    <tr class="r0">
-      <td>(*) Porcentaje de Comision</td>
-      <td><input name="porcentaje" type="text" id="porcentaje" value="0.10"/></td>
     </tr>
     <tr class="r1">
       <td colspan="2"><div align="center">
@@ -333,6 +328,32 @@ function generarFormularioAgregarClienteParticular($cedula) {
 </table>
 </form>';
     return $contenido;
+}
+
+function tablaVacia(){
+    $resultado = '<table class="scrollTable" cellspacing="0">';
+    $resultado.= '<thead>';
+    $resultado.= '<tr>';
+    $resultado.= '<th>&nbsp</th>';
+    $resultado.= '<th>LOCALIZADOR</th>';
+    $resultado.= '<th>CI/PASS</th>';
+    $resultado.= '<th>PASAJERO</th>';
+    $resultado.= '<th>TIPO</th>';
+    $resultado.= '<th>SERV</th>';
+    $resultado.= '<th>POSADA</th>';
+    $resultado.= '<th>VENDEDOR</th>';
+    $resultado.= '<th>SUCURSAL</th>';
+    $resultado.= '<th>RETORNO</th>';
+    $resultado.= '<th>CLIENTE</th>';
+    $resultado.= '<th>P</th>';
+    $resultado.= '<th>BANCO</th>';
+    $resultado.= '<th>TRANSACCION</th>';
+    $resultado.= '</tr>';
+    $resultado.= '</thead>';
+    $resultado.= '<tr class="r1">';
+    $resultado.= '<th colspan="14">NO HAY RESERVAS PARA ESTE VUELO</th>';
+    $resultado.= '</tr>';
+    return $resultado;
 }
 
 ?>
