@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/GestionReservaFormularios.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlRutaLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlSucursalLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlTipoServicioLogica.class.php';
@@ -38,7 +39,7 @@ function generarComboBoxServicio(){
 }
 
 function generarComboBoxPosada(){
-    $combo = '<select name="posada">';
+    $combo = '<select name="posada"><option value="">NINGUNA</option>';
     $controladorPosada = new controladorPosadaBDclass();
     $recurso = $controladorPosada->consultarPosadas();
     while ($row = mysql_fetch_array($recurso)){
@@ -205,97 +206,6 @@ function desplegarDetalles($idVuelo){
     return $objResponse;
 }
 
-/**
- * Muestra los pasajeros y sus detalles de un vuelo
- * @param <int> $idVuelo
- * @return <xajaxResponse> Respuesta xajax
- */
-function detalles($idVuelo){
-    $controlVuelo = new ControlVueloLogicaclass();
-    $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
-    $resultado = '<form id="formularioEditarMarcar">';
-    $resultado.= '<table class="scrollTable" cellspacing="0">';
-    $resultado.= '<thead>';
-    $resultado.= '<tr>';
-    $resultado.= '<th>SOLICITUD</th>';
-    $resultado.= '<th>CI/PASAPORTE</th>';
-    $resultado.= '<th>NOMBRE</th>';
-    $resultado.= '<th>TIPO</th>';
-    $resultado.= '<th>SERVICIO</th>';
-    $resultado.= '<th>POSADA</th>';
-    $resultado.= '<th>VENDEDOR</th>';
-    $resultado.= '<th>SUCURSAL</th>';
-    $resultado.= '<th>RETORNO</th>';
-    $resultado.= '<th>NOMBRE CLIENTE</th>';
-    $resultado.= '</tr>';
-    $resultado.= '</thead>';
-    while ($row = mysql_fetch_array($recurso)){
-        if ($row[estado] == "CO"){
-            $resultado.= '<tr class="confirmado">';
-        } else if ($row[estado] == "PP"){
-            $resultado.= '<tr class="porPagar">';
-        } else{
-            $resultado.= '<tr class="r1">';
-        }
-        $resultado.= '<td>' . $row[solicitud] . '</td>';
-        $resultado.= '<td>' . $row[cedulaPasaporte] . '</td>';
-        $resultado.= '<td>' . $row[pasajero] . '</td>';
-        $resultado.= '<td>' . $row[tipoPasajero] . '</td>';
-        $resultado.= '<td>' . $row[servicio] . '</td>';
-        $resultado.= '<td>' . $row[posada] . '</td>';
-        $resultado.= '<td>' . $row[encargadoNombre] . '</td>';
-        $resultado.= '<td>' . $row[sucursal] . '</td>';
-        $resultado.= '<td>' . $row[vueloRetorno] . '</td>';
-        $resultado.= '<td>' . $row[clienteNombre] . '</td>';
-        $resultado.= '</tr>';
-    }
-    return $resultado;
-}
-
-/**
- * Genera el codigo html del formulario de una nueva reserva
- * @param <int> $idVuelo el id del vuelo al que agregaremos la reserva
- * @return <String> html del formulario
- */
-function generarFormularioNuevaReserva($idVuelo) {
-    $contenido = "";
-    $contenido .= '<form id="formNuevaReserva">
-    <input name="idVuelo" value="' . $idVuelo . '" />
-    <table class="formTable" cellspacing="0">
-        <tr>
-            <thead>
-                <td colspan="3">
-                    <div class="tituloBlanco1">
-                        NUEVA RESERVA
-                        <div class="botonCerrar">
-                            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
-                        </div>
-                    </div>
-                </td>
-            </thead>
-        </tr>
-        <tr class="r1">
-            <td><input type="radio" name="grupo" value="juridico" checked="checked" />Juridico</td>
-            <td>RIF</td>
-            <td><input type="text" name="rif" id="rif"></td>
-        </tr>
-        <tr class="r0">
-            <td><input type="radio" name="grupo" value="particular" />Particular</td>
-            <td>Cedula</td>
-            <td><input type="text" name="cedula" id="cedula"></td>
-        </tr>
-        <tr class="r1">
-            <td colspan="3">
-                <div align="center">
-                    <input name="button" type="button" id="button" value="BUSCAR CLIENTE" onclick= "xajax_buscarCliente(xajax.getFormValues(\'formNuevaReserva\'))">
-                </div>
-            </td>
-        </tr>
-    </table>
-    </form>';
-    return $contenido;
-}
-
 function buscarClienteJuridico($rif){
     $control = new ControlReservaLogicaclass();
     return $control->existeClienteAgencia($rif);
@@ -306,18 +216,13 @@ function buscarClienteParticular($cedula){
     return $control->existeClienteParticular($cedula);
 }
 
-/**
- * Busca el nombre de un cliente, dependiendo de su tipo
- * @param <form> $datos Formulario
- * @return <xajaxResponse> Respuesta xajax
- */
 function buscarCliente($datos){
     $seleccion = $datos[grupo];
     if ($seleccion == 'juridico'){
         if ((buscarClienteJuridico($datos[rif])) != ""){
             return desplegarConfirmarReserva($datos);
         } else {
-            //agregar Cliente Juridico
+            return desplegarFormularioAgregarClienteJuridico($datos[rif]);
         }
     } else {
         if ((buscarClienteParticular($datos[cedula])) != ""){
@@ -328,11 +233,6 @@ function buscarCliente($datos){
     }
 }
 
-/**
- * Despliega el formulario de confirmar reserva
- * @param <form> $datos el formulario anterior
- * @return <xajaxResponse> Respuesta xajax
- */
 function desplegarConfirmarReserva($datos){
     $respuesta = generarFormularioConfirmarReserva($datos);
     $objResponse = new xajaxResponse();
@@ -340,95 +240,41 @@ function desplegarConfirmarReserva($datos){
     return $objResponse;
 }
 
-/**
- * Genera el codigo html del formulario de confirmar reserva
- * @param <form> $datos formulario anterior
- * @return <String> html del formulario
- */
-function generarFormularioConfirmarReserva($datos) {
-    $contenido = "";
-    $contenido .= '<form id="formConfirmarReserva">
-    <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
-    <input type="hidden" name="tipoCliente" value="'.$datos[grupo].'" />
-        <table class="formTable" cellspacing="0">
-        <tr>
-            <thead>
-                <td colspan="3">
-                    <div class="tituloBlanco1">
-                        NUEVA RESERVA
-                        <div class="botonCerrar">
-                            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
-                        </div>
-                    </div>
-                </td>
-            </thead>
-        </tr>
-        ';
-    if ($datos[grupo] == 'juridico'){
-        $nombre = buscarClienteJuridico($datos[rif]);
-        $contenido .= '<input type="hidden" name="idCliente" value="'.$datos[rif].'" />
-                       <tr class="r1">
-                       <td>RIF</td>
-                       <td>' . $datos[rif] . '</td>
-                       </tr>';
-    } else {
-        $nombre = buscarClienteParticular($datos[cedula]);
-        $contenido .= '<input type="hidden" name="idCliente" value="'.$datos[cedula].'" />
-                       <tr class="r1">
-                       <td>Cedula</td>
-                       <td>' . $datos[cedula] . '</td>
-                       </tr>';
-    }
-
-    $contenido .= '
-        <tr class="r0">
-            <td>Nombre</td>
-            <td>'. $nombre .'</td>
-        </tr>
-        <tr class="r1">
-            <td colspan="2">Introduzca la informacion de la reserva:</td>
-        </tr>
-        <tr class="r0">
-            <td>Cantidad ADL/CHD</td>
-            <td><input type="text" name="cantidadAdlChd" value="" /></td>
-        </tr>
-        <tr class="r1">
-            <td>Cantidad INF</td>
-            <td><input type="text" name="cantidadInf" value="" /></td>
-        </tr>
-        <tr class="r0">
-            <td>Servicio</td>
-            <td>' . generarComboBoxServicio() . '</td>
-        </tr>
-        <tr class="r1">
-            <td>Posada</td>
-            <td>' . generarComboBoxPosada() . '</td>
-        </tr>
-        <tr class="r0">
-            <td colspan="2" align="center">
-                <input name="button" type="button" id="button" value="AGREGAR RESERVA" onclick= "xajax_agregarReserva(xajax.getFormValues(\'formConfirmarReserva\'))">
-            </td>
-        </tr>
-    </table>
-    </form>';
-    return $contenido;
-}
-
 function agregarReserva($datos){
     $controlReserva = new ControlReservaLogicaclass();
+    $objResponse = new xajaxResponse();
 
-    if ($datos[tipoCliente] == 'juridico'){
-        $clienteAgenciaRif = $datos[idCliente];
-    } else {
-        $clienteParticularCedula = $datos[idCliente];
+    if ($datos[cantidadAdlChd] == ''){
+        $datos[cantidadAdlChd] = 0;
+    }
+    if ($datos[cantidadInf] == ''){
+        $datos[cantidadInf] = 0;
     }
 
-    $respuesta = $controlReserva->crearReserva($datos[idVuelo], $datos[cantidadAdlChd],
-        $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
-        1, 17706708, $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], '');
+    if (($datos[cantidadAdlChd] == '') && ($datos[cantidadInf] == '')) {
+        $mensaje = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          Debe indicar la cantidad de pasajeros.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+        return $objResponse;
+    } else {
+        if ($datos[tipoCliente] == 'juridico'){
+            $clienteAgenciaRif = $datos[idCliente];
+        } else {
+            $clienteParticularCedula = $datos[idCliente];
+        }
 
-    if ($respuesta){
-        $mensaje = '<div class="exito">
+        $respuesta = $controlReserva->crearReserva($datos[idVuelo], $datos[cantidadAdlChd],
+            $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
+            1, 17706708, $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], '', $datos[estado]);
+
+        if ($respuesta){
+            $mensaje = '<div class="exito">
                           <div class="textoMensaje">
                           Se realizo la reserva satisfactoriamente.
                           </div>
@@ -436,8 +282,8 @@ function agregarReserva($datos){
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
-    } else {
-        $mensaje = '<div class="error">
+        } else {
+            $mensaje = '<div class="error">
                           <div class="textoMensaje">
                           No se pudo realizar la reserva.
                           </div>
@@ -445,9 +291,22 @@ function agregarReserva($datos){
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
+        }
+        $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+        return $objResponse;
     }
+}
+
+function borrarMensaje(){
     $objResponse = new xajaxResponse();
-    $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+    $objResponse->addClear("mensaje", "innerHTML");
+    return $objResponse;
+}
+
+function desplegarFormularioAgregarClienteJuridico($rif){
+    $respuesta = generarFormularioAgregarClienteJuridico($rif);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
     return $objResponse;
 }
 
