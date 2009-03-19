@@ -115,11 +115,13 @@ class ControlReservaLogicaclass {
             $cantidadInfantesVuelo = $row[cantidadInfantes];
             $cantidadNueva = $cantidadInfantesVuelo+$cantidadInfantes;
             $cambio = $this->controlVuelo->actualizarCantidadInfantesVuelo($idVuelo, $cantidadNueva);
-            return $resultado;
         }else{
             return $disponible;
         }
-        return $resultado;
+        if ($resultado)
+        return $solicitud;
+        else
+        return "";
     }
 
     /**
