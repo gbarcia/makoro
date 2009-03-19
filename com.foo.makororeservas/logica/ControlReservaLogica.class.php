@@ -13,7 +13,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Pago.c
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/utilidades/Conexion.class.php';
 /**
  * Description of ControlReservaLogicaclass
- * Clase para el manejo de las reservas del sistema 
+ * Clase para el manejo de las reservas del sistema
  * @author maya
  */
 class ControlReservaLogicaclass {
@@ -80,14 +80,14 @@ class ControlReservaLogicaclass {
      * @return <type> El resultado de la operacion
      */
     function crearReserva($idVuelo,$cantAdultoNino,$cantidadInfantes,$fecha, $tipoServicioId, $sucursalId,$encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif,
-        $posadaId,$solicitud){
+        $posadaId,$solicitud,$estado){
         $resultado = false;
         $disponibleAdultoNino = $this->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino);
         $disponibleInfante = $this->asientosDisponiblesInfante($idVuelo, $cantidadInfantes);
         $cantidadPasajeros = $cantAdultoNino+$cantidadInfantes;
 
         if($disponibleAdultoNino && $disponibleInfante){
-            $estado = 'PP';
+            //            $estado = 'PP';
             $pagoId = 'null';
             $pasajeroId = 'null';
             if($solicitud == ''){

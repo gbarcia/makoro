@@ -8,6 +8,8 @@ $xajax->registerFunction("desplegarBusqueda");
 $xajax->registerFunction("desplegarDetalles");
 $xajax->registerFunction("buscarCliente");
 $xajax->registerFunction("agregarReserva");
+$xajax->registerFunction("borrarMensaje");
+$xajax->registerFunction("generarFormularioAgregarClienteJuridico");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
