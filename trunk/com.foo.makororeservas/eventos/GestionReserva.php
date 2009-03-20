@@ -207,7 +207,7 @@ function desplegarDetalles($idVuelo){
     return $objResponse;
 }
 
-function desplegarFormularioNuevaReserva(){
+function desplegarFormularioNuevaReserva($idVuelo){
     $objResponse = new xajaxResponse();
     $formulario = generarFormularioNuevaReserva($idVuelo);
     $objResponse->addAssign("izquierda", "innerHTML", $formulario);
@@ -253,13 +253,37 @@ function buscarClienteParticular($cedula){
 function buscarCliente($datos){
     $seleccion = $datos[grupo];
     if ($seleccion == 'juridico'){
-        if ((buscarClienteJuridico($datos[rif])) != ""){
+        if ($datos[rif] == ''){
+            $mensaje = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          Debe indicar el RIF del cliente.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+            $objResponse = new xajaxResponse();
+            $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+            return $objResponse;
+        } else if ((buscarClienteJuridico($datos[rif])) != ""){
             return desplegarConfirmarReserva($datos);
         } else {
             return desplegarFormularioAgregarClienteJuridico($datos);
         }
     } else {
-        if ((buscarClienteParticular($datos[cedula])) != ""){
+        if (($datos[cedula] == '') || (!is_numeric($datos[cedula]))){
+            $mensaje = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          La cedula del cliente debe ser numerica.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+            $objResponse = new xajaxResponse();
+            $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+            return $objResponse;
+        } else if ((buscarClienteParticular($datos[cedula])) != ""){
             return desplegarConfirmarReserva($datos);
         } else {
             return desplegarFormularioAgregarClienteParticular($datos);
@@ -277,38 +301,37 @@ function desplegarConfirmarReserva($datos){
 function agregarReserva($datos){
     $controlReserva = new ControlReservaLogicaclass();
     $objResponse = new xajaxResponse();
-
     if ($datos[cantidadAdlChd] == ''){
         $datos[cantidadAdlChd] = 0;
     }
     if ($datos[cantidadInf] == ''){
         $datos[cantidadInf] = 0;
     }
-
-    if (($datos[cantidadAdlChd] == '') && ($datos[cantidadInf] == '')) {
-        $mensaje = '<div class="advertencia">
+    if ((int_ok($datos[cantidadAdlChd])) && (int_ok($datos[cantidadInf]))) {
+        if (($datos[cantidadAdlChd] <= 0) && ($datos[cantidadInf] <= 0)) {
+            $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
                           Debe indicar la cantidad de pasajeros.
                           </div>
                           <div class="botonCerrar">
-                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
-        $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
-        return $objResponse;
-    } else {
-        if ($datos[tipoCliente] == 'juridico'){
-            $clienteAgenciaRif = $datos[idCliente];
+            $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+            return $objResponse;
         } else {
-            $clienteParticularCedula = $datos[idCliente];
-        }
+            if ($datos[tipoCliente] == 'juridico'){
+                $clienteAgenciaRif = $datos[idCliente];
+            } else {
+                $clienteParticularCedula = $datos[idCliente];
+            }
 
-        $respuesta = $controlReserva->crearReserva($datos[idVuelo], $datos[cantidadAdlChd],
-            $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
-            $_SESSION['EncargadoSucursal'], $_SESSION['EncargadoCedula'], $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], '', $datos[estado]);
+            $respuesta = $controlReserva->crearReserva($datos[idVuelo], $datos[cantidadAdlChd],
+                $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
+                $_SESSION['EncargadoSucursal'], $_SESSION['EncargadoCedula'], $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], '', $datos[estado]);
 
-        if ($respuesta != ''){
-            $mensaje = '<div class="exito">
+            if ($respuesta != ''){
+                $mensaje = '<div class="exito">
                           <div class="textoMensaje">
                           Se realizo la reserva satisfactoriamente. Cliente: '.$datos[nombre].'. Localizador: '. $respuesta .'.
                           </div>
@@ -316,18 +339,30 @@ function agregarReserva($datos){
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
-            $detalles = detalles($datos[idVuelo]);
-            $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
-        } else {
-            $mensaje = '<div class="error">
+                $detalles = detalles($datos[idVuelo]);
+                $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
+            } else {
+                $mensaje = '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo realizar la reserva.
+                          No se pudo realizar la reserva. Verifique la disponibilidad de asientos.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
+            }
+            $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+            return $objResponse;
         }
+    } else {
+        $mensaje = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          La cantidad de pasajeros deben ser valores enteros.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
         $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
         return $objResponse;
     }
@@ -468,6 +503,11 @@ function validarPersona ($datos) {
     $resultado = true;
     else return false;
     return $resultado;
+}
+
+function int_ok($val)
+{
+    return ($val !== true) && ((string)(int) $val) === ((string) $val);
 }
 
 ?>
