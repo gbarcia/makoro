@@ -57,10 +57,11 @@ class controladorVueloBDclass {
      * @param <type> $vuelo El vuelo a editar
      * @return <type> El resultado de la operacion 
      */
-    function actualizarCantidadInfantesVuelo($vuelo) {
+    function actualizarCantidadInfantesVuelo($idVuelo, $cantidadNueva) {
         $resultado = false;
-        $query = "UPDATE VUELO v SET v.cantidadInfantes = ".$vuelo->getCantidadinfantes()."
-                  WHERE v.id = ".$vuelo->getId()."";
+        $query = "UPDATE VUELO v SET v.cantidadInfantes = ".$cantidadNueva."
+                  WHERE v.id = ".$idVuelo."";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -360,7 +361,7 @@ class controladorVueloBDclass {
                          TS.abreviatura as servicio, IF(R.POSADA_id is not null,(SELECT PO.nombrePosada
                                                                             FROM POSADA PO
                                                                             WHERE PO.id = R.POSADA_id),'&nbsp') as posada,
-                         E.nombre as encargadoNombre, S.nombre as sucursal, VR.tipo, IFNULL(R.CLIENTE_AGENCIA_rif,'&nbsp') as agencia,
+                         E.login as encargadoNombre, S.nombre as sucursal, VR.tipo, IFNULL(R.CLIENTE_AGENCIA_rif,'&nbsp') as agencia,
                          IFNULL(R.CLIENTE_PARTICULAR_cedula,'&nbsp') as particular,
                          IF(R.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre,
                          IF(R.PAGO_id is not null,(SELECT IF(PAG.tipo='E','E',PAG.tipo)

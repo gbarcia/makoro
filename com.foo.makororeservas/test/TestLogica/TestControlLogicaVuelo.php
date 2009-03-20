@@ -162,7 +162,7 @@ echo '<th>boleto</th>';
 echo '<th>vueloRetorno</th>';
 echo '<th>posada</th>';
 echo '</tr>';
-$resultado = $controlBD->consultarVuelosDetalles(1);
+$resultado = $controlBD->consultarVuelosDetalles(5);
     while ($row = mysql_fetch_array($resultado)) {
     echo '<tr>';
     echo '<td>' . $row[solicitud] . '</td>';

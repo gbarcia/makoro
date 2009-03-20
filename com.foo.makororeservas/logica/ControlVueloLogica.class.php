@@ -66,10 +66,10 @@ class ControlVueloLogicaclass {
      * @return <BOOLEAN> El resultado de la operacion
      */
     function actualizarCantidadInfantesVuelo($idVuelo, $cantidadInfantes) {
-        $vuelo = new Vueloclass();
-        $vuelo->setId($idVuelo);
-        $vuelo->setCantidadinfantes($cantidadInfantes);
-        $resultado = $this->controlBD->actualizarCantidadInfantesVuelo($vuelo);
+//        $vuelo = new Vueloclass();
+//        $vuelo->setId($idVuelo);
+//        $vuelo->setCantidadinfantes($cantidadInfantes);
+        $resultado = $this->controlBD->actualizarCantidadInfantesVuelo($idVuelo, $cantidadInfantes);
         return ($resultado);
     }
 

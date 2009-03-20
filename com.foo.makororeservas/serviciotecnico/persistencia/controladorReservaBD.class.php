@@ -54,7 +54,7 @@ class controladorReservaBDclass {
                                         }else{
                                             $query .= $reserva->getPosadaId() .")";
                                         }
-        $resultado = $this->transaccion->realizarTransaccion($query);
+                                        $resultado = $this->transaccion->realizarTransaccionInsertId($query);
         return $resultado;
     }
     
@@ -189,11 +189,11 @@ class controladorReservaBDclass {
      * @param <type> $solicitud la solicitud a consultar
      * @return <type> los id de las reservas 
      */
-    function buscarIdReserva($solicitud){
+    function buscarIdReserva($solicitud,$idVuelo){
         $query = "SELECT R.id idReserva
-                  FROM RESERVA R
+                  FROM RESERVA R, VUELO V
                   WHERE R.solicitud = '".$solicitud."'
-                  AND R.PASAJERO_id is null";
+                  AND V.id = ".$idVuelo."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

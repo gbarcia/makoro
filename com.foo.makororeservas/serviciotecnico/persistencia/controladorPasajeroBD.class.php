@@ -25,15 +25,23 @@ class controladorPasajeroBDclass {
                                         nacionalidad,TIPO_PASAJERO_id)
                   VALUES ('".$pasajero->getNombre()."',
                           '".$pasajero->getApellido()."',
-                          '".$pasajero->getSexo()."',
-                           ".$pasajero->getCedula().",";
+                          '".$pasajero->getSexo()."', ";
+                          if($pasajero->getCedula() == ''){
+                              $query .= " null,";
+                          }else{
+                              $query .= "".$pasajero->getCedula().",";
+                          }
                           if($pasajero->getPasaporte() == ''){
                             $query .= " null,";
                           }else{
                             $query .= "'".$pasajero->getPasaporte()."',";
                           }
-                          $query .= "'".$pasajero->getNacionalidad()."',
-                          '".$pasajero->getTipoPasajeroId()."')";
+                          if($pasajero->getNacionalidad() == ''){
+                            $query .= " null,";
+                          }else{
+                            $query .= "'".$pasajero->getNacionalidad()."',";
+                          }
+                          $query .= "'".$pasajero->getTipoPasajeroId()."')";
         $resultado = $this->transaccion->realizarTransaccionInsertId($query);
         return $resultado;
     }
