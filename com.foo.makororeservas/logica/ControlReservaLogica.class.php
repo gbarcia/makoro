@@ -289,7 +289,6 @@ class ControlReservaLogicaclass {
      */
     function pagarReserva($idReserva,$tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId){
         $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
-        echo $pagoId;
         if($padoId > 0){
             $estado = "PA";
             $resultado = $this->controlBD->editarEstadoPagadoReserva($idReserva, $estado, $pagoId);
