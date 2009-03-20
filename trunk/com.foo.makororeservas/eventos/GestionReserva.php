@@ -239,7 +239,7 @@ function buscarClienteJuridico($rif){
 }
 
 function buscarClienteParticular($cedula){
-    $control = new ControlReservaLogicaclass();return desplegarConfirmarReserva($datos);
+    $control = new ControlReservaLogicaclass();
     return $control->existeClienteParticular($cedula);
 }
 
@@ -255,7 +255,7 @@ function buscarCliente($datos){
         if ((buscarClienteParticular($datos[cedula])) != ""){
             return desplegarConfirmarReserva($datos);
         } else {
-            return desplegarFormularioAgregarClienteParticular($datos[cedula]);
+            return desplegarFormularioAgregarClienteParticular($datos);
         }
     }
 }
@@ -263,7 +263,7 @@ function buscarCliente($datos){
 function desplegarConfirmarReserva($datos){
     $respuesta = generarFormularioConfirmarReserva($datos);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("tres", "innerHTML", $respuesta);
+    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
     return $objResponse;
 }
 
