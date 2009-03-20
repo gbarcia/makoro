@@ -61,7 +61,6 @@ class controladorVueloBDclass {
         $resultado = false;
         $query = "UPDATE VUELO v SET v.cantidadInfantes = ".$cantidadNueva."
                   WHERE v.id = ".$idVuelo."";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -104,14 +103,11 @@ class controladorVueloBDclass {
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
                                  AND vre.VUELO_id = v.id),0) as quedan,
-                         IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$cantidadAdultosNinos.")>=0,TRUE,FALSE)
+                         IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)-".$cantidadAdultosNinos.")>=0,TRUE,FALSE)
                                  FROM VUELO_RESERVA vre, VUELO vu, RESERVA re
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
                                  AND vre.VUELO_id = v.id),0) as disponibilidadAdulto,
-                         IFNULL((SELECT IF(2-(vu.cantidadInfantes+".$cantidadInfantes.")>=0,TRUE,FALSE)
-                                 FROM VUELO vu
-                                 WHERE vu.id = v.id),0) as disponibilidadInfante,
                          IFNULL((SELECT 2-vu.cantidadInfantes
                                  FROM VUELO vu
                                  WHERE vu.id = v.id),0) as infantesQuedan
