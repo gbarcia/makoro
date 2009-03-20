@@ -120,7 +120,7 @@ class controladorPasajeroBDclass {
         $resultado = false;
         $query = "SELECT p.id, p.cedula ,p.pasaporte, p.nombre ,p.apellido, p.sexo, p.nacionalidad, p.TIPO_PASAJERO_id
                   FROM PASAJERO p
-                  WHERE p.id = $busqueda";
+                  WHERE p.cedula = '".$busqueda."' OR p.pasaporte = '".$busqueda."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
