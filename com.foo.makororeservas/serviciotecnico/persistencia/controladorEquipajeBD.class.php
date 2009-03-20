@@ -66,7 +66,7 @@ class controladorEquipajeBDclass {
      */
     function consultarEquipajeReservaPasajeroVuelo(){
         $resultado = false;
-        $query = "SELECT e.id, e.descripcion, e.tipo, e.peso, r.id, r.estado,
+        $query = "SELECT e.descripcion, e.tipo, e.peso, r.id, r.estado,
                          r.solicitud, p.id, p.nombre, p.apellido, p.cedula,
                          p.pasaporte, p.nacionalidad, p.TIPO_PASAJERO_id, v.id,
                          v.fecha, v.hora, ru.sitioSalida, ru.sitioLlegada,
@@ -90,7 +90,7 @@ class controladorEquipajeBDclass {
      */
     function consultarEquipajeDePasajero($cedulaOPasaporte){
         $resultado = false;
-        $query = "SELECT e.id, e.descripcion, e.tipo, e.peso, r.id, r.estado,
+        $query = "SELECT e.descripcion, e.tipo, e.peso, r.id, r.estado,
                          r.solicitud, p.id, p.nombre, p.apellido, p.cedula,
                          p.pasaporte, p.nacionalidad, p.TIPO_PASAJERO_id, v.id,
                          v.fecha, v.hora, ru.sitioSalida, ru.sitioLlegada,
@@ -116,7 +116,7 @@ class controladorEquipajeBDclass {
      */
     function consultarEquipajePorVuelo($idVuelo){
         $resultado = false;
-        $query = "SELECT e.id, e.descripcion, e.tipo, e.peso, r.id, r.estado,
+        $query = "SELECT e.descripcion, e.tipo, e.peso, r.id, r.estado,
                          r.solicitud, p.id, p.nombre, p.apellido, p.cedula,
                          p.pasaporte, p.nacionalidad, p.TIPO_PASAJERO_id, v.id,
                          v.fecha, v.hora, ru.sitioSalida, ru.sitioLlegada,
@@ -130,6 +130,21 @@ class controladorEquipajeBDclass {
                         AND v.RUTA_sitioSalida = ru.sitioSalida
                         AND v.RUTA_sitioLlegada = ru.sitioLlegada
                         AND v.id = " . $idVuelo;
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar el equipaje de un reserva determinada
+ * @param <Integer> $idReserva
+ * @return <recurso> descripcion del equipaje
+ */
+    function consultarEquipajePorPasajeroReserva($idReserva){
+        $resultado = false;
+        $query = "SELECT e.descripcion descripcion
+                  FROM EQUIPAJE e, RESERVA r
+                  WHERE r.id = e.RESERVA_id
+                  AND r.id = " . $idReserva;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
