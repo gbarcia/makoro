@@ -86,7 +86,6 @@ class ControlReservaLogicaclass {
         $disponibleInfante = $this->asientosDisponiblesInfante($idVuelo, $cantidadInfantes);
         $arrayInf = new ArrayObject();
         $arrayAdl = new ArrayObject();
-
         if($disponibleAdultoNino && $disponibleInfante){
             $pagoId = 'null';
             $pasajeroId = 'null';
@@ -115,7 +114,6 @@ class ControlReservaLogicaclass {
                     $contador = $contador - 1;
                 }while ($contador >0);
             }
-
             if($tipoViaje == 'ida'){
             $recurso = $this->controlBD->buscarIdReserva($solicitud,$idVuelo);
                 while ($row = mysql_fetch_array($recurso)) {
