@@ -74,7 +74,7 @@ function detalles($idVuelo){
 function generarFormularioNuevaReserva($idVuelo) {
     $contenido = "";
     $contenido .= '<form id="formNuevaReserva">
-    <input name="idVuelo" value="' . $idVuelo . '" />
+    <input type="hidden" name="idVuelo" value="' . $idVuelo . '" />
     <table class="formTable" cellspacing="0">
         <tr>
             <thead>
@@ -141,8 +141,8 @@ function generarFormularioNuevaReserva($idVuelo) {
 function generarFormularioConfirmarReserva($datos) {
     $contenido = "";
     $contenido .= '<form id="formConfirmarReserva">
-    <input  name="idVuelo" value="'.$datos[idVuelo].'" />
-    <input  name="tipoCliente" value="'.$datos[grupo].'" />
+    <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
+    <input type="hidden" name="tipoCliente" value="'.$datos[grupo].'" />
         <table class="formTable" cellspacing="0">
         <tr>
             <thead>
@@ -162,21 +162,21 @@ function generarFormularioConfirmarReserva($datos) {
         $contenido .= '<input type="hidden" name="idCliente" value="'.$datos[rif].'" />
                        <tr class="r1">
                        <td>RIF</td>
-                       <td>' . $datos[rif] . '</td>
+                       <td><input  name="rif" value="'.$datos[rif].'" readonly="readonly"/></td>
                        </tr>';
     } else {
         $nombre = buscarClienteParticular($datos[cedula]);
         $contenido .= '<input type="hidden" name="idCliente" value="'.$datos[cedula].'" />
                        <tr class="r1">
                        <td>Cedula</td>
-                       <td>' . $datos[cedula] . '</td>
+                       <td><input  name="cedula" value="'.$datos[cedula].'" readonly="readonly"/></td>
                        </tr>';
     }
 
     $contenido .= '
         <tr class="r0">
             <td>Nombre</td>
-            <td>'. $nombre .'</td>
+            <td><input  name="nombre" value="'.$nombre.'" readonly="readonly"/></td>
         </tr>
         <tr class="r1">
             <td colspan="2">Introduzca la informacion de la reserva:</td>
@@ -208,6 +208,7 @@ function generarFormularioConfirmarReserva($datos) {
         </tr>
         <tr class="r1">
             <td colspan="2" align="center">
+        <input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioNuevaReserva()" />
                 <input name="button" type="button" id="button" value="AGREGAR RESERVA" onclick= "xajax_agregarReserva(xajax.getFormValues(\'formConfirmarReserva\'))">
             </td>
         </tr>
@@ -218,8 +219,8 @@ function generarFormularioConfirmarReserva($datos) {
 
 function generarFormularioAgregarClienteJuridico($datos) {
     $contenido = '<form id="formNuevaAgencia">
-    <input type="text" name="idVuelo" value="'.$datos[idVuelo].'" />
-    <input type="text" name="grupo" value="'.$datos[grupo].'" />
+    <input type="hidden" type="text" name="idVuelo" value="'.$datos[idVuelo].'" />
+    <input type="hidden" type="text" name="grupo" value="'.$datos[grupo].'" />
     <table class="formTable" cellspacing="0">
     <tr>
         <thead>
@@ -256,7 +257,8 @@ function generarFormularioAgregarClienteJuridico($datos) {
     </tr>
     <tr class="r1">
       <td colspan="2"><div align="center">
-        <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarAgencia(xajax.getFormValues(\'formNuevaAgencia\'))" />
+        <input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioNuevaReserva()" />
+        <input name="button" type="button" id="button" value="CONTINUAR" onclick= "xajax_procesarAgencia(xajax.getFormValues(\'formNuevaAgencia\'))" />
       </div></td>
     </tr>
   </table></td>
@@ -266,9 +268,11 @@ function generarFormularioAgregarClienteJuridico($datos) {
     return $contenido;
 }
 
-function generarFormularioAgregarClienteParticular($cedula) {
+function generarFormularioAgregarClienteParticular($datos) {
     $contenido = '<form id="formNuevoCliente">
-  <table class="formTable" cellspacing="0">
+        <input type="hidden" type="text" name="idVuelo" value="'.$datos[idVuelo].'" />
+        <input type="hidden" type="text" name="grupo" value="'.$datos[grupo].'" />
+    <table class="formTable" cellspacing="0">
     <tr>
         <thead>
         <td colspan="2">
@@ -282,45 +286,34 @@ function generarFormularioAgregarClienteParticular($cedula) {
         </thead>
     </tr>
     <tr class="r1">
-      <td colspan="2">(*) Son campos obligatorios</td>
+      <td colspan="2">Todos los campos son obligatorios</td>
       </tr>
     <tr class="r0">
       <td>Cedula</td>
       <td><label>
-        <input type="text" name="cedula" id="cedula" value="'.$cedula.'" readonly="readonly"/>
+        <input type="text" name="cedula" id="cedula" value="'.$datos[cedula].'" readonly="readonly"/>
       </label></td>
     </tr>
     <tr class="r1">
-      <td>(*) Nombre</td>
+      <td>Nombre</td>
       <td><label>
         <input type="text" name="nombre" id="nombre" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
     <tr class="r0">
-      <td>(*) Apellido</td>
+      <td>Apellido</td>
       <td><label>
         <input type="text" name="apellido" id="apellido" onkeyup="this.value=this.value.toUpperCase();" />
       </label></td>
     </tr>
     <tr class="r1">
-      <td>(*) Telefono</td>
+      <td>Telefono</td>
       <td><input type="text" name="telefono" id="telefono" onkeyup="this.value=this.value.toUpperCase();" /></td>
     </tr>
     <tr class="r0">
-      <td>Estado</td>
-      <td><input type="text" name="estado" id="estado" onkeyup="this.value=this.value.toUpperCase();" /></td>
-    </tr>
-    <tr class="r1">
-      <td>Ciudad</td>
-      <td><input type="text" name="ciudad" id="ciudad" onkeyup="this.value=this.value.toUpperCase();" /></td>
-    </tr>
-    <tr class="r0">
-      <td>Direccion</td>
-      <td><textarea name="direccion" id="direccion" cols="23" onkeyup="this.value=this.value.toUpperCase();"></textarea></td>
-    </tr>
-    <tr class="r1">
-      <td height="26" colspan="2"><div align="center">
-        <input name="button" type="button" id="button" value="AGREGAR" onclick= "xajax_procesarCliente(xajax.getFormValues(\'formNuevoCliente\'))" />
+      <td colspan="2"><div align="center">
+        <input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioNuevaReserva()" />
+        <input name="button" type="button" id="button" value="CONTINUAR" onclick= "xajax_procesarCliente(xajax.getFormValues(\'formNuevoCliente\'))" />
       </div></td>
     </tr>
   </table></td>

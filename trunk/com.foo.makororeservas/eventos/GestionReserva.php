@@ -207,6 +207,13 @@ function desplegarDetalles($idVuelo){
     return $objResponse;
 }
 
+function desplegarFormularioNuevaReserva(){
+    $objResponse = new xajaxResponse();
+    $formulario = generarFormularioNuevaReserva($idVuelo);
+    $objResponse->addAssign("izquierda", "innerHTML", $formulario);
+    return $objResponse;
+}
+
 function generarFichaVuelo($idVuelo){
     $controlVuelo = new controladorGestionVuelos();
     $datos = $controlVuelo->ConsultarVueloPorId($idVuelo);
@@ -263,7 +270,7 @@ function buscarCliente($datos){
 function desplegarConfirmarReserva($datos){
     $respuesta = generarFormularioConfirmarReserva($datos);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
+    $objResponse->addAssign("izquierda", "innerHTML", $respuesta);
     return $objResponse;
 }
 
@@ -303,12 +310,14 @@ function agregarReserva($datos){
         if ($respuesta != ''){
             $mensaje = '<div class="exito">
                           <div class="textoMensaje">
-                          Se realizo la reserva satisfactoriamente. Localizador: '. $respuesta .'
+                          Se realizo la reserva satisfactoriamente. Cliente: '.$datos[nombre].'. Localizador: '. $respuesta .'.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
+            $detalles = detalles($datos[idVuelo]);
+            $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
         } else {
             $mensaje = '<div class="error">
                           <div class="textoMensaje">
@@ -333,14 +342,14 @@ function borrarMensaje(){
 function desplegarFormularioAgregarClienteJuridico($rif){
     $respuesta = generarFormularioAgregarClienteJuridico($rif);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
+    $objResponse->addAssign("izquierda", "innerHTML", $respuesta);
     return $objResponse;
 }
 
 function desplegarFormularioAgregarClienteParticular($cedula){
     $respuesta = generarFormularioAgregarClienteParticular($cedula);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("derecha", "innerHTML", $respuesta);
+    $objResponse->addAssign("izquierda", "innerHTML", $respuesta);
     return $objResponse;
 }
 
@@ -360,7 +369,7 @@ function procesarAgencia($datos) {
                           </div>
                           </div>';
             $form = generarFormularioConfirmarReserva($datos);
-            $objResponse->addAssign("derecha", "innerHTML", $form);
+            $objResponse->addAssign("izquierda", "innerHTML", $form);
         }
         else {
             $respuesta .= '<div class="error">
@@ -392,7 +401,7 @@ function procesarCliente($datos) {
     $objResponse = new xajaxResponse();
     if (validarPersona($datos)) {
         $control = new ControlClienteParticularLogicaclass();
-        $resultado = $control->nuevoClienteParticular($datos[cedula], $datos[nombre], $datos[apellido], 'M', '0000-00-00', $datos[telefono], $datos[estado], $datos[ciudad], $datos[direccion]);
+        $resultado = $control->nuevoClienteParticular($datos[cedula], $datos[nombre], $datos[apellido], 'M', '0000-00-00', $datos[telefono], '', '', '');
         if ($resultado) {
             $respuesta .= '<div class="exito">
                           <div class="textoMensaje">
@@ -402,6 +411,8 @@ function procesarCliente($datos) {
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
+            $form = generarFormularioConfirmarReserva($datos);
+            $objResponse->addAssign("izquierda", "innerHTML", $form);
         }
         else {
             $respuesta .= '<div class="error">
@@ -417,14 +428,14 @@ function procesarCliente($datos) {
     else {
         $respuesta ='<div class="advertencia">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. El formulario no es correcro. CODIGO GCPF001.
+                          No se pudo completar la operacion. Verifique que el formulario se ha llenado correctamente.
                           </div>
                           <div class="botonCerrar">
-                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
     }
-    $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
+    $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
     return $objResponse;
 }
 
@@ -442,5 +453,21 @@ function validarAgencia ($datos) {
     return $resultado;
 }
 
+function validarPersona ($datos) {
+    $resultado = false;
+    if (is_numeric($datos[cedula]) && $datos[cedula] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[nombre]) && $datos[nombre] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[apellido]) && $datos[apellido] != "")
+    $resultado = true;
+    else return false;
+    if (is_string($datos[telefono]) && $datos[telefono] != "")
+    $resultado = true;
+    else return false;
+    return $resultado;
+}
 
 ?>
