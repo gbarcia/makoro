@@ -107,5 +107,18 @@ class controladorPasajeroBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function consultarPasajeroPorId($busqueda) {
+        $resultado = false;
+        $query = "SELECT p.id, p.cedula ,p.pasaporte, p.nombre ,p.apellido, p.sexo, p.nacionalidad, p.TIPO_PASAJERO_ID,
+                                p.id idPasajero,p.cedula,p.pasaporte,p.nombre,p.apellido
+                  FROM PASAJERO p
+                  WHERE ( p.cedula LIKE '".$busqueda."%'
+                  OR p.pasaporte LIKE '".$busqueda."%'
+                  OR p.nombre LIKE '".$busqueda."%'
+                  OR p.apellido LIKE '".$busqueda."%') LIMIT 0,5";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>
