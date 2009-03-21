@@ -136,7 +136,7 @@ class controladorEquipajeBDclass {
 
 /**
  * Metodo para consultar el equipaje de un reserva determinada
- * @param <Integer> $idReserva
+ * @param <Integer> $idReserva Identificador de la reserva
  * @return <recurso> descripcion del equipaje
  */
     function consultarEquipajePorPasajeroReserva($idReserva){

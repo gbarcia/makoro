@@ -143,7 +143,9 @@ class ControlBoletoLogicaclass {
             $pasajero->setCedula($var->getCedula());
             $pasajero->setPasaporte($var->getPasaporte());
             $pasajero->setNacionalidad($var->getNacionalidad());
+            if($var->getTipoPasajeroId()== 'ADL' || $var->getTipoPasajeroId() == 'CHD'){
             $pasajero->setTipoPasajeroId($var->getTipoPasajeroId());
+            }
             $Objeto = new InformacionGeneralBoletoReciboclass($agente, $numSolicitud, $fechaEmision, $fechaIda, $horaIda, $fechaVuelta,
                 $horaVuelta, $salida, $retorno, $pasajero, $servicio, $cliente, $identificadorCliente);
             $coleccionResultado ->append($Objeto);
