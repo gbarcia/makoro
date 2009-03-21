@@ -24,7 +24,7 @@ class Conexionclass {
             $this->configuracion->getDatabasePWord());
         $result = mysql_select_db ($this->configuracion->getDatabaseName());
         if (!$result) {
-            die ("<script>location.href='ErrorBD.php'</script>");
+            die ("<script>location.href='error.php'</script>");
         }
         return $this->conexion;
     }
