@@ -345,7 +345,7 @@ function agregarReserva($datos){
             if ($respuesta != ''){
                 $mensaje = '<div class="exito">
                           <div class="textoMensaje">
-                          Se realizo la reserva satisfactoriamente. Cliente: '.$datos[nombre].'. Localizador: '. $respuesta .'.
+                          Se realizo la reserva satisfactoriamente.</br> Cliente: '.$datos[nombre].'. Localizador: '. $respuesta .'.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
