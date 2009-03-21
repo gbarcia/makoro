@@ -35,9 +35,7 @@ class ControlEquipajeLogicaclass {
         $resultado = new ArrayObject();
         $recurso = $this->controlBD->consultarEquipajePorPasajeroReserva($idReserva);
         $row = mysql_fetch_array($recurso);
-            $descripcionEquipaje = $row[descripcion];
-     
-        
+        $descripcionEquipaje = $row[descripcion];
         return $descripcionEquipaje;
     }
 }
