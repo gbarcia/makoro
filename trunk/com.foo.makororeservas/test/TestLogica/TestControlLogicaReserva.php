@@ -52,9 +52,9 @@ $clienteTest = new ClienteParticularclass();
 
 //(3, "IDA", 3, '2009-03-08', 1, 1, 17064051, 18310338, null, 'null');
 //($idVuelo, $cantAdultoNino, $cantidadInfantes, $fecha, $tipoServicioId, $sucursalId, $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif, $posadaId, $solicitud)
-$respuesta = $controlTest->crearReserva('vuelta',6, 2, 0, '2009-03-20', 1, 1, 18027622, 18310338, NULL, NULL, 'XR602227', 'PP');
-echo '<p></p>';
-echo $respuesta;
+//$respuesta = $controlTest->crearReserva('vuelta',6, 2, 0, '2009-03-20', 1, 1, 18027622, 18310338, NULL, NULL, 'XR602227', 'PP');
+//echo '<p></p>';
+//echo $respuesta;
 
 /**
  * Existe pasajero
@@ -68,9 +68,9 @@ echo $respuesta;
 
 /* ASIGNAR PASAJERO A RESERVA *///($nombre, $apellido, $sexo, $cedula, $pasaporte, $nacionalidad, $tipoPasajeroId, $idReserva)
 //$resultado = $controlTest->actualizarPasajeroReserva('joniii', 'TRUJI-truji', 'M', 17706709, null, 'VENEZOLANO', 'ADL', 23);
-//$resultado = $controlTest->pagarReserva(10, 'E', 100, '', '', 1);
+$resultado = $controlTest->pagarReserva('45T5', 'E', 100, '', '', 1);
 //$resultado = $controlTest->actualizarEstadoReserva(11, 'PA');
-//echo $resultado;
+echo $resultado;
 
 /*----------------------------*/
 

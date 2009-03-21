@@ -40,11 +40,10 @@ class controladorEquipajeBDclass {
      */
     function editarEquipaje($equipaje){
         $resultado = false;
-        $query = "UPDATE EQUIPAJE SET descripcion = '" . $equipaje->getDescripcion() . "',
-                                      tipo = '" . $equipaje->getTipo() . "' ,
-                                      peso = " . $equipaje->getPeso() . ",
-                                      RESERVA_id = " . $equipaje->getReservaID() . "
-                  WHERE id = " . $equipaje->getId();
+        $query = "UPDATE EQUIPAJE e SET e.descripcion = '" . $equipaje->getDescripcion() . "',
+                                      e.tipo = '" . $equipaje->getTipo() . "' ,
+                                      e.peso = " . $equipaje->getPeso()  . "
+                  WHERE e.RESERVA_id = " . $equipaje->getReservaId();
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

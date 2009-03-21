@@ -161,11 +161,11 @@ class controladorReservaBDclass {
      * @param <Integer> $pagoId Identificador del pago realizado
      * @return <boolean> resultado de la operacion
      */
-    function editarEstadoPagadoReserva($idReserva, $estado, $pagoId){
+    function editarEstadoPagadoReserva($solicitud, $estado, $pagoId){
         $resultado = false;
         $query = "UPDATE RESERVA r SET r.estado = '".$estado."',
                                        r.PAGO_id = ".$pagoId."
-                  WHERE r.id = ".$idReserva."";
+                  WHERE r.solicitud = '".$solicitud."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -203,10 +203,10 @@ class controladorReservaBDclass {
      * @param <Integer> $idReserva Identificador de la reserva
      * @return <recurso> estado de la reserva
      */
-    function consultarEstadoReserva($idReserva){
-        $query = "SELECT R.estado estado
+    function consultarEstadoReserva($solicitud){
+        $query = "SELECT DISTINCT R.estado estado
                   FROM RESERVA R
-                  WHERE R.id = ".$idReserva."";
+                  WHERE R.solicitud = '".$solicitud."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
