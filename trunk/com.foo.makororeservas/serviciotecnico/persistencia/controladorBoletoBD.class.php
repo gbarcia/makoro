@@ -59,18 +59,20 @@ class controladorBoletoBDclass {
  */
     function consultarBoletoEspecifico($solicitud) {
         $resultado = false;
-        $query = "SELECT r.CLIENTE_AGENCIA_rif rifAgencia, r.CLIENTE_PARTICULAR_cedula particularCedula, pa.id idPago,r.solicitud,t.abreviatura abreviatura,
+        $query = "SELECT r.CLIENTE_AGENCIA_rif rifAgencia, r.CLIENTE_PARTICULAR_cedula particularCedula, r.solicitud,t.abreviatura abreviatura,
                          t.nombre nombreServicio,CONCAT(e.nombre,' ',e.apellido) agente,
                          IF(r.CLIENTE_AGENCIA_rif is not null,CA.nombre,CONCAT(CP.nombre,' ',CP.apellido)) as clienteNombre,
+                         IF(r.PAGO_id is not null,pa.id,null) as idPago,
                          CA.porcentajeComision porcentajeComision
                   FROM RESERVA r, PAGO pa, TIPO_SERVICIO t, ENCARGADO e, CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA
                   WHERE r.solicitud = '".$solicitud."'
-                  AND r.PAGO_id = pa.id
+                  AND (r.estado = 'PA'
+                       OR r.estado = 'CO')
                   AND r.TIPO_SERVICIO_id = t.id
                   AND r.ENCARGADO_cedula = e.cedula
                   AND (r.CLIENTE_PARTICULAR_cedula = CP.cedula
                        OR r.CLIENTE_AGENCIA_rif = CA.rif)
-                  GROUP BY(rifAgencia)";
+                  GROUP BY(r.solicitud)";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
