@@ -526,5 +526,21 @@ class controladorVueloBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function existeReservaVuelo($idVuelo,$solitud){
+        $query = "SELECT R.id
+                  FROM RESERVA R, VUELO_RESERVA VR, VUELO V
+                  WHERE R.solicitud = '".$solitud."'
+                  AND R.id = VR.RESERVA_id
+                  AND V.id = VR.VUELO_id
+                  AND V.id = ".$idVuelo."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        $cantidad = mysql_num_rows($resultado);
+        if($cantidad > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 ?>
