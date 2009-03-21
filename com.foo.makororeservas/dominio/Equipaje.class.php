@@ -5,6 +5,7 @@
  * @author jonathan
  */
 class Equipajeclass {
+    private $id;
 
     private $descripcion;
 
@@ -15,6 +16,14 @@ class Equipajeclass {
     private $reservaId;
 
     function __construct() {
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
     }
 
     public function getDescripcion() {
