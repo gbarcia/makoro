@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlSucursalLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlTipoServicioLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPosadaBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorGestionVuelos.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlVueloLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlReservaLogica.class.php';
@@ -236,6 +237,17 @@ function generarFichaVuelo($idVuelo){
         <td>AVION</td>
         <td>'.$row[matricula].'</td>
         </tr>
+        <tr class="r0">
+        <td colspan="2" align="center">DISPONIBILIDAD</td>
+        </tr>
+        <tr>
+        <td>ADL/CHD</td>
+        <td>INF</td>
+        </tr>
+        <tr>
+        <td>'.$row[disponibilidadAdlChd].'</td>
+        <td>'.$row[disponibilidadInf].'</td>
+        </tr>
         </table>';
     return $resultado;
 }
@@ -252,6 +264,7 @@ function buscarClienteParticular($cedula){
 
 function buscarCliente($datos){
     $seleccion = $datos[grupo];
+    echo $seleccion;
     if ($seleccion == 'juridico'){
         if ($datos[rif] == ''){
             $mensaje = '<div class="advertencia">
@@ -270,7 +283,7 @@ function buscarCliente($datos){
         } else {
             return desplegarFormularioAgregarClienteJuridico($datos);
         }
-    } else {
+    } else if ($seleccion == 'particular') {
         if (($datos[cedula] == '') || (!is_numeric($datos[cedula]))){
             $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
@@ -505,9 +518,15 @@ function validarPersona ($datos) {
     return $resultado;
 }
 
-function int_ok($val)
-{
+function int_ok($val){
     return ($val !== true) && ((string)(int) $val) === ((string) $val);
+}
+
+function buscarSolicitud($solicitud){
+    $control = new controladorReservaBDclass();
+    $recurso = $control->consultarClienteReserva($solicitud);
+    $row = mysql_fetch_array($recurso);
+    buscarCliente($row);
 }
 
 ?>
