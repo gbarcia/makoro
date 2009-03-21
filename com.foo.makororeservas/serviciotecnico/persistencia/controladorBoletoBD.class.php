@@ -83,8 +83,9 @@ class controladorBoletoBDclass {
  */
     function consultarPasajeros($solicitud){
         $resultado = false;
-        $query = "SELECT p.id idPasajero,p.nombre nombre,p.apellido apellido,
-                        p.TIPO_PASAJERO_id tipoPasajeroId,p.sexo sexo,p.cedula cedula,p.pasaporte pasaporte,p.nacionalidad nacionalidad
+        $query = "SELECT DISTINCT p.id idPasajero,p.nombre nombre,p.apellido apellido,
+                                  p.TIPO_PASAJERO_id tipoPasajeroId,p.sexo sexo,p.cedula cedula,
+                                  p.pasaporte pasaporte,p.nacionalidad nacionalidad
                   FROM RESERVA r, PASAJERO p
                   WHERE r.solicitud = '".$solicitud."'
                   AND r.PASAJERO_id = p.id";
