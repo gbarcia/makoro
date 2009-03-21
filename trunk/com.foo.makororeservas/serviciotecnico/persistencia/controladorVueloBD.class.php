@@ -356,7 +356,8 @@ class controladorVueloBDclass {
                                                         CONCAT(PA.nombre,' ',PA.apellido))
                                                         FROM PASAJERO PA
                                                         WHERE PA.id = R.PASAJERO_id),
-                         IF(R.CLIENTE_AGENCIA_rif is not null, CA.nombre, CONCAT(CP.nombre,' ',CP.apellido))) as pasajero,
+                                                       IF(R.CLIENTE_AGENCIA_rif is not null,
+                                                       CA.nombre, '')) as pasajero,
                          TS.abreviatura as servicio, IF(R.POSADA_id is not null,(SELECT PO.nombrePosada
                                                                             FROM POSADA PO
                                                                             WHERE PO.id = R.POSADA_id),'&nbsp') as posada,
