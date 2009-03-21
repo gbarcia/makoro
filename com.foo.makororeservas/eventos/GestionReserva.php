@@ -84,6 +84,7 @@ function procesarFiltros($datos){
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
+    $resultado.= '<th>NUMERO</th>';
     $resultado.= '<th>FECHA</th>';
     $resultado.= '<th>HORA</th>';
     $resultado.= '<th>ORIGEN</th>';
@@ -111,6 +112,7 @@ function procesarFiltros($datos){
         } else {
             $resultado.= '<tr class="r1">';
         }
+        $resultado.= '<td>' . $idVuelo. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
@@ -148,6 +150,7 @@ function inicio(){
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
+    $resultado.= '<th>NUMERO</th>';
     $resultado.= '<th>FECHA</th>';
     $resultado.= '<th>HORA</th>';
     $resultado.= '<th>ORIGEN</th>';
@@ -175,6 +178,7 @@ function inicio(){
         } else {
             $resultado.= '<tr class="r1">';
         }
+        $resultado.= '<td>' . $idVuelo. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getRutaSitioSalida(). '</td>';
@@ -216,37 +220,41 @@ function desplegarFormularioNuevaReserva($idVuelo){
 }
 
 function generarFichaVuelo($idVuelo){
-    $controlVuelo = new controladorGestionVuelos();
-    $datos = $controlVuelo->ConsultarVueloPorId($idVuelo);
+    $controlVuelo = new ControlVueloLogicaclass();
+    $datos = $controlVuelo->consultarInformacionVuelo($idVuelo);
     $row = mysql_fetch_array($datos);
     $resultado = '<table class="fichaTable" cellspacing="0">
         <thead><td colspan="2">DATOS DEL VUELO</td></thead>
         <tr class="r1">
+        <td>NUMERO</td>
+        <td>'.$idVuelo.'</td>
+        </tr>
+        <tr class="r0">
         <td>FECHA</td>
         <td>'.$row[fecha].'</td>
         </tr>
-        <tr class="r0">
+        <tr class="r1">
         <td>HORA</td>
         <td>'.$row[hora].'</td>
         </tr>
-        <tr class="r1">
-        <td>RUTA</td>
-        <td>'.$row[salida].' - '.$row[llegada].'</td>
-        </tr>
         <tr class="r0">
+        <td>RUTA</td>
+        <td>'.$row[sitioSalida].' - '.$row[sitioLlegada].'</td>
+        </tr>
+        <tr class="r1">
         <td>AVION</td>
         <td>'.$row[matricula].'</td>
         </tr>
         <tr class="r0">
-        <td colspan="2" align="center">DISPONIBILIDAD</td>
+        <td colspan="2">DISPONIBILIDAD</td>
         </tr>
-        <tr>
+        <tr class="r1">
         <td>ADL/CHD</td>
-        <td>INF</td>
+        <td>'.$row[adlChlQuedan].' asientos disponibles</td>
         </tr>
-        <tr>
-        <td>'.$row[disponibilidadAdlChd].'</td>
-        <td>'.$row[disponibilidadInf].'</td>
+        <tr class="r0">
+        <td>INF</td>
+        <td>'.$row[infQuedan].' asientos disponibles</td>
         </tr>
         </table>';
     return $resultado;
@@ -319,7 +327,18 @@ function agregarReserva($datos){
     if ($datos[cantidadInf] == ''){
         $datos[cantidadInf] = 0;
     }
-    if ((int_ok($datos[cantidadAdlChd])) && (int_ok($datos[cantidadInf]))) {
+    if (($datos[solicitud]!='')&&($datos[tipoVuelo]=='ida')){
+        $mensaje = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          El localizador ya existe. Para modificarlo debe crear una nueva reserva.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+        return $objResponse;
+    } else if ((int_ok($datos[cantidadAdlChd])) && (int_ok($datos[cantidadInf]))) {
         if (($datos[cantidadAdlChd] <= 0) && ($datos[cantidadInf] <= 0)) {
             $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
