@@ -98,7 +98,6 @@ class ControlReservaLogicaclass {
                         $clienteAgenciaRif, $pagoId, $pasajeroId, $posadaId);
                     $arrayAdl->append($resultado);
                     $cantAdultoNino = $cantAdultoNino - 1;
-
                 }while ($cantAdultoNino > 0);
             }
             if($cantidadInfantes>0){
@@ -187,7 +186,6 @@ class ControlReservaLogicaclass {
         $recurso = $this->controlBD->actualizarIdReserva($idPasajero, $idReserva);
         return $recurso;
     }
-
 
     /**
      * Metodo para crear el codigo de solicitud aleatorio
