@@ -195,6 +195,8 @@ $xajax->processRequests();
             </div>
         </div>
 
+        <hr width="98%" size="1" color="#067AC2">
+
         <div class="cuerpo">
             <div id="fichaVuelo" ></div>
             <div class="tableContainer" id="pasajeros"></div>
