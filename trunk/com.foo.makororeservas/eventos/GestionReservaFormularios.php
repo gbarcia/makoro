@@ -81,10 +81,7 @@ function generarFormularioNuevaReserva($idVuelo) {
                 <td colspan="3">
                     <div class="tituloBlanco1">
                         NUEVA RESERVA
-                        <div class="botonCerrar">
-                            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
-                        </div>
-                    </div>
+                     </div>
                 </td>
             </thead>
         </tr>
@@ -115,9 +112,6 @@ function generarFormularioNuevaReserva($idVuelo) {
                 <td colspan="2">
                     <div class="tituloBlanco1">
                         LOCALIZADOR EXISTENTE
-                        <div class="botonCerrar">
-                            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
-                        </div>
                     </div>
                 </td>
             </thead>
@@ -152,9 +146,6 @@ function generarFormularioConfirmarReserva($datos) {
                 <td colspan="3">
                     <div class="tituloBlanco1">
                         NUEVA RESERVA
-                        <div class="botonCerrar">
-                            <button name="boton" type="button" onclick="xajax_cerrarVentanaEditar()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
-                        </div>
                     </div>
                 </td>
             </thead>
@@ -204,15 +195,13 @@ function generarFormularioConfirmarReserva($datos) {
         <tr class="r1">
             <td>Tipo de Vuelo</td>
             <td>';
-
     if ($flag){
         $contenido.= '<select name="tipoVuelo" disabled="disabled">
                 <option value="vuelta">RETORNO</option>
                 </select>';
     } else {
-        $contenido.= '<select name="tipoVuelo">
+        $contenido.= '<select name="tipoVuelo" disabled="disabled">
                 <option value="ida">SALIDA</option>
-                <option value="vuelta">RETORNO</option>
                 </select>';
     }
     $contenido.= '</td>
@@ -246,9 +235,6 @@ function generarFormularioAgregarClienteJuridico($datos) {
         <td colspan="2">
         <div class="tituloBlanco1">
             NUEVO CLIENTE JURIDICO
-            <div class="botonCerrar">
-            <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
-        </div>
         </div>
         </td>
         </thead>
@@ -297,9 +283,6 @@ function generarFormularioAgregarClienteParticular($datos) {
         <td colspan="2">
         <div class="tituloBlanco1">
             NUEVO CLIENTE NATURAL
-            <div class="botonCerrar">
-            <button name="boton" type="button" onclick="xajax_cerrarVentana()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
-        </div>
         </div>
         </td>
         </thead>
