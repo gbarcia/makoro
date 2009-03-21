@@ -29,7 +29,6 @@ class controladorEquipajeBDclass {
                           '" . $equipaje->getTipo() . "',
                            " . $equipaje->getPeso() . ",
                            " . $equipaje->getReservaId() . ")";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -42,10 +41,9 @@ class controladorEquipajeBDclass {
     function editarEquipaje($equipaje){
         $resultado = false;
         $query = "UPDATE EQUIPAJE e SET e.descripcion = '" . $equipaje->getDescripcion() . "',
-                                        e.tipo = '" . $equipaje->getTipo() . "' ,
-                                        e.peso = " . $equipaje->getPeso()  . ",
-                                        e.RESERVA_id = " . $equipaje->getReservaId() . "
-                  WHERE e.id = ".$equipaje->getId()."";
+                                      e.tipo = '" . $equipaje->getTipo() . "' ,
+                                      e.peso = " . $equipaje->getPeso()  . "
+                  WHERE e.RESERVA_id = " . $equipaje->getReservaId();
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -56,8 +54,7 @@ class controladorEquipajeBDclass {
      */
     function consultarEquipaje(){
         $resultado = false;
-        $query = "SELECT descripcion, tipo, peso
-                  FROM EQUIPAJE";
+        $query = "SELECT * FROM EQUIPAJE";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -68,11 +65,11 @@ class controladorEquipajeBDclass {
      */
     function consultarEquipajeReservaPasajeroVuelo(){
         $resultado = false;
-        $query = "SELECT DISTINCT e.descripcion descripcion, e.tipo tipo, e.peso peso, r.id idReserva, r.estado estado,
-                         r.solicitud solicitud, p.id idPasajero, p.nombre nombre, p.apellido apellido, p.cedula cedula,
-                         p.pasaporte pasaporte, p.nacionalidad nacionalidad, p.TIPO_PASAJERO_id idTipoPasajero, v.id idVuelo,
-                         v.fecha fecha, v.hora hora, ru.sitioSalida sitioSalida, ru.sitioLlegada sitioLlegada,
-                         ru.abreviaturaSalida abreviaturaSalida, ru.abreviaturaLlegada abreviaturaLlegada,
+        $query = "SELECT e.descripcion, e.tipo, e.peso, r.id, r.estado,
+                         r.solicitud, p.id, p.nombre, p.apellido, p.cedula,
+                         p.pasaporte, p.nacionalidad, p.TIPO_PASAJERO_id, v.id,
+                         v.fecha, v.hora, ru.sitioSalida, ru.sitioLlegada,
+                         ru.abreviaturaSalida, ru.abreviaturaLlegada,
                          CONCAT(ru.abreviaturaSalida, ' - ',ru.abreviaturaLlegada) ruta
                   FROM EQUIPAJE e, RESERVA r, PASAJERO p, VUELO_RESERVA vr, VUELO v, RUTA ru
                   WHERE e.RESERVA_id = r.id
@@ -92,11 +89,11 @@ class controladorEquipajeBDclass {
      */
     function consultarEquipajeDePasajero($cedulaOPasaporte){
         $resultado = false;
-        $query = "SELECT e.descripcion descripcion, e.tipo tipo, e.peso peso, r.id idReserva, r.estado estado,
-                         r.solicitud solicitud, p.id idPasajero, p.nombre nombre, p.apellido apellido, p.cedula cedula,
-                         p.pasaporte pasaporte, p.nacionalidad nacionalidad, p.TIPO_PASAJERO_id idTipoPasajero, v.id idVuelo,
-                         v.fecha fecha, v.hora hora, ru.sitioSalida sitioSalida, ru.sitioLlegada sitioLlegada,
-                         ru.abreviaturaSalida abreviaturaSalida, ru.abreviaturaLlegada abreviaturaLlegada,
+        $query = "SELECT e.descripcion, e.tipo, e.peso, r.id, r.estado,
+                         r.solicitud, p.id, p.nombre, p.apellido, p.cedula,
+                         p.pasaporte, p.nacionalidad, p.TIPO_PASAJERO_id, v.id,
+                         v.fecha, v.hora, ru.sitioSalida, ru.sitioLlegada,
+                         ru.abreviaturaSalida, ru.abreviaturaLlegada,
                          CONCAT(ru.abreviaturaSalida, ' - ',ru.abreviaturaLlegada) ruta
                   FROM EQUIPAJE e, RESERVA r, PASAJERO p, VUELO_RESERVA vr, VUELO v, RUTA ru
                   WHERE e.RESERVA_id = r.id
@@ -118,11 +115,11 @@ class controladorEquipajeBDclass {
      */
     function consultarEquipajePorVuelo($idVuelo){
         $resultado = false;
-        $query = "SELECT e.descripcion descripcion, e.tipo tipo, e.peso peso, r.id idReserva, r.estado estado,
-                         r.solicitud solicitud, p.id idPasajero, p.nombre nombre, p.apellido apellido, p.cedula cedula,
-                         p.pasaporte pasaporte, p.nacionalidad nacionalidad, p.TIPO_PASAJERO_id idTipoPasajero, v.id idVuelo,
-                         v.fecha fecha, v.hora hora, ru.sitioSalida sitioSalida, ru.sitioLlegada sitioLlegada,
-                         ru.abreviaturaSalida abreviaturaSalida, ru.abreviaturaLlegada abreviaturaLlegada,
+        $query = "SELECT e.descripcion, e.tipo, e.peso, r.id, r.estado,
+                         r.solicitud, p.id, p.nombre, p.apellido, p.cedula,
+                         p.pasaporte, p.nacionalidad, p.TIPO_PASAJERO_id, v.id,
+                         v.fecha, v.hora, ru.sitioSalida, ru.sitioLlegada,
+                         ru.abreviaturaSalida, ru.abreviaturaLlegada,
                          CONCAT(ru.abreviaturaSalida, ' - ',ru.abreviaturaLlegada) ruta
                   FROM EQUIPAJE e, RESERVA r, PASAJERO p, VUELO_RESERVA vr, VUELO v, RUTA ru
                   WHERE e.RESERVA_id = r.id
@@ -143,10 +140,10 @@ class controladorEquipajeBDclass {
  */
     function consultarEquipajePorPasajeroReserva($idReserva){
         $resultado = false;
-        $query = "SELECT e.descripcion descripcion, e.tipo tipo, e.peso peso
+        $query = "SELECT e.descripcion descripcion
                   FROM EQUIPAJE e, RESERVA r
                   WHERE r.id = e.RESERVA_id
-                  AND e.RESERVA_id = " . $idReserva."";
+                  AND r.id = " . $idReserva;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
