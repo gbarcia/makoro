@@ -39,29 +39,62 @@ class ControlEquipajeLogicaclass {
  * @param <Integer> $idReserva Identificador de la reserva a la que pertenece el equipaje
  * @return <boolean> resultado de la operacion
  */
-    function actualizarEquipaje($descripcion, $tipo, $peso, $idReserva) {
+    function actualizarEquipaje($id, $descripcion, $tipo, $peso, $idReserva) {
         $equipaje = new Equipajeclass();
+        $equipaje->setId($id);
         $equipaje->setDescripcion($descripcion);
         $equipaje->setTipo($tipo);
         $equipaje->setPeso($peso);
-        $equipaje->setReservaId($reservaId);
+        $equipaje->setReservaId($idReserva);
         $resultado = $this->controlBD->editarEquipaje($equipaje);
         return ($resultado);
     }
 
+/**
+ * Metodo para consultar todos los equipajes existentes en el sistema
+ * @return <recurso> recurso con todos los equipajes
+ */
+    function consultarTodosLosEquipajes() {
+        $resultado = $this->controlBD->consultarEquipaje();
+        return $resultado;
+    }
 /**
  * Metodo para consultar el equipaje del pasajero según la reserva
  * @param <Integer> $idReserva Identificador de la reserva
  * @return <recurso> recurso descripcion de la reserva
  */
     function buscarEquipajePasajeroPorReserva($idReserva) {
-        $resultado = new ArrayObject();
-        $recurso = $this->controlBD->consultarEquipajePorPasajeroReserva($idReserva);
-        $row = mysql_fetch_array($recurso);
-        $descripcionEquipaje = $row[descripcion];
-        return $descripcionEquipaje;
+        $resultado = $this->controlBD->consultarEquipajePorPasajeroReserva($idReserva);
+        return $resultado;
     }
 
+/**
+ * Metodo para consultar el equipaje por un vuelo determinado
+ * @param <Integer> $idVuelo Identificador del vuelo
+ * @return <recurso> recurso detalles de los equipajes por vuelo
+ */
+    function equipajePorVuelo($idVuelo) {
+        $resultado = $this->controlBD->consultarEquipajePorVuelo($idVuelo);
+        return $resultado;
+    }
 
+/**
+ * Metodo para consultar el equipaje del pasajero
+ * @return <recurso> recurso equipaje por pasajero y vuelo
+ */
+    function equipajeReservaPasajeroVuelo() {
+        $resultado = $this->controlBD->consultarEquipajeReservaPasajeroVuelo();
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar el equipaje de un pasajero por medio de la cedula o pasaporte
+ * @param <String, Integer> $cedulaOPasaporte Cedula o pasaporte del pasajero
+ * @return <recurso> recurso con el equipaje
+ */
+    function equipajeDePasajero($cedulaOPasaporte) {
+        $resultado = $this->controlBD->consultarEquipajeDePasajero($cedulaOPasaporte);
+        return $resultado;
+    }
 }
 ?>
