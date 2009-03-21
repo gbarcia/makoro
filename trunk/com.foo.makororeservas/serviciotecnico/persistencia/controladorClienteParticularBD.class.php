@@ -24,7 +24,7 @@ class controladorClienteParticularBDclass {
     function agregarClienteParticular($clienteParticular){
         $resultado = false;
         $query = "INSERT INTO CLIENTE_PARTICULAR (cedula,nombre,apellido,sexo,fechaNacimiento,
-                                                  telefono,estado,ciudad,direccion)
+                                                  telefono,estado,ciudad,direccion,correo)
                   VALUES ('".$clienteParticular->getCedula()."',
                           '".$clienteParticular->getNombre()."',
                           '".$clienteParticular->getApellido()."',
@@ -33,7 +33,7 @@ class controladorClienteParticularBDclass {
                           '".$clienteParticular->getTelefono()."',
                           '".$clienteParticular->getEstado()."',
                           '".$clienteParticular->getCiudad()."',
-                          '".$clienteParticular->getDireccion()."')";
+                          '".$clienteParticular->getDireccion()."',NULL)";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
