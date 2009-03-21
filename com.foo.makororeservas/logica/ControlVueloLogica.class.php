@@ -66,9 +66,6 @@ class ControlVueloLogicaclass {
      * @return <BOOLEAN> El resultado de la operacion
      */
     function actualizarCantidadInfantesVuelo($idVuelo, $cantidadInfantes) {
-//        $vuelo = new Vueloclass();
-//        $vuelo->setId($idVuelo);
-//        $vuelo->setCantidadinfantes($cantidadInfantes);
         $resultado = $this->controlBD->actualizarCantidadInfantesVuelo($idVuelo, $cantidadInfantes);
         return ($resultado);
     }
@@ -129,8 +126,8 @@ class ControlVueloLogicaclass {
             $copiloto = $rowVueloCopiloto[tripulante];
 
             if($piloto == ''||$copiloto == ''){
-                $piloto = "No hay piloto registrado";
-                $copiloto = "No hay copiloto registrado";
+                $piloto = "PA";
+                $copiloto = "PA";
             }
 
             $vuelo = new Vueloclass();
@@ -172,8 +169,8 @@ class ControlVueloLogicaclass {
             $copiloto = $rowVueloCopiloto[tripulante];
 
             if($piloto == ''||$copiloto == ''){
-                $piloto = "No asignado";
-                $copiloto = "No asignado";
+                $piloto = "PA";
+                $copiloto = "PA";
             }
 
             $vuelo = new Vueloclass();
@@ -295,8 +292,8 @@ class ControlVueloLogicaclass {
             $copiloto = $rowVueloCopiloto[tripulante];
 
             if($piloto == ''||$copiloto == ''){
-                $piloto = "No hay piloto registrado";
-                $copiloto = "No hay copiloto registrado";
+                $piloto = "PA";
+                $copiloto = "PA";
             }
 
             $vuelo = new Vueloclass();
