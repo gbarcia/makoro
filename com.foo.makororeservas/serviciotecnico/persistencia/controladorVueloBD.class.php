@@ -387,6 +387,7 @@ class controladorVueloBDclass {
                                                     AND VU.id = VRE.VUELO_id
                                                     AND RE.solicitud = R.solicitud
                                                     AND VRE.tipo = 'vuelta'
+                                                    AND RE.id = R.id
                                                     GROUP BY VU.fecha,VU.hora),'SIN RETORNO'),'RT') as vueloRetorno
             FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS, ENCARGADO E, TIPO_PASAJERO TP,
                  CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA, BOLETO B
