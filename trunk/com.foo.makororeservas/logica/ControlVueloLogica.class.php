@@ -366,6 +366,11 @@ class ControlVueloLogicaclass {
         return $recurso;
     }
 
+    function existeReservaVuelo($idVuelo,$solitud) {
+        $recurso = $this->controlBD->existeReservaVuelo($idVuelo, $solitud);
+        return $recurso;
+    }
+
     /**
      * Metodo para sumar la hora de vuelos entre dos fechas
      * @param <type> $fechaIni La fecha de inicio a calcular
