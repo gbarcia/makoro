@@ -176,10 +176,10 @@ class controladorReservaBDclass {
      * @param <String> $estado Nuevo estado
      * @return <type> El resultado de la operacion
      */
-    function editarEstadoReserva($idReserva, $estado){
+    function editarEstadoReserva($solicitud, $estado){
         $resultado = false;
         $query = "UPDATE RESERVA r SET r.estado = '".$estado."'
-                                   WHERE r.id = ".$idReserva."";
+                                   WHERE r.solicitud = '".$solicitud."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -194,6 +194,20 @@ class controladorReservaBDclass {
                   FROM RESERVA R, VUELO V
                   WHERE R.solicitud = '".$solicitud."'
                   AND V.id = ".$idVuelo."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar los identificadores de las reservas relacionadas
+ * con una solicitud suministrada
+ * @param <String> $solicitud Localizador de la reserva
+ * @return <recurso> recurso con los identificadores de la reserva
+ */
+    function buscarLosIdRelacionadosPorSolicitud($solicitud){
+        $query = "SELECT R.id idReserva
+                  FROM RESERVA R
+                  WHERE R.solicitud = '".$solicitud."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

@@ -322,18 +322,35 @@ class ControlReservaLogicaclass {
     }
 
     /**
+     * Metodo para consultar los identificadores de la reserva segun la solicitud
+     * @param <String> $solicitud Localizador de la reserva
+     * @return <recurso> recurso con los identificadores de la reserva
+     */
+    function consultarIdsReservasPorSolicitud($solicitud) {
+        $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+        $row = mysql_fetch_array($recurso);
+        $idReservas = $row[idReserva];
+        return $idReservas;
+    }
+
+    /**
      * Metodo para actualizar el estado de una reserva
      * @param <Integer> $idReserva Identificador de la reserva
      * @param <String> $estado Estado de la reserva
      * @return <recurso> resultado de la operacion
      */
-    function actualizarEstadoReserva($idReserva, $estado) {
-        $estadoBD = $this->estadoReserva($idReserva);
+    function actualizarEstadoReserva($solicitud, $estado) {
+        $estadoBD = $this->estadoReserva($solicitud);
         if($estadoBD != 'CA'){
-            $resultado = $this->controlBD->editarEstadoReserva($idReserva, $estado);
+            $resultado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
         }
-        if($estado == 'CA'){
-            $resultado = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
+        $estadoBD = $this->estadoReserva($solicitud);
+        if($estado == 'CA'|| $estadoBD == 'CA'){
+            $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+            while($row = mysql_fetch_array($recurso)){
+            $idReservas = $row[idReserva];
+            $resultado = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
+            }
         }
         return $resultado;
     }
