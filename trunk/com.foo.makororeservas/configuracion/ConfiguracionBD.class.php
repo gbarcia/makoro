@@ -9,7 +9,7 @@ class ConfiguracionBDclass {
     private $databaseURL = "localhost";
     private $databaseUserName = "root";
     private $databasePWord = "admin";
-    private $databaseName = "akoro";
+    private $databaseName = "makoro";
 
     public function getDatabaseURL() {
         return $this->databaseURL;
