@@ -320,6 +320,7 @@ function desplegarConfirmarReserva($datos){
 
 function agregarReserva($datos){
     $controlReserva = new ControlReservaLogicaclass();
+    $controlVuelo = new ControlVueloLogicaclass();
     $objResponse = new xajaxResponse();
     if ($datos[cantidadAdlChd] == ''){
         $datos[cantidadAdlChd] = 0;
@@ -327,7 +328,18 @@ function agregarReserva($datos){
     if ($datos[cantidadInf] == ''){
         $datos[cantidadInf] = 0;
     }
-    if (($datos[solicitud]!='')&&($datos[tipoVuelo]=='ida')){
+    if ($controlVuelo->existeReservaVuelo($datos[idVuelo], $datos[solicitud])){
+        $mensaje = '<div class="advertencia">
+                          <div class="textoMensaje">
+                          Ya existe una reserva con este localizador para este vuelo. No se puede realizar mas.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAppend("mensaje", "innerHTML", $mensaje);
+        return $objResponse;
+    }else if (($datos[solicitud]!='')&&($datos[tipoVuelo]=='ida')){
         $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
                           El localizador ya existe. Para modificarlo debe crear una nueva reserva.

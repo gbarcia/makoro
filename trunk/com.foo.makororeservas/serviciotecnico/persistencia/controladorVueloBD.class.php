@@ -536,7 +536,7 @@ class controladorVueloBDclass {
                   AND V.id = ".$idVuelo."";
         $resultado = $this->transaccion->realizarTransaccion($query);
         $cantidad = mysql_num_rows($resultado);
-        if($cantidad > 0){
+        if($cantidad != 0){
             return true;
         }else{
             return false;
