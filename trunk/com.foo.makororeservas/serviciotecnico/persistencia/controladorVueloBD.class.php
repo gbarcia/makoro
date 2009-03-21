@@ -432,14 +432,14 @@ class controladorVueloBDclass {
                                  AND VU.id = V.id
                                  AND VU.id = VP.VUELO_id
                                  AND TC.id = PE.TIPO_CARGO_id
-                                 AND TC.cargo = 'PILOTO'),'PA') as piloto,
+                                 AND VP.cargo = 1),'PA') as piloto,
                          IFNULL((SELECT CONCAT(PE.nombre,' ',PE.apellido)
                                  FROM PERSONAL PE, VUELO VU, VUELO_PERSONAL VP, TIPO_CARGO TC
                                  WHERE PE.cedula = VP.PERSONAL_cedula
                                  AND VU.id = V.id
                                  AND VU.id = VP.VUELO_id
                                  AND TC.id = PE.TIPO_CARGO_id
-                                 AND TC.cargo = 'COPILOTO'),'PA') as copiloto
+                                 AND VP.cargo = 2),'PA') as copiloto
                   FROM VUELO V, RUTA R
                   WHERE V.id = ".$idVuelo."
                   AND R.sitioSalida = V.RUTA_sitioSalida
