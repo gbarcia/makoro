@@ -107,7 +107,8 @@ function generarFormularioNuevaReserva($idVuelo) {
         </tr>
     </table>
     </form>
-    <form id="formc">
+    <form id="formSolicitudExistente">
+    <input type="hidden" name="idVuelo" value="' . $idVuelo . '" />
     <table class="formTable" cellspacing="0">
         <tr>
             <thead>
@@ -123,12 +124,12 @@ function generarFormularioNuevaReserva($idVuelo) {
         </tr>
         <tr class="r1">
             <td>Localizador</td>
-            <td><input type="text" name="rif" id="rif"></td>
+            <td><input type="text" name="solicitud" id="solicitud"></td>
         </tr>
         <tr class="r0">
             <td colspan="2">
                 <div align="center">
-                    <input name="button" type="button" id="button" value="BUSCAR LOCALIZADOR" onclick= "xajax_buscarSolicitud(xajax.getFormValues(\'formLocalizadorExistente\'))">
+                    <input name="button" type="button" id="button" value="BUSCAR LOCALIZADOR" onclick= "xajax_buscarSolicitud(xajax.getFormValues(\'formSolicitudExistente\'))">
                 </div>
             </td>
         </tr>
@@ -140,8 +141,9 @@ function generarFormularioNuevaReserva($idVuelo) {
 function generarFormularioConfirmarReserva($datos) {
     $contenido = "";
     $contenido .= '<form id="formConfirmarReserva">
-    <input name="idVuelo" value="'.$datos[idVuelo].'" />
-    <input name="tipoCliente" value="'.$datos[grupo].'" />
+    <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
+    <input type="hidden" name="tipoCliente" value="'.$datos[grupo].'" />
+    <input type="hidden" name="solicitud" value="'.$datos[solicitud].'" />
         <table class="formTable" cellspacing="0">
         <tr>
             <thead>
