@@ -111,7 +111,7 @@ class ControlReservaLogicaclass {
                 }while ($contador >0);
             }
             if($tipoViaje == 'ida'){
-            $recurso = $this->controlBD->buscarIdReserva($solicitud,$idVuelo);
+                $recurso = $this->controlBD->buscarIdReserva($solicitud,$idVuelo);
                 while ($row = mysql_fetch_array($recurso)) {
                     $vueloReserva = new VueloReservaclass();
                     $vueloReserva->setVueloid($idVuelo);
@@ -280,22 +280,25 @@ class ControlReservaLogicaclass {
      * @param <Integer> $monedaId Identificador de la moneda
      * @return <boolean> resultado de la operacion
      */
-    function pagarReserva($idReserva,$tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId){
+    function pagarReserva($solicitud,$tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId){
         $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
-        if($padoId > 0){
-            $estado = "PA";
-            $resultado = $this->controlBD->editarEstadoPagadoReserva($idReserva, $estado, $pagoId);
+        if($pagoId > 0){
+            $estadoReserva = $this->estadoReserva($solicitud);
+            if($estadoReserva != 'CA'){
+                $estado = "PA";
+                $resultado = $this->controlBD->editarEstadoPagadoReserva($solicitud, $estado, $pagoId);
+            }
         }
         return $resultado;
     }
 
     /**
      * Metodo para consultar el estado de una reserva
-     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <Integer> $solicitud Localizador de la reserva
      * @return <recurso> estado de la reserva
      */
-    function estadoReserva($idReserva) {
-        $recurso = $this->controlBD->consultarEstadoReserva($idReserva);
+    function estadoReserva($solicitud) {
+        $recurso = $this->controlBD->consultarEstadoReserva($solicitud);
         $row = mysql_fetch_array($recurso);
         $estado = $row[estado];
         return $estado;

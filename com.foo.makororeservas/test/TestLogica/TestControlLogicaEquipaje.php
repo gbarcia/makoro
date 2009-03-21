@@ -14,8 +14,17 @@ $equipajePrueba = new Equipajeclass();
 //echo $resultado;
 ///*-----------------------*/
 
-/* EQUIPAJE RELACIONADO CON UNA RESERVA */
-$resultado = $controlBD->buscarEquipajePasajeroPorReserva(2);
+///* ACTUALIZAR EQUIPAJE */
+$descripcion = "CAJA DE PERRO";
+$tipo = "DE MANO";
+$peso = 50.0;
+$reservaId = 2;
+$resultado = $controlBD->actualizarEquipaje($descripcion, $tipo, $peso, $reservaId);
 echo $resultado;
-/*--------------------------------------*/
+///*-----------------------*/
+
+///* EQUIPAJE RELACIONADO CON UNA RESERVA */
+//$resultado = $controlBD->buscarEquipajePasajeroPorReserva(2);
+//echo $resultado;
+///*--------------------------------------*/
 ?>
