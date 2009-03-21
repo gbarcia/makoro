@@ -201,13 +201,20 @@ function generarFormularioConfirmarReserva($datos) {
         </tr>
         <tr class="r1">
             <td>Servicio</td>
-            <td>' . generarComboBoxServicio() . '</td>
+            <td><select name="tipoVuelo">
+                <option value="ida">SALIDA</option>
+                <option value="vuelta">RETORNO</option>
+                </select></td>
         </tr>
         <tr class="r0">
+            <td>Servicio</td>
+            <td>' . generarComboBoxServicio() . '</td>
+        </tr>
+        <tr class="r1">
             <td>Posada</td>
             <td>' . generarComboBoxPosada() . '</td>
         </tr>
-        <tr class="r1">
+        <tr class="r0">
             <td colspan="2" align="center">
         <input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioNuevaReserva('.$datos[idVuelo].')" />
                 <input name="button" type="button" id="button" value="AGREGAR RESERVA" onclick= "xajax_agregarReserva(xajax.getFormValues(\'formConfirmarReserva\'))">
