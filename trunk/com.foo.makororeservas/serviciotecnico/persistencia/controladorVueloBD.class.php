@@ -405,6 +405,49 @@ class controladorVueloBDclass {
     }
 
     /**
+     * Metodo para obtener informacion de un vuelo especifico
+     * @param <type> $idVuelo El id del vuelo a consultar
+     * @return <type> La informacion del vuelo 
+     */
+    function consultarInformacionVuelo($idVuelo){
+        $query = "SELECT V.fecha, V.hora, R.sitioSalida, R.sitioLlegada,
+                         IFNULL((SELECT VU.AVION_matricula
+                                 FROM VUELO VU, AVION AV
+                                 WHERE VU.id = V.id
+                                 AND VU.AVION_matricula = AV.matricula), 
+                                'PA') as matricula,
+                         IFNULL((SELECT AV.asientos-COUNT(VRE.RESERVA_id)+V.cantidadInfantes
+                                 FROM VUELO_RESERVA VRE, VUELO VU , RESERVA RE, AVION AV
+                                 WHERE RE.id = VRE.RESERVA_id
+                                 AND VU.id = VRE.VUELO_id
+                                 AND VRE.VUELO_id = V.id
+                                 AND AV.matricula = VU.AVION_matricula),0) as adlChlQuedan,
+                         IFNULL((SELECT 2-VU.cantidadInfantes
+                                 FROM VUELO VU
+                                 WHERE VU.id = V.id),0) as infQuedan,
+                         IFNULL((SELECT CONCAT(PE.nombre,' ',PE.apellido)
+                                 FROM PERSONAL PE, VUELO VU, VUELO_PERSONAL VP, TIPO_CARGO TC
+                                 WHERE PE.cedula = VP.PERSONAL_cedula
+                                 AND VU.id = V.id
+                                 AND VU.id = VP.VUELO_id
+                                 AND TC.id = PE.TIPO_CARGO_id
+                                 AND TC.cargo = 'PILOTO'),'PA') as piloto,
+                         IFNULL((SELECT CONCAT(PE.nombre,' ',PE.apellido)
+                                 FROM PERSONAL PE, VUELO VU, VUELO_PERSONAL VP, TIPO_CARGO TC
+                                 WHERE PE.cedula = VP.PERSONAL_cedula
+                                 AND VU.id = V.id
+                                 AND VU.id = VP.VUELO_id
+                                 AND TC.id = PE.TIPO_CARGO_id
+                                 AND TC.cargo = 'COPILOTO'),'PA') as copiloto
+                  FROM VUELO V, RUTA R
+                  WHERE V.id = ".$idVuelo."
+                  AND R.sitioSalida = V.RUTA_sitioSalida
+                  AND R.sitioLlegada = V.RUTA_sitioLlegada ";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
      * Metodo para consultar los clientes con mas reservas pagadas
      * @param <type> $idSucursal El id de la sucursal a consultar
      * @param <type> $fechaInicio La fecha de inicio a consultar
