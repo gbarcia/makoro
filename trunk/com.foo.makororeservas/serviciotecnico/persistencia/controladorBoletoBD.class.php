@@ -138,5 +138,17 @@ class controladorBoletoBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function validoBoleto($idSolicitud){
+        $resultado = false;
+        $query = "SELECT IF(COUNT(R.solicitud) = (SELECT COUNT(RE.PASAJERO_id)
+                                FROM RESERVA RE
+                                WHERE RE.solicitud = R.solicitud
+                                AND RE.PAGO_id is not null),TRUE,FALSE) as resultado
+                  FROM RESERVA R
+                  WHERE R.solicitud = '".$solicitud."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
 }
 ?>

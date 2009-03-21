@@ -86,11 +86,13 @@ class ControlReservaLogicaclass {
         $disponibleInfante = $this->asientosDisponiblesInfante($idVuelo, $cantidadInfantes);
         $arrayInf = new ArrayObject();
         $arrayAdl = new ArrayObject();
+        $solicitudGenerada = false;
         if($disponibleAdultoNino && $disponibleInfante){
             $pagoId = 'null';
             $pasajeroId = 'null';
             if($solicitud == ''){
                 $solicitud = $this->generarSolicitud();
+                $solicitudGenerada = true;
             }
             if($cantAdultoNino>0){
                 do{
@@ -103,19 +105,34 @@ class ControlReservaLogicaclass {
             if($cantidadInfantes>0){
                 $contador = $cantidadInfantes;
                 do{
-                    $idPasajeroInf = $this->controlPasajero->nuevoPasajero('INFANTE', 'INFANTE', 'M', NULL, NULL, NULL, 'INF');
+                    $idPasajeroInf = $this->controlPasajero->nuevoPasajero('INFANTE', '', 'M', NULL, NULL, NULL, 'INF');
                     $resultadoInf = $this->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId, $encargadoCedula, $clienteParticularCedula,
-                        $clienteAgenciaRif, $pagoId, $idPasajeroInf, $posadaId);
+                        $clienteAgenciaRif, 1, $idPasajeroInf, $posadaId);
                     $arrayInf->append($resultadoInf);
                     $contador = $contador - 1;
                 }while ($contador >0);
             }
-            if($tipoViaje == 'ida'){
+            if($tipoViaje == 'ida' && $solicitudGenerada){
                 $recurso = $this->controlBD->buscarIdReserva($solicitud,$idVuelo);
                 while ($row = mysql_fetch_array($recurso)) {
                     $vueloReserva = new VueloReservaclass();
                     $vueloReserva->setVueloid($idVuelo);
                     $vueloReserva->setReservaid($row[idReserva]);
+                    $vueloReserva->setTipo($tipoViaje);
+                    $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
+                }
+            }else if($tipoViaje == 'ida' && !$solicitudGenerada){
+                foreach ($arrayAdl as $variable) {
+                    $vueloReserva = new VueloReservaclass();
+                    $vueloReserva->setVueloid($idVuelo);
+                    $vueloReserva->setReservaid($variable);
+                    $vueloReserva->setTipo($tipoViaje);
+                    $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
+                }
+                foreach ($arrayInf as $variable) {
+                    $vueloReserva = new VueloReservaclass();
+                    $vueloReserva->setVueloid($idVuelo);
+                    $vueloReserva->setReservaid($variable);
                     $vueloReserva->setTipo($tipoViaje);
                     $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
                 }
