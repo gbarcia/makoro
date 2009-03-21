@@ -133,14 +133,11 @@ function generarFormularioNuevaReserva($idVuelo) {
 }
 
 function generarFormularioConfirmarReserva($datos) {
-    $flag = false;
-    if ($datos[solicitud] != '') $flag = true;
-    if ($flag){
+    if ($datos[solicitud] != ''){
         $contenido.= '<input type="hidden" name="tipoVuelo" value="vuelta" />';
     } else {
         $contenido.= '<input type="hidden" name="tipoVuelo" value="ida" />';
     }
-    $contenido = "";
     $contenido .= '<form id="formConfirmarReserva">
     <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
     <input type="hidden" name="tipoCliente" value="'.$datos[grupo].'" />
