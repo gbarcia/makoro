@@ -12,6 +12,7 @@ $xajax->registerFunction("agregarReserva");
 $xajax->registerFunction("borrarMensaje");
 $xajax->registerFunction("procesarAgencia");
 $xajax->registerFunction("procesarCliente");
+$xajax->registerFunction("buscarSolicitud");
 $xajax->registerFunction("desplegarFormularioNuevaReserva");
 $xajax->processRequests();
 ?>

@@ -107,11 +107,11 @@ function generarFormularioNuevaReserva($idVuelo) {
         </tr>
     </table>
     </form>
-    <form id="formLocalizadorExistente">
+    <form id="formc">
     <table class="formTable" cellspacing="0">
         <tr>
             <thead>
-                <td colspan="3">
+                <td colspan="2">
                     <div class="tituloBlanco1">
                         LOCALIZADOR EXISTENTE
                         <div class="botonCerrar">
@@ -122,14 +122,13 @@ function generarFormularioNuevaReserva($idVuelo) {
             </thead>
         </tr>
         <tr class="r1">
-            <td><input type="radio" name="grupo" value="localizador" checked="checked" /></td>
             <td>Localizador</td>
             <td><input type="text" name="rif" id="rif"></td>
         </tr>
         <tr class="r0">
-            <td colspan="3">
+            <td colspan="2">
                 <div align="center">
-                    <input name="button" type="button" id="button" value="BUSCAR CLIENTE" onclick= "xajax_buscarCliente(xajax.getFormValues(\'formNuevaReserva\'))">
+                    <input name="button" type="button" id="button" value="BUSCAR LOCALIZADOR" onclick= "xajax_buscarSolicitud(xajax.getFormValues(\'formLocalizadorExistente\'))">
                 </div>
             </td>
         </tr>

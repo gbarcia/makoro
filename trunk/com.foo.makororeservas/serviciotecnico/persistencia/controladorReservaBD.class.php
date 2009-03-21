@@ -16,7 +16,7 @@ class controladorReservaBDclass {
     /**
      * Metodo para agregar una reserva
      * @param <type> $reserva La reserva a agregar
-     * @return <type> El resultado de la operacion 
+     * @return <type> El resultado de la operacion
      */
     function agregarReserva($reserva){
         $resultado = false;
@@ -29,35 +29,35 @@ class controladorReservaBDclass {
                                         ". $reserva->getTipoServicioId() .",
                                         ". $reserva->getSucursalId() .",
                                         ". $reserva->getEncargadoCedula() .",";
-                                        if(is_null($reserva->getClienteParticularCedula())){
-                                            $query .= "null,";
-                                        }else{
-                                            $query .= $reserva->getClienteParticularCedula() .",";
-                                        }
-                                        if(is_null($reserva->getClienteAgenciaRif())){
-                                           $query .= "null,";
-                                        }else{
-                                           $query .= "'". $reserva->getClienteAgenciaRif() ."',";
-                                        }
-                                        if(is_null($reserva->getPagoId())){
-                                            $query .= "null,";
-                                        }else{
-                                            $query .= $reserva->getPagoId() .",";
-                                        }
-                                        if(is_null($reserva->getPasajeroId())){
-                                            $query .= "null,";
-                                        }else{
-                                            $query .= $reserva->getPasajeroId() .",";
-                                        }
-                                        if(is_null($reserva->getPosadaId())){
-                                            $query .= "null)";
-                                        }else{
-                                            $query .= $reserva->getPosadaId() .")";
-                                        }
-                                        $resultado = $this->transaccion->realizarTransaccionInsertId($query);
+        if(is_null($reserva->getClienteParticularCedula())){
+            $query .= "null,";
+        }else{
+            $query .= $reserva->getClienteParticularCedula() .",";
+        }
+        if(is_null($reserva->getClienteAgenciaRif())){
+            $query .= "null,";
+        }else{
+            $query .= "'". $reserva->getClienteAgenciaRif() ."',";
+        }
+        if(is_null($reserva->getPagoId())){
+            $query .= "null,";
+        }else{
+            $query .= $reserva->getPagoId() .",";
+        }
+        if(is_null($reserva->getPasajeroId())){
+            $query .= "null,";
+        }else{
+            $query .= $reserva->getPasajeroId() .",";
+        }
+        if(is_null($reserva->getPosadaId())){
+            $query .= "null)";
+        }else{
+            $query .= $reserva->getPosadaId() .")";
+        }
+        $resultado = $this->transaccion->realizarTransaccionInsertId($query);
         return $resultado;
     }
-    
+
     /**
      * Metodo para consultar la cantidad de asientos disponibles en un vuelo
      * @param <type> $idVuelo El id del vuelo a verificar
@@ -92,8 +92,8 @@ class controladorReservaBDclass {
     /**
      * Metodo para verificar la existencia de un pasajero
      * @param <type> $cedula La cedula del pasajero
-     * @param <type> $pasaporte el pasaporte del pasajero 
-     * @return <type> El resultado de la operacion 
+     * @param <type> $pasaporte el pasaporte del pasajero
+     * @return <type> El resultado de la operacion
      */
     function existePasajero($cedula,$pasaporte){
         $query = "";
@@ -123,7 +123,7 @@ class controladorReservaBDclass {
     /**
      * Metodo para verificar la existencia de un cliente agencia
      * @param <type> $rif El rif del cliente a verificar
-     * @return <type> Si el cliente existe o no 
+     * @return <type> Si el cliente existe o no
      */
     function existeClienteAgencia($rif){
         $query = "SELECT IF(('".$rif."') = CA.rif,
@@ -174,7 +174,7 @@ class controladorReservaBDclass {
      * Metodo para editar el estado de una reserva
      * @param <Integer> $idReserva Identificador de la reserva
      * @param <String> $estado Nuevo estado
-     * @return <type> El resultado de la operacion 
+     * @return <type> El resultado de la operacion
      */
     function editarEstadoReserva($idReserva, $estado){
         $resultado = false;
@@ -187,7 +187,7 @@ class controladorReservaBDclass {
     /**
      * Metodo para buscar los identificadores de las reservas de una solicitud
      * @param <type> $solicitud la solicitud a consultar
-     * @return <type> los id de las reservas 
+     * @return <type> los id de las reservas
      */
     function buscarIdReserva($solicitud,$idVuelo){
         $query = "SELECT R.id idReserva
@@ -214,11 +214,20 @@ class controladorReservaBDclass {
     /**
      * Metodo para actualizar reserva, asignar un pasajero a una reserva
      * @param <type> $idPasajero El id del pasajero a asignar
-     * @return <type> El resultado de la operacion 
+     * @return <type> El resultado de la operacion
      */
     function actualizarIdReserva($idPasajero, $idReserva){
         $query = "UPDATE RESERVA R SET R.PASAJERO_id = ".$idPasajero."
                                    WHERE R.id = ".$idReserva."";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function consultarClienteReserva($solicitud){
+        $query = "SELECT r.CLIENTE_PARTICULAR_cedula cedula, r.CLIENTE_AGENCIA_rif rif, IF(r.CLIENTE_PARTICULAR_cedula,'particular','juridico') grupo
+                  FROM RESERVA r
+                  WHERE r.solicitud = '" . $solicitud . "'
+                  GROUP BY r.solicitud";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -230,6 +239,6 @@ class controladorReservaBDclass {
     public function setTransaccion($transaccion) {
         $this->transaccion = $transaccion;
     }
-        
+
 }
 ?>
