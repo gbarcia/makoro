@@ -135,6 +135,11 @@ function generarFormularioNuevaReserva($idVuelo) {
 function generarFormularioConfirmarReserva($datos) {
     $flag = false;
     if ($datos[solicitud] != '') $flag = true;
+    if ($flag){
+        $contenido.= '<input type="hidden" name="tipoVuelo" value="vuelta" />';
+    } else {
+        $contenido.= '<input type="hidden" name="tipoVuelo" value="ida" />';
+    }
     $contenido = "";
     $contenido .= '<form id="formConfirmarReserva">
     <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
@@ -193,28 +198,14 @@ function generarFormularioConfirmarReserva($datos) {
             <td><input type="text" name="cantidadInf" value="" /></td>
         </tr>
         <tr class="r1">
-            <td>Tipo de Vuelo</td>
-            <td>';
-    if ($flag){
-        $contenido.= '<select name="tipoVuelo" disabled="disabled">
-                <option value="vuelta">RETORNO</option>
-                </select>';
-    } else {
-        $contenido.= '<select name="tipoVuelo" disabled="disabled">
-                <option value="ida">SALIDA</option>
-                </select>';
-    }
-    $contenido.= '</td>
-        </tr>
-        <tr class="r0">
             <td>Servicio</td>
             <td>' . generarComboBoxServicio() . '</td>
         </tr>
-        <tr class="r1">
+        <tr class="r0">
             <td>Posada</td>
             <td>' . generarComboBoxPosada() . '</td>
         </tr>
-        <tr class="r0">
+        <tr class="r1">
             <td colspan="2" align="center">
         <input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioNuevaReserva('.$datos[idVuelo].')" />
                 <input name="button" type="button" id="button" value="AGREGAR RESERVA" onclick= "xajax_agregarReserva(xajax.getFormValues(\'formConfirmarReserva\'))">
