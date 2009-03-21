@@ -281,11 +281,11 @@ class ControlReservaLogicaclass {
      * @return <boolean> resultado de la operacion
      */
     function pagarReserva($solicitud,$tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId){
-        $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
-        if($pagoId > 0){
-            $estadoReserva = $this->estadoReserva($solicitud);
-            if($estadoReserva != 'CA'){
-                $estado = "PA";
+        if($estadoReserva != 'CA'){
+            $estado = "PA";
+            $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
+            if($pagoId > 0){
+                $estadoReserva = $this->estadoReserva($solicitud);
                 $resultado = $this->controlBD->editarEstadoPagadoReserva($solicitud, $estado, $pagoId);
             }
         }
