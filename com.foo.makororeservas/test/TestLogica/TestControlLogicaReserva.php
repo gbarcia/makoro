@@ -52,7 +52,7 @@ $clienteTest = new ClienteParticularclass();
 
 //(3, "IDA", 3, '2009-03-08', 1, 1, 17064051, 18310338, null, 'null');
 //($idVuelo, $cantAdultoNino, $cantidadInfantes, $fecha, $tipoServicioId, $sucursalId, $encargadoCedula, $clienteParticularCedula, $clienteAgenciaRif, $posadaId, $solicitud)
-$respuesta = $controlTest->crearReserva(5, 3, 0, '2009-03-20', 1, 1, 17064051, 18310338, NULL, NULL, '', 'PP');
+$respuesta = $controlTest->crearReserva('vuelta',3, 10, 0, '2009-03-20', 1, 1, 17064051, 18310338, NULL, NULL, 'PI741997', 'PP');
 echo '<p></p>';
 echo $respuesta;
 
