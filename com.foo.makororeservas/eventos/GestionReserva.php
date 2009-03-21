@@ -264,7 +264,6 @@ function buscarClienteParticular($cedula){
 
 function buscarCliente($datos){
     $seleccion = $datos[grupo];
-    echo $seleccion;
     if ($seleccion == 'juridico'){
         if ($datos[rif] == ''){
             $mensaje = '<div class="advertencia">
@@ -341,7 +340,7 @@ function agregarReserva($datos){
 
             $respuesta = $controlReserva->crearReserva($datos[idVuelo], $datos[cantidadAdlChd],
                 $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
-                $_SESSION['EncargadoSucursal'], $_SESSION['EncargadoCedula'], $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], '', $datos[estado]);
+                $_SESSION['EncargadoSucursal'], $_SESSION['EncargadoCedula'], $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], $datos[solicitud], $datos[estado]);
 
             if ($respuesta != ''){
                 $mensaje = '<div class="exito">
@@ -522,11 +521,14 @@ function int_ok($val){
     return ($val !== true) && ((string)(int) $val) === ((string) $val);
 }
 
-function buscarSolicitud($solicitud){
+function buscarSolicitud($datos){
+    $solicitud = $datos[solicitud];
     $control = new controladorReservaBDclass();
     $recurso = $control->consultarClienteReserva($solicitud);
     $row = mysql_fetch_array($recurso);
-    buscarCliente($row);
+    $row["idVuelo"] = $datos[idVuelo];
+    $row["solicitud"] = $datos[solicitud];
+    return buscarCliente($row);
 }
 
 ?>
