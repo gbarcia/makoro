@@ -130,9 +130,8 @@ class controladorVueloBDclass {
         }
         $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada ";
-        $query .= "AND a.habilitado = 1 ";
         if($hora != "")
-        $query.= " AND v.hora = '".$hora."' ";
+            $query.= " AND v.hora = '".$hora."' ";
         if (!(($fechaInicio == "")  && ($fechaFin == ""))){
             if(($fechaInicio != "") && ($fechaFin != "")){
                 $query.= " AND v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."' ";
@@ -143,11 +142,13 @@ class controladorVueloBDclass {
             }
         }
         if($rutaSitioSalida != "")
-        $query.= " AND ru.sitioSalida = '".$rutaSitioSalida."' ";
+            $query.= " AND ru.sitioSalida = '".$rutaSitioSalida."' ";
         if($rutaSitioLlegada != "")
-        $query.= " AND ru.sitioLlegada = '".$rutaSitioLlegada."' ";
-        if($avionMatricula != "")
-        $query.= " AND a.matricula = '".$avionMatricula."' ";
+            $query.= " AND ru.sitioLlegada = '".$rutaSitioLlegada."' ";
+        if($avionMatricula != ""){
+            $query.= " AND a.matricula = '".$avionMatricula."'
+                   AND a.habilitado = 1 ";
+        }
         if($cedulaPasaporte != ""){
             $query.= " AND r.PASAJERO_id = p.id ";
             if(is_numeric($cedulaPasaporte)){
