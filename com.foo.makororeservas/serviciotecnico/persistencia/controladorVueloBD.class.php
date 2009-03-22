@@ -111,7 +111,11 @@ class controladorVueloBDclass {
                          IFNULL((SELECT 2-vu.cantidadInfantes
                                  FROM VUELO vu
                                  WHERE vu.id = v.id),0) as infantesQuedan
-                  FROM VUELO v, RUTA ru, AVION a, RESERVA r ";
+                  FROM VUELO v, RUTA ru, AVION a ";
+        if(($cedulaPasaporte != "")||($nombrePasajero != "")||($apellidoPasajero != "")||($cedulaPart != "")||
+            ($nombrePart != "")||($apellidoPart != "")||($rifAgencia != "")||($nombreAgencia != "")||
+            ($solicitud != "")||($estado != ""))
+            $query .= ", RESERVA r ";
         if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
             $query .= ", PASAJERO p "; 
         }
@@ -151,6 +155,7 @@ class controladorVueloBDclass {
             $query.= " AND a.matricula = '".$avionMatricula."' ";
         }
         if($cedulaPasaporte != ""){
+            
             $query.= " AND r.PASAJERO_id = p.id ";
             if(is_numeric($cedulaPasaporte)){
                 $query.= " AND p.cedula = ".$cedulaPasaporte."
@@ -253,7 +258,7 @@ class controladorVueloBDclass {
                          IFNULL((SELECT 2-vu.cantidadInfantes
                                  FROM VUELO vu
                                  WHERE vu.id = v.id),0) as infantesQuedan
-                  FROM VUELO v, RUTA ru, AVION a, RESERVA r
+                  FROM VUELO v, RUTA ru, AVION a
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
                   AND a.matricula = v.AVION_matricula

@@ -68,7 +68,7 @@ foreach ($Coleccion as $var) {
 
 ///* CONSULTAR VUELO ESPECIFICO SIN FILTRO */
 ////($fechaInicio,$fechaFin,$hora,$avionMatricula,$rutaSitioSalida,$rutaSitioLlegada,$capacidad,$cedulaPasaporte,$nombrePasajero,$apellidoPasajero,$cedulaPart,$nombrePart,$apellidoPart,$rifAgencia,$nombreAgencia)
-//$Coleccion = $controlBD->vueloEspecificoSinFiltro('2009-01-01', '2009-05-31');
+//$Coleccion = $controlBD->vueloEspecificoSinFiltro('2008-01-01', '2010-05-31');
 //foreach ($Coleccion as $var) {
 //    $recursoDetalles = $var->getColeccionVuelo();
 //    $cantidadDisponible = $var->getAsientosDisponibles();
