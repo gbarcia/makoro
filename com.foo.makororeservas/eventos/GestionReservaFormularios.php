@@ -356,7 +356,7 @@ function generarFormularioCambiarEstado(){
                         <tr>
                             <td>&nbsp</td>
                             <td>
-                                <input type="submit" value="CONTINUAR" />
+                                <input name="button" type="button" id="button" value="CONTINUAR" onclick= "xajax_cambiarEstado(xajax.getFormValues(\'formCambiarEstado\'))" />
                             </td>
                         </tr>
                     </table>
@@ -364,7 +364,7 @@ function generarFormularioCambiarEstado(){
     return $contenido;
 }
 
-function generarFormularioCambiarEstado2(){
+function generarFormularioCambiarEstado2($datos){
     $contenido = '<form id="formCambiarEstado">
                     <input type="hidden" name="estado" value="PA" />
                     <table border="0">
