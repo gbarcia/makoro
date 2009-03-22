@@ -129,7 +129,9 @@ class controladorVueloBDclass {
             $query.=", VUELO_RESERVA vr ";
         }
         $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida
-                  AND v.RUTA_sitioLlegada = ru.sitioLlegada ";
+                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                  AND a.matricula = v.AVION_matricula
+                  AND a.habilitado = 1";
         if($hora != "")
             $query.= " AND v.hora = '".$hora."' ";
         if (!(($fechaInicio == "")  && ($fechaFin == ""))){
@@ -146,8 +148,7 @@ class controladorVueloBDclass {
         if($rutaSitioLlegada != "")
             $query.= " AND ru.sitioLlegada = '".$rutaSitioLlegada."' ";
         if($avionMatricula != ""){
-            $query.= " AND a.matricula = '".$avionMatricula."' 
-                       AND a.habilitado = 1 ";
+            $query.= " AND a.matricula = '".$avionMatricula."' ";
         }
         if($cedulaPasaporte != ""){
             $query.= " AND r.PASAJERO_id = p.id ";
@@ -255,6 +256,7 @@ class controladorVueloBDclass {
                   FROM VUELO v, RUTA ru, AVION a, RESERVA r
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
+                  AND a.matricula = v.AVION_matricula
                   AND a.habilitado = 1 ";
         if (!(($fechaInicio == "")  && ($fechaFin == ""))){
             if(($fechaInicio != "") && ($fechaFin != "")){
