@@ -544,10 +544,12 @@ function anular ($idVuelo) {
     $objResponse = new xajaxResponse();
     $mensaje = "";
     $accion = 0;
+    echo "aca1" . $accion;
     $control = new controladorGestionVuelos();
     $objResponse->addConfirmCommands(1, "Esta seguro que quiere eliminar el vuelo $idVuelo junto con todas sus reservas e informacion?. Esta operacion es irreversible");
     $accion = 1;
     if ($accion == 1) {
+       echo "entro que bolas";
     $resultado = $control->deshacerDelSistemaUnVuelo($idVuelo);
     $mensaje = "El vuelo $idVuelo ha sido eliminado del sistema con exito junto con toda su información";
     $objResponse->addAssign("Mensaje", "innerHTML", $mensaje);
