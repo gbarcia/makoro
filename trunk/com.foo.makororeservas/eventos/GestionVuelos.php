@@ -74,7 +74,7 @@ function autoSugerir($busqueda){
                 $resultado.= '<td>' . $pilotoMostrar. '</td>';
                 $resultado.= '<td>' . $copilotoMostrar. '</td>';
                 $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[id].')"/></td>';
-                $resultado.= '<td><input type="button" value="ANULAR" onclick="xajax_anular('.$row[id].')"/></td>';
+                $resultado.= '<td><input type="button" value="ANULAR" onclick="confirmacionEliminar('.$row[id].')"/></td>';
                 $resultado.= '</tr>';
                 $color = !$color;
             }
@@ -99,7 +99,7 @@ function autoSugerir($busqueda){
             $resultado.= '<td>' . $row[rutaLlegada] . '</td>';
             $resultado.= '<td>' . $matricula. '</td>';
             $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[id].')"/></td>';
-            $resultado.= '<td><input type="button" value="ANULAR" onclick="xajax_anular('.$row[id].')"/></td>';
+            $resultado.= '<td><input type="button" value="ANULAR" onclick="confirmacionEliminar('.$row[id].')"/></td>';
             $resultado.= '</tr>';
             $color = !$color;
         }
@@ -163,7 +163,7 @@ function cadenaTodosLosVuelos () {
         $resultado.= '<td>' . $pilotoMostrar. '</td>';
         $resultado.= '<td>' . $copilotoMostrar. '</td>';
         $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[id].')"/></td>';
-        $resultado.= '<td><input type="button" value="ANULAR" onclick="xajax_anular('.$row[id].')"/></td>';
+        $resultado.= '<td><input type="button" value="ANULAR" onclick="confirmacionEliminar('.$row[id].')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
