@@ -141,81 +141,81 @@ $vueloPrueba = new Vueloclass();
 ///*-------------------------------*/
 
 
-///* CONSULTAR DETALLES VUELO */
-//echo '<table border=1>';
-//echo '<tr>';
-//echo '<th>solicitud</th>';
-//echo '<th>tipoPasajero</th>';
-//echo '<th>pasajero</th>';
-//echo '<th>servicio</th>';
-//echo '<th>encargadoNombre</th>';
-//echo '<th>sucursal</th>';
-//echo '<th>tipo</th>';
-//echo '<th>agencia</th>';
-//echo '<th>particular</th>';
-//echo '<th>clienteNombre</th>';
-//echo '<th>pago</th>';
-//echo '<th>banco</th>';
-//echo '<th>numeroTran</th>';
-//echo '<th>monto</th>';
-//echo '<th>boleto</th>';
-//echo '<th>vueloRetorno</th>';
-//echo '<th>posada</th>';
-//echo '</tr>';
-//$resultado = $controlBD->consultarVuelosDetalles(5);
-//    while ($row = mysql_fetch_array($resultado)) {
-//    echo '<tr>';
-//    echo '<td>' . $row[solicitud] . '</td>';
-//    echo '<td>' . $row[tipoPasajero] . '</td>';
-//    echo '<td>' . $row[pasajero] . '</td>';
-//    echo '<td>' . $row[servicio] . '</td>';
-//    echo '<td>' . $row[encargadoNombre] . '</td>';
-//    echo '<td>' . $row[sucursal] . '</td>';
-//    echo '<td>' . $row[tipo] . '</td>';
-//    echo '<td>' . $row[agencia] . '</td>';
-//    echo '<td>' . $row[particular] . '</td>';
-//    echo '<td>' . $row[clienteNombre] . '</td>';
-//    echo '<td>' . $row[pago] . '</td>';
-//    echo '<td>' . $row[banco] . '</td>';
-//    echo '<td>' . $row[numeroTran] . '</td>';
-//    echo '<td>' . $row[monto] . '</td>';
-//    echo '<td>' . $row[boleto] . '</td>';
-//    echo '<td>' . $row[vueloRetorno] . '</td>';
-//    echo '<td>' . $row[posada] . '</td>';
-//    echo '</tr>';
-//}
-//echo '</table>';
-///*-------------------------------*/
-
-/* CONSULTAR INFORMACION VUELO */
+/* CONSULTAR DETALLES VUELO */
 echo '<table border=1>';
 echo '<tr>';
-echo '<th>fecha</th>';
-echo '<th>hora</th>';
-echo '<th>sitioSalida</th>';
-echo '<th>sitioLlegada</th>';
-echo '<th>matricula</th>';
-echo '<th>adlChlQuedan</th>';
-echo '<th>infQuedan</th>';
-echo '<th>piloto</th>';
-echo '<th>copiloto</th>';
+echo '<th>solicitud</th>';
+echo '<th>tipoPasajero</th>';
+echo '<th>pasajero</th>';
+echo '<th>servicio</th>';
+echo '<th>encargadoNombre</th>';
+echo '<th>sucursal</th>';
+echo '<th>tipo</th>';
+echo '<th>agencia</th>';
+echo '<th>particular</th>';
+echo '<th>clienteNombre</th>';
+echo '<th>pago</th>';
+echo '<th>banco</th>';
+echo '<th>numeroTran</th>';
+echo '<th>monto</th>';
+echo '<th>boleto</th>';
+echo '<th>vueloRetorno</th>';
+echo '<th>posada</th>';
 echo '</tr>';
-$resultado = $controlBD->consultarInformacionVuelo(1);
+$resultado = $controlBD->consultarVuelosDetalles(2);
     while ($row = mysql_fetch_array($resultado)) {
     echo '<tr>';
-    echo '<td>' . $row[fecha] . '</td>';
-    echo '<td>' . $row[hora] . '</td>';
-    echo '<td>' . $row[sitioSalida] . '</td>';
-    echo '<td>' . $row[sitioLlegada] . '</td>';
-    echo '<td>' . $row[matricula] . '</td>';
-    echo '<td>' . $row[adlChlQuedan] . '</td>';
-    echo '<td>' . $row[infQuedan] . '</td>';
-    echo '<td>' . $row[piloto] . '</td>';
-    echo '<td>' . $row[copiloto] . '</td>';
+    echo '<td>' . $row[solicitud] . '</td>';
+    echo '<td>' . $row[tipoPasajero] . '</td>';
+    echo '<td>' . $row[pasajero] . '</td>';
+    echo '<td>' . $row[servicio] . '</td>';
+    echo '<td>' . $row[encargadoNombre] . '</td>';
+    echo '<td>' . $row[sucursal] . '</td>';
+    echo '<td>' . $row[tipo] . '</td>';
+    echo '<td>' . $row[agencia] . '</td>';
+    echo '<td>' . $row[particular] . '</td>';
+    echo '<td>' . $row[clienteNombre] . '</td>';
+    echo '<td>' . $row[pago] . '</td>';
+    echo '<td>' . $row[banco] . '</td>';
+    echo '<td>' . $row[numeroTran] . '</td>';
+    echo '<td>' . $row[monto] . '</td>';
+    echo '<td>' . $row[boleto] . '</td>';
+    echo '<td>' . $row[vueloRetorno] . '</td>';
+    echo '<td>' . $row[posada] . '</td>';
     echo '</tr>';
 }
 echo '</table>';
 /*-------------------------------*/
+
+///* CONSULTAR INFORMACION VUELO */
+//echo '<table border=1>';
+//echo '<tr>';
+//echo '<th>fecha</th>';
+//echo '<th>hora</th>';
+//echo '<th>sitioSalida</th>';
+//echo '<th>sitioLlegada</th>';
+//echo '<th>matricula</th>';
+//echo '<th>adlChlQuedan</th>';
+//echo '<th>infQuedan</th>';
+//echo '<th>piloto</th>';
+//echo '<th>copiloto</th>';
+//echo '</tr>';
+//$resultado = $controlBD->consultarInformacionVuelo(1);
+//    while ($row = mysql_fetch_array($resultado)) {
+//    echo '<tr>';
+//    echo '<td>' . $row[fecha] . '</td>';
+//    echo '<td>' . $row[hora] . '</td>';
+//    echo '<td>' . $row[sitioSalida] . '</td>';
+//    echo '<td>' . $row[sitioLlegada] . '</td>';
+//    echo '<td>' . $row[matricula] . '</td>';
+//    echo '<td>' . $row[adlChlQuedan] . '</td>';
+//    echo '<td>' . $row[infQuedan] . '</td>';
+//    echo '<td>' . $row[piloto] . '</td>';
+//    echo '<td>' . $row[copiloto] . '</td>';
+//    echo '</tr>';
+//}
+//echo '</table>';
+///*-------------------------------*/
 
 ///* CONSULTAR CIENTE CON MAS VUELOS */
 //echo '<table border=1>';
