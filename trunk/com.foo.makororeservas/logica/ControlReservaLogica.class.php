@@ -276,7 +276,7 @@ class ControlReservaLogicaclass {
     /**
      * Metodo para verificar la existencia de una reserva
      * @param <type> $idReserva El id de la reserva a consultar
-     * @return <type> Si existe devuelve el id de la reserva, de lo contrario devuelve 0 
+     * @return <type> Si existe devuelve el id de la reserva, de lo contrario devuelve 0
      */
     function existeReserva($idReserva){
         $recurso = $this->controlBD->existeReserva($idReserva);
@@ -381,7 +381,7 @@ class ControlReservaLogicaclass {
      * @return <recurso> resultado de la operación
      *
      * Resultados:
-     * 0 = No existe el localizador
+     * 8 = No existe el localizador
      * 1 = PP -> CO
      * 2 = PP -> PA
      * 3 = PP -> CA se hace un reembolso
@@ -392,10 +392,10 @@ class ControlReservaLogicaclass {
      */
     function actualizarEstadoReserva($solicitud, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $verificarSolicitud = $this->existeSolicitud($solicitud);
-        if($verificarSolicitud == 0){
-            $resultado = 0;
-
-        }else{
+        if($verificarSolicitud != $solicitud){
+            $resultado = 8;
+        }
+        else if ($verificarSolicitud == $solicitud){
 
             $estadoBD = $this->estadoReserva($solicitud);
             if($estadoBD == 'PP'){
@@ -479,7 +479,7 @@ class ControlReservaLogicaclass {
      */
     function actualizarEstadoReservaPorPersona($idReserva, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $verificarReserva = $this->existeReserva($idReserva);
-        if($verificarReserva == 0){
+        if($verificarReserva != $idReserva){
             $resultado = 7;
 
         }else{
@@ -538,7 +538,7 @@ class ControlReservaLogicaclass {
     /**
      * Metodo para calcular la cantidad de adultos y ninos que existen bajo una solicitud
      * @param <type> $solicitud La solicitud a consultar
-     * @return <type> La cantidad de adultos y ninos que existen para una solicitud 
+     * @return <type> La cantidad de adultos y ninos que existen para una solicitud
      */
     function cantidadAdlChl($solicitud){
         $recurso = $this->controlBD->cantidadPasajeros($solicitud);

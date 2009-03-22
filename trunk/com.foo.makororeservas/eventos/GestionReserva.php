@@ -599,7 +599,7 @@ function desplegarFormularioCambiarEstado(){
 function desplegarFormularioCambiarEstado2($datos){
     $objResponse = new xajaxResponse();
     $respuesta = generarFormularioCambiarEstado2($datos);
-    $objResponse->addAssign("tres", "innerHTML", $respuesta);
+    $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
     return $objResponse;
 }
 
@@ -613,7 +613,7 @@ function cambiarEstado($datos){
             case 8:
                 $respuesta ='<div class="error">
                           <div class="textoMensaje">
-                          El localizador '.$solicitud.' no se ha encontrando. Por favor, verifiquelo e intentelo nuevamente.
+                          El localizador '.$datos[solicitud].' no se ha encontrando. Por favor, verifiquelo e intentelo nuevamente.
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -623,7 +623,7 @@ function cambiarEstado($datos){
             case 6:
                 $respuesta ='<div class="advertencia">
                           <div class="textoMensaje">
-                          La reservas del localizador '.$solicitud.' han sido anuladas. Recuerde retornar el porcentaje correspondiente a las partes afectadas.
+                          La reservas del localizador '.$datos[solicitud].' han sido anuladas. Recuerde retornar el porcentaje correspondiente a las partes afectadas.
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -633,7 +633,7 @@ function cambiarEstado($datos){
             default:
                 $respuesta ='<div class="exito">
                           <div class="textoMensaje">
-                          La reservas del localizador '.$solicitud.' han sido cambiadas de estado satisfactoriamente.
+                          La reservas del localizador '.$datos[solicitud].' han sido cambiadas de estado satisfactoriamente. Resultado = '.$resultado.'
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
