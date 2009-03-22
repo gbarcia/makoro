@@ -156,14 +156,24 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para verificar la existencia de una solicitud
+     * @param <type> $solicitud La solicitud a consultar
+     * @return <type> Si existe devuelve la solicitud, de lo contrario devuelve 0
+     */
     function existeSolicitud($solicitud) {
-        $query = "SELECT IFNULL((SELECT DISTINCT r.solicitud 
+        $query = "SELECT IFNULL((SELECT DISTINCT r.solicitud
                                  FROM RESERVA r
                                  WHERE r.solicitud = '".$solicitud."'),0) as validacion";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
 
+    /**
+     * Metodo para verificar la existencia de una reserva
+     * @param <type> $idReserva La reserva de consultar
+     * @return <type> Si existe devuelve el id de la reserva, de lo contrario devuelve 0
+     */
     function existeReserva($idReserva) {
         $query = "SELECT IFNULL((SELECT DISTINCT r.id
                                  FROM RESERVA r
@@ -171,6 +181,7 @@ class controladorReservaBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
     /**
      * Metodo para editar el estado de varias reservas a pagado
      * @param <String> $solicitud Identificador de la reserva
@@ -217,12 +228,12 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para editar el estado de una reserva
- * @param <Integer> $idReserva Identificador de la reserva
- * @param <String> $estado Nuevo estado
- * @return <boolean> El resultado de la operación
- */
+    /**
+     * Metodo para editar el estado de una reserva
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <String> $estado Nuevo estado
+     * @return <boolean> El resultado de la operación
+     */
     function editarEstadoReservaPorPersona($idReserva, $estado){
         $resultado = false;
         $query = "UPDATE RESERVA r SET r.estado = '".$estado."'
@@ -245,12 +256,12 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar los identificadores de las reservas relacionadas
- * con una solicitud suministrada
- * @param <String> $solicitud Localizador de la reserva
- * @return <recurso> recurso con los identificadores de la reserva
- */
+    /**
+     * Metodo para consultar los identificadores de las reservas relacionadas
+     * con una solicitud suministrada
+     * @param <String> $solicitud Localizador de la reserva
+     * @return <recurso> recurso con los identificadores de la reserva
+     */
     function buscarLosIdRelacionadosPorSolicitud($solicitud){
         $query = "SELECT R.id idReserva
                   FROM RESERVA R
@@ -272,11 +283,11 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
-/**
- * Metodo para consultar el estado de una reserva determinada
- * @param <Integer> $idReserva Identificador de la reserva
- * @return <recurso> estado de la reserva de la persona
- */
+    /**
+     * Metodo para consultar el estado de una reserva determinada
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @return <recurso> estado de la reserva de la persona
+     */
     function consultarEstadoReservaPorPersona($idReserva){
         $query = "SELECT DISTINCT R.estado estado
                   FROM RESERVA R
@@ -297,11 +308,43 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para consultar los clientes que estan bajo una solicitud
+     * @param <type> $solicitud La solicitud a consultar
+     * @return <type> Los clientes que estan en la solicitud consultada
+     */
     function consultarClienteReserva($solicitud){
         $query = "SELECT r.CLIENTE_PARTICULAR_cedula cedula, r.CLIENTE_AGENCIA_rif rif, IF(r.CLIENTE_PARTICULAR_cedula,'particular','juridico') grupo
                   FROM RESERVA r
                   WHERE r.solicitud = '" . $solicitud . "'
                   GROUP BY r.solicitud";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para calcular la cantidad de pasajeros que existen bajo una solicitud
+     * @param <type> $solicitud La solicitud a consultar
+     * @return <type>  La cantidad de pasajeros que existen bajo una solicitud
+     */
+    function cantidadPasajeros($solicitud){
+        $query = "SELECT COUNT(R.id) as cantidadPasajeros
+                  FROM RESERVA R
+                  WHERE R.solicitud = '".$solicitud."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
+     * Metodo para calcular la cantidad de infantes que existen bajo una solicitud
+     * @param <type> $solicitud La solicitud a consultar
+     * @return <type> La cantidad de infantes que existen para una solicitud
+     */
+    function cantidadInfantes($solicitud){
+        $query = "SELECT COUNT(R.id) as cantidadInfantes
+                  FROM RESERVA R, PASAJERO P
+                  WHERE R.solicitud = '".$solicitud."'
+                  AND R.PASAJERO_id = P.id";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
