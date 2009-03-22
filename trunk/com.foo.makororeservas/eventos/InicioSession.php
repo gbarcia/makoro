@@ -12,7 +12,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 function IniciarSession ($datos) {
     $objResponse = new xajaxResponse();
     $control = new ControlSeguridadclass();
-    $resultado = $control->validarSession(strtolower($datos[login]), strtolower($datos[pass]));
+    $resultado = $control->validarSession(mysql_real_escape_string(strtolower($datos[login])),mysql_real_escape_string(strtolower($datos[pass])));
     if ($resultado == true) {
         $objResponse->addScript("document.getElementById('formularioEntrada').reset();");
         $objResponse->addScript("window.open('gui/PresentacionGestionReservas.php','mywindow','menubar=0,resizable=yes,scrollbars=1,width=1280,height=800');void(0)");
