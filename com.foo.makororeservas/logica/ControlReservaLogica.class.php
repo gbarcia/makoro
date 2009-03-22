@@ -87,6 +87,9 @@ class ControlReservaLogicaclass {
         $arrayInf = new ArrayObject();
         $arrayAdl = new ArrayObject();
         $solicitudGenerada = false;
+        $cantAdlChlOriginal = $cantAdultoNino;
+        $cantInfOriginal = $cantidadInfantes;
+        $result = false;
         if($disponibleAdultoNino && $disponibleInfante){
             $pagoId = 'null';
             $pasajeroId = 'null';
@@ -137,26 +140,39 @@ class ControlReservaLogicaclass {
                     $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
                 }
             }else if($tipoViaje == 'vuelta'){
-                foreach ($arrayAdl as $variable) {
-                    $vueloReserva = new VueloReservaclass();
-                    $vueloReserva->setVueloid($idVuelo);
-                    $vueloReserva->setReservaid($variable);
-                    $vueloReserva->setTipo($tipoViaje);
-                    $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
-                }
-                foreach ($arrayInf as $variable) {
-                    $vueloReserva = new VueloReservaclass();
-                    $vueloReserva->setVueloid($idVuelo);
-                    $vueloReserva->setReservaid($variable);
-                    $vueloReserva->setTipo($tipoViaje);
-                    $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
+                $result = $this->verificarCantidadPasajeros($solicitud, $cantAdlChlOriginal, $cantInfOriginal);
+                if($result == true){
+                    foreach ($arrayAdl as $variable) {
+                        $vueloReserva = new VueloReservaclass();
+                        $vueloReserva->setVueloid($idVuelo);
+                        $vueloReserva->setReservaid($variable);
+                        $vueloReserva->setTipo($tipoViaje);
+                        $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
+                    }
+                    foreach ($arrayInf as $variable) {
+                        $vueloReserva = new VueloReservaclass();
+                        $vueloReserva->setVueloid($idVuelo);
+                        $vueloReserva->setReservaid($variable);
+                        $vueloReserva->setTipo($tipoViaje);
+                        $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
+                    }
+                }else{
+                    $this->rollBackReserva($arrayAdl, $arrayInf);
                 }
             }
-            $infantesVuelo = $this->controlVuelo->consultarCantidadInfantesVuelo($idVuelo);
-            $row = mysql_fetch_array($infantesVuelo);
-            $cantidadInfantesVuelo = $row[cantidadInfantes];
-            $cantidadNueva = $cantidadInfantesVuelo+$cantidadInfantes;
-            $cambio = $this->controlVuelo->actualizarCantidadInfantesVuelo($idVuelo, $cantidadNueva);
+            if($tipoViaje == 'ida'){
+                $infantesVuelo = $this->controlVuelo->consultarCantidadInfantesVuelo($idVuelo);
+                $row = mysql_fetch_array($infantesVuelo);
+                $cantidadInfantesVuelo = $row[cantidadInfantes];
+                $cantidadNueva = $cantidadInfantesVuelo+$cantidadInfantes;
+                $cambio = $this->controlVuelo->actualizarCantidadInfantesVuelo($idVuelo, $cantidadNueva);
+            }else if(($tipoViaje == 'vuelta') && ($result == true)){
+                $infantesVuelo = $this->controlVuelo->consultarCantidadInfantesVuelo($idVuelo);
+                $row = mysql_fetch_array($infantesVuelo);
+                $cantidadInfantesVuelo = $row[cantidadInfantes];
+                $cantidadNueva = $cantidadInfantesVuelo+$cantidadInfantes;
+                $cambio = $this->controlVuelo->actualizarCantidadInfantesVuelo($idVuelo, $cantidadNueva);
+            }
         }else{
             return $disponible;
         }
@@ -164,6 +180,16 @@ class ControlReservaLogicaclass {
         return $solicitud;
         else
         return "";
+    }
+
+    function rollBackReserva($arrayAdl,$arrayInf){
+        foreach ($arrayAdl as $variable) {
+            $this->controlBD->eliminarReserva($variable);
+        }
+        foreach ($arrayInf as $inf) {
+            $this->controlBD->eliminarReserva($inf);
+        }
+        return true;
     }
 
     /**
@@ -622,14 +648,14 @@ class ControlReservaLogicaclass {
      * @param <type> $solicitud La solicitud a consultar
      * @return <type> La cantidad de adultos y ninos que existen para una solicitud
      */
-    function cantidadAdlChl($solicitud){
-        $recurso = $this->controlBD->cantidadPasajeros($solicitud);
+    function cantidadAdlChlIda($solicitud){
+        $recurso = $this->controlBD->cantidadPasajerosIda($solicitud);
         $row = mysql_fetch_array($recurso);
         $cantidadPasajeros = $row[cantidadPasajeros];
-        $cantidadInfantes = $this->cantidadInfantes($solicitud);
+        $cantidadInfantes = $this->cantidadInfantesIda($solicitud);
         $cantidadAdlChl = $cantidadPasajeros-$cantidadInfantes;
 
-        return $cantidadPasajeros;
+        return $cantidadAdlChl;
     }
 
     /**
@@ -637,11 +663,21 @@ class ControlReservaLogicaclass {
      * @param <type> $solicitud La solicitud a consultar
      * @return <type> La cantidad de infantes que existen para una solicitud
      */
-    function cantidadInfantes($solicitud){
-        $recurso = $this->controlBD->cantidadInfantes($solicitud);
+    function cantidadInfantesIda($solicitud){
+        $recurso = $this->controlBD->cantidadInfantesIda($solicitud);
         $row = mysql_fetch_array($recurso);
         $cantidadInfantes = $row[cantidadInfantes];
         return $cantidadInfantes;
+    }
+    
+    function verificarCantidadPasajeros($solicitud,$cantAdl,$cantInf){
+        $cantidadAdultos = $this->cantidadAdlChlIda($solicitud);
+        $cantidadInfantes = $this->cantidadInfantesIda($solicitud);
+        if(($cantidadAdultos == $cantAdl) && ($cantidadInfantes == $cantInf)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 ?>

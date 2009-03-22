@@ -327,10 +327,13 @@ class controladorReservaBDclass {
      * @param <type> $solicitud La solicitud a consultar
      * @return <type>  La cantidad de pasajeros que existen bajo una solicitud
      */
-    function cantidadPasajeros($solicitud){
+    function cantidadPasajerosIda($solicitud){
         $query = "SELECT COUNT(R.id) as cantidadPasajeros
-                  FROM RESERVA R
-                  WHERE R.solicitud = '".$solicitud."'";
+                  FROM RESERVA R, VUELO_RESERVA VR, VUELO V
+                  WHERE R.solicitud = '".$solicitud."'
+                  AND R.id = VR.RESERVA_id
+                  AND V.id = VR.VUELO_id
+                  AND VR.tipo = 'ida'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -340,11 +343,26 @@ class controladorReservaBDclass {
      * @param <type> $solicitud La solicitud a consultar
      * @return <type> La cantidad de infantes que existen para una solicitud
      */
-    function cantidadInfantes($solicitud){
+    function cantidadInfantesIda($solicitud){
         $query = "SELECT COUNT(R.id) as cantidadInfantes
-                  FROM RESERVA R, PASAJERO P
+                  FROM RESERVA R, PASAJERO P, VUELO_RESERVA VR, VUELO V
                   WHERE R.solicitud = '".$solicitud."'
-                  AND R.PASAJERO_id = P.id";
+                  AND R.PASAJERO_id = P.id
+                  AND R.id = VR.RESERVA_id
+                  AND V.id = VR.VUELO_id
+                  AND VR.tipo = 'ida'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function eliminarReserva($idReserva){
+        $query = "DELETE FROM RESERVA WHERE id = $idReserva";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function eliminarInfante($idPasajero){
+        $query = "DELETE FROM PASAJERO WHERE id = $idPasajero";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
