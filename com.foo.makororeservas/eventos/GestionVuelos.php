@@ -544,7 +544,16 @@ function anular ($idVuelo) {
     $objResponse = new xajaxResponse();
     $control = new controladorGestionVuelos();
     $resultado = $control->deshacerDelSistemaUnVuelo($idVuelo);
-    $mensaje = "El vuelo $idVuelo ha sido eliminado del sistema con exito junto con toda su información";
+    $mensaje = '<div class="exito">
+                          <div class="textoMensaje">
+                          El vuelo '. $idVuelo.' ha sido eliminado del sistema con exito junto con toda su información.
+                          </div>
+                          <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+    $actualizarTablaPrincipalRespuesta = cadenaTodosLosVuelos();
+    $objResponse->addAssign("gestion", "innerHTML", $actualizarTablaPrincipalRespuesta);
     $objResponse->addAssign("Mensaje", "innerHTML", $mensaje);
     return $objResponse;
 }
