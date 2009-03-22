@@ -211,6 +211,23 @@ class controladorGestionVuelos {
         }
         return $resultado;
     }
+/**
+ * Metodo para anular un vuelo en el sistema junto con todos sus datos
+ * @param <Inteer> $idVuelo el identificador del vuelo a anular
+ * @return <boolean> resultado de la operacion
+ */
+    function deshacerDelSistemaUnVuelo ($idVuelo) {
+        $resultadoOperacion = false;
+        $queryVR = "DELETE FROM VUELO_RESERVA WHERE VUELO_id = $idVuelo";
+        $resultadoVR = $this->transaccion->realizarTransaccion($queryVR);
+        if ($resultadoVR){
+            $queryV = "DELETE FROM VUELO WHERE id = $idVuelo";
+            $resultadoV = $this->transaccion->realizarTransaccion($queryV);
+            if ($resultadoV)
+            $resultadoOperacion =true;
+        }
+        return $resultadoOperacion;
+    }
 
 /**
  * Metodo para agregar un nuevo vuelo
