@@ -46,8 +46,6 @@ foreach ($Coleccion as $var) {
     echo '<th>Avion Matricula</th>';
     echo '<th>Asientos Disponibles</th>';
     echo '<th>InfantesQuedan</th>';
-    echo '<th>Disponibilidad Adulto</th>';
-    echo '<th>Disponibilidad Infante</th>';
     echo '<th>Piloto</th>';
     echo '<th>Copiloto</th>';
     echo '</tr>';
@@ -61,8 +59,6 @@ foreach ($Coleccion as $var) {
     echo '<td>' . $recursoDetalles->getAvionMatricula(). '</td>';
     echo '<td>' . $cantidadDisponible. '</td>';
     echo '<td>' . $cantInfantes. '</td>';
-    echo '<td>' . $disponibilidadAdulto. '</td>';
-    echo '<td>' . $disponibilidadInfante. '</td>';
     echo '<td>' . $piloto. '</td>';
     echo '<td>' . $copiloto. '</td>';
     echo '</tr>';
