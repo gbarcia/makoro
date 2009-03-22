@@ -385,10 +385,22 @@ class ControlReservaLogicaclass {
      * 1 = PP -> CO
      * 2 = PP -> PA
      * 3 = PP -> CA se hace un reembolso
-     * 4 = CO -> PA
-     * 5 = CO -> CA se hace un reembolso
-     * 6 = PA -> CA se hace un reembolso
-     * 7 = CA -> A ningun estado
+     * 4 = PP -> PP
+     *
+     * 5 = CO -> PA
+     * 6 = CO -> CA se hace un reembolso
+     * 7 = CO -> PP
+     * 8 = CO -> CO
+     *
+     * 9 = PA -> PP
+     * 10 = PA -> CO
+     * 11 = PA -> CA se hace un reembolso
+     * 12 = PA -> PA
+     *
+     * 13 = CA -> PP
+     * 14 = CA -> CO
+     * 15 = CA -> PA
+     * 16 = CA -> CA
      */
     function actualizarEstadoReserva($solicitud, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $verificarSolicitud = $this->existeSolicitud($solicitud);
@@ -420,6 +432,9 @@ class ControlReservaLogicaclass {
                         $resultado = 3;
                     }
                 }
+                if($estado == 'PA'){
+                    $resultado = 4;
+                }
             }
 
             if($estadoBD == 'CO'){
@@ -428,21 +443,9 @@ class ControlReservaLogicaclass {
                     if($pagoId > 0){
                         $estadoReserva = $this->estadoReserva($solicitud);
                         $editaReserva = $this->controlBD->editarEstadoPagadoReserva($solicitud, $estado, $pagoId);
-                        $resultado = 4;
-                    }
-                }
-                if($estado == 'CA'){
-                    $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
-                    $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
-                    while($row = mysql_fetch_array($recurso)){
-                        $idReservas = $row[idReserva];
-                        $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
                         $resultado = 5;
                     }
                 }
-            }
-
-            if($estadoBD == 'PA'){
                 if($estado == 'CA'){
                     $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
                     $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
@@ -452,10 +455,48 @@ class ControlReservaLogicaclass {
                         $resultado = 6;
                     }
                 }
+                if($estado == 'PP'){
+                    $resultado = 7;
+                }
+                if($estado == 'CO'){
+                    $resultado = 8;
+                }
+            }
+
+            if($estadoBD == 'PA'){
+                if($estado == 'PP'){
+                    $resultado = 9;
+                }
+                if($estado == 'CO'){
+                    $resultado = 10;
+                }
+                if($estado == 'CA'){
+                    $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
+                    $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+                    while($row = mysql_fetch_array($recurso)){
+                        $idReservas = $row[idReserva];
+                        $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
+                        $resultado = 11;
+                    }
+                }
+                if($estado == 'PA'){
+                    $resultado = 12;
+                }
             }
 
             if($estadoBD == 'CA'){
-                $resultado = 7;
+                if($estado == 'PP'){
+                    $resultado = 13;
+                }
+                if($estado == 'CO'){
+                    $resultado = 14;
+                }
+                if($estado == 'PA'){
+                    $resultado = 15;
+                }
+                if($estado == 'CA'){
+                    $resultado = 16;
+                }
             }
         }
         return $resultado;
@@ -468,39 +509,54 @@ class ControlReservaLogicaclass {
      * @return <recurso> resultado de la operacion
      *
      * Resultados:
-     * 7 = No existe la reserva
-     * 8 = PP -> CO
-     * 9 = PP -> PA
-     * 10 = PP -> CA se hace un reembolso
-     * 11 = CO -> PA
-     * 12 = CO -> CA se hace un reembolso
-     * 13 = PA -> CA se hace un reembolso
-     * 14 = CA -> A ningun estado
+     * 8 = No existe el localizador
+     * 1 = PP -> CO
+     * 2 = PP -> PA
+     * 3 = PP -> CA se hace un reembolso
+     * 4 = PP -> PP
+     *
+     * 5 = CO -> PA
+     * 6 = CO -> CA se hace un reembolso
+     * 7 = CO -> PP
+     * 8 = CO -> CO
+     *
+     * 9 = PA -> PP
+     * 10 = PA -> CO
+     * 11 = PA -> CA se hace un reembolso
+     * 12 = PA -> PA
+     *
+     * 13 = CA -> PP
+     * 14 = CA -> CO
+     * 15 = CA -> PA
+     * 16 = CA -> CA
      */
     function actualizarEstadoReservaPorPersona($idReserva, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $verificarReserva = $this->existeReserva($idReserva);
         if($verificarReserva != $idReserva){
-            $resultado = 7;
+            $resultado = 8;
 
-        }else{
+        }else if ($verificarSolicitud == $idReserva){
             $estadoBD = $this->estadoReservaPorPersona($idReserva);
             if($estadoBD == 'PP'){
                 if($estado == 'CO'){
                     $editaEstado = $this->controlBD->editarEstadoReservaPorPersona($idReserva, $estado);
-                    $resultado = 8;
+                    $resultado = 1;
                 }
                 if($estado == 'PA'){
                     $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
                     if($pagoId > 0){
                         $estadoReserva = $this->estadoReservaPorPersona($idReserva);
                         $editaEstado = $this->controlBD->editarEstadoPagadoReservaPorPersona($idReserva, $estado, $pagoId);
-                        $resultado = 9;
+                        $resultado = 2;
                     }
                 }
                 if($estado == 'CA'){
                     $editaEstado = $this->controlBD->editarEstadoReservaPorPersona($idReserva, $estado);
                     $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
-                    $resultado = 10;
+                    $resultado = 3;
+                }
+                if($estado == 'PA'){
+                    $resultado = 4;
                 }
             }
 
@@ -510,26 +566,52 @@ class ControlReservaLogicaclass {
                     if($pagoId > 0){
                         $estadoReserva = $this->estadoReservaPorPersona($idReserva);
                         $editaReserva = $this->controlBD->editarEstadoPagadoReservaPorPersona($idReserva, $estado, $pagoId);
-                        $resultado = 11;
+                        $resultado = 5;
                     }
                 }
                 if($estado == 'CA'){
                     $editaEstado = $this->controlBD->editarEstadoReservaPorPersona($idReserva, $estado);
                     $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
-                    $resultado = 12;
+                    $resultado = 6;
+                }
+                if($estado == 'PP'){
+                    $resultado = 7;
+                }
+                if($estado == 'CO'){
+                    $resultado = 8;
                 }
             }
 
             if($estadoBD == 'PA'){
+                if($estado == 'PP'){
+                    $resultado = 9;
+                }
+                if($estado == 'CO'){
+                    $resultado = 10;
+                }
                 if($estado == 'CA'){
                     $editaEstado = $this->controlBD->editarEstadoReservaPorPersona($idReserva, $estado);
                     $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
-                    $resultado = 13;
+                    $resultado = 11;
+                }
+                if($estado == 'PA'){
+                    $resultado = 12;
                 }
             }
 
             if($estadoBD == 'CA'){
-                $resultado = 14;
+                if($estado == 'PP'){
+                    $resultado = 13;
+                }
+                if($estado == 'CO'){
+                    $resultado = 14;
+                }
+                if($estado == 'PA'){
+                    $resultado = 15;
+                }
+                if($estado == 'CA'){
+                    $resultado = 16;
+                }
             }
         }
         return $resultado;
