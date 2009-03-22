@@ -65,12 +65,14 @@ class controladorReservaBDclass {
      * @return <type>
      */
     function asientosDisponiblesAdultoNino($idVuelo,$cantAdultoNino){
-        $query = "SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+".$cantAdultoNino."-vu.cantidadInfantes)>=0,TRUE,FALSE) as disponibleAdultoNino
-                  FROM VUELO_RESERVA vre, VUELO vu, RESERVA re, AVION a
-                  WHERE re.id = vre.RESERVA_id
-                  AND vu.id = vre.VUELO_id
-                  AND vu.AVION_matricula = a.matricula
-                  AND vre.VUELO_id = ".$idVuelo."";
+        $query ="SELECT IF((SELECT AV.asientos-COUNT(VRE.RESERVA_id)-".$cantAdultoNino."+V.cantidadInfantes
+                                 FROM VUELO_RESERVA VRE, VUELO VU , RESERVA RE
+                                 WHERE RE.id = VRE.RESERVA_id
+                                 AND VU.id = VRE.VUELO_id
+                                 AND VRE.VUELO_id = V.id)>=0,TRUE,FALSE) as dispon
+                  FROM VUELO V, AVION AV
+                  WHERE V.id = ".$idVuelo."
+                  AND V.AVION_matricula = AV.matricula ";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
