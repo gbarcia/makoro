@@ -216,8 +216,7 @@ function formularioNuevoVuelo () {
     <tr class="r0">
       <td>Matricula del avion</td>
       <td><label>
-        <select name="matricula" id="matricula">
-          <option value="NULL">POR ASIGNAR</option>';
+        <select name="matricula" id="matricula">';
     while ($rowMatricula = mysql_fetch_array($recursoMatricula)){
         $formulario .= '<option value = "'.$rowMatricula[matricula].'">'.$rowMatricula[matricula].'</option>';
     }
@@ -326,8 +325,7 @@ function formularioEditarVuelo ($id) {
     <tr class="r0">
       <td>Matricula del avion</td>
       <td><label>
-        <select name="matricula" id="matricula">
-          <option value="NULL">POR ASIGNAR</option>';
+        <select name="matricula" id="matricula">';
     while ($rowMatricula = mysql_fetch_array($recursoMatricula)){
         $formulario .= '<option value = "'.$rowMatricula[matricula];
         if ($rowVuelo['matricula'] == $rowMatricula['matricula'])
