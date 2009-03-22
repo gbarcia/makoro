@@ -384,13 +384,13 @@ class ControlReservaLogicaclass {
      * 8 = No existe el localizador
      * 1 = PP -> CO
      * 2 = PP -> PA
-     * 3 = PP -> CA se hace un reembolso
+     * 3 = PP -> CA 
      * 4 = PP -> PP
      *
      * 5 = CO -> PA
-     * 6 = CO -> CA se hace un reembolso
+     * 6 = CO -> CA 
      * 7 = CO -> PP
-     * 8 = CO -> CO
+     * 17 = CO -> CO
      *
      * 9 = PA -> PP
      * 10 = PA -> CO
@@ -459,7 +459,7 @@ class ControlReservaLogicaclass {
                     $resultado = 7;
                 }
                 if($estado == 'CO'){
-                    $resultado = 8;
+                    $resultado = 17;
                 }
             }
 
@@ -512,13 +512,13 @@ class ControlReservaLogicaclass {
      * 8 = No existe el localizador
      * 1 = PP -> CO
      * 2 = PP -> PA
-     * 3 = PP -> CA se hace un reembolso
+     * 3 = PP -> CA 
      * 4 = PP -> PP
      *
      * 5 = CO -> PA
-     * 6 = CO -> CA se hace un reembolso
+     * 6 = CO -> CA 
      * 7 = CO -> PP
-     * 8 = CO -> CO
+     * 17 = CO -> CO
      *
      * 9 = PA -> PP
      * 10 = PA -> CO
@@ -578,7 +578,7 @@ class ControlReservaLogicaclass {
                     $resultado = 7;
                 }
                 if($estado == 'CO'){
-                    $resultado = 8;
+                    $resultado = 17;
                 }
             }
 
