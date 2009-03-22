@@ -36,6 +36,7 @@ function autoSugerir($busqueda){
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
     $resultado.= '<th>OPCIONES</th>';
+    $resultado.= '<th>ANULAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     if (isset($busqueda)) {
@@ -73,6 +74,7 @@ function autoSugerir($busqueda){
                 $resultado.= '<td>' . $pilotoMostrar. '</td>';
                 $resultado.= '<td>' . $copilotoMostrar. '</td>';
                 $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[id].')"/></td>';
+                $resultado.= '<td><input type="button" value="ANULAR" onclick="xajax_anular('.$row[id].')"/></td>';
                 $resultado.= '</tr>';
                 $color = !$color;
             }
@@ -97,6 +99,7 @@ function autoSugerir($busqueda){
             $resultado.= '<td>' . $row[rutaLlegada] . '</td>';
             $resultado.= '<td>' . $matricula. '</td>';
             $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[id].')"/></td>';
+            $resultado.= '<td><input type="button" value="ANULAR" onclick="xajax_editar('.$row[id].')"/></td>';
             $resultado.= '</tr>';
             $color = !$color;
         }
