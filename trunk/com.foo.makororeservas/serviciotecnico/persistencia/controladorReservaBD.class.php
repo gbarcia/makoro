@@ -155,8 +155,8 @@ class controladorReservaBDclass {
     }
 
     /**
-     * Metodo para editar el estado de una reserva a pagado
-     * @param <Integer> $idReserva Identificador de la reserva
+     * Metodo para editar el estado de varias reservas a pagado
+     * @param <String> $solicitud Identificador de la reserva
      * @param <String> $estado Nuevo estado
      * @param <Integer> $pagoId Identificador del pago realizado
      * @return <boolean> resultado de la operacion
@@ -171,15 +171,45 @@ class controladorReservaBDclass {
     }
 
     /**
+     * Metodo para editar el estado de una reserva a pagado
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <String> $estado Nuevo estado
+     * @param <Integer> $pagoId Identificador del pago realizado
+     * @return <boolean> resultado de la operacion
+     */
+    function editarEstadoPagadoReservaPorPersona($idReserva, $estado, $pagoId){
+        $resultado = false;
+        $query = "UPDATE RESERVA r SET r.estado = '".$estado."',
+                                       r.PAGO_id = ".$pagoId."
+                  WHERE r.id = '".$idReserva."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    /**
      * Metodo para editar el estado de una reserva
      * @param <Integer> $idReserva Identificador de la reserva
      * @param <String> $estado Nuevo estado
-     * @return <type> El resultado de la operacion
+     * @return <boolean> El resultado de la operacion
      */
     function editarEstadoReserva($solicitud, $estado){
         $resultado = false;
         $query = "UPDATE RESERVA r SET r.estado = '".$estado."'
                                    WHERE r.solicitud = '".$solicitud."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para editar el estado de una reserva
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @param <String> $estado Nuevo estado
+ * @return <boolean> El resultado de la operación
+ */
+    function editarEstadoReservaPorPersona($idReserva, $estado){
+        $resultado = false;
+        $query = "UPDATE RESERVA r SET r.estado = '".$estado."'
+                                   WHERE r.id = '".$idReserva."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -214,13 +244,26 @@ class controladorReservaBDclass {
 
     /**
      * Metodo para consultar el estado de una reserva
-     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <String> $solicitud Localizador de la reserva
      * @return <recurso> estado de la reserva
      */
     function consultarEstadoReserva($solicitud){
         $query = "SELECT DISTINCT R.estado estado
                   FROM RESERVA R
                   WHERE R.solicitud = '".$solicitud."'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+/**
+ * Metodo para consultar el estado de una reserva determinada
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @return <recurso> estado de la reserva de la persona
+ */
+    function consultarEstadoReservaPorPersona($idReserva){
+        $query = "SELECT DISTINCT R.estado estado
+                  FROM RESERVA R
+                  WHERE R.id = '".$idReserva."'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }

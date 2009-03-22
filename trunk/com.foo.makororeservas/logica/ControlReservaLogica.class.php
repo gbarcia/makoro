@@ -310,12 +310,24 @@ class ControlReservaLogicaclass {
     }
 
     /**
-     * Metodo para consultar el estado de una reserva
-     * @param <Integer> $solicitud Localizador de la reserva
+     * Metodo para consultar el estado de varias reservas
+     * @param <String> $solicitud Localizador de la reserva
      * @return <recurso> estado de la reserva
      */
     function estadoReserva($solicitud) {
         $recurso = $this->controlBD->consultarEstadoReserva($solicitud);
+        $row = mysql_fetch_array($recurso);
+        $estado = $row[estado];
+        return $estado;
+    }
+
+/**
+ * Metodo para consultar el estado de una reserva
+ * @param <Integer> $idReserva Identificador de la reserva
+ * @return <recurso> Estado de la reserva
+ */
+    function estadoReservaPorPersona($idReserva) {
+        $recurso = $this->controlBD->consultarEstadoReservaPorPersona($idReserva);
         $row = mysql_fetch_array($recurso);
         $estado = $row[estado];
         return $estado;
@@ -334,19 +346,24 @@ class ControlReservaLogicaclass {
     }
 
     /**
-     * Metodo para actualizar el estado de una reserva
-     * @param <Integer> $idReserva Identificador de la reserva
-     * @param <String> $estado Estado de la reserva
-     * @return <recurso> resultado de la operacion
+     * Metodo para actualizar los estados de varias reservas
+     * @param <String> $solicitud
+     * @param <String> $estado
+     * @param <String> $tipo
+     * @param <double> $monto
+     * @param <String> $nombreBanco
+     * @param <Integer> $numeroTransaccion
+     * @param <Integer> $monedaId
+     * @return <recurso> resultado de la operación
      *
      * Resultados:
      * 0 = PP -> CO
      * 1 = PP -> PA
-     * 2 = PP -> CA
+     * 2 = PP -> CA se hace un reembolso
      * 3 = CO -> PA
-     * 4 = CO -> CA
-     * 5 = PA -> CA
-     * 6 = CA -> 
+     * 4 = CO -> CA se hace un reembolso
+     * 5 = PA -> CA se hace un reembolso
+     * 6 = CA -> A ningun estado
      */
     function actualizarEstadoReserva($solicitud, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $estadoBD = $this->estadoReserva($solicitud);
@@ -373,7 +390,6 @@ class ControlReservaLogicaclass {
                 }
             }
         }
-
 
         if($estadoBD == 'CO'){
             if($estado == 'PA'){
@@ -410,7 +426,73 @@ class ControlReservaLogicaclass {
         if($estadoBD == 'CA'){
             $resultado = 6;
         }
-        
+        return $resultado;
+    }
+
+/**
+     * Metodo para actualizar el estado de una reserva
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @param <String> $estado Estado de la reserva
+     * @return <recurso> resultado de la operacion
+     *
+     * Resultados:
+     * 7 = PP -> CO
+     * 8 = PP -> PA
+     * 9 = PP -> CA se hace un reembolso
+     * 10 = CO -> PA
+     * 11 = CO -> CA se hace un reembolso
+     * 12 = PA -> CA se hace un reembolso
+     * 13 = CA -> A ningun estado
+     */
+    function actualizarEstadoReservaPorPersona($idReserva, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
+        $estadoBD = $this->estadoReservaPorPersona($idReserva);
+        if($estadoBD == 'PP'){
+            if($estado == 'CO'){
+                $editaEstado = $this->controlBD->editarEstadoReservaPorPersona($idReserva, $estado);
+                $resultado = 7;
+            }
+            if($estado == 'PA'){
+                $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
+                if($pagoId > 0){
+                    $estadoReserva = $this->estadoReservaPorPersona($idReserva);
+                    $editaEstado = $this->controlBD->editarEstadoPagadoReservaPorPersona($idReserva, $estado, $pagoId);
+                    $resultado = 8;
+                }
+            }
+            if($estado == 'CA'){
+                $editaEstado = $this->controlBD->editarEstadoReservaPorPersona($idReserva, $estado);
+                $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
+                $resultado = 9;
+            }
+        }
+
+        if($estadoBD == 'CO'){
+            if($estado == 'PA'){
+                $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
+                if($pagoId > 0){
+                    $estadoReserva = $this->estadoReservaPorPersona($idReserva);
+                    $editaReserva = $this->controlBD->editarEstadoPagadoReservaPorPersona($idReserva, $estado, $pagoId);
+                    $resultado = 10;
+                }
+            }
+            if($estado == 'CA'){
+                $editaEstado = $this->controlBD->editarEstadoReservaPorPersona($idReserva, $estado);
+                $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
+                $resultado = 11;
+            }
+        }
+
+        if($estadoBD == 'PA'){
+            if($estado == 'CA'){
+                $editaEstado = $this->controlBD->editarEstadoReservaPorPersona($idReserva, $estado);
+                $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
+                $resultado = 12;
+            }
+        }
+
+        if($estadoBD == 'CA'){
+            $resultado = 13;
+        }
         return $resultado;
     }
 }
