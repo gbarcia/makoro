@@ -348,8 +348,8 @@ class ControlReservaLogicaclass {
         if($estado == 'CA'|| $estadoBD == 'CA'){
             $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
             while($row = mysql_fetch_array($recurso)){
-            $idReservas = $row[idReserva];
-            $resultado = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
+                $idReservas = $row[idReserva];
+                $resultado = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
             }
         }
         return $resultado;
