@@ -217,7 +217,8 @@ class controladorVueloBDclass {
         if($cantidadAdultosNinos != ""){
             $query .= " HAVING disponibilidadAdulto = 1 ";
         }
-        $query .= " ORDER BY v.fecha,v.hora ASC ";
+        $query .= " ORDER BY v.fecha,v.hora ASC
+                    LIMIT 50";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -266,7 +267,8 @@ class controladorVueloBDclass {
             }
         }
         $query.= " GROUP BY v.id
-                   ORDER BY v.fecha,v.hora ASC";
+                   ORDER BY v.fecha,v.hora ASC
+                   LIMIT 50";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
