@@ -261,6 +261,11 @@ class ControlReservaLogicaclass {
         return $disponible;
     }
 
+    /**
+     * Metodo para verificar la existencia de una solicitud
+     * @param <type> $solicitud La solicitud a consultar
+     * @return <type> Si existe devuelve la solicitud, de lo contrario devuelve 0
+     */
     function existeSolicitud($solicitud){
         $recurso = $this->controlBD->existeSolicitud($solicitud);
         $row = mysql_fetch_array($recurso);
@@ -268,6 +273,11 @@ class ControlReservaLogicaclass {
         return $validacion;
     }
 
+    /**
+     * Metodo para verificar la existencia de una reserva
+     * @param <type> $idReserva El id de la reserva a consultar
+     * @return <type> Si existe devuelve el id de la reserva, de lo contrario devuelve 0 
+     */
     function existeReserva($idReserva){
         $recurso = $this->controlBD->existeReserva($idReserva);
         $row = mysql_fetch_array($recurso);
@@ -335,11 +345,11 @@ class ControlReservaLogicaclass {
         return $estado;
     }
 
-/**
- * Metodo para consultar el estado de una reserva
- * @param <Integer> $idReserva Identificador de la reserva
- * @return <recurso> Estado de la reserva
- */
+    /**
+     * Metodo para consultar el estado de una reserva
+     * @param <Integer> $idReserva Identificador de la reserva
+     * @return <recurso> Estado de la reserva
+     */
     function estadoReservaPorPersona($idReserva) {
         $recurso = $this->controlBD->consultarEstadoReservaPorPersona($idReserva);
         $row = mysql_fetch_array($recurso);
@@ -451,7 +461,7 @@ class ControlReservaLogicaclass {
         return $resultado;
     }
 
-/**
+    /**
      * Metodo para actualizar el estado de una reserva
      * @param <Integer> $idReserva Identificador de la reserva
      * @param <String> $estado Estado de la reserva
@@ -523,6 +533,33 @@ class ControlReservaLogicaclass {
             }
         }
         return $resultado;
+    }
+
+    /**
+     * Metodo para calcular la cantidad de adultos y ninos que existen bajo una solicitud
+     * @param <type> $solicitud La solicitud a consultar
+     * @return <type> La cantidad de adultos y ninos que existen para una solicitud 
+     */
+    function cantidadAdlChl($solicitud){
+        $recurso = $this->controlBD->cantidadPasajeros($solicitud);
+        $row = mysql_fetch_array($recurso);
+        $cantidadPasajeros = $row[cantidadPasajeros];
+        $cantidadInfantes = $this->cantidadInfantes($solicitud);
+        $cantidadAdlChl = $cantidadPasajeros-$cantidadInfantes;
+
+        return $cantidadPasajeros;
+    }
+
+    /**
+     * Metodo para calcular la cantidad de infantes que existen bajo una solicitud
+     * @param <type> $solicitud La solicitud a consultar
+     * @return <type> La cantidad de infantes que existen para una solicitud
+     */
+    function cantidadInfantes($solicitud){
+        $recurso = $this->controlBD->cantidadInfantes($solicitud);
+        $row = mysql_fetch_array($recurso);
+        $cantidadInfantes = $row[cantidadInfantes];
+        return $cantidadInfantes;
     }
 }
 ?>
