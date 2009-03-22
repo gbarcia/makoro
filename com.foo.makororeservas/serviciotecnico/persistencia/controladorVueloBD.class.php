@@ -396,13 +396,11 @@ class controladorVueloBDclass {
                                                     AND RE.solicitud = R.solicitud
                                                     AND VRE.tipo = 'vuelta'
                                                     GROUP BY VU.fecha,VU.hora),'SIN RETORNO'),'RT') as vueloRetorno
-            FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, PASAJERO P, TIPO_SERVICIO TS, ENCARGADO E, TIPO_PASAJERO TP,
-                 CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA, BOLETO B
+            FROM VUELO V, VUELO_RESERVA VR, SUCURSAL S, RESERVA R, TIPO_SERVICIO TS, ENCARGADO E,
+                 CLIENTE_PARTICULAR CP, CLIENTE_AGENCIA CA
             WHERE V.id = VR.VUELO_id
             AND R.id = VR.RESERVA_id
             AND VR.VUELO_id = ".$idVuelo."
-            AND TP.id = P.TIPO_PASAJERO_id
-            AND TS.id = R.TIPO_SERVICIO_id
             AND S.id = R.SUCURSAL_id
             AND E.cedula = R.ENCARGADO_cedula
             AND (R.CLIENTE_PARTICULAR_cedula = CP.cedula
