@@ -9,6 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnic
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlVueloLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlReservaLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorSeguridadBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorMonedaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlSeguridad.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteParticularLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteAgenciaLogica.class.php';
@@ -44,6 +45,17 @@ function generarComboBoxPosada(){
     $recurso = $controladorPosada->consultarPosadas();
     while ($row = mysql_fetch_array($recurso)){
         $combo.= '<option value="' . $row[id] .'">' . $row[nombrePosada] . '</option>';
+    }
+    $combo.= '</select>';
+    return $combo;
+}
+
+function generarComboBoxMoneda(){
+    $combo = '<select name="moneda">';
+    $controladorMoneda = new controladorMonedaBDclass();
+    $recurso = $controladorMoneda->consultarMonedas();
+    while ($row = mysql_fetch_array($recurso)){
+        $combo.= '<option value="' . $row[id] .'">' . $row[tipo] . '</option>';
     }
     $combo.= '</select>';
     return $combo;
@@ -575,6 +587,20 @@ function buscarSolicitud($datos){
         $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
         return $objResponse;
     }
+}
+
+function desplegarFormularioCambiarEstado(){
+    $objResponse = new xajaxResponse();
+    $respuesta = generarFormularioCambiarEstado();
+    $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function desplegarFormularioCambiarEstado2(){
+    $objResponse = new xajaxResponse();
+    $respuesta = generarFormularioCambiarEstado2();
+    $objResponse->addAssign("tres", "innerHTML", $respuesta);
+    return $objResponse;
 }
 
 ?>

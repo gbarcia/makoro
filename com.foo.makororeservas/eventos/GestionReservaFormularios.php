@@ -118,7 +118,7 @@ function generarFormularioNuevaReserva($idVuelo) {
         </tr>
         <tr class="r1">
             <td>Localizador</td>
-            <td><input type="text" name="solicitud" id="solicitud"></td>
+            <td><input type="text" name="solicitud" id="solicitud" onkeyup="this.value=this.value.toUpperCase();"></td>
         </tr>
         <tr class="r0">
             <td colspan="2">
@@ -187,11 +187,11 @@ function generarFormularioConfirmarReserva($datos) {
         </tr>
         <tr class="r1">
             <td>Cantidad ADL/CHD</td>
-            <td><input type="text" name="cantidadAdlChd" value="" /></td>
+            <td><input type="text" name="cantidadAdlChd" value="" onKeyPress="return acceptNum(event)"/></td>
         </tr>
         <tr class="r0">
             <td>Cantidad INF</td>
-            <td><input type="text" name="cantidadInf" value="" /></td>
+            <td><input type="text" name="cantidadInf" value="" onKeyPress="return acceptNum(event)"/></td>
         </tr>
         <tr class="r1">
             <td>Servicio</td>
@@ -280,7 +280,7 @@ function generarFormularioAgregarClienteParticular($datos) {
     <tr class="r0">
       <td>Cedula</td>
       <td><label>
-        <input type="text" name="cedula" id="cedula" value="'.$datos[cedula].'" readonly="readonly"/>
+        <input type="text" name="cedula" id="cedula" value="'.$datos[cedula].'" readonly="readonly" onKeyPress="return acceptNum(event)"/>
       </label></td>
     </tr>
     <tr class="r1">
@@ -336,6 +336,73 @@ function tablaVacia(){
     $resultado.= '<th colspan="14">NO HAY RESERVAS PARA ESTE VUELO</th>';
     $resultado.= '</tr>';
     return $resultado;
+}
+
+function generarFormularioCambiarEstado(){
+    $contenido = '<form id="formCambiarEstado">
+                    <table border="0">
+                        <tr>
+                            <td>Localizador</td>
+                            <td><input type="text" name="solicitud" value="" onkeyup="this.value=this.value.toUpperCase();"/></td>
+                        </tr>
+                        <tr>
+                            <td>Nuevo Estado</td>
+                            <td><select name="estado">
+                                    <option value="PA">PAGADO</option>
+                                    <option value="CO">CONFIRMADO</option>
+                                    <option value="CA">ANULADO</option>
+                            </select></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp</td>
+                            <td>
+                                <input type="submit" value="CONTINUAR" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>';
+    return $contenido;
+}
+
+function generarFormularioCambiarEstado2(){
+    $contenido = '<form id="formCambiarEstado">
+                    <input type="hidden" name="estado" value="PA" />
+                    <table border="0">
+                    <tr>
+                    <td>Localizador</td>
+                    <td><input type="text" name="solicitud" value="'.$datos[solicitud].'" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                    <td>Forma de pago</td>
+                    <td><select name="tipoPago">
+                    <option value="EF">PAGO EN EFECTIVO</option>
+                    <option value="DE">DEPOSITO EN CUENTA CORRIENTE</option>
+                    <option value="CH">CHEQUE</option>
+                    <option value="TR">TRANSFERENCIA BANCARIA</option>
+                    </select></td>
+                    </tr>
+                    <tr>
+                    <td>Monto</td>
+                    <td><input type="text" name="monto" value="" />'. generarComboBoxMoneda() .'</td>
+                    </tr>
+                    <tr>
+                    <td colspan="2">En caso de ser transaccion bancaria:</td>
+                    </tr>
+                    <tr>
+                    <td>Banco</td>
+                    <td><input type="text" name="banco" value="" onkeyup="this.value=this.value.toUpperCase();"/></td>
+                    </tr>
+                    <tr>
+                    <td>Nro Transaccion</td>
+                    <td><input type="text" name="transaccion" value="" onkeyup="this.value=this.value.toUpperCase();"/></td>
+                    </tr>
+                    <tr>
+                    <td>&nbsp</td>
+                    <td><input type="submit" value="CAMBIAR ESTADO" /></td>
+                    </tr>
+                    </table>
+                </form>';
+    return $contenido;
 }
 
 ?>
