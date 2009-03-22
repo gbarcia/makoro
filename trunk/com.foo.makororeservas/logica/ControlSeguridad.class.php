@@ -77,9 +77,12 @@ class ControlSeguridadclass {
  */
     public function nuevoEncargado ($encargado, $RepCorreo) {
         $resultado = false;
+            $claveReal = "";
         if ($encargado->getCorreo() == $RepCorreo) {
             $claveReal = $this->autoGenerarClave();
-            $encargado->setClave(md5($claveReal));
+            $md5 = md5 ($claveReal);
+            $encargado->setClave($md5);
+            $encargado->setHabilitado(1);
             $resultado = $this->controlPruebaSeguridad->agregarEncargado($encargado);
             if ($resultado) {
                 $cuerpo = "<font size='2' face='Arial'><P>Sr o Sra: ". $encargado->getNombre(). "</P>";
