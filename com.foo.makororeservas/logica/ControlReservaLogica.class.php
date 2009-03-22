@@ -338,20 +338,75 @@ class ControlReservaLogicaclass {
      * @param <Integer> $idReserva Identificador de la reserva
      * @param <String> $estado Estado de la reserva
      * @return <recurso> resultado de la operacion
+     *
+     * Resultados:
+     * 0 = PP -> CO
+     * 1 = PP -> PA
+     * 2 = PP -> CA
+     * 3 = CO -> PA
+     * 4 = CO -> CA
+     * 5 = PA -> CA
      */
-    function actualizarEstadoReserva($solicitud, $estado) {
+    function actualizarEstadoReserva($solicitud, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $estadoBD = $this->estadoReserva($solicitud);
-        if($estadoBD != 'CA'){
-            $resultado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
-        }
-        $estadoBD = $this->estadoReserva($solicitud);
-        if($estado == 'CA'|| $estadoBD == 'CA'){
-            $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
-            while($row = mysql_fetch_array($recurso)){
-                $idReservas = $row[idReserva];
-                $resultado = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
+        if($estadoBD == 'PP'){
+            if($estado == 'CO'){
+                $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
+                $resultado = 0;
+            }
+            if($estado == 'PA'){
+                $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
+                if($pagoId > 0){
+                    $estadoReserva = $this->estadoReserva($solicitud);
+                    $editaEstado = $this->controlBD->editarEstadoPagadoReserva($solicitud, $estado, $pagoId);
+                    $resultado = 1;
+                }
+            }
+            if($estado == 'CA'){
+                $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
+                $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+                while($row = mysql_fetch_array($recurso)){
+                    $idReservas = $row[idReserva];
+                    $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
+                    $resultado = 2;
+                }
             }
         }
+
+
+        if($estadoBD == 'CO'){
+            if($estado == 'PA'){
+                $pagoId = $this->controlPago->nuevoPago($tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId);
+                if($pagoId > 0){
+                    $estadoReserva = $this->estadoReserva($solicitud);
+                    $editaReserva = $this->controlBD->editarEstadoPagadoReserva($solicitud, $estado, $pagoId);
+                    $resultado = 3;
+                }
+            }
+            if($estado == 'CA'){
+                $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
+                $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+                while($row = mysql_fetch_array($recurso)){
+                    $idReservas = $row[idReserva];
+                    $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
+                    $resultado = 4;
+                }
+            }
+        }
+
+        if($estadoBD == 'PA'){
+            if($estado == 'CA'){
+                $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
+                $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+                while($row = mysql_fetch_array($recurso)){
+                    $idReservas = $row[idReserva];
+                    $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
+                    $resultado = 5;
+                }
+            }
+        }
+
+        
         return $resultado;
     }
 }
