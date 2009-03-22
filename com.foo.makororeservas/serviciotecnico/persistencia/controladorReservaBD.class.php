@@ -69,7 +69,7 @@ class controladorReservaBDclass {
                                  FROM VUELO_RESERVA VRE, VUELO VU , RESERVA RE
                                  WHERE RE.id = VRE.RESERVA_id
                                  AND VU.id = VRE.VUELO_id
-                                 AND VRE.VUELO_id = V.id)>=0,TRUE,FALSE) as dispon
+                                 AND VRE.VUELO_id = V.id)>=0,TRUE,FALSE) as disponibleAdultoNino
                   FROM VUELO V, AVION AV
                   WHERE V.id = ".$idVuelo."
                   AND V.AVION_matricula = AV.matricula ";

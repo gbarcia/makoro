@@ -87,6 +87,7 @@ class ControlReservaLogicaclass {
         $arrayInf = new ArrayObject();
         $arrayAdl = new ArrayObject();
         $solicitudGenerada = false;
+        echo $disponibleAdultoNino;
         if($disponibleAdultoNino && $disponibleInfante){
             $pagoId = 'null';
             $pasajeroId = 'null';
@@ -271,6 +272,7 @@ class ControlReservaLogicaclass {
         $recurso = $this->controlBD->asientosDisponiblesAdultoNino($idVuelo, $cantAdultoNino);
         $row = mysql_fetch_array($recurso);
         $disponible = $row[disponibleAdultoNino];
+        echo $disponible;
         return $disponible;
     }
 
