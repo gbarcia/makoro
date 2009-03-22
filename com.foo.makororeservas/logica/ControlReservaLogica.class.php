@@ -346,6 +346,7 @@ class ControlReservaLogicaclass {
      * 3 = CO -> PA
      * 4 = CO -> CA
      * 5 = PA -> CA
+     * 6 = CA -> 
      */
     function actualizarEstadoReserva($solicitud, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $estadoBD = $this->estadoReserva($solicitud);
@@ -406,6 +407,9 @@ class ControlReservaLogicaclass {
             }
         }
 
+        if($estadoBD == 'CA'){
+            $resultado = 6;
+        }
         
         return $resultado;
     }
