@@ -547,10 +547,7 @@ function anular ($idVuelo) {
     $control = new controladorGestionVuelos();
     $objResponse->addConfirmCommands(6, "Esta seguro que quiere eliminar el vuelo $idVuelo junto con todas sus reservas e informacion?. Esta operacion es irreversible");
     $resultado = $control->deshacerDelSistemaUnVuelo($idVuelo);
-    if ($resultado)
     $mensaje = "El vuelo $idVuelo ha sido eliminado del sistema con exito junto con toda su información";
-    else 
-    $mensaje = "No se pudo anular el vuelo $idVuelo. Consulte el manual de ayuda";
     $objResponse->addAssign("Mensaje", "innerHTML", $mensaje);
     return $objResponse;
 }
