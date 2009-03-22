@@ -156,6 +156,21 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
+    function existeSolicitud($solicitud) {
+        $query = "SELECT IFNULL((SELECT DISTINCT r.solicitud 
+                                 FROM RESERVA r
+                                 WHERE r.solicitud = '".$solicitud."'),0) as validacion";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function existeReserva($idReserva) {
+        $query = "SELECT IFNULL((SELECT DISTINCT r.id
+                                 FROM RESERVA r
+                                 WHERE r.id= ".$idReserva."),0) as validacion";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
     /**
      * Metodo para editar el estado de varias reservas a pagado
      * @param <String> $solicitud Identificador de la reserva
