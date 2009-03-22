@@ -369,7 +369,7 @@ function agregarReserva($datos){
                 $clienteParticularCedula = $datos[idCliente];
             }
 
-            $respuesta = $controlReserva->crearReserva('ida', $datos[idVuelo], $datos[cantidadAdlChd],
+            $respuesta = $controlReserva->crearReserva($datos[tipoVuelo], $datos[idVuelo], $datos[cantidadAdlChd],
                 $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
                 $_SESSION['EncargadoSucursal'], $_SESSION['EncargadoCedula'], $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], $datos[solicitud], $datos[estado]);
 
@@ -382,6 +382,8 @@ function agregarReserva($datos){
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                           </div>
                           </div>';
+                $fichaVuelo = generarFichaVuelo($datos[idVuelo]);
+                $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
                 $detalles = detalles($datos[idVuelo]);
                 $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
             } else {
@@ -556,10 +558,24 @@ function buscarSolicitud($datos){
     $solicitud = $datos[solicitud];
     $control = new controladorReservaBDclass();
     $recurso = $control->consultarClienteReserva($solicitud);
-    $row = mysql_fetch_array($recurso);
-    $row["idVuelo"] = $datos[idVuelo];
-    $row["solicitud"] = $datos[solicitud];
-    return buscarCliente($row);
+    if (mysql_num_rows($recurso) > 0){
+        $row = mysql_fetch_array($recurso);
+        $row["idVuelo"] = $datos[idVuelo];
+        $row["solicitud"] = $datos[solicitud];
+        return buscarCliente($row);
+    } else {
+        $objResponse = new xajaxResponse();
+        $respuesta ='<div class="error">
+                          <div class="textoMensaje">
+                          El localizador '.$solicitud.' no se ha encontrando. Por favor, verifiquelo e intentelo nuevamente.
+                          </div>
+                          <div class="botonCerrar">
+                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                          </div>
+                          </div>';
+        $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+        return $objResponse;
+    }
 }
 
 ?>
