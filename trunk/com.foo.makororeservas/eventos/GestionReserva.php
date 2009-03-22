@@ -603,4 +603,9 @@ function desplegarFormularioCambiarEstado2(){
     return $objResponse;
 }
 
+function cambiarEstado($datos){
+    
+}
+
+
 ?>
