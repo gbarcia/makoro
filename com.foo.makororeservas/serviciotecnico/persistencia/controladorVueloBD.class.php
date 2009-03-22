@@ -113,7 +113,7 @@ class controladorVueloBDclass {
                                  WHERE vu.id = v.id),0) as infantesQuedan
                   FROM VUELO v, RUTA ru, AVION a, RESERVA r ";
         if(($cedulaPasaporte != "") || ($nombrePasajero != "") || ($apellidoPasajero != "")){
-            $query .= ", PASAJERO p ";
+            $query .= ", PASAJERO p "; 
         }
         if(($cedulaPart != "") || ($nombrePart != "")  || ($apellidoPart != "")){
             $query.=", CLIENTE_PARTICULAR cp ";
