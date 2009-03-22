@@ -547,7 +547,6 @@ function anular ($idVuelo) {
     $accion = 0;
     echo "aca1" . $accion;
     $control = new controladorGestionVuelos();
-    $accion = 1;
     if ($accion == 1) {
        echo "entro que bolas";
     $resultado = $control->deshacerDelSistemaUnVuelo($idVuelo);
