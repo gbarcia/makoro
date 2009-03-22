@@ -451,7 +451,8 @@ class controladorVueloBDclass {
                   FROM VUELO V, RUTA R, AVION AV
                   WHERE V.id = ".$idVuelo."
                   AND R.sitioSalida = V.RUTA_sitioSalida
-                  AND R.sitioLlegada = V.RUTA_sitioLlegada ";
+                  AND R.sitioLlegada = V.RUTA_sitioLlegada
+                  AND AV.matricula = V.AVION_matricula";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
