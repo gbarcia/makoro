@@ -14,6 +14,8 @@ $xajax->registerFunction("procesarAgencia");
 $xajax->registerFunction("procesarCliente");
 $xajax->registerFunction("buscarSolicitud");
 $xajax->registerFunction("desplegarFormularioNuevaReserva");
+$xajax->registerFunction("desplegarFormularioCambiarEstado");
+$xajax->registerFunction("desplegarFormularioCambiarEstado2");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -191,6 +193,8 @@ $xajax->processRequests();
             <div class="tableContainer" id="vuelos">
                 <script type="text/javascript">
                     xajax_desplegarInicio();
+                    xajax_desplegarFormularioCambiarEstado();
+                    xajax_desplegarFormularioCambiarEstado2();
                 </script>
             </div>
         </div>
@@ -205,8 +209,20 @@ $xajax->processRequests();
         <div id="mensaje" class="cuerpo"></div>
 
         <div class="cuerpo">
-            <div class="izq" id="izquierda">uno</div>
-            <div class="der" id="derecha">dos</div>
+            <div class="izq" id="izquierda"></div>
+            <div class="der" id="derecha">
+                <div class="panel" id="derecha">
+                    <div class="tituloNegro3">OPERACIONES</div>
+                    <hr width="98%" size="1" color="#067AC2">
+                    <div class="tituloNegro1">CAMBIAR ESTADO DE LOCALIZADOR</div>
+                    <div class="textoNegro1">
+                        <div id="cambiarEstado">
+                        </div>
+                    </div>
+                    <hr width="98%" size="1" color="#067AC2">
+                    TBD
+                </div>
+            </div>
         </div>
 
         <div class="cuerpo">
