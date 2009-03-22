@@ -368,7 +368,6 @@ function agregarReserva($datos){
             } else {
                 $clienteParticularCedula = $datos[idCliente];
             }
-
             $respuesta = $controlReserva->crearReserva($datos[tipoVuelo], $datos[idVuelo], $datos[cantidadAdlChd],
                 $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
                 $_SESSION['EncargadoSucursal'], $_SESSION['EncargadoCedula'], $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], $datos[solicitud], $datos[estado]);
