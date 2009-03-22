@@ -158,6 +158,7 @@ class ControlReservaLogicaclass {
                     }
                 }else{
                     $this->rollBackReserva($arrayAdl, $arrayInf);
+                    return false;
                 }
             }
             if($tipoViaje == 'ida'){
