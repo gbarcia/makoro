@@ -70,7 +70,10 @@ $clienteTest = new ClienteParticularclass();
 //$resultado = $controlTest->actualizarPasajeroReserva('joniii', 'TRUJI-truji', 'M', 17706709, null, 'VENEZOLANO', 'ADL', 23);
 //$resultado = $controlTest->pagarReserva('45T5', 'E', 100, '', '', 1);
 //$resultado = $controlTest->actualizarEstadoReserva(11, 'PA');
-$resultado = $controlTest->actualizarEstadoReserva('ZMT5', 'PA', 'E', 50.0, '', '', 2);
+//$resultado = $controlTest->actualizarEstadoReserva('ZMT5', 'PA', 'E', 50.0, '', '', 2);
+//echo $resultado;
+
+$resultado = $controlTest->crearReserva('ida', 2, 2, 0, '2009-03-22', 1, 1, 111, 17706708, null, null, null, 'PP');
 echo $resultado;
 
 /*----------------------------*/
