@@ -13,7 +13,7 @@ function cadenaTodosLosServicios () {
     $resultado.= '<th>IDENTIFICADOR</th>';
     $resultado.= '<th>NOMBRE</th>';
     $resultado.= '<th>ABREVIATURA</th>';
-    $resultado.= '<th>VECES SOLICTADO</th>';
+    $resultado.= '<th>VECES SOLICITADO</th>';
     $resultado.= '<th>EDITAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
