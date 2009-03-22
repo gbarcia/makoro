@@ -542,15 +542,11 @@ function borrarMensaje(){
 
 function anular ($idVuelo) {
     $objResponse = new xajaxResponse();
-    $accion = 0;
-    $objResponse->addConfirmCommands(1, "Esta seguro que quiere eliminar el vuelo $idVuelo junto con todas sus reservas e informacion?. Esta operacion es irreversible");
-    $accion = 1;
-    if ($accion == 1) {
     $control = new controladorGestionVuelos();
     $resultado = $control->deshacerDelSistemaUnVuelo($idVuelo);
     $mensaje = "El vuelo $idVuelo ha sido eliminado del sistema con exito junto con toda su información";
     $objResponse->addAssign("Mensaje", "innerHTML", $mensaje);
-    return $objResponse;}
+    return $objResponse;
 }
 
 ?>
