@@ -421,12 +421,12 @@ class controladorVueloBDclass {
     function consultarInformacionVuelo($idVuelo){
         $query = "SELECT V.fecha, V.hora, R.sitioSalida, R.sitioLlegada,
                          IFNULL((SELECT VU.AVION_matricula
-                                 FROM VUELO VU, AVION AV
+                                 FROM VUELO VU
                                  WHERE VU.id = V.id
                                  AND VU.AVION_matricula = AV.matricula), 
                                 'PA') as matricula,
                          IFNULL((SELECT AV.asientos-COUNT(VRE.RESERVA_id)+V.cantidadInfantes
-                                 FROM VUELO_RESERVA VRE, VUELO VU , RESERVA RE, AVION AV
+                                 FROM VUELO_RESERVA VRE, VUELO VU , RESERVA RE
                                  WHERE RE.id = VRE.RESERVA_id
                                  AND VU.id = VRE.VUELO_id
                                  AND VRE.VUELO_id = V.id
@@ -448,7 +448,7 @@ class controladorVueloBDclass {
                                  AND VU.id = VP.VUELO_id
                                  AND TC.id = PE.TIPO_CARGO_id
                                  AND VP.cargo = 2),'PA') as copiloto
-                  FROM VUELO V, RUTA R
+                  FROM VUELO V, RUTA R, AVION AV
                   WHERE V.id = ".$idVuelo."
                   AND R.sitioSalida = V.RUTA_sitioSalida
                   AND R.sitioLlegada = V.RUTA_sitioLlegada ";
