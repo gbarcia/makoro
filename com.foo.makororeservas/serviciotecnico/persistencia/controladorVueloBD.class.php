@@ -129,8 +129,7 @@ class controladorVueloBDclass {
             $query.=", VUELO_RESERVA vr ";
         }
         $query.=" WHERE v.RUTA_sitioSalida = ru.sitioSalida
-                  AND v.RUTA_sitioLlegada = ru.sitioLlegada
-                  AND v.AVION_matricula = a.matricula ";
+                  AND v.RUTA_sitioLlegada = ru.sitioLlegada ";
         $query .= "AND a.habilitado = 1 ";
         if($hora != "")
         $query.= " AND v.hora = '".$hora."' ";
@@ -255,7 +254,6 @@ class controladorVueloBDclass {
                   FROM VUELO v, RUTA ru, AVION a, RESERVA r
                   WHERE v.RUTA_sitioSalida = ru.sitioSalida
                   AND v.RUTA_sitioLlegada = ru.sitioLlegada
-                  AND v.AVION_matricula = a.matricula
                   AND a.habilitado = 1 ";
         if (!(($fechaInicio == "")  && ($fechaFin == ""))){
             if(($fechaInicio != "") && ($fechaFin != "")){
