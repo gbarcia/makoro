@@ -883,7 +883,9 @@ function procesarNuevoTripulante ($datos) {
         }
         $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
         $actualizarTablaPrincipalRespuesta = actualizarTablaPrinicipal();
-        $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);}
+        $objResponse->addAssign("gestionTripulante", "innerHTML", $actualizarTablaPrincipalRespuesta);
+        $objResponse->addAssign("izq", "innerHTML", "");
+        }
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
