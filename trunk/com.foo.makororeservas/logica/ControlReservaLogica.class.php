@@ -412,22 +412,22 @@ class ControlReservaLogicaclass {
      * 1 = PP -> CO
      * 2 = PP -> PA
      * 3 = PP -> CA 
-     * 4 = PP -> PP
+     * 4 = PP -> PP igual
      *
      * 5 = CO -> PA
      * 6 = CO -> CA 
-     * 7 = CO -> PP
-     * 17 = CO -> CO
+     * 7 = CO -> PP no lo hace
+     * 17 = CO -> CO no lo hace
      *
-     * 9 = PA -> PP
-     * 10 = PA -> CO
+     * 9 = PA -> PP no lo hace
+     * 10 = PA -> CO no lo hace
      * 11 = PA -> CA se hace un reembolso
-     * 12 = PA -> PA
+     * 12 = PA -> PA igual
      *
-     * 13 = CA -> PP
-     * 14 = CA -> CO
-     * 15 = CA -> PA
-     * 16 = CA -> CA
+     * 13 = CA -> PP no lo hace
+     * 14 = CA -> CO no lo hace
+     * 15 = CA -> PA no lo hace
+     * 16 = CA -> CA no lo hace
      */
     function actualizarEstadoReserva($solicitud, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $verificarSolicitud = $this->existeSolicitud($solicitud);
@@ -459,7 +459,7 @@ class ControlReservaLogicaclass {
                         $resultado = 3;
                     }
                 }
-                if($estado == 'PA'){
+                if($estado == 'PP'){
                     $resultado = 4;
                 }
             }
@@ -540,22 +540,22 @@ class ControlReservaLogicaclass {
      * 1 = PP -> CO
      * 2 = PP -> PA
      * 3 = PP -> CA 
-     * 4 = PP -> PP
+     * 4 = PP -> PP igual
      *
      * 5 = CO -> PA
      * 6 = CO -> CA 
-     * 7 = CO -> PP
-     * 17 = CO -> CO
+     * 7 = CO -> PP no lo hace
+     * 17 = CO -> CO igual
      *
-     * 9 = PA -> PP
-     * 10 = PA -> CO
+     * 9 = PA -> PP no lo hace
+     * 10 = PA -> CO no lo hace
      * 11 = PA -> CA se hace un reembolso
-     * 12 = PA -> PA
+     * 12 = PA -> PA no lo hace
      *
-     * 13 = CA -> PP
-     * 14 = CA -> CO
-     * 15 = CA -> PA
-     * 16 = CA -> CA
+     * 13 = CA -> PP no lo hace
+     * 14 = CA -> CO no lo hace
+     * 15 = CA -> PA no lo hace
+     * 16 = CA -> CA no lo hace
      */
     function actualizarEstadoReservaPorPersona($idReserva, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
         $verificarReserva = $this->existeReserva($idReserva);
@@ -582,7 +582,7 @@ class ControlReservaLogicaclass {
                     $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReserva);
                     $resultado = 3;
                 }
-                if($estado == 'PA'){
+                if($estado == 'PP'){
                     $resultado = 4;
                 }
             }
