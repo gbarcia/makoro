@@ -75,6 +75,13 @@ $clienteTest = new ClienteParticularclass();
 
 /*----------------------------*/
 
-$resultado = $controlTest->cantidadAdlChl('ABC1');
+$resultado = $controlTest->crearReserva('vuelta', 3, 2, 1, '2009-02-05', 1, 1, 111, 81271000, null, null, 'QS106713', 'PP');
+echo $resultado;
+
+//$resultado = $controlTest->cantidadAdlChlIda('QS106713');
+//echo $resultado;
+
+//$resultado = $controlTest->verificarCantidadPasajeros('QS106713', 1, 2);
+//echo $resultado;
 
 ?>
