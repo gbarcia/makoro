@@ -146,8 +146,8 @@ class controladorVueloBDclass {
         if($rutaSitioLlegada != "")
             $query.= " AND ru.sitioLlegada = '".$rutaSitioLlegada."' ";
         if($avionMatricula != ""){
-            $query.= " AND a.matricula = '".$avionMatricula."'
-                   AND a.habilitado = 1 ";
+            $query.= " AND a.matricula = '".$avionMatricula."' 
+                       AND a.habilitado = 1 ";
         }
         if($cedulaPasaporte != ""){
             $query.= " AND r.PASAJERO_id = p.id ";
