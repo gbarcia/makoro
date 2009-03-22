@@ -99,7 +99,7 @@ function autoSugerir($busqueda){
             $resultado.= '<td>' . $row[rutaLlegada] . '</td>';
             $resultado.= '<td>' . $matricula. '</td>';
             $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[id].')"/></td>';
-            $resultado.= '<td><input type="button" value="ANULAR" onclick="xajax_editar('.$row[id].')"/></td>';
+            $resultado.= '<td><input type="button" value="ANULAR" onclick="xajax_anular('.$row[id].')"/></td>';
             $resultado.= '</tr>';
             $color = !$color;
         }
@@ -128,6 +128,7 @@ function cadenaTodosLosVuelos () {
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
     $resultado.= '<th>OPCIONES</th>';
+    $resultado.= '<th>ANULAR</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     while ($row = mysql_fetch_array($recurso)) {
@@ -162,6 +163,7 @@ function cadenaTodosLosVuelos () {
         $resultado.= '<td>' . $pilotoMostrar. '</td>';
         $resultado.= '<td>' . $copilotoMostrar. '</td>';
         $resultado.= '<td><input type="button" value="EDITAR" onclick="xajax_editar('.$row[id].')"/></td>';
+        $resultado.= '<td><input type="button" value="ANULAR" onclick="xajax_anular('.$row[id].')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -395,7 +397,7 @@ function validarHorario ($hora) {
             if (is_numeric($arregloHora[0]) && is_numeric($arregloHora[1]) && is_numeric($arregloHora[2]) ) {
                 if ($arregloHora[0] <= 23 && $arregloHora[1] <= 59 && $arregloHora[2] <= 59 &&
                     $arregloHora[0] >=0 && $arregloHora[1] >=0 && $arregloHora[2] >=0) {
-                        $resultado = true;
+                    $resultado = true;
                 }
             }
         }
@@ -416,7 +418,7 @@ function validarVuelo ($datos) {
         $resultado = true;
         else return false;
     }
-     if ($datos[copiloto] == 'NULL') {
+    if ($datos[copiloto] == 'NULL') {
         if ($datos[piloto] == 'NULL')
         $resultado = true;
         else return false;
@@ -537,4 +539,20 @@ function borrarMensaje(){
     $objResponse->addAssign("Mensaje", "innerHTML", $respuesta);
     return $objResponse;
 }
+
+function anular ($idVuelo) {
+    $objResponse = new xajaxResponse();
+    $mensaje = "";
+    $resultado = false;
+    $control = new controladorGestionVuelos();
+    $objResponse->addConfirmCommands(6, "Esta seguro que quiere eliminar el vuelo $idVuelo junto con todas sus reservas e informacion?. Esta operacion es irreversible");
+    $resultado = $control->deshacerDelSistemaUnVuelo($idVuelo);
+    if ($resultado)
+    $mensaje = "El vuelo $idVuelo ha sido eliminado del sistema con exito junto con toda su información";
+    else 
+    $mensaje = "No se pudo anular el vuelo $idVuelo. Consulte el manual de ayuda";
+    $objResponse->addAssign("Mensaje", "innerHTML", $mensaje);
+    return $objResponse;
+}
+
 ?>
