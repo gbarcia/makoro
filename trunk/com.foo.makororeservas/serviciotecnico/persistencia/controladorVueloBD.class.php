@@ -103,7 +103,7 @@ class controladorVueloBDclass {
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
                                  AND vre.VUELO_id = v.id),0) as quedan,
-                         IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id))>=".$cantidadAdultosNinos.",TRUE,FALSE)
+                         IFNULL((SELECT IF((a.asientos-COUNT(vre.RESERVA_id)+v.cantidadInfantes)>=".$cantidadAdultosNinos.",TRUE,FALSE)
                                  FROM VUELO_RESERVA vre, VUELO vu, RESERVA re
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
@@ -225,6 +225,7 @@ class controladorVueloBDclass {
         }
         $query .= " ORDER BY v.fecha,v.hora ASC
                     LIMIT 50";
+        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -247,7 +248,7 @@ class controladorVueloBDclass {
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
                                  AND vre.VUELO_id = v.id),0) as quedan,
-                         IFNULL((SELECT IF(a.asientos-(COUNT(vre.RESERVA_id)+0)>=0,TRUE,FALSE)
+                         IFNULL((SELECT IF((a.asientos-COUNT(vre.RESERVA_id)+v.cantidadInfantes)>=0,TRUE,FALSE)
                                  FROM VUELO_RESERVA vre, VUELO vu, RESERVA re
                                  WHERE re.id = vre.RESERVA_id
                                  AND vu.id = vre.VUELO_id
