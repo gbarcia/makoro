@@ -75,13 +75,29 @@ $clienteTest = new ClienteParticularclass();
 
 /*----------------------------*/
 
-$resultado = $controlTest->crearReserva('vuelta', 3, 2, 1, '2009-02-05', 1, 1, 111, 81271000, null, null, 'QS106713', 'PP');
-echo $resultado;
+//$resultado = $controlTest->crearReserva('vuelta', 3, 2, 1, '2009-02-05', 1, 1, 111, 81271000, null, null, 'QS106713', 'PP');
+//echo $resultado;
 
 //$resultado = $controlTest->cantidadAdlChlIda('QS106713');
 //echo $resultado;
 
 //$resultado = $controlTest->verificarCantidadPasajeros('QS106713', 1, 2);
 //echo $resultado;
+
+//$resultado = $controlTest->cantidadInfantesSolicitud('QS106713');
+//echo $resultado;
+//
+//$resultado = $controlTest->obtenerIdVueloInfantesIda('QS106713');
+//echo ' IdVuelo '.$resultado[0].' cantInfantes '.$resultado[1];
+//
+//$resultado = $controlTest->obtenerIdVueloInfantesVuelta('QS106713');
+//echo ' IdVuelo '.$resultado[0].' cantInfantes '.$resultado[1];
+
+$resultado = $controlTest->actualizarEstadoReserva('QS106713', 'CA', '', '', '', '', '');
+echo $resultado;
+
+//$resultado = $controlTest->obtenerCantInfVuelo(3);
+//echo $resultado;
+
 
 ?>
