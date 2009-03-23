@@ -195,7 +195,6 @@ $xajax->processRequests();
             <div class="tableContainer" id="vuelos">
                 <script type="text/javascript">
                     xajax_desplegarInicio();
-                    xajax_desplegarFormularioCambiarEstado();
                 </script>
             </div>
         </div>

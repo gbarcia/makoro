@@ -221,6 +221,8 @@ function desplegarDetalles($idVuelo){
     $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
     $objResponse->addAssign("izquierda", "innerHTML", $formulario);
     $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
+    $respuesta = generarFormularioCambiarEstado($idVuelo);
+    $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
     return $objResponse;
 }
 
@@ -589,9 +591,9 @@ function buscarSolicitud($datos){
     }
 }
 
-function desplegarFormularioCambiarEstado(){
+function desplegarFormularioCambiarEstado($idVuelo){
     $objResponse = new xajaxResponse();
-    $respuesta = generarFormularioCambiarEstado();
+    $respuesta = generarFormularioCambiarEstado($idVuelo);
     $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
     return $objResponse;
 }
@@ -707,6 +709,10 @@ function cambiarEstado($datos){
 
         $objResponse = new xajaxResponse();
         $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+        $detalles = detalles($datos[idVuelo]);
+        $fichaVuelo = generarFichaVuelo($datos[idVuelo]);
+        $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
+        $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
         return $objResponse;
     }
 }
@@ -733,26 +739,39 @@ function procesarPago($datos){
     } else {
         $controlReserva = new ControlReservaLogicaclass();
         $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], $datos[tipoPago], $datos[monto], $datos[banco], $datos[transaccion], $datos[moneda]);
-        if ($resultado){
+        if (($resultado == 2) && ($resultado == 6)){
             $respuesta ='<div class="exito">
-            <div class="textoMensaje">
-            Se registro el pago para las reservas del localizador . '.$datos[solicitud].'.
-            </div>
-            <div class="botonCerrar">
-            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
-            </div>
-            </div>';
+                            <div class="textoMensaje">
+                            Se registro el pago para las reservas del localizador '.$datos[solicitud].'
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        } else if ($resultado == 12){
+            $respuesta ='<div class="error">
+                            <div class="textoMensaje">
+                            La reserva ya esta PAGADAS.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
         } else {
             $respuesta ='<div class="error">
-            <div class="textoMensaje">
-            La reserva ya esta pagada.
-            </div>
-            <div class="botonCerrar">
-            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
-            </div>
-            </div>';
+                            <div class="textoMensaje">
+                            Verifique el manual de usuario.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
         }
         $objResponse = new xajaxResponse();
+        $detalles = detalles($datos[idVuelo]);
+        $fichaVuelo = generarFichaVuelo($datos[idVuelo]);
+        $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
+        $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
         $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
         return $objResponse;
     }
