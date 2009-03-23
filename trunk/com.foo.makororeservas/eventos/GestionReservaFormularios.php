@@ -338,9 +338,10 @@ function tablaVacia(){
     return $resultado;
 }
 
-function generarFormularioCambiarEstado(){
+function generarFormularioCambiarEstado($idVuelo){
     $contenido = '<form id="formCambiarEstado">
-                    <table border="0">
+                    <input type="hidden" name="idVuelo" value="'.$idVuelo.'" />
+<table border="0">
                         <tr>
                             <td>Localizador</td>
                             <td><input type="text" name="solicitud" value="" onkeyup="this.value=this.value.toUpperCase();"/></td>
@@ -366,6 +367,7 @@ function generarFormularioCambiarEstado(){
 
 function generarFormularioCambiarEstado2($datos){
     $contenido = '<form id="formCambiarEstado">
+                    <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
                     <input type="hidden" name="estado" value="PA" />
                     <table border="0">
                     <tr>
@@ -397,8 +399,8 @@ function generarFormularioCambiarEstado2($datos){
                     <td><input type="text" name="transaccion" value="" onkeyup="this.value=this.value.toUpperCase();"/></td>
                     </tr>
                     <tr>
-<td colspan="2" align="center"><input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioCambiarEstado()" />
-<input name="button" type="button" id="button" value="CAMBIAR ESTADO" onclick= "xajax_procesarPago(xajax.getFormValues(\'formCambiarEstado\'))" /></td>
+                    <td colspan="2" align="center"><input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioCambiarEstado('.$datos[idVuelo].')" />
+                    <input name="button" type="button" id="button" value="CAMBIAR ESTADO" onclick= "xajax_procesarPago(xajax.getFormValues(\'formCambiarEstado\'))" /></td>
                     </tr>
                     </table>
                 </form>';
