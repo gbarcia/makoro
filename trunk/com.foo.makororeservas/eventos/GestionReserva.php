@@ -61,10 +61,22 @@ function generarComboBoxMoneda(){
     return $combo;
 }
 
+function validarFiltros($datos){
+    foreach ($datos as $valor) {
+        if (!empty($valor)) return true ;
+    }
+    return false;
+}
+
 function desplegarBusqueda($datos){
     $objResponse = new xajaxResponse();
-    $resultado = procesarFiltros($datos);
-    $objResponse->addAssign("vuelos", "innerHTML", $resultado);
+    $flag = validarFiltros($datos);
+    if ($flag){
+        $resultado = procesarFiltros($datos);
+        $objResponse->addAssign("vuelos", "innerHTML", $resultado);
+    }else{
+        $objResponse->addAlert("Debe colocar algun filtro");
+    }
     return $objResponse;
 }
 
@@ -382,6 +394,11 @@ function agregarReserva($datos){
             } else {
                 $clienteParticularCedula = $datos[idCliente];
             }
+            if (($_SESSION['EncargadoValido']) == false){
+                $objResponse->addAlert("La sesion ha caducado.");
+                $objResponse->addRedirect("PresentacionSalida.php");
+                return $objResponse;
+            }
             $respuesta = $controlReserva->crearReserva($datos[tipoVuelo], $datos[idVuelo], $datos[cantidadAdlChd],
                 $datos[cantidadInf], date("Y") . "-" . date("m") . '-' . date('d'), $datos[servicio],
                 $_SESSION['EncargadoSucursal'], $_SESSION['EncargadoCedula'], $clienteParticularCedula, $clienteAgenciaRif, $datos[posada], $datos[solicitud], $datos[estado]);
@@ -402,7 +419,7 @@ function agregarReserva($datos){
             } else {
                 $mensaje = '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo realizar la reserva. Verifique la disponibilidad de asientos.
+                          No se pudo realizar la reserva. Verifique la disponibilidad de asientos o condodarcia de reservas de Salida y Retorno.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -690,7 +707,16 @@ function cambiarEstado($datos){
         } else if(($resultado == 13) || ($resultado == 14) || ($resultado == 15) || ($resultado == 16)){
             $respuesta ='<div class="error">
             <div class="textoMensaje">
-            Las reservas del localizador'.$datos[solicitud].' se encuentran CANCELADAS. Este estado no puede ser alterado.
+            Las reservas del localizador '.$datos[solicitud].' se encuentran CANCELADAS. Este estado no puede ser alterado.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
+        } else if ($resultado == 8){
+            $respuesta ='<div class="error">
+            <div class="textoMensaje">
+            No se encontro la solicitud '.$datos[solicitud].'. Por favor, verifiquelo e intentelo de nuevo.
             </div>
             <div class="botonCerrar">
             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -727,10 +753,10 @@ function procesarPago($datos){
             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
             </div>
             </div>';
-    } else if (($tipoPago[tipoPago] != 'EF') && (($datos[banco] == '') || ($datos[transaccion] == ''))) {
+    } else if (($datos[tipoPago] != 'EF') && (($datos[banco] == '') || ($datos[transaccion] == ''))) {
         $respuesta ='<div class="advertencia">
             <div class="textoMensaje">
-            Debe indicar el banco y numero de la transaccion para operaciones bancarias.
+            Debe indicar el banco y numero de la transaccion para operaciones bancarias. Tipo de pago: '. $datos[tipoPago] .'.
             </div>
             <div class="botonCerrar">
             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -739,7 +765,7 @@ function procesarPago($datos){
     } else {
         $controlReserva = new ControlReservaLogicaclass();
         $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], $datos[tipoPago], $datos[monto], $datos[banco], $datos[transaccion], $datos[moneda]);
-        if (($resultado == 2) && ($resultado == 5)){
+        if (($resultado == 2) || ($resultado == 5)){
             $respuesta ='<div class="exito">
                             <div class="textoMensaje">
                             Se registro el pago para las reservas del localizador '.$datos[solicitud].'
@@ -769,7 +795,7 @@ function procesarPago($datos){
         } else {
             $respuesta ='<div class="error">
                             <div class="textoMensaje">
-                            Verifique el manual de usuario. Error PPME'.$respuesta.'
+                            Verifique el manual de usuario. Error PPME'.$resultado.'
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
