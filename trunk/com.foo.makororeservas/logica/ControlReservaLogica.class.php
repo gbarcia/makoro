@@ -86,6 +86,7 @@ class ControlReservaLogicaclass {
         $disponibleInfante = $this->asientosDisponiblesInfante($idVuelo, $cantidadInfantes);
         $arrayInf = new ArrayObject();
         $arrayAdl = new ArrayObject();
+        $arrayIdInf = new ArrayObject();
         $solicitudGenerada = false;
         $cantAdlChlOriginal = $cantAdultoNino;
         $cantInfOriginal = $cantidadInfantes;
@@ -109,6 +110,7 @@ class ControlReservaLogicaclass {
                 $contador = $cantidadInfantes;
                 do{
                     $idPasajeroInf = $this->controlPasajero->nuevoPasajero('INFANTE', '', 'M', NULL, NULL, NULL, 'INF');
+                    $arrayIdInf->append($idPasajeroInf);
                     $resultadoInf = $this->nuevaReserva($fecha, $estado, $solicitud, $tipoServicioId, $sucursalId, $encargadoCedula, $clienteParticularCedula,
                         $clienteAgenciaRif, 1, $idPasajeroInf, $posadaId);
                     $arrayInf->append($resultadoInf);
@@ -157,7 +159,7 @@ class ControlReservaLogicaclass {
                         $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
                     }
                 }else{
-                    $this->rollBackReserva($arrayAdl, $arrayInf, $idPasajeroInf);
+                    $this->rollBackReserva($arrayAdl, $arrayInf, $arrayIdInf);
                     return false;
                 }
             }
@@ -183,14 +185,16 @@ class ControlReservaLogicaclass {
         return "";
     }
 
-    function rollBackReserva($arrayAdl, $arrayInf, $idPasajero){
+    function rollBackReserva($arrayAdl, $arrayInf, $arrayIdInf){
         foreach ($arrayAdl as $variable) {
             $this->controlBD->eliminarReserva($variable);
         }
         foreach ($arrayInf as $inf) {
             $this->controlBD->eliminarReserva($inf);
         }
-        $this->controlBD->eliminarInfante($idPasajero);
+        foreach ($arrayIdInf as $idInf) {
+            $this->controlBD->eliminarInfante($idInf);
+        }
         return true;
     }
 
