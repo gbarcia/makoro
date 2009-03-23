@@ -225,7 +225,6 @@ class controladorVueloBDclass {
         }
         $query .= " ORDER BY v.fecha,v.hora ASC
                     LIMIT 50";
-        echo $query;
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
