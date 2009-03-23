@@ -435,6 +435,8 @@ class ControlReservaLogicaclass {
      * 16 = CA -> CA no lo hace
      */
     function actualizarEstadoReserva($solicitud, $estado, $tipo, $monto, $nombreBanco, $numeroTransaccion, $monedaId) {
+        $arregloIda = array();
+        $arregloVuelta = array();
         $verificarSolicitud = $this->existeSolicitud($solicitud);
         if($verificarSolicitud != $solicitud){
             $resultado = 8;
@@ -458,11 +460,25 @@ class ControlReservaLogicaclass {
                 if($estado == 'CA'){
                     $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
                     $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+                    $arregloIda = $this->obtenerIdVueloInfantesIda($solicitud);
+                    $idVueloIda = $arregloIda[0];
+                    $cantInfIda = $arregloIda[1];
+                    $cantInfVueloIda = $this->obtenerCantInfVuelo($idVueloIda);
+                    $cantNuevaIda = $cantInfVueloIda-$cantInfIda;
+                    $this->controlVuelo->actualizarCantidadInfantesVuelo($idVueloIda, $cantNuevaIda);
+
+                    $arregloVuelta = $this->obtenerIdVueloInfantesVuelta($solicitud);
+                    $idVueloVuelta = $arregloVuelta[0];
+                    $cantInfVuelta = $arregloVuelta[1];
+                    $cantInfVueloVuelta = $this->obtenerCantInfVuelo($idVueloVuelta);
+                    $cantNuevaVuelta = $cantInfVueloVuelta-$cantInfVuelta;
+                    $this->controlVuelo->actualizarCantidadInfantesVuelo($idVueloVuelta, $cantNuevaVuelta);
                     while($row = mysql_fetch_array($recurso)){
                         $idReservas = $row[idReserva];
                         $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
-                        $resultado = 3;
                     }
+                    
+                    $resultado = 3;
                 }
                 if($estado == 'PP'){
                     $resultado = 4;
@@ -481,11 +497,25 @@ class ControlReservaLogicaclass {
                 if($estado == 'CA'){
                     $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
                     $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+                    $arregloIda = $this->obtenerIdVueloInfantesIda($solicitud);
+                    $idVueloIda = $arregloIda[0];
+                    $cantInfIda = $arregloIda[1];
+                    $cantInfVueloIda = $this->obtenerCantInfVuelo($idVueloIda);
+                    $cantNuevaIda = $cantInfVueloIda-$cantInfIda;
+                    $this->controlVuelo->actualizarCantidadInfantesVuelo($idVueloIda, $cantNuevaIda);
+
+                    $arregloVuelta = $this->obtenerIdVueloInfantesVuelta($solicitud);
+                    $idVueloVuelta = $arregloVuelta[0];
+                    $cantInfVuelta = $arregloVuelta[1];
+                    $cantInfVueloVuelta = $this->obtenerCantInfVuelo($idVueloVuelta);
+                    $cantNuevaVuelta = $cantInfVueloVuelta-$cantInfVuelta;
+                    $this->controlVuelo->actualizarCantidadInfantesVuelo($idVueloVuelta, $cantNuevaVuelta);
                     while($row = mysql_fetch_array($recurso)){
                         $idReservas = $row[idReserva];
                         $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
-                        $resultado = 6;
                     }
+                    
+                    $resultado = 6;
                 }
                 if($estado == 'PP'){
                     $resultado = 7;
@@ -505,11 +535,25 @@ class ControlReservaLogicaclass {
                 if($estado == 'CA'){
                     $editaEstado = $this->controlBD->editarEstadoReserva($solicitud, $estado);
                     $recurso = $this->controlBD->buscarLosIdRelacionadosPorSolicitud($solicitud);
+                    $arregloIda = $this->obtenerIdVueloInfantesIda($solicitud);
+                    $idVueloIda = $arregloIda[0];
+                    $cantInfIda = $arregloIda[1];
+                    $cantInfVueloIda = $this->obtenerCantInfVuelo($idVueloIda);
+                    $cantNuevaIda = $cantInfVueloIda-$cantInfIda;
+                    $this->controlVuelo->actualizarCantidadInfantesVuelo($idVueloIda, $cantNuevaIda);
+
+                    $arregloVuelta = $this->obtenerIdVueloInfantesVuelta($solicitud);
+                    $idVueloVuelta = $arregloVuelta[0];
+                    $cantInfVuelta = $arregloVuelta[1];
+                    $cantInfVueloVuelta = $this->obtenerCantInfVuelo($idVueloVuelta);
+                    $cantNuevaVuelta = $cantInfVueloVuelta-$cantInfVuelta;
+                    $this->controlVuelo->actualizarCantidadInfantesVuelo($idVueloVuelta, $cantNuevaVuelta);
                     while($row = mysql_fetch_array($recurso)){
                         $idReservas = $row[idReserva];
                         $eliminacionVuelosReserva = $this->controlVueloReservaBD->eliminarVueloReserva($idReservas);
-                        $resultado = 11;
                     }
+                    
+                    $resultado = 11;
                 }
                 if($estado == 'PA'){
                     $resultado = 12;
@@ -673,6 +717,34 @@ class ControlReservaLogicaclass {
         $recurso = $this->controlBD->cantidadInfantesIda($solicitud);
         $row = mysql_fetch_array($recurso);
         $cantidadInfantes = $row[cantidadInfantes];
+        return $cantidadInfantes;
+    }
+
+    function obtenerIdVueloInfantesIda($solicitud){
+        $recurso = $this->controlBD->obtenerIdVueloInfantesIda($solicitud);
+        $row = mysql_fetch_array($recurso);
+        $idVuelo = $row[idVueloIda];
+        $cantidadInfantes = $row[cantidadInfantesIda];
+        $arrayInf[0] = $idVuelo;
+        $arrayInf[1] = $cantidadInfantes;
+
+        return $arrayInf;
+    }
+
+    function obtenerIdVueloInfantesVuelta($solicitud){
+        $recurso = $this->controlBD->obtenerIdVueloInfantesVuelta($solicitud);
+        $row = mysql_fetch_array($recurso);
+        $idVuelo = $row[idVueloVuelta];
+        $cantidadInfantes = $row[cantidadInfantesVuelta];
+        $arrayInf[0] = $idVuelo;
+        $arrayInf[1] = $cantidadInfantes;
+        return $arrayInf;
+    }
+
+    function obtenerCantInfVuelo($idVuelo){
+        $recurso = $this->controlBD->obtenerCantInfVuelo($idVuelo);
+        $row = mysql_fetch_array($rsecurso);
+        $cantidadInfantes = $row[cantidadInfantesVuelo];
         return $cantidadInfantes;
     }
 

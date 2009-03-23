@@ -345,12 +345,52 @@ class controladorReservaBDclass {
      */
     function cantidadInfantesIda($solicitud){
         $query = "SELECT COUNT(R.id) as cantidadInfantes
-                  FROM RESERVA R, PASAJERO P, VUELO_RESERVA VR, VUELO V
+                  FROM RESERVA R, PASAJERO P, VUELO_RESERVA VR, VUELO V, TIPO_PASAJERO TP
                   WHERE R.solicitud = '".$solicitud."'
                   AND R.PASAJERO_id = P.id
+                  AND TP.id = P.TIPO_PASAJERO_id
+                  AND TP.id = 'INF'
                   AND R.id = VR.RESERVA_id
                   AND V.id = VR.VUELO_id
                   AND VR.tipo = 'ida'";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function obtenerIdVueloInfantesIda($solicitud){
+        $query = "SELECT V.id as idVueloIda, COUNT(R.id) as cantidadInfantesIda
+                  FROM RESERVA R, PASAJERO P, VUELO_RESERVA VR, VUELO V, TIPO_PASAJERO TP
+                  WHERE R.solicitud = '".$solicitud."'
+                  AND R.PASAJERO_id = P.id
+                  AND TP.id = P.TIPO_PASAJERO_id
+                  AND TP.id = 'INF'
+                  AND R.id = VR.RESERVA_id
+                  AND V.id = VR.VUELO_id
+                  AND VR.tipo = 'ida'
+                  GROUP BY(V.id)";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function obtenerIdVueloInfantesVuelta($solicitud){
+        $query = "SELECT V.id as idVueloVuelta, COUNT(R.id) as cantidadInfantesVuelta
+                  FROM RESERVA R, PASAJERO P, VUELO_RESERVA VR, VUELO V, TIPO_PASAJERO TP
+                  WHERE R.solicitud = '".$solicitud."'
+                  AND R.PASAJERO_id = P.id
+                  AND TP.id = P.TIPO_PASAJERO_id
+                  AND TP.id = 'INF'
+                  AND R.id = VR.RESERVA_id
+                  AND V.id = VR.VUELO_id
+                  AND VR.tipo = 'vuelta'
+                  GROUP BY(V.id)";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
+    }
+
+    function obtenerCantInfVuelo($idVuelo){
+        $query = "SELECT V.cantidadInfantes as cantidadInfantesVuelo
+                  FROM VUELO V
+                  WHERE V.id = $idVuelo";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
