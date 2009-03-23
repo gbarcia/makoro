@@ -177,5 +177,22 @@ class ControlBoletoLogicaclass {
         $coleccionResultado ->append($Objeto);
         return $coleccionResultado;
     }
+/**
+ * Metodo para emitir el boleto por interfaz
+ * @param <type> $idSolicitud id solcitud
+ * @return <type>
+ */
+    function emitirBoletoGui ($idSolicitud) {
+        $valido = false;
+        $control = new controladorBoletoBDclass();
+        $valido = $control->validoBoleto($idSolicitud);
+        if ($valido) {
+            echo ("<script>window.opener.parent.location='boleto.php?nsolicitud=".$idSolicitud."'</script>");
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
 ?>
