@@ -397,8 +397,8 @@ function generarFormularioCambiarEstado2($datos){
                     <td><input type="text" name="transaccion" value="" onkeyup="this.value=this.value.toUpperCase();"/></td>
                     </tr>
                     <tr>
-                    <td>&nbsp</td>
-                    <td><input type="submit" value="CAMBIAR ESTADO" /></td>
+<td colspan="2" align="center"><input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioCambiarEstado()" />
+<input name="button" type="button" id="button" value="CAMBIAR ESTADO" onclick= "xajax_procesarPago(xajax.getFormValues(\'formCambiarEstado\'))" /></td>
                     </tr>
                     </table>
                 </form>';
