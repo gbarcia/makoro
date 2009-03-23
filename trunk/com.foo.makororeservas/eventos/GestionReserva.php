@@ -604,48 +604,158 @@ function desplegarFormularioCambiarEstado2($datos){
 }
 
 function cambiarEstado($datos){
-    if ($datos[estado] == 'PA'){
+    if ($datos[solicitud] == ''){
+        $respuesta ='<div class="advertencia">
+                            <div class="textoMensaje">
+                            Debe ingresar un numero de localizador.
+                        </div>
+                        <div class="botonCerrar">
+                        <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                        </div>
+                        </div>';
+        $objResponse = new xajaxResponse();
+        $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+        return $objResponse;
+    } else if ($datos[estado] == 'PA'){
         return desplegarFormularioCambiarEstado2($datos);
     } else {
         $controlReserva = new ControlReservaLogicaclass();
         $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], '', '', '', '', '');
-        switch ($resultado) {
-            case 8:
-                $respuesta ='<div class="error">
-                          <div class="textoMensaje">
-                          El localizador '.$datos[solicitud].' no se ha encontrando. Por favor, verifiquelo e intentelo nuevamente.
-                          </div>
-                          <div class="botonCerrar">
-                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
-                          </div>
-                          </div>';
-                break;
-            case 6:
-                $respuesta ='<div class="advertencia">
-                          <div class="textoMensaje">
-                          La reservas del localizador '.$datos[solicitud].' han sido anuladas. Recuerde retornar el porcentaje correspondiente a las partes afectadas.
-                          </div>
-                          <div class="botonCerrar">
-                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
-                          </div>
-                          </div>';
-                break;
-            default:
-                $respuesta ='<div class="exito">
-                          <div class="textoMensaje">
-                          La reservas del localizador '.$datos[solicitud].' han sido cambiadas de estado satisfactoriamente. Resultado = '.$resultado.'
-                          </div>
-                          <div class="botonCerrar">
-                          <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
-                          </div>
-                          </div>';
-                break;
+
+        if (($resultado == 1) || ($resultado == 2) || ($resultado == 3)){
+            $respuesta ='<div class="exito">
+                            <div class="textoMensaje">
+                            Las reservas del localizador '.$datos[solicitud].' fueron cambiadas de estado. Estado original: PP. Estado Actual: '.$datos[estado].'
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        } else if ($resultado == 4){
+            $respuesta ='<div class="advertencia">
+                            <div class="textoMensaje">
+                            Las reservas del localizador '.$datos[solicitud].' ya se encuentran PAGADAS actualmente.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        } else if (($resultado == 5) || ($resultado == 6)){
+            $respuesta ='<div class="exito">
+                            <div class="textoMensaje">
+                            Las reservas del localizador '.$datos[solicitud].' fueron cambiadas de estado. Estado original: CO. Estado Actual: '.$datos[estado].'
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        } else if ($resultado == 7){
+            $respuesta ='<div class="error">
+                            <div class="textoMensaje">
+                            Las reservas del localizador'.$datos[solicitud].' se encuentran CONFIRMADAS. Este estado no puede ser alterado.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        } else if ($resultado == 17){
+            $respuesta ='<div class="advertencia">
+                            <div class="textoMensaje">
+                            Las reservas del localizador '.$datos[solicitud].' ya se encuentra CONFIRMADAS actualmente.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        } else if (($resultado == 9) || ($resultado == 10) || ($resultado == 12)){
+            $respuesta ='<div class="advertencia">
+            <div class="textoMensaje">
+            Las reservas del localizador'.$datos[solicitud].' se encuentran PAGADAS. Este estado no puede ser alterado.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
+        } else if ($resultado == 11){
+            $respuesta ='<div class="advertencia">
+            <div class="textoMensaje">
+            Las reservas del localizador'.$datos[solicitud].' se han ANULADO. Recuerde que se debe hacer la devolucion pertinente al caso.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
+        } else if(($resultado == 13) || ($resultado == 14) || ($resultado == 15) || ($resultado == 16)){
+            $respuesta ='<div class="error">
+            <div class="textoMensaje">
+            Las reservas del localizador'.$datos[solicitud].' se encuentran CANCELADAS. Este estado no puede ser alterado.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
+        } else {
+            $respuesta ='<div class="error">
+            <div class="textoMensaje">
+            Verifique el manual de usuario.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
         }
+
         $objResponse = new xajaxResponse();
         $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
         return $objResponse;
     }
 }
 
+function procesarPago($datos){
+    if ($datos[monto] == ''){
+        $respuesta ='<div class="advertencia">
+            <div class="textoMensaje">
+            Debe ingresar un monto
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
+    } else if (($tipoPago[tipoPago] != 'EF') && (($datos[banco] == '') || ($datos[transaccion] == ''))) {
+        $respuesta ='<div class="advertencia">
+            <div class="textoMensaje">
+            Debe indicar el banco y numero de la transaccion para operaciones bancarias.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
+    } else {
+        $controlReserva = new ControlReservaLogicaclass();
+        $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], $datos[tipoPago], $datos[monto], $datos[banco], $datos[transaccion], $datos[moneda]);
+        if ($resultado){
+            $respuesta ='<div class="exito">
+            <div class="textoMensaje">
+            Se registro el pago para las reservas del localizador . '.$datos[solicitud].'.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
+        } else {
+            $respuesta ='<div class="error">
+            <div class="textoMensaje">
+            La reserva ya esta pagada.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
+        }
+        $objResponse = new xajaxResponse();
+        $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+        return $objResponse;
+    }
+}
 
 ?>
