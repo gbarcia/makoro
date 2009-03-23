@@ -157,7 +157,7 @@ class ControlReservaLogicaclass {
                         $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
                     }
                 }else{
-                    $this->rollBackReserva($arrayAdl, $arrayInf);
+                    $this->rollBackReserva($arrayAdl, $arrayInf, $idPasajeroInf);
                     return false;
                 }
             }
@@ -183,13 +183,14 @@ class ControlReservaLogicaclass {
         return "";
     }
 
-    function rollBackReserva($arrayAdl,$arrayInf){
+    function rollBackReserva($arrayAdl, $arrayInf, $idPasajero){
         foreach ($arrayAdl as $variable) {
             $this->controlBD->eliminarReserva($variable);
         }
         foreach ($arrayInf as $inf) {
             $this->controlBD->eliminarReserva($inf);
         }
+        $this->controlBD->eliminarInfante($idPasajero);
         return true;
     }
 
@@ -411,11 +412,11 @@ class ControlReservaLogicaclass {
      * 8 = No existe el localizador
      * 1 = PP -> CO
      * 2 = PP -> PA
-     * 3 = PP -> CA 
+     * 3 = PP -> CA
      * 4 = PP -> PP igual
      *
      * 5 = CO -> PA
-     * 6 = CO -> CA 
+     * 6 = CO -> CA
      * 7 = CO -> PP no lo hace
      * 17 = CO -> CO no lo hace
      *
@@ -539,11 +540,11 @@ class ControlReservaLogicaclass {
      * 8 = No existe el localizador
      * 1 = PP -> CO
      * 2 = PP -> PA
-     * 3 = PP -> CA 
+     * 3 = PP -> CA
      * 4 = PP -> PP igual
      *
      * 5 = CO -> PA
-     * 6 = CO -> CA 
+     * 6 = CO -> CA
      * 7 = CO -> PP no lo hace
      * 17 = CO -> CO igual
      *
@@ -670,7 +671,7 @@ class ControlReservaLogicaclass {
         $cantidadInfantes = $row[cantidadInfantes];
         return $cantidadInfantes;
     }
-    
+
     function verificarCantidadPasajeros($solicitud,$cantAdl,$cantInf){
         $cantidadAdultos = $this->cantidadAdlChlIda($solicitud);
         $cantidadInfantes = $this->cantidadInfantesIda($solicitud);
