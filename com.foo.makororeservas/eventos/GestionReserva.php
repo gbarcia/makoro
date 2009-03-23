@@ -467,7 +467,7 @@ function procesarAgencia($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique el manual del usuario.
+                          Verifique el manual del usuario. Error '.$resultado.'
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -510,7 +510,7 @@ function procesarCliente($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique el manual del usuario.
+                          Verifique el manual del usuario. Error '.$resultado.'
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -699,7 +699,7 @@ function cambiarEstado($datos){
         } else {
             $respuesta ='<div class="error">
             <div class="textoMensaje">
-            Verifique el manual de usuario.
+            Verifique el manual de usuario. Error CEME'.$resultado.'
             </div>
             <div class="botonCerrar">
             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -739,7 +739,7 @@ function procesarPago($datos){
     } else {
         $controlReserva = new ControlReservaLogicaclass();
         $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], $datos[tipoPago], $datos[monto], $datos[banco], $datos[transaccion], $datos[moneda]);
-        if (($resultado == 2) && ($resultado == 6)){
+        if (($resultado == 2) && ($resultado == 5)){
             $respuesta ='<div class="exito">
                             <div class="textoMensaje">
                             Se registro el pago para las reservas del localizador '.$datos[solicitud].'
@@ -751,7 +751,16 @@ function procesarPago($datos){
         } else if ($resultado == 12){
             $respuesta ='<div class="error">
                             <div class="textoMensaje">
-                            La reserva ya esta PAGADAS.
+                            Las reserva de la solicitud '.$datos[solicitud].' ya esta PAGADAS.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        } else if ($resultado == 15){
+            $respuesta ='<div class="error">
+                            <div class="textoMensaje">
+                            Las reservas de la solicitud '.$datos[solicitud].' estan ANULADAS. Este estado no puede ser alterado.
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -760,21 +769,21 @@ function procesarPago($datos){
         } else {
             $respuesta ='<div class="error">
                             <div class="textoMensaje">
-                            Verifique el manual de usuario.
+                            Verifique el manual de usuario. Error PPME'.$respuesta.'
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
                             </div>
                             </div>';
         }
-        $objResponse = new xajaxResponse();
-        $detalles = detalles($datos[idVuelo]);
-        $fichaVuelo = generarFichaVuelo($datos[idVuelo]);
-        $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
-        $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
-        $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
-        return $objResponse;
     }
+    $objResponse = new xajaxResponse();
+    $detalles = detalles($datos[idVuelo]);
+    $fichaVuelo = generarFichaVuelo($datos[idVuelo]);
+    $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
+    $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
+    $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+    return $objResponse;
 }
 
 ?>
