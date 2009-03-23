@@ -21,7 +21,7 @@ class controladorGestionVuelos {
     }
 
 /**
- * Metodo para consultar un vuelo por su identificador determinado 
+ * Metodo para consultar un vuelo por su identificador determinado
  * @param <Integer> $idVuelo Identificador del vuelo
  * @return <recurso> vuelo especificado por la busqueda
  */
@@ -207,7 +207,7 @@ class controladorGestionVuelos {
                 $resultadoPersona = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalPiloto);
                 if ($resultadoPersona)
                 $resultado = $controlVueloPersonal->agregarVueloPersonal($vueloPersonalCopiloto);
-            } else $resultado = true;               
+            } else $resultado = true;
         }
         return $resultado;
     }
@@ -227,6 +227,29 @@ class controladorGestionVuelos {
             $resultadoOperacion =true;
         }
         return $resultadoOperacion;
+    }
+/**
+ * Metodo para obtener las observaciones de un vuelo
+ * @param <Integer> $idVuelo id del vuelo
+ * @return <String> cadena de caracteres con las observaciones del vuelo
+ */
+    function obtenerObservacionesVuelo ($idVuelo) {
+        $query = "SELECT v.observaciones FROM VUELO v WHERE v.id = $idVuelo";
+        $recurso = $this->transaccion->realizarTransaccion($query);
+        $row = mysql_fetch_array($recurso);
+        return $row[observaciones];
+    }
+/**
+ * Metodo para actualizar las observaciones de un vuelo
+ * @param <String> $obs observaciones a actualizar
+ * @param <Integer> $idVuelo id del vuelo
+ * @return <boolean> resultado de la operacion
+ */
+    function actualizarObservacionesVuelo ($obs,$idVuelo) {
+        $resultado = false;
+        $query = "UPDATE VUELO SET observaciones = '".$obs."' WHERE id = $idVuelo ";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        return $resultado;
     }
 
 /**
