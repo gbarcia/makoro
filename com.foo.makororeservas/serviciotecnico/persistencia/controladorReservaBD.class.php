@@ -446,5 +446,51 @@ class controladorReservaBDclass {
         return $can;
     }
 
+    function existeAlgunOtroVuelo ($idVueloActual,$numeroSolicitud) {
+        $query = "SELECT DISTINCT(v.id) FROM VUELO_RESERVA vr, VUELO v, RESERVA r
+                  WHERE
+                  v.id = vr.VUELO_id AND
+                  r.solicitud = '".$numeroSolicitud."'
+                  AND vr.RESERVA_id = r.id
+                  AND v.id != $idVueloActual";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        $can = mysql_num_rows($resultado);
+        if ($can !=1)
+        $resultado = -1;
+        return $resultado;
+    }
+
+    function obtenerIdReservaVueloExistente($numeroSolicitud,$idVueloActual) {
+        $idVueloRegistrado = $this->existeAlgunOtroVuelo($idVueloActual, $numeroSolicitud);
+        if ($idVueloRegistrado != -1) {
+            $rowVueloConPasajeros = mysql_fetch_array($idVueloRegistrado);
+            $query = "SELECT r.id FROM RESERVA r, VUELO v, VUELO_RESERVA vr
+                      WHERE r.id = vr.RESERVA_id
+                      AND v.id = vr.VUELO_id
+                      AND r.Pasajero_id is NULL
+                      AND r.solicitud = '".$numeroSolicitud."'
+                      AND v.id = $rowVueloConPasajeros[id]";
+            $resultado = $this->transaccion->realizarTransaccion($query);
+            $cantidad = mysql_num_rows($resultado);
+            if ($cantidad > 0) {
+                $rowReservaId = mysql_fetch_array($resultado);
+                return $rowReservaId[id];
+            }else
+            return -1;
+        }else
+        return -1;
+    }
+
+    function obtenerSolicitudPorVueloReserva ($idVuelo, $idReserva) {
+        $query = "SELECT r.solicitud FROM RESERVA r, VUELO_RESERVA vr, VUELO v
+                  WHERE r.id = vr.RESERVA_id
+                  AND vr.VUELO_id = v.id
+                  AND v.id = $idVuelo
+                  AND r.id = $idReserva";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        $row = mysql_fetch_array($resultado);
+        return $row[solicitud];
+    }
+
 }
 ?>
