@@ -6,10 +6,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPosadaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorGestionVuelos.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPasajeroBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlVueloLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlReservaLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorSeguridadBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorMonedaBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPasajeroBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlSeguridad.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteParticularLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteAgenciaLogica.class.php';
@@ -108,6 +110,7 @@ function procesarFiltros($datos){
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
+    $resultado.= '<th>&nbsp</th>';
     $resultado.= '<th>NUMERO</th>';
     $resultado.= '<th>FECHA</th>';
     $resultado.= '<th>HORA</th>';
@@ -118,7 +121,6 @@ function procesarFiltros($datos){
     $resultado.= '<th>INF DISPONIBLES</th>';
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
-    $resultado.= '<th>DETALLES</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
@@ -136,6 +138,7 @@ function procesarFiltros($datos){
         } else {
             $resultado.= '<tr class="r1">';
         }
+        $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"/><img src="iconos/detalles.png" alt="EDITAR"/></a></td>';
         $resultado.= '<td>' . $idVuelo. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
@@ -146,7 +149,6 @@ function procesarFiltros($datos){
         $resultado.= '<td>' . $cantidadDisponibleInfantes. '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="button" value="DETALLES" onclick="xajax_desplegarDetalles(' . $idVuelo . ')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -174,6 +176,7 @@ function inicio(){
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
+    $resultado.= '<th>&nbsp</th>';
     $resultado.= '<th>NUMERO</th>';
     $resultado.= '<th>FECHA</th>';
     $resultado.= '<th>HORA</th>';
@@ -184,7 +187,6 @@ function inicio(){
     $resultado.= '<th>INF DISPONIBLES</th>';
     $resultado.= '<th>PILOTO</th>';
     $resultado.= '<th>COPILOTO</th>';
-    $resultado.= '<th>DETALLES</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $color = false;
@@ -202,6 +204,7 @@ function inicio(){
         } else {
             $resultado.= '<tr class="r1">';
         }
+        $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"/><img src="iconos/detalles.png" alt="EDITAR"/></a></td>';
         $resultado.= '<td>' . $idVuelo. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
@@ -212,7 +215,6 @@ function inicio(){
         $resultado.= '<td>' . $cantidadDisponibleInfantes. '</td>';
         $resultado.= '<td>' . $piloto. '</td>';
         $resultado.= '<td>' . $copiloto. '</td>';
-        $resultado.= '<td><input type="button" value="DETALLES" onclick="desplegarDetalles(' . $idVuelo . ')"/></td>';
         $resultado.= '</tr>';
         $color = !$color;
     }
@@ -235,6 +237,8 @@ function desplegarDetalles($idVuelo){
     $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
     $respuesta = generarFormularioCambiarEstado($idVuelo);
     $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
+    $observaciones = generarObservaciones($idVuelo);
+    $objResponse->addAssign("observaciones", "innerHTML", $observaciones);
     return $objResponse;
 }
 
@@ -446,6 +450,12 @@ function agregarReserva($datos){
 function borrarMensaje(){
     $objResponse = new xajaxResponse();
     $objResponse->addClear("mensaje", "innerHTML");
+    return $objResponse;
+}
+
+function borrarFormPasajero(){
+    $objResponse = new xajaxResponse();
+    $objResponse->addClear("asignarPasajero", "innerHTML");
     return $objResponse;
 }
 
@@ -812,4 +822,150 @@ function procesarPago($datos){
     return $objResponse;
 }
 
+function desplegarFormularioAsignarPasajero($idVuelo, $idReserva){
+    $respuesta = generarFormularioAsignarPasajero($idVuelo, $idReserva);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("asignarPasajero", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function desplegarObservaciones($idVuelo){
+    $respuesta = generarObservaciones($idVuelo);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("observaciones", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function guardarObservaciones($datos){
+    $observaciones = $datos[observaciones];
+    $idVuelo = $datos[idVuelo];
+    $controlVuelo = new controladorGestionVuelos();
+    $resultado = $controlVuelo->actualizarObservacionesVuelo($observaciones, $idVuelo);
+    if ($resultado){
+        $respuesta ='<div class="exito">
+                            <div class="textoMensaje">
+                            Las notas han sido actualizadas con exito.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+    } else {
+        $respuesta ='<div class="error">
+                            <div class="textoMensaje">
+                            Error guardando las notas. Intentelo de nuevo.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+    }
+    $objResponse = new xajaxResponse();
+    $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function buscarPasajero($datos){
+    $id = $datos[idPasajero];
+    $controlPasajero = new controladorPasajeroBDclass();
+    $recurso = $controlPasajero->consultarPasajeroPorId($id);
+    $row = mysql_fetch_array($recurso);
+    $row["idReserva"] = $datos[idReserva];
+    $row["idVuelo"] = $datos[idVuelo];
+    if (mysql_num_rows($recurso) <= 0){
+        return desplegarFormularioCrearPasajero($row);
+    } else {
+        return desplegarFormularioAsignarPasajero2($row);
+    }
+
+}
+
+function desplegarFormularioAsignarPasajero2($datos){
+    $respuesta = generarFormularioAsignarPasajero2($datos);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("asignarPasajero", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function desplegarFormularioCrearPasajero($datos){
+    $respuesta = generarFormularioCrearPasajero($datos);
+    $objResponse = new xajaxResponse();
+    $objResponse->addAssign("asignarPasajero", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function asignarPasajero($datos){
+    $control = new ControlReservaLogicaclass();
+    $resultado = $control->actualizarPasajeroReserva($datos[idVuelo],'', '', '', $datos[cedula], $datos[pasaporte], '', '', $datos[idReserva]);
+    if ($resultado){
+        $respuesta ='<div class="exito">
+                            <div class="textoMensaje">
+                            El pasajero ha sido asignado a la reserva '.$datos[idReserva].'
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+    } else {
+        $respuesta ='<div class="error">
+                            <div class="textoMensaje">
+                            Error al asignar el pasajero a la reserva. Verifique que el pasajero no este registrado en el vuelo.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+    }
+    $objResponse = new xajaxResponse();
+    $detalles = detalles($datos[idVuelo]);
+    $fichaVuelo = generarFichaVuelo($datos[idVuelo]);
+    $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
+    $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
+    $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function crearPasajero($datos){
+    $control = new ControlReservaLogicaclass();
+    $controlVuelo = new controladorPasajeroBDclass();
+    $recurso = $control->con
+    if ($control->existePasajero($datos[cedula], $datos[pasaporte]) != ''){
+        $respuesta ='<div class="error">
+                            <div class="textoMensaje">
+                            El pasajero ya se encuentra registrado el el sistema.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+    } else {
+        $resultado = $control->actualizarPasajeroReserva($datos[idVuelo], $datos[nombre], $datos[apellido], 'M', $datos[cedula], $datos[pasaporte], '', $datos[tipo], $datos[idReserva]);
+        if ($resultado){
+            $respuesta ='<div class="exito">
+                            <div class="textoMensaje">
+                            El pasajero ha sido asignado a la reserva '.$datos[idReserva].'
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        } else {
+            $respuesta ='<div class="error">
+                            <div class="textoMensaje">
+                            Error al asignar el pasajero a la reserva. Error CP'.$resultado.'.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        }
+    }
+    $objResponse = new xajaxResponse();
+    $detalles = detalles($datos[idVuelo]);
+    $fichaVuelo = generarFichaVuelo($datos[idVuelo]);
+    $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
+    $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
+    $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+    return $objResponse;
+}
 ?>

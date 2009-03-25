@@ -54,3 +54,8 @@ Estilo para los mensajes de informacion.
     top:1px;
     right:1px;
 }
+.nota {
+    background-color: #FFFF7A;
+    border: 1px solid #FDF601;
+    padding: 5px;
+}

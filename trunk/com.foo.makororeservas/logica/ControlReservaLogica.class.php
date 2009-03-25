@@ -210,7 +210,7 @@ class ControlReservaLogicaclass {
      * @param <Integer> $idReserva Identificador de la reserva
      * @return <recurso> resultado de la operacion
      */
-    function actualizarPasajeroReserva($nombre,$apellido,$sexo,$cedula,$pasaporte,$nacionalidad,$tipoPasajeroId,$idReserva){
+    function actualizarPasajeroReserva($idVuelo,$nombre,$apellido,$sexo,$cedula,$pasaporte,$nacionalidad,$tipoPasajeroId,$idReserva){
         $controlPasajero = new ControlPasajeroLogicaclass();
         $existePasajero = $this->existePasajero($cedula, $pasaporte);
         if(!(is_null($existePasajero))){
@@ -221,6 +221,8 @@ class ControlReservaLogicaclass {
             $idPasajero = $controlPasajero->nuevoPasajero($nombre,$apellido,$sexo,$cedula,
                 $pasaporte,$nacionalidad,$tipoPasajeroId);
         }
+        $controBDR = new controladorReservaBDclass();
+        if(!$controBDR->existePasajeroVuelo($idVuelo, $idPasajero))
         $resultado = $this->actualizarIdReserva($idPasajero, $idReserva);
         return $resultado;
     }
