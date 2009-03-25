@@ -229,7 +229,6 @@ class ControlReservaLogicaclass {
         $resultado = $this->actualizarIdReserva($idPasajero, $idReserva);
         if ($resultado){
             $idReservaAdicional = $this->controlBD->obtenerIdReservaVueloExistente($numeroSolicitud, $idVuelo);
-            print $idReservaAdicional;
             if ($idReservaAdicional != -1){
                 $resultado = $this->actualizarIdReserva($idPasajero, $idReservaAdicional);
             }
