@@ -25,8 +25,7 @@ thead td, thead th {
 table tfoot tr { /*idea of Renato Cherullo to help IE*/
     position: relative;
     overflow-x: hidden;
-    top: expression(parentNode.parentNode.offsetHeight >=
-    offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
+    top: expression(parentNode.parentNode.offsetHeight >= offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
 }
 tfoot td {
     font-size: 16px;
@@ -85,7 +84,8 @@ td:last-child {
 .scrollTable {
     width: 99%;		/*100% of container produces horiz. scroll in Mozilla*/
     border: none;
-    background-color: #FFFFFF;
+    background-color: #F4F4F4;
+    height: auto;
 }
 .scrollTable>tbody	{  /* child selector syntax which IE6 and older do not support*/
     overflow: auto;

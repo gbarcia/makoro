@@ -407,6 +407,22 @@ class controladorReservaBDclass {
         return $resultado;
     }
 
+    function existePasajeroVuelo($idVuelo,$idPasajero) {
+        $resultado = false;
+        $query = "SELECT r.id FROM RESERVA r, VUELO_RESERVA vr, PASAJERO p
+                  WHERE r.id = vr.RESERVA_id
+                  AND vr.VUELO_id = $idVuelo
+                  AND r.PASAJERO_id = $idPasajero
+                  AND r.PASAJERO_id = p.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        $can = mysql_num_rows($resultado);
+        if ($can > 0)
+        $resultado = true;
+        else
+        $resultado = false;
+        return $resultado;
+    }
+
     public function getTransaccion() {
         return $this->transaccion;
     }

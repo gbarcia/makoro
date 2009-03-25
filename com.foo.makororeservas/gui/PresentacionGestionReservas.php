@@ -18,6 +18,15 @@ $xajax->registerFunction("desplegarFormularioCambiarEstado");
 $xajax->registerFunction("desplegarFormularioCambiarEstado2");
 $xajax->registerFunction("cambiarEstado");
 $xajax->registerFunction("procesarPago");
+$xajax->registerFunction("desplegarEditarPasajero");
+$xajax->registerFunction("desplegarFormularioAsignarPasajero");
+$xajax->registerFunction("desplegarFormularioAsignarPasajero2");
+$xajax->registerFunction("generarObservaciones");
+$xajax->registerFunction("guardarObservaciones");
+$xajax->registerFunction("buscarPasajero");
+$xajax->registerFunction("borrarFormPasajero");
+$xajax->registerFunction("asignarPasajero");
+$xajax->registerFunction("crearPasajero");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -208,10 +217,12 @@ $xajax->processRequests();
 
         <div id="mensaje" class="cuerpo"></div>
 
+        <div id="asignarPasajero" class="cuerpo"></div>
+
         <div class="cuerpo">
-            <div class="izq" id="izquierda"></div>
-            <div class="der" id="derecha">
-                <div class="panel" id="derecha">
+            <div id="observaciones" class="izq"></div>
+            <div class="der">
+                <div class="panel">
                     <div class="tituloNegro3">OPERACIONES</div>
                     <hr width="98%" size="1" color="#067AC2">
                     <div class="tituloNegro1">CAMBIAR ESTADO DE LOCALIZADOR</div>
@@ -226,18 +237,8 @@ $xajax->processRequests();
         </div>
 
         <div class="cuerpo">
-            <div class="izq" id="tres">tres</div>
-            <div class="der" id="cuatro">cuatro</div>
-        </div>
-
-        <div class="cuerpo">
-            <div class="izq" id="cinco">cinco</div>
-            <div class="der" id="seis">seis</div>
-        </div>
-
-        <div class="cuerpo">
-            <div class="izq" id="siete">siete</div>
-            <div class="der" id="ocho">ocho</div>
+            <div class="izq" id="izquierda"></div>
+            <div class="der" id="derecha">form</div>
         </div>
 
     </body>
