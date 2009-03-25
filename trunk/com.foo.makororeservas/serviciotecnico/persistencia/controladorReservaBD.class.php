@@ -430,6 +430,21 @@ class controladorReservaBDclass {
     public function setTransaccion($transaccion) {
         $this->transaccion = $transaccion;
     }
+/**
+ * Operacion para determinar la cantidad de vuelos que hay para una solicitud
+ * @param <String> $nSolicitud el numero de la solicitud
+ * @return <Integer> la cantidad de vuelos para una solicitud
+ */
+    function cantidadVuelosParaSolicitud ($nSolicitud) {
+        $resultado = false;
+        $query = "SELECT DISTINCT(v.id) FROM VUELO_RESERVA vr, VUELO v, RESERVA r
+                  WHERE v.id = vr.VUELO_id AND
+                  r.solicitud = '".$nSolicitud."'
+                  AND vr.RESERVA_id = r.id";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        $can = mysql_num_rows($resultado);
+        return $can;
+    }
 
 }
 ?>

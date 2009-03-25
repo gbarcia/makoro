@@ -142,6 +142,8 @@ class ControlReservaLogicaclass {
                     $this->controlVueloReservaBD->agregarVueloReserva($vueloReserva);
                 }
             }else if($tipoViaje == 'vuelta'){
+                $cantidadVuelosActual = $this->controlBD->cantidadVuelosParaSolicitud($solicitud);
+                if ($cantidadVuelosActual < 2) // solo una solicitud puede tener maximo dos viajes
                 $result = $this->verificarCantidadPasajeros($solicitud, $cantAdlChlOriginal, $cantInfOriginal);
                 if($result == true){
                     foreach ($arrayAdl as $variable) {

@@ -928,7 +928,7 @@ function asignarPasajero($datos){
 function crearPasajero($datos){
     $control = new ControlReservaLogicaclass();
     $controlVuelo = new controladorPasajeroBDclass();
-    $recurso = $control->con
+    //$recurso = $control->con
     if ($control->existePasajero($datos[cedula], $datos[pasaporte]) != ''){
         $respuesta ='<div class="error">
                             <div class="textoMensaje">
