@@ -93,7 +93,7 @@ $clienteTest = new ClienteParticularclass();
 //$resultado = $controlTest->obtenerIdVueloInfantesVuelta('QS106713');
 //echo ' IdVuelo '.$resultado[0].' cantInfantes '.$resultado[1];
 
-$resultado = $controlTest->actualizarEstadoReserva('QS106713', 'CA', '', '', '', '', '');
+$resultado = $controlTest->actualizarEstadoReserva('AB22', 'CA', '', '', '', '', '');
 echo $resultado;
 
 //$resultado = $controlTest->obtenerCantInfVuelo(3);

@@ -224,7 +224,7 @@ class controladorVueloBDclass {
             $query .= " HAVING disponibilidadAdulto = 1 ";
         }
         $query .= " ORDER BY v.fecha,v.hora ASC
-                    LIMIT 50";
+                    LIMIT 100";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -274,7 +274,7 @@ class controladorVueloBDclass {
         }
         $query.= " GROUP BY v.id
                    ORDER BY v.fecha,v.hora ASC
-                   LIMIT 50";
+                   LIMIT 100";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
@@ -403,6 +403,7 @@ class controladorVueloBDclass {
             AND VR.VUELO_id = ".$idVuelo."
             AND S.id = R.SUCURSAL_id
             AND E.cedula = R.ENCARGADO_cedula
+            AND R.TIPO_SERVICIO_id = TS.id
             AND (R.CLIENTE_PARTICULAR_cedula = CP.cedula
                  OR R.CLIENTE_AGENCIA_rif = CA.rif)
             GROUP BY(R.id)
