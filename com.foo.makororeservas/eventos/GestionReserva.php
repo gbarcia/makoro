@@ -807,16 +807,7 @@ function cambiarEstado($datos){
 }
 
 function procesarPago($datos){
-    if ($datos[monto] == ''){
-        $respuesta ='<div class="advertencia">
-            <div class="textoMensaje">
-            Debe ingresar un monto.
-            </div>
-            <div class="botonCerrar">
-            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
-            </div>
-            </div>';
-    } else if (($datos[tipoPago] != 'EF') && (($datos[banco] == '') || ($datos[transaccion] == ''))) {
+    if (($datos[tipoPago] != 'EF') && (($datos[banco] == '') || ($datos[transaccion] == ''))) {
         $respuesta ='<div class="advertencia">
             <div class="textoMensaje">
             Debe indicar el banco y numero de la transaccion para operaciones bancarias. Tipo de pago: '. $datos[tipoPago] .'.
@@ -827,7 +818,7 @@ function procesarPago($datos){
             </div>';
     } else {
         $controlReserva = new ControlReservaLogicaclass();
-        $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], $datos[tipoPago], $datos[monto], $datos[banco], $datos[transaccion], $datos[moneda]);
+        $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], $datos[tipoPago], 0, $datos[banco], $datos[transaccion], $datos[moneda]);
         if (($resultado == 2) || ($resultado == 5)){
             $respuesta ='<div class="exito">
                             <div class="textoMensaje">
