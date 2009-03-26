@@ -599,18 +599,18 @@ function generarFormularioCrearPasajero ($datos) {
 function generarObservaciones($idVuelo){
     $control = new controladorGestionVuelos();
     $obs = $control->obtenerObservacionesVuelo($idVuelo);
-    $contenido = '<div align="center" class="filtros">
+    $contenido = '<div align="center" class="nota">
                     <form id="formObservaciones">
                     <input type="hidden" name="idVuelo" value="'.$idVuelo.'" />
                     <table border="0">
                     <tr>
                     <td><div class="tituloNegro1">Notas</div></td>
+                    </tr>
+                    <tr>
                     <td><textarea class="nota" name="observaciones" rows="6" cols="40">'.$obs.'</textarea></td>
                     </tr>
                     <tr>
-                    <td colspan="2" align="center">
-                        <input type="button" value="GUARDAR" onclick="xajax_guardarObservaciones(xajax.getFormValues(\'formObservaciones\'))"/>
-                    </td>
+                    <td><input type="button" value="GUARDAR" onclick="xajax_guardarObservaciones(xajax.getFormValues(\'formObservaciones\'))"/></td>
                     </tr>
                     </table>
                     </form>
