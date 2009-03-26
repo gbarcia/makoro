@@ -239,6 +239,8 @@ function desplegarDetalles($idVuelo){
     $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
     $observaciones = generarObservaciones($idVuelo);
     $objResponse->addAssign("observaciones", "innerHTML", $observaciones);
+    $generarBoleto = generarFormularioBoleto();
+    $objResponse->addAssign("generarBoleto", "innerHTML", $generarBoleto);
     return $objResponse;
 }
 
