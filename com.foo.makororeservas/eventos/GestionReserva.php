@@ -77,7 +77,7 @@ function desplegarBusqueda($datos){
         $resultado = procesarFiltros($datos);
         $objResponse->addAssign("vuelos", "innerHTML", $resultado);
     }else{
-        $objResponse->addAlert("Debe colocar algun filtro");
+        $objResponse->addAlert("Para utilizar esta opcion, Ud. debe especificar algun filtro.");
     }
     return $objResponse;
 }
@@ -138,7 +138,11 @@ function procesarFiltros($datos){
         } else {
             $resultado.= '<tr class="r1">';
         }
-        $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"/><img src="iconos/detalles.png" alt="EDITAR"/></a></td>';
+        if ($_SESSION['EncargadoTipo'] != 'AG'){
+            $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"><img src="iconos/detalles.png" alt="EDITAR"/></a></td>';
+        } else {
+            $resultado.= '<td><a onclick=""><img src="iconos/detalles_gris.png" alt="EDITAR NO DIPONIBLE"/></a></td>';
+        }
         $resultado.= '<td>' . $idVuelo. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
@@ -155,7 +159,24 @@ function procesarFiltros($datos){
     $resultado.= '</table>';
     $resultado.= '</form>';
     if ($recursoDetalles == "") {
-        $resultado = 'No hay coincidencias con su busqueda.';
+        $resultado = '<table class="scrollTable" cellspacing="0">';
+        $resultado.= '<thead>';
+        $resultado.= '<tr>';
+        $resultado.= '<th>&nbsp</th>';
+        $resultado.= '<th>NUMERO</th>';
+        $resultado.= '<th>FECHA</th>';
+        $resultado.= '<th>HORA</th>';
+        $resultado.= '<th>ORIGEN</th>';
+        $resultado.= '<th>DESTINO</th>';
+        $resultado.= '<th>AVION</th>';
+        $resultado.= '<th>ADL/CHD DISPONIBLES</th>';
+        $resultado.= '<th>INF DISPONIBLES</th>';
+        $resultado.= '<th>PILOTO</th>';
+        $resultado.= '<th>COPILOTO</th>';
+        $resultado.= '</tr>';
+        $resultado.= '</thead>';
+        $resultado.= '<tr><td align="center" colspan="11">No hay coincidencias con su busqueda.</td></tr>';
+        $resultado.= '</table>';
     }
     return $resultado;
 }
@@ -204,7 +225,11 @@ function inicio(){
         } else {
             $resultado.= '<tr class="r1">';
         }
-        $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"/><img src="iconos/detalles.png" alt="EDITAR"/></a></td>';
+        if ($_SESSION['EncargadoTipo'] != 'AG'){
+            $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"><img src="iconos/detalles.png" alt="EDITAR"/></a></td>';
+        } else {
+            $resultado.= '<td><a onclick=""><img src="iconos/detalles_gris.png" alt="EDITAR NO DIPONIBLE"/></a></td>';
+        }
         $resultado.= '<td>' . $idVuelo. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
         $resultado.= '<td>' . $recursoDetalles->getHora(). '</td>';
@@ -221,8 +246,24 @@ function inicio(){
     $resultado.= '</table>';
     $resultado.= '</form>';
     if ($recursoDetalles == "") {
-        $resultado = 'No hay vuelos planificados para hoy (' . date("d") . "-" .
-        date("m") . '-' . date('Y') . ')';
+        $resultado = '<table class="scrollTable" cellspacing="0">';
+        $resultado.= '<thead>';
+        $resultado.= '<tr>';
+        $resultado.= '<th>&nbsp</th>';
+        $resultado.= '<th>NUMERO</th>';
+        $resultado.= '<th>FECHA</th>';
+        $resultado.= '<th>HORA</th>';
+        $resultado.= '<th>ORIGEN</th>';
+        $resultado.= '<th>DESTINO</th>';
+        $resultado.= '<th>AVION</th>';
+        $resultado.= '<th>ADL/CHD DISPONIBLES</th>';
+        $resultado.= '<th>INF DISPONIBLES</th>';
+        $resultado.= '<th>PILOTO</th>';
+        $resultado.= '<th>COPILOTO</th>';
+        $resultado.= '</tr>';
+        $resultado.= '</thead>';
+        $resultado.= '<tr><td align="center" colspan="11">No hay vuelos planificados para hoy (' . date("d-m-Y") .')</td></tr>';
+        $resultado.= '</table>';
     }
     return $resultado;
 }
@@ -230,17 +271,27 @@ function inicio(){
 function desplegarDetalles($idVuelo){
     $objResponse = new xajaxResponse();
     $detalles = detalles($idVuelo);
-    $formulario = generarFormularioNuevaReserva($idVuelo);
-    $fichaVuelo = generarFichaVuelo($idVuelo);
     $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
-    $objResponse->addAssign("izquierda", "innerHTML", $formulario);
+    $fichaVuelo = generarFichaVuelo($idVuelo);
     $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
-    $respuesta = generarFormularioCambiarEstado($idVuelo);
-    $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
     $observaciones = generarObservaciones($idVuelo);
     $objResponse->addAssign("observaciones", "innerHTML", $observaciones);
-    $generarBoleto = generarFormularioBoleto();
-    $objResponse->addAssign("generarBoleto", "innerHTML", $generarBoleto);
+
+    $controlVuelo = new ControlVueloLogicaclass();
+    $controlGestion = new controladorGestionVuelos();
+    $datosVuelo = $controlGestion->ConsultarVueloPorId($idVuelo);
+    $row = mysql_fetch_array($datosVuelo);
+    if ($controlVuelo->esFechaValida($row[fecha], date("Y-m-d"), $row[hora], date("H:i:s"))){
+        $formulario = generarFormularioNuevaReserva($idVuelo);
+        $objResponse->addAssign("izquierda", "innerHTML", $formulario);
+        $panel = generarPanelOperaciones();
+        $objResponse->addAssign("panelOperaciones", "innerHTML", $panel);
+        $respuesta = generarFormularioCambiarEstado($idVuelo);
+        $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
+        $generarBoleto = generarFormularioBoleto();
+        $objResponse->addAssign("generarBoleto", "innerHTML", $generarBoleto);
+    }
+    $objResponse->addClear("asignarPasajero", "innerHTML");
     return $objResponse;
 }
 
@@ -978,9 +1029,24 @@ function crearPasajero($datos){
 }
 
 function generarBoletoGui($datos){
+    $valido = false;
+    $control = new controladorBoletoBDclass();
+    $valido = $control->validoBoleto($datos[solicitud]);
     $objResponse = new xajaxResponse();
-    $url = "boleto.php?nsolicitud=" . $datos[solicitud];
-    $objResponse->addScript('window.open("'.$url.'", "Boleto", "resizable=1, scrollbars=1, width=640, height=480")');
+    if ($valido) {
+        $url = "boleto.php?nsolicitud=" . $datos[solicitud];
+        $objResponse->addScript('window.open("'.$url.'", "Boleto", "resizable=1, scrollbars=1, width=640, height=480")');
+    } else {
+        $respuesta ='<div class="error">
+                            <div class="textoMensaje">
+                            El boleto no ha podido ser generado. Verifique que las reservas esten pagas y que los pasajeros esten asignados.
+                            </div>
+                            <div class="botonCerrar">
+                            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+                            </div>
+                            </div>';
+        $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+    }
     return $objResponse;
 }
 ?>

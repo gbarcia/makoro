@@ -62,7 +62,13 @@ $xajax->processRequests();
         </style>
     </head>
     <body>
-
+        
+        <div class="encabezado" id="encabezado">
+            <img src="imagenes/encabezado.png" width="900" height="65" alt="encabezado"/>
+        </div>
+        <div class="panelSesion">
+            <? echo $_SESSION['EncargadoLogin']; ?> | <? echo $_SESSION['FechaActual']; ?> | salir
+        </div>
         <div id="sesion" class="cuerpo">
             <?
             include 'menu.php';
@@ -213,7 +219,7 @@ $xajax->processRequests();
 
         <div class="cuerpo">
             <div id="fichaVuelo" ></div>
-            <div class="tableContainer" id="pasajeros"></div>
+            <div id="pasajeros"></div>
         </div>
 
         <div id="mensaje" class="cuerpo"></div>
@@ -222,20 +228,7 @@ $xajax->processRequests();
 
         <div class="cuerpo">
             <div id="observaciones" class="izq"></div>
-            <div class="der">
-                <div class="panel">
-                    <div class="tituloNegro3">OPERACIONES</div>
-                    <hr width="98%" size="1" color="#067AC2">
-                    <div class="tituloNegro1">CAMBIAR ESTADO DE LOCALIZADOR</div>
-                    <div class="textoNegro1">
-                        <div id="cambiarEstado">
-                        </div>
-                        <hr width="98%" size="1" color="#067AC2">
-                        <div id="generarBoleto">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="panelOperaciones" class="der"></div>
         </div>
 
         <div class="cuerpo">
