@@ -83,7 +83,7 @@ $xajax->processRequests();
                         <table class="textoNegro2" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td>Fecha de inicio:</td>
-                                <td><input name="fechaInicio" type="text" id="f_date_c" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
+                                <td><input name="fechaInicio" type="text" id="f_date_c" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" alt="Seleccione una fecha"/></td>
                                 <td>Ruta:</td>
                                 <td><div id="comboBoxRuta">
                                         <script language="javascript">
@@ -93,7 +93,7 @@ $xajax->processRequests();
                             </tr>
                             <tr>
                                 <td>Fecha de fin:</td>
-                                <td><input name="fechaFin" type="text" id="f_date_c2" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c2" style="cursor: pointer; border: 1px solid red;" title="Date selector" /></td>
+                                <td><input name="fechaFin" type="text" id="f_date_c2" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c2" style="cursor: pointer; border: 1px solid red;" title="Date selector" alt="Seleccione una fecha"/></td>
                                 <td>&nbsp</td>
                                 <td>&nbsp</td>
                             </tr>
@@ -233,7 +233,7 @@ $xajax->processRequests();
 
         <div class="cuerpo">
             <div class="izq" id="izquierda"></div>
-            <div class="der" id="derecha">form</div>
+            <div class="der" id="derecha"></div>
         </div>
 
     </body>
