@@ -2,7 +2,8 @@
 function detalles($idVuelo){
     $controlVuelo = new ControlVueloLogicaclass();
     $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
-    $resultado = '<form id="formularioEditarMarcar">';
+    $resultado = '<div class="tableContainer">';
+    $resultado.= '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
@@ -37,8 +38,8 @@ function detalles($idVuelo){
             } else{
                 $resultado.= '<tr class="r1">';
             }
-            if ($row[tipoPasajero] == 'INF'){
-                $boton = '&nbsp';
+            if (($row[tipoPasajero] == 'INF') || ($row[cedulaPasaporte] != '')){
+                $boton = '<a onClick=""><img src="imagenes/editarPass_gris.png" alt="EDITAR NO DISPONIBLE"/></a>';
             } else {
                 $boton = '<a onClick="xajax_desplegarFormularioAsignarPasajero('.$idVuelo.','.$row[id].')"><img src="imagenes/editarPass.png" alt="EDITAR"/></a>';
             }
@@ -97,6 +98,9 @@ function detalles($idVuelo){
             $resultado.= '</tr>';
         }
     }
+    $resultado.= '</table>';
+    $resultado.= '</form>';
+    $resultado.= '</div>';
     return $resultado;
 }
 
@@ -282,8 +286,6 @@ function generarFormularioAgregarClienteJuridico($datos) {
             <input name="button" type="button" id="button" value="CONTINUAR" onclick= "xajax_procesarAgencia(xajax.getFormValues(\'formNuevaAgencia\'))" />
             </div></td>
             </tr>
-            </table></td>
-            </tr>
             </table>
             </form>';
     return $contenido;
@@ -334,8 +336,6 @@ function generarFormularioAgregarClienteParticular($datos) {
             <input name="button" type="button" id="button" value="CONTINUAR" onclick= "xajax_procesarCliente(xajax.getFormValues(\'formNuevoCliente\'))" />
             </div></td>
             </tr>
-            </table></td>
-            </tr>
             </table>
             </form>';
     return $contenido;
@@ -364,6 +364,7 @@ function tablaVacia(){
     $resultado.= '<tr class="r1">';
     $resultado.= '<th colspan="14">NO HAY RESERVAS PARA ESTE VUELO</th>';
     $resultado.= '</tr>';
+    $resultado.= '</table>';
     return $resultado;
 }
 
@@ -524,8 +525,6 @@ function generarFormularioAsignarPasajero2 ($datos) {
             <input name="button" type="button" id="button" value="ASIGNAR" onclick="xajax_asignarPasajero(xajax.getFormValues(\'formNuevoPasajero\'))" />
             </div></td>
             </tr>
-            </table></td>
-            </tr>
             </table>
             </form>';
     return $formulario;
@@ -589,8 +588,6 @@ function generarFormularioCrearPasajero ($datos) {
             <input name="button" type="button" id="button" value="CREAR PASAJERO" onclick="xajax_crearPasajero(xajax.getFormValues(\'formNuevoPasajero\'))" />
             </div></td>
             </tr>
-            </table></td>
-            </tr>
             </table>
             </form>';
     return $formulario;
@@ -633,6 +630,19 @@ function generarFormularioBoleto(){
             </tr>
             </table>
             </form>';
+    return $contenido;
+}
+
+function generarPanelOperaciones(){
+    $contenido = '<div class="panel">
+                    <div class="tituloNegro2">OPERACIONES</div>
+                    <hr width="98%" size="1" color="#067AC2">
+                    <div class="tituloNegro1">CAMBIAR ESTADO DE LOCALIZADOR</div>
+                    <div id="cambiarEstado" class="textoNegro1"></div>
+                    <hr width="98%" size="1" color="#067AC2">
+                    <div class="tituloNegro1">GENERAR BOLETO PARA UNA SOLICITUD</div>
+                    <div id="generarBoleto"  class="textoNegro1"></div>
+                </div>';
     return $contenido;
 }
 
