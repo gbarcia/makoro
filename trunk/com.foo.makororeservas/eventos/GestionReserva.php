@@ -928,7 +928,13 @@ function asignarPasajero($datos){
 function crearPasajero($datos){
     $control = new ControlReservaLogicaclass();
     $controlVuelo = new controladorPasajeroBDclass();
-    //$recurso = $control->con
+    if ($datos[cedula] != ''){
+        $id = $datos[cedula];
+        $recurso = $controlVuelo->consultarPasajeroPorId($id);
+    } else if ($datos[pasaporte] != ''){
+        $id = $datos[pasaporte];
+        $recurso = $controlVuelo->consultarPasajeroPorId($id);
+    }
     if ($control->existePasajero($datos[cedula], $datos[pasaporte]) != ''){
         $respuesta ='<div class="error">
                             <div class="textoMensaje">
@@ -966,6 +972,13 @@ function crearPasajero($datos){
     $objResponse->addAssign("pasajeros", "innerHTML", $detalles);
     $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
     $objResponse->addAppend("mensaje", "innerHTML", $respuesta);
+    return $objResponse;
+}
+
+function generarBoletoGui($datos){
+    $objResponse = new xajaxResponse();
+    $url = "boleto.php?nsolicitud=" . $datos[solicitud];
+    $objResponse->addScript('window.open("'.$url.'", "Boleto", "resizable=1, scrollbars=1, width=640, height=480")');
     return $objResponse;
 }
 ?>
