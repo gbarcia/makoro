@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorVueloReservaBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPagoBD.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/serviciotecnico/persistencia/controladorPasajeroBD.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlPagoLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlVueloLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlPasajeroLogica.class.php';
@@ -214,14 +215,20 @@ class ControlReservaLogicaclass {
      */
     function actualizarPasajeroReserva($idVuelo,$nombre,$apellido,$sexo,$cedula,$pasaporte,$nacionalidad,$tipoPasajeroId,$idReserva){
         $numeroSolicitud = $this->controlBD->obtenerSolicitudPorVueloReserva($idVuelo, $idReserva);
-        $controlPasajero = new ControlPasajeroLogicaclass();
-        $existePasajero = $this->existePasajero($cedula, $pasaporte);
-        if(!(is_null($existePasajero))){
-            $split = explode(', ', $existePasajero);
-            $idPasajero = $split[0];
+        $controlPasajero = new controladorPasajeroBDclass();
+        $controlPasLogica = new ControlPasajeroLogicaclass();
+        if ($cedula != '')
+        $busqueda = $cedula;
+        else
+        $busqueda = $pasaporte;
+        $recursoExistePasajero = $controlPasajero->consultarPasajeroPorId($busqueda);
+        $existePasajero = mysql_num_rows($recursoExistePasajero);
+        if($existePasajero > 0){
+            $rowPas = mysql_fetch_array($recursoExistePasajero);
+            $idPasajero = $rowPas[id];
         }
-        if(is_null($existePasajero)){
-            $idPasajero = $controlPasajero->nuevoPasajero($nombre,$apellido,$sexo,$cedula,
+        if($existePasajero <= 0){
+            $idPasajero = $controlPasLogica->nuevoPasajero($nombre,$apellido,$sexo,$cedula,
                 $pasaporte,$nacionalidad,$tipoPasajeroId);
         }
         $controBDR = new controladorReservaBDclass();
