@@ -618,4 +618,22 @@ function generarObservaciones($idVuelo){
     return $contenido;
 }
 
+function generarFormularioBoleto(){
+    $contenido = '<form id="formGenerarBoleto">
+            <table border="0">
+            <tr>
+            <td>Localizador</td>
+            <td><input type="text" name="solicitud" value="" onkeyup="this.value=this.value.toUpperCase();"/></td>
+            </tr>
+            <tr>
+            <td>&nbsp</td>
+            <td>
+            <input name="button" type="button" id="button" value="CONTINUAR" onclick="xajax_generarBoletoGui(xajax.getFormValues(\'formGenerarBoleto\'))" />
+            </td>
+            </tr>
+            </table>
+            </form>';
+    return $contenido;
+}
+
 ?>
