@@ -16,7 +16,7 @@ function procesarCorreo ($datos) {
     $objResponse = new xajaxResponse();
     $respuesta = "";
     if ($datos[correo] != "") {
-    $direccion = $datos[solicitud] . autoGenerarCodigo();
+    $direccion = $datos[solicitud];
     $cuerpo = "<font size='2' face='Arial'><P>Estimado Cliente(a) de Makoro:</P>";
     $cuerpo .= "<P>La siguiente direccion, es para obtener el boleto electrónico, deacuerdo a la solicitud
                número ".$datos[solicitud]." a nombre de ".$datos[cliente].":</P>";
