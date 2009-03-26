@@ -144,7 +144,7 @@ class controladorBoletoBDclass {
         $query = "SELECT IF(COUNT(R.solicitud) = (SELECT COUNT(RE.PASAJERO_id)
                                 FROM RESERVA RE
                                 WHERE RE.solicitud = R.solicitud
-                                AND RE.PAGO_id is not null),TRUE,FALSE) as resultado
+                                AND (RE.estado = 'PA' OR RE.estado = 'CO')),TRUE,FALSE) as resultado
                   FROM RESERVA R
                   WHERE R.solicitud = '" . $idSolicitud . "'";
         $resultado = $this->transaccion->realizarTransaccion($query);
