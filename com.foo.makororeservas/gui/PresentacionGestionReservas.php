@@ -27,6 +27,7 @@ $xajax->registerFunction("buscarPasajero");
 $xajax->registerFunction("borrarFormPasajero");
 $xajax->registerFunction("asignarPasajero");
 $xajax->registerFunction("crearPasajero");
+$xajax->registerFunction("generarBoletoGui");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -229,9 +230,10 @@ $xajax->processRequests();
                     <div class="textoNegro1">
                         <div id="cambiarEstado">
                         </div>
+                        <hr width="98%" size="1" color="#067AC2">
+                        <div id="generarBoleto">
+                        </div>
                     </div>
-                    <hr width="98%" size="1" color="#067AC2">
-                    TBD
                 </div>
             </div>
         </div>
