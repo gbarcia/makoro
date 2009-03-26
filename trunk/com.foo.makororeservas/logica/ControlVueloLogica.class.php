@@ -402,18 +402,14 @@ class ControlVueloLogicaclass {
      */
     function esFechaValida($fechaVuelo,$fechaActual,$horaVuelo,$horaActual){
         if($fechaVuelo > $fechaActual){
-            echo 'true';
             return true;
         }else if($fechaVuelo == $fechaActual){
             if($horaVuelo > $horaActual){
-                echo 'true';
                 return true;
             }else if($horaVuelo <= $horaActual){
-                echo 'false';
                 return false;
             }
         }else if($fechaVuelo < $fechaActual){
-            echo 'false';
             return false;
         }
     }
