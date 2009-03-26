@@ -146,7 +146,7 @@ class controladorBoletoBDclass {
                                 WHERE RE.solicitud = R.solicitud
                                 AND RE.PAGO_id is not null),TRUE,FALSE) as resultado
                   FROM RESERVA R
-                  WHERE R.solicitud = '".$solicitud."'";
+                  WHERE R.solicitud = '".$solicitud."' AND r.estado = 'PA'";
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
