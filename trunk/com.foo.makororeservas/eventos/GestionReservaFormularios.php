@@ -414,10 +414,6 @@ function generarFormularioCambiarEstado2($datos){
             </select></td>
             </tr>
             <tr>
-            <td>Monto</td>
-            <td><input type="text" name="monto" value="" />'. generarComboBoxMoneda() .'</td>
-            </tr>
-            <tr>
             <td colspan="2">En caso de ser transaccion bancaria:</td>
             </tr>
             <tr>
@@ -585,7 +581,7 @@ function generarFormularioCrearPasajero ($datos) {
             <tr class="r0">
             <td colspan="2"><div align="center">
             <input name="button" type="button" id="button" value="VOLVER" onclick="xajax_desplegarFormularioAsignarPasajero('.$datos[idVuelo].','.$datos[idReserva].')" />
-            <input name="button" type="button" id="button" value="CREAR PASAJERO" onclick="xajax_crearPasajero(xajax.getFormValues(\'formNuevoPasajero\'))" />
+            <input name="button" type="button" id="button" value="ASIGNAR PASAJERO" onclick="xajax_crearPasajero(xajax.getFormValues(\'formNuevoPasajero\'))" />
             </div></td>
             </tr>
             </table>
