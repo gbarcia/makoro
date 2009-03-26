@@ -7,8 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/dominio/Detall
 $controlBoleto = new ControlBoletoLogicaclass();
 $boletoClass = new Boletoclass();
 
-$numeroRecibido = $_GET[nsolicitud];
-$numeroSolicitud = substr($numeroRecibido, 0, 4);
+$numeroSolicitud = $_GET[nsolicitud];
 $Coleccion = $controlBoleto->informacionGeneralReciboBoleto($numeroSolicitud);
 if (is_null($Coleccion))
 die ("Numero de solicitud invalido");
