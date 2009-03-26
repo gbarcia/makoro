@@ -141,7 +141,7 @@ function procesarFiltros($datos){
         if ($_SESSION['EncargadoTipo'] != 'AG'){
             $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"><img src="iconos/detalles.png" alt="EDITAR"/></a></td>';
         } else {
-            $resultado.= '<td><a onclick=""><img src="iconos/detalles_gris.png" alt="EDITAR NO DIPONIBLE"/></a></td>';
+            $resultado.= '<td><a onclick=""><img src="iconos/detalles_gris.png" alt="EDITAR NO DISPONIBLE"/></a></td>';
         }
         $resultado.= '<td>' . $idVuelo. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
@@ -175,7 +175,7 @@ function procesarFiltros($datos){
         $resultado.= '<th>COPILOTO</th>';
         $resultado.= '</tr>';
         $resultado.= '</thead>';
-        $resultado.= '<tr><td align="center" colspan="11">No hay coincidencias con su busqueda.</td></tr>';
+        $resultado.= '<tr><td align="center" colspan="11">No hay coincidencias con su busqueda. Ud. puede intentarlo nuevamente, utilizando otros filtros.</td></tr>';
         $resultado.= '</table>';
     }
     return $resultado;
@@ -262,7 +262,7 @@ function inicio(){
         $resultado.= '<th>COPILOTO</th>';
         $resultado.= '</tr>';
         $resultado.= '</thead>';
-        $resultado.= '<tr><td align="center" colspan="11">No hay vuelos planificados para hoy (' . date("d-m-Y") .')</td></tr>';
+        $resultado.= '<tr><td align="center" colspan="11">No hay vuelos planificados para la fecha actual. (' . date("d-m-Y") .')</td></tr>';
         $resultado.= '</table>';
     }
     return $resultado;
@@ -359,7 +359,7 @@ function buscarCliente($datos){
         if ($datos[rif] == ''){
             $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
-                          Debe indicar el RIF del cliente.
+                          c
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -377,7 +377,7 @@ function buscarCliente($datos){
         if (($datos[cedula] == '') || (!is_numeric($datos[cedula]))){
             $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
-                          La cedula del cliente debe ser numerica.
+                          Para realizar esta operacion, Ud. debe indicar la cedula del cliente con un valor numerico.
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -414,7 +414,7 @@ function agregarReserva($datos){
     if ($controlVuelo->existeReservaVuelo($datos[idVuelo], $datos[solicitud])){
         $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
-                          Ya existe una reserva con este localizador para este vuelo. No se puede realizar mas.
+                          Ya existe una reserva con este localizador en este vuelo.
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -437,7 +437,7 @@ function agregarReserva($datos){
         if (($datos[cantidadAdlChd] <= 0) && ($datos[cantidadInf] <= 0)) {
             $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
-                          Debe indicar la cantidad de pasajeros.
+                          Para realizar esta operacion, Ud. debe indicar la cantidad de pasajeros a viajar.
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -463,7 +463,7 @@ function agregarReserva($datos){
             if ($respuesta != ''){
                 $mensaje = '<div class="exito">
                           <div class="textoMensaje">
-                          Se realizo la reserva satisfactoriamente.</br> Cliente: '.$datos[nombre].'. Localizador: '. $respuesta .'.
+                          Se realizo la reserva satisfactoriamente. Cliente: '.$datos[nombre].'. Localizador: '. $respuesta .'. Cantidad ADL/CHD: '.$datos[cantidadAdlChd].'. Cantidad INF: '.$datos[cantidadInf].'.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -476,7 +476,7 @@ function agregarReserva($datos){
             } else {
                 $mensaje = '<div class="error">
                           <div class="textoMensaje">
-                          No se pudo realizar la reserva. Verifique la disponibilidad de asientos o condodarcia de reservas de Salida y Retorno.
+                          No se pudo realizar la reserva. Verifique la disponibilidad de asientos y/o concordancia de reservas de salida y retorno.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -489,7 +489,7 @@ function agregarReserva($datos){
     } else {
         $mensaje = '<div class="advertencia">
                           <div class="textoMensaje">
-                          La cantidad de pasajeros deben ser valores enteros.
+                          Para realizar esta operacion, Ud. debe indicar la cantidad de pasajeros a viajar con valores enteros.
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -547,7 +547,7 @@ function procesarAgencia($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          Verifique el manual del usuario. Error '.$resultado.'
+                          Verifique el manual del usuario. Error PA'.$resultado.'.
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -590,7 +590,7 @@ function procesarCliente($datos) {
         else {
             $respuesta .= '<div class="error">
                           <div class="textoMensaje">
-                          Verifique el manual del usuario. Error '.$resultado.'
+                          Verifique el manual del usuario. Error PC'.$resultado.'.
                           </div>
                           <div class="botonCerrar">
                           <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -689,7 +689,7 @@ function cambiarEstado($datos){
     if ($datos[solicitud] == ''){
         $respuesta ='<div class="advertencia">
                             <div class="textoMensaje">
-                            Debe ingresar un numero de localizador.
+                            Para realizar esta operacion, Ud. debe indicar el localizador a editar.
                         </div>
                         <div class="botonCerrar">
                         <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -707,7 +707,7 @@ function cambiarEstado($datos){
         if (($resultado == 1) || ($resultado == 2) || ($resultado == 3)){
             $respuesta ='<div class="exito">
                             <div class="textoMensaje">
-                            Las reservas del localizador '.$datos[solicitud].' fueron cambiadas de estado. Estado original: PP. Estado Actual: '.$datos[estado].'
+                            Las reservas del localizador '.$datos[solicitud].' fueron cambiadas de estado exitosamente. Estado original: PP. Estado Actual: '.$datos[estado].'
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -725,7 +725,7 @@ function cambiarEstado($datos){
         } else if (($resultado == 5) || ($resultado == 6)){
             $respuesta ='<div class="exito">
                             <div class="textoMensaje">
-                            Las reservas del localizador '.$datos[solicitud].' fueron cambiadas de estado. Estado original: CO. Estado Actual: '.$datos[estado].'
+                            Las reservas del localizador '.$datos[solicitud].' fueron cambiadas de estado exitosamente. Estado original: CO. Estado Actual: '.$datos[estado].'
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -761,7 +761,7 @@ function cambiarEstado($datos){
         } else if ($resultado == 11){
             $respuesta ='<div class="advertencia">
             <div class="textoMensaje">
-            Las reservas del localizador'.$datos[solicitud].' se han ANULADO. Recuerde que se debe hacer la devolucion pertinente al caso.
+            Las reservas del localizador'.$datos[solicitud].' se han ANULADO. Recuerde que se debe hacer la devolucion pertinente al cliente involucarado.
             </div>
             <div class="botonCerrar">
             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -788,7 +788,7 @@ function cambiarEstado($datos){
         } else {
             $respuesta ='<div class="error">
             <div class="textoMensaje">
-            Verifique el manual de usuario. Error CEME'.$resultado.'
+            Verifique el manual de usuario. Error CEME'.$resultado.'.
             </div>
             <div class="botonCerrar">
             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -810,7 +810,7 @@ function procesarPago($datos){
     if ($datos[monto] == ''){
         $respuesta ='<div class="advertencia">
             <div class="textoMensaje">
-            Debe ingresar un monto
+            Debe ingresar un monto.
             </div>
             <div class="botonCerrar">
             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -858,7 +858,7 @@ function procesarPago($datos){
         } else {
             $respuesta ='<div class="error">
                             <div class="textoMensaje">
-                            Verifique el manual de usuario. Error PPME'.$resultado.'
+                            Verifique el manual de usuario. Error PPME'.$resultado.'.
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -953,7 +953,7 @@ function asignarPasajero($datos){
     if ($resultado){
         $respuesta ='<div class="exito">
                             <div class="textoMensaje">
-                            El pasajero ha sido asignado a la reserva '.$datos[idReserva].'
+                            El pasajero ha sido asignado a la reserva '.$datos[idReserva].'.
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -1002,7 +1002,7 @@ function crearPasajero($datos){
         if ($resultado){
             $respuesta ='<div class="exito">
                             <div class="textoMensaje">
-                            El pasajero ha sido asignado a la reserva '.$datos[idReserva].'
+                            El pasajero ha sido asignado a la reserva '.$datos[idReserva].'.
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
@@ -1039,7 +1039,7 @@ function generarBoletoGui($datos){
     } else {
         $respuesta ='<div class="error">
                             <div class="textoMensaje">
-                            El boleto no ha podido ser generado. Verifique que las reservas esten pagas y que los pasajeros esten asignados.
+                            El boleto no ha podido ser generado. Verifique que las reservas esten pagas y/o que los pasajeros esten asignados.
                             </div>
                             <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">

@@ -43,7 +43,7 @@ $xajax->processRequests();
         <script type="text/javascript" src="jscalendar/calendar.js"></script>
         <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
         <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
-        <script language="JavaScript">
+        <script type="text/javascript" language="JavaScript">
             <!--
             var nav4 = window.Event ? true : false;
             function acceptNum(evt){
