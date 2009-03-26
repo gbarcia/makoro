@@ -123,6 +123,7 @@ function procesarFiltros($datos){
     $resultado.= '<th>COPILOTO</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
+    $resultado.= '<tbody>';
     $color = false;
     foreach ($coleccionVuelo as $var) {
         $recursoDetalles = $var->getColeccionVuelo();
@@ -156,6 +157,7 @@ function procesarFiltros($datos){
         $resultado.= '</tr>';
         $color = !$color;
     }
+    $resultado.= '</tbody>';
     $resultado.= '</table>';
     $resultado.= '</form>';
     if ($recursoDetalles == "") {
@@ -175,7 +177,9 @@ function procesarFiltros($datos){
         $resultado.= '<th>COPILOTO</th>';
         $resultado.= '</tr>';
         $resultado.= '</thead>';
+        $resultado.= '<tbody>';
         $resultado.= '<tr><td align="center" colspan="11">No hay coincidencias con su busqueda. Ud. puede intentarlo nuevamente, utilizando otros filtros.</td></tr>';
+        $resultado.= '</tbody>';
         $resultado.= '</table>';
     }
     return $resultado;
@@ -210,6 +214,7 @@ function inicio(){
     $resultado.= '<th>COPILOTO</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
+    $resultado.= '<tbody>';
     $color = false;
     foreach ($coleccionVuelo as $var) {
         $recursoDetalles = $var->getColeccionVuelo();
@@ -243,6 +248,7 @@ function inicio(){
         $resultado.= '</tr>';
         $color = !$color;
     }
+    $resultado.= '</tbody>';
     $resultado.= '</table>';
     $resultado.= '</form>';
     if ($recursoDetalles == "") {
@@ -262,7 +268,9 @@ function inicio(){
         $resultado.= '<th>COPILOTO</th>';
         $resultado.= '</tr>';
         $resultado.= '</thead>';
+        $resultado.= '<tbody>';
         $resultado.= '<tr><td align="center" colspan="11">No hay vuelos planificados para la fecha actual. (' . date("d-m-Y") .')</td></tr>';
+        $resultado.= '</tbody>';
         $resultado.= '</table>';
     }
     return $resultado;
@@ -290,6 +298,11 @@ function desplegarDetalles($idVuelo){
         $objResponse->addAssign("cambiarEstado", "innerHTML", $respuesta);
         $generarBoleto = generarFormularioBoleto();
         $objResponse->addAssign("generarBoleto", "innerHTML", $generarBoleto);
+    } else {
+        $objResponse->addClear("izquierda", "innerHTML");
+        $objResponse->addClear("panelOperaciones", "innerHTML");
+        $objResponse->addClear("cambiarEstado", "innerHTML");
+        $objResponse->addClear("generarBoleto", "innerHTML");
     }
     $objResponse->addClear("asignarPasajero", "innerHTML");
     return $objResponse;
@@ -308,6 +321,7 @@ function generarFichaVuelo($idVuelo){
     $row = mysql_fetch_array($datos);
     $resultado = '<table class="fichaTable" cellspacing="0">
         <thead><td colspan="2">DATOS DEL VUELO</td></thead>
+        <tbody>
         <tr class="r1">
         <td>NUMERO</td>
         <td>'.$idVuelo.'</td>
@@ -339,6 +353,7 @@ function generarFichaVuelo($idVuelo){
         <td>INF</td>
         <td>'.$row[infQuedan].' asientos disponibles</td>
         </tr>
+        </tbody>
         </table>';
     return $resultado;
 }
@@ -816,9 +831,18 @@ function procesarPago($datos){
             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
             </div>
             </div>';
+    } else if (($datos[tipoPago] == 'EF') && (($datos[banco] != '') || ($datos[transaccion] != ''))) {
+        $respuesta ='<div class="advertencia">
+            <div class="textoMensaje">
+            Si el pago se realizo en efectivo, Ud. no debe indicar el banco y/o numero de la transaccion para operaciones bancarias. Tipo de pago: '. $datos[tipoPago] .'.
+            </div>
+            <div class="botonCerrar">
+            <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
+            </div>
+            </div>';
     } else {
         $controlReserva = new ControlReservaLogicaclass();
-        $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], $datos[tipoPago], 0, $datos[banco], $datos[transaccion], $datos[moneda]);
+        $resultado = $controlReserva->actualizarEstadoReserva($datos[solicitud], $datos[estado], $datos[tipoPago], 0, $datos[banco], $datos[transaccion], 1);
         if (($resultado == 2) || ($resultado == 5)){
             $respuesta ='<div class="exito">
                             <div class="textoMensaje">
@@ -921,7 +945,6 @@ function buscarPasajero($datos){
     } else {
         return desplegarFormularioAsignarPasajero2($row);
     }
-
 }
 
 function desplegarFormularioAsignarPasajero2($datos){

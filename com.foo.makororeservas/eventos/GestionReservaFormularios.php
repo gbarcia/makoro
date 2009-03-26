@@ -24,6 +24,7 @@ function detalles($idVuelo){
     $resultado.= '<th>TRANSACCION</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
+    $resultado.= '<tbody>';
 
     $cant = mysql_num_rows($recurso);
     if($cant == 0){
@@ -98,6 +99,7 @@ function detalles($idVuelo){
             $resultado.= '</tr>';
         }
     }
+    $resultado.= '</tbody>';
     $resultado.= '</table>';
     $resultado.= '</form>';
     $resultado.= '</div>';
@@ -109,15 +111,16 @@ function generarFormularioNuevaReserva($idVuelo) {
     $contenido .= '<form id="formNuevaReserva">
             <input type="hidden" name="idVuelo" value="' . $idVuelo . '" />
             <table class="formTable" cellspacing="0">
-            <tr>
             <thead>
+            <tr>
             <td colspan="3">
             <div class="tituloBlanco1">
             NUEVA RESERVA
             </div>
             </td>
-            </thead>
             </tr>
+            </thead>
+            <tbody>
             <tr class="r1">
             <td><input type="radio" name="grupo" value="juridico" checked="checked" />Juridico</td>
             <td>RIF</td>
@@ -129,37 +132,36 @@ function generarFormularioNuevaReserva($idVuelo) {
             <td><input type="text" name="cedula" id="cedula"></td>
             </tr>
             <tr class="r1">
-            <td colspan="3">
-            <div align="center">
+            <td colspan="3" align="center">
             <input name="button" type="button" id="button" value="BUSCAR CLIENTE" onclick= "xajax_buscarCliente(xajax.getFormValues(\'formNuevaReserva\'))">
-            </div>
             </td>
             </tr>
+            </tbody>
             </table>
             </form>
             <form id="formSolicitudExistente">
             <input type="hidden" name="idVuelo" value="' . $idVuelo . '" />
             <table class="formTable" cellspacing="0">
-            <tr>
             <thead>
+            <tr>
             <td colspan="2">
             <div class="tituloBlanco1">
             LOCALIZADOR EXISTENTE
             </div>
             </td>
-            </thead>
             </tr>
+            </thead>
+            <tbody>
             <tr class="r1">
             <td>Localizador</td>
             <td><input type="text" name="solicitud" id="solicitud" onkeyup="this.value=this.value.toUpperCase();"></td>
             </tr>
             <tr class="r0">
-            <td colspan="2">
-            <div align="center">
+            <td colspan="2" align="center">
             <input name="button" type="button" id="button" value="BUSCAR LOCALIZADOR" onclick= "xajax_buscarSolicitud(xajax.getFormValues(\'formSolicitudExistente\'))">
-            </div>
             </td>
             </tr>
+            </tbody>
             </table>
             </form>';
     return $contenido;
@@ -175,15 +177,16 @@ function generarFormularioConfirmarReserva($datos) {
             <input type="hidden" name="tipoCliente" value="'.$datos[grupo].'" />
             <input type="hidden" name="solicitud" value="'.$datos[solicitud].'" />
             <table class="formTable" cellspacing="0">
-            <tr>
             <thead>
+            <tr>
             <td colspan="3">
             <div class="tituloBlanco1">
             NUEVA RESERVA
             </div>
             </td>
-            </thead>
             </tr>
+            </thead>
+            <tbody>
         ';
     if ($datos[grupo] == 'juridico'){
         $nombre = buscarClienteJuridico($datos[rif]);
@@ -240,6 +243,7 @@ function generarFormularioConfirmarReserva($datos) {
             <input name="button" type="button" id="button" value="AGREGAR RESERVA" onclick= "xajax_agregarReserva(xajax.getFormValues(\'formConfirmarReserva\'))">
             </td>
             </tr>
+            </tbody>
             </table>
             </form>';
     return $contenido;
@@ -250,15 +254,16 @@ function generarFormularioAgregarClienteJuridico($datos) {
             <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
             <input type="hidden" name="grupo" value="'.$datos[grupo].'" />
             <table class="formTable" cellspacing="0">
-            <tr>
             <thead>
+            <tr>
             <td colspan="2">
             <div class="tituloBlanco1">
             NUEVO CLIENTE JURIDICO
             </div>
             </td>
-            </thead>
             </tr>
+            </thead>
+            <tbody>
             <tr class="r1">
             <td colspan="2">Todos los campos son obligatorios</td>
             </tr>
@@ -281,11 +286,12 @@ function generarFormularioAgregarClienteJuridico($datos) {
             </label></td>
             </tr>
             <tr class="r1">
-            <td colspan="2"><div align="center">
+            <td colspan="2" align="center">
             <input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioNuevaReserva('.$datos[idVuelo].')" />
             <input name="button" type="button" id="button" value="CONTINUAR" onclick= "xajax_procesarAgencia(xajax.getFormValues(\'formNuevaAgencia\'))" />
-            </div></td>
+            </td>
             </tr>
+            </tbody>
             </table>
             </form>';
     return $contenido;
@@ -296,15 +302,16 @@ function generarFormularioAgregarClienteParticular($datos) {
             <input type="hidden" name="idVuelo" value="'.$datos[idVuelo].'" />
             <input type="hidden" name="grupo" value="'.$datos[grupo].'" />
             <table class="formTable" cellspacing="0">
-            <tr>
             <thead>
+            <tr>
             <td colspan="2">
             <div class="tituloBlanco1">
             NUEVO CLIENTE NATURAL
             </div>
             </td>
-            </thead>
             </tr>
+            </thead>
+            <tbody>
             <tr class="r1">
             <td colspan="2">Todos los campos son obligatorios</td>
             </tr>
@@ -331,11 +338,12 @@ function generarFormularioAgregarClienteParticular($datos) {
             <td><input type="text" name="telefono" id="telefono" onkeyup="this.value=this.value.toUpperCase();" /></td>
             </tr>
             <tr class="r0">
-            <td colspan="2"><div align="center">
+            <td colspan="2" align="center">
             <input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioNuevaReserva('.$datos[idVuelo].')" />
             <input name="button" type="button" id="button" value="CONTINUAR" onclick= "xajax_procesarCliente(xajax.getFormValues(\'formNuevoCliente\'))" />
-            </div></td>
+            </td>
             </tr>
+            </tbody>
             </table>
             </form>';
     return $contenido;
@@ -361,9 +369,11 @@ function tablaVacia(){
     $resultado.= '<th>TRANSACCION</th>';
     $resultado.= '</tr>';
     $resultado.= '</thead>';
+    $resultado.= '<tbody>';
     $resultado.= '<tr class="r1">';
     $resultado.= '<th colspan="14">NO HAY RESERVAS PARA ESTE VUELO</th>';
     $resultado.= '</tr>';
+    $resultado.= '</tbody>';
     $resultado.= '</table>';
     return $resultado;
 }
@@ -408,7 +418,7 @@ function generarFormularioCambiarEstado2($datos){
             <td>Forma de pago</td>
             <td><select name="tipoPago">
             <option value="EF">PAGO EN EFECTIVO</option>
-            <option value="DE">DEPOSITO EN CUENTA CORRIENTE</option>
+            <option value="DE">DEPOSITO</option>
             <option value="CH">CHEQUE</option>
             <option value="TR">TRANSFERENCIA BANCARIA</option>
             </select></td>
@@ -438,8 +448,8 @@ function generarFormularioAsignarPasajero($idVuelo, $idReserva) {
     $contenido .= '<form id="formNuevoPasajero">
             <input type="hidden" name="idVuelo" value="' . $idVuelo . '" />
             <table class="formTable" cellspacing="0">
-            <tr>
             <thead>
+            <tr>
             <td colspan="2">
             <div class="tituloBlanco1">
             DATOS DEL PASAJERO
@@ -447,8 +457,9 @@ function generarFormularioAsignarPasajero($idVuelo, $idReserva) {
             <button name="boton" type="button" onclick="xajax_borrarFormPasajero()" style="margin:0px; background-color:transparent; border:none;"><img src="iconos/cerrar.png" alt="x"/></button>
             </div>
             </td>
-            </thead>
             </tr>
+            </thead>
+            <tbody>
             <tr class="r1">
             <td>ID Reserva</td>
             <td><input type="text" name="idReserva" id="idReserva" readonly="readonly" value="' . $idReserva . '"></td>
@@ -458,12 +469,11 @@ function generarFormularioAsignarPasajero($idVuelo, $idReserva) {
             <td><input type="text" name="idPasajero" id="idPasajero"></td>
             </tr>
             <tr class="r1">
-            <td colspan="2">
-            <div align="center">
+            <td colspan="2" align="center">
             <input name="button" type="button" id="button" value="BUSCAR PASAJERO" onclick= "xajax_buscarPasajero(xajax.getFormValues(\'formNuevoPasajero\'))">
-            </div>
             </td>
             </tr>
+            </tbody>
             </table>
             </form>';
     return $contenido;
@@ -516,10 +526,10 @@ function generarFormularioAsignarPasajero2 ($datos) {
             </td>
             </tr>
             <tr class="r1">
-            <td colspan="2"><div align="center">
+            <td colspan="2" align="center">
             <input name="button" type="button" id="button" value="VOLVER" onclick="xajax_desplegarFormularioAsignarPasajero('.$datos[idVuelo].','.$datos[idReserva].')" />
             <input name="button" type="button" id="button" value="ASIGNAR" onclick="xajax_asignarPasajero(xajax.getFormValues(\'formNuevoPasajero\'))" />
-            </div></td>
+            </td>
             </tr>
             </table>
             </form>';
@@ -579,10 +589,10 @@ function generarFormularioCrearPasajero ($datos) {
             </td>
             </tr>
             <tr class="r0">
-            <td colspan="2"><div align="center">
+            <td colspan="2" align="center">
             <input name="button" type="button" id="button" value="VOLVER" onclick="xajax_desplegarFormularioAsignarPasajero('.$datos[idVuelo].','.$datos[idReserva].')" />
             <input name="button" type="button" id="button" value="ASIGNAR PASAJERO" onclick="xajax_crearPasajero(xajax.getFormValues(\'formNuevoPasajero\'))" />
-            </div></td>
+            </td>
             </tr>
             </table>
             </form>';
