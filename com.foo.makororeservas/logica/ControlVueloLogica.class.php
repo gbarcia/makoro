@@ -388,5 +388,34 @@ class ControlVueloLogicaclass {
         $total =' '.$hora.' horas y'.' '.$minutos.' minutos';
         return $total;
     }
+
+    /**
+     * Metodo para verificar si la fecha de un vuelo es mayor a la fecha actual
+     * en caso de ser iguales verifica si la hora del vuelo es mayor a la hora
+     * actual 
+     * @param <type> $fechaVuelo La fecha del vuelo a consultar
+     * @param <type> $fechaActual La fecha actual
+     * @param <type> $horaVuelo La hora del vuelo a consultar
+     * @param <type> $horaActual La hora actual 
+     * @return <type> Retorna true en caso que la fecha o la hora sean mayor a la actual
+     * de lo contrario retorna false 
+     */
+    function esFechaValida($fechaVuelo,$fechaActual,$horaVuelo,$horaActual){
+        if($fechaVuelo > $fechaActual){
+            echo 'true';
+            return true;
+        }else if($fechaVuelo == $fechaActual){
+            if($horaVuelo > $horaActual){
+                echo 'true';
+                return true;
+            }else if($horaVuelo <= $horaActual){
+                echo 'false';
+                return false;
+            }
+        }else if($fechaVuelo < $fechaActual){
+            echo 'false';
+            return false;
+        }
+    }
 }
 ?>
