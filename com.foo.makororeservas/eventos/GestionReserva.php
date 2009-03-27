@@ -16,53 +16,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/Control
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteParticularLogica.class.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/logica/ControlClienteAgenciaLogica.class.php';
 
-function generarComboBoxLugar(){
-    $objResponse = new xajaxResponse();
-    $combo = '<select name="ruta"><option value="">TODAS</option>';
-    $controladorRutas = new ControlRutaLogicaclass();
-    $recurso = $controladorRutas->consultarTodasLasRutas();
-    foreach ($recurso as $row) {
-        $combo.= '<option value="' . $row->getSitioSalida() .'-'. $row->getSitioLlegada() . '">'
-        . $row->getAbreviaturaSalida() .' - '. $row->getAbreviaturaLlegada() . '</option>';
-    }
-    $combo.= '</select>';
-    $objResponse->addAssign("comboBoxRuta", "innerHTML", "$combo");
-    return $objResponse;
-}
-
-function generarComboBoxServicio(){
-    $combo = '<select name="servicio">';
-    $controladorServicio = new ControlTipoServicioLogicaclass();
-    $recurso = $controladorServicio->consultarServicios();
-    while ($row = mysql_fetch_array($recurso)) {
-        $combo.= '<option value="' . $row[id] .'">' . $row[nombre] . '</option>';
-    }
-    $combo.= '</select>';
-    return $combo;
-}
-
-function generarComboBoxPosada(){
-    $combo = '<select name="posada"><option value="">NINGUNA</option>';
-    $controladorPosada = new controladorPosadaBDclass();
-    $recurso = $controladorPosada->consultarPosadas();
-    while ($row = mysql_fetch_array($recurso)){
-        $combo.= '<option value="' . $row[id] .'">' . $row[nombrePosada] . '</option>';
-    }
-    $combo.= '</select>';
-    return $combo;
-}
-
-function generarComboBoxMoneda(){
-    $combo = '<select name="moneda">';
-    $controladorMoneda = new controladorMonedaBDclass();
-    $recurso = $controladorMoneda->consultarMonedas();
-    while ($row = mysql_fetch_array($recurso)){
-        $combo.= '<option value="' . $row[id] .'">' . $row[tipo] . '</option>';
-    }
-    $combo.= '</select>';
-    return $combo;
-}
-
 function validarFiltros($datos){
     foreach ($datos as $valor) {
         if (!empty($valor)) return true ;
@@ -82,11 +35,6 @@ function desplegarBusqueda($datos){
     return $objResponse;
 }
 
-/**
- * Procesa la busqueda de vuelos dependidon del formulario
- * @param <coleccion> $datos los datos del formulario
- * @return <xajaxResponse> Respuesta xajax
- */
 function procesarFiltros($datos){
     $arregloRuta = split("-", $datos[ruta]);
     if ($datos[disponibilidad] == ""){
@@ -105,7 +53,6 @@ function procesarFiltros($datos){
         $datos[cedulaPasaportePasajero], $datos[nombrePasajero], $datos[apellidoPasajero],
         $datos[cedulaCliente], $datos[nombreParticular], $datos[apellidoParticular],
         $datos[rifCliente], $datos[nombreAgencia], $datos[solicitud], $datos[estado]);
-    $resultado = "";
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
@@ -198,7 +145,6 @@ function inicio(){
     $controlVuelo = new ControlVueloLogicaclass();
     $coleccionVuelo = $controlVuelo->vueloEspecificoSinFiltro(date("Y")."-".date("m").'-'.date('d'),
         date("Y")."-".date("m").'-'.date('d'));
-    $resultado = "";
     $resultado = '<form id="formularioEditarMarcar">';
     $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
@@ -286,6 +232,8 @@ function desplegarDetalles($idVuelo){
     $objResponse->addAssign("fichaVuelo", "innerHTML", $fichaVuelo);
     $observaciones = generarObservaciones($idVuelo);
     $objResponse->addAssign("observaciones", "innerHTML", $observaciones);
+    $leyenda = generarLeyenda();
+    $objResponse->addAssign("leyenda", "innerHTML", $leyenda);
 
     $controlVuelo = new ControlVueloLogicaclass();
     $controlGestion = new controladorGestionVuelos();
@@ -293,7 +241,7 @@ function desplegarDetalles($idVuelo){
     $row = mysql_fetch_array($datosVuelo);
     if ($controlVuelo->esFechaValida($row[fecha], date("Y-m-d"), $row[hora], date("H:i:s"))){
         $formulario = generarFormularioNuevaReserva($idVuelo);
-        $objResponse->addAssign("izquierda", "innerHTML", $formulario);
+        $objResponse->addAssign("nuevaReserva", "innerHTML", $formulario);
         $panel = generarPanelOperaciones();
         $objResponse->addAssign("panelOperaciones", "innerHTML", $panel);
         $respuesta = generarFormularioCambiarEstado($idVuelo);
@@ -301,7 +249,7 @@ function desplegarDetalles($idVuelo){
         $generarBoleto = generarFormularioBoleto();
         $objResponse->addAssign("generarBoleto", "innerHTML", $generarBoleto);
     } else {
-        $objResponse->addClear("izquierda", "innerHTML");
+        $objResponse->addClear("nuevaReserva", "innerHTML");
         $objResponse->addClear("panelOperaciones", "innerHTML");
         $objResponse->addClear("cambiarEstado", "innerHTML");
         $objResponse->addClear("generarBoleto", "innerHTML");
@@ -313,7 +261,7 @@ function desplegarDetalles($idVuelo){
 function desplegarFormularioNuevaReserva($idVuelo){
     $objResponse = new xajaxResponse();
     $formulario = generarFormularioNuevaReserva($idVuelo);
-    $objResponse->addAssign("izquierda", "innerHTML", $formulario);
+    $objResponse->addAssign("nuevaReserva", "innerHTML", $formulario);
     return $objResponse;
 }
 
@@ -414,7 +362,7 @@ function buscarCliente($datos){
 function desplegarConfirmarReserva($datos){
     $respuesta = generarFormularioConfirmarReserva($datos);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("izquierda", "innerHTML", $respuesta);
+    $objResponse->addAssign("nuevaReserva", "innerHTML", $respuesta);
     return $objResponse;
 }
 
@@ -532,14 +480,14 @@ function borrarFormPasajero(){
 function desplegarFormularioAgregarClienteJuridico($rif){
     $respuesta = generarFormularioAgregarClienteJuridico($rif);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("izquierda", "innerHTML", $respuesta);
+    $objResponse->addAssign("nuevaReserva", "innerHTML", $respuesta);
     return $objResponse;
 }
 
 function desplegarFormularioAgregarClienteParticular($cedula){
     $respuesta = generarFormularioAgregarClienteParticular($cedula);
     $objResponse = new xajaxResponse();
-    $objResponse->addAssign("izquierda", "innerHTML", $respuesta);
+    $objResponse->addAssign("nuevaReserva", "innerHTML", $respuesta);
     return $objResponse;
 }
 
@@ -559,7 +507,7 @@ function procesarAgencia($datos) {
                           </div>
                           </div>';
             $form = generarFormularioConfirmarReserva($datos);
-            $objResponse->addAssign("izquierda", "innerHTML", $form);
+            $objResponse->addAssign("nuevaReserva", "innerHTML", $form);
         }
         else {
             $respuesta .= '<div class="error">
@@ -602,7 +550,7 @@ function procesarCliente($datos) {
                           </div>
                           </div>';
             $form = generarFormularioConfirmarReserva($datos);
-            $objResponse->addAssign("izquierda", "innerHTML", $form);
+            $objResponse->addAssign("nuevaReserva", "innerHTML", $form);
         }
         else {
             $respuesta .= '<div class="error">

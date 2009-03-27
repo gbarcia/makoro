@@ -62,12 +62,12 @@ $xajax->processRequests();
         </style>
     </head>
     <body>
-        
+
         <div class="encabezado" id="encabezado">
             <img src="imagenes/encabezado.png" width="900" height="65" alt="encabezado"/>
         </div>
         <div class="panelSesion">
-        <? echo $_SESSION['EncargadoLogin']; ?> | <? echo $_SESSION['FechaActual']; ?> | <input type="button" name="button2" id="button2" value="SALIR" onclick="xajax_salirDelSistema();" />
+            <? echo $_SESSION['EncargadoLogin']; ?> | <? echo $_SESSION['FechaActual']; ?> | <input type="button" name="button2" id="button2" value="SALIR" onclick="xajax_salirDelSistema();" />
         </div>
         <div id="sesion" class="cuerpo">
             <?
@@ -178,8 +178,9 @@ $xajax->processRequests();
                     </div>
                 </div>
                 <div class="textoNegro1" align="center">
+                    <input type="button" value="VUELOS PARA FECHA ACTUAL" onclick="xajax_desplegarInicio()"/>
                     <input type="reset" value="LIMPIAR FORMULARIO" />
-                    <input type="button" value="ACTUALIZAR" onclick="xajax_desplegarBusqueda(xajax.getFormValues('filtros'))"/>
+                    <input type="button" value="ACTUALIZAR BUSQUEDA" onclick="xajax_desplegarBusqueda(xajax.getFormValues('filtros'))"/>
                 </div>
             </form>
         </div>
@@ -213,28 +214,36 @@ $xajax->processRequests();
                     xajax_desplegarInicio();
                 </script>
             </div>
+            <div align="right">
+                <cite class="textoNegro1">Leyenda: Para ver detalles del vuelo haga click en su icono. -
+                    <img src="iconos/detalles.png" width="16" height="16" alt="detalles"/> Vuelos actuales -
+                    <img src="iconos/detalles_rojo.png" width="16" height="16" alt="detalles_rojo"/> Vuelos anteriores -
+                    <hr width="98%" size="1" color="#067AC2">
+                </cite>
+            </div>
         </div>
 
-        <hr width="98%" size="1" color="#067AC2">
-
         <div class="cuerpo">
-            <div id="fichaVuelo" ></div>
+            <div id="fichaVuelo"></div>
             <div id="pasajeros"></div>
+            <div id="leyenda" align="right"></div>
         </div>
 
         <div id="mensaje" class="cuerpo"></div>
 
-        <div id="asignarPasajero" class="cuerpo"></div>
+        <div id="asignarPasajero" class="cuerpo" align=center></div>
 
         <div class="cuerpo">
-            <div id="observaciones" class="izq"></div>
-            <div id="panelOperaciones" class="der"></div>
+            <div class="izq">
+                <div id="nuevaReserva"></div>
+            </div>
+            <div class="der">
+                <div id="panelOperaciones"></div>
+                <div id="observaciones"></div>
+            </div>
         </div>
 
-        <div class="cuerpo">
-            <div class="izq" id="izquierda"></div>
-            <div class="der" id="derecha"></div>
-        </div>
+        <div id="goUp" class="cuerpo" align="center"><a href="#"><img src="iconos/subir.png" width="32" height="32" border="0" alt=""/><div class="textoNegro1">Ir al tope</div></a></div>
 
     </body>
 </html>
