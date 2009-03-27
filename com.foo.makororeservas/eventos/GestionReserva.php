@@ -1055,10 +1055,13 @@ function crearPasajero($datos){
 
 function generarBoletoGui($datos){
     $valido = false;
+    $valido2 = false;
     $control = new controladorBoletoBDclass();
     $valido = $control->validoBoleto($datos[solicitud]);
+    $valido1 = mysql_fetch_array($valido);
+    $valido2 = $control->boletoPago($datos[solicitud]);
     $objResponse = new xajaxResponse();
-    if ($valido) {
+    if ($valido1[resultado] && $valido2) {
         $url = "boleto.php?nsolicitud=" . $datos[solicitud];
         $objResponse->addScript('window.open("'.$url.'", "Boleto", "resizable=1, scrollbars=1, width=640, height=480")');
     } else {
