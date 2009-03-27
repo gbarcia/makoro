@@ -41,13 +41,17 @@ function detalles($idVuelo){
             } else{
                 $resultado.= '<tr class="r1">';
             }
-            if ($controlVuelo->esFechaValida($rowVuelo[fecha], date("Y-m-d"), $rowVuelo[hora], date("H:i:s"))){
-                $boton = '<a onClick=""><img src="imagenes/editarPass_rojo.png" alt="EDITAR NO DISPONIBLE"/></a>';
-            } else if (($row[tipoPasajero] == 'INF') || ($row[cedulaPasaporte] != '')) {
+
+            if (($row[tipoPasajero] == 'INF') || ($row[cedulaPasaporte] != '')) {
                 $boton = '<a onClick=""><img src="imagenes/editarPass_gris.png" alt="EDITAR NO DISPONIBLE"/></a>';
             } else {
                 $boton = '<a onClick="xajax_desplegarFormularioAsignarPasajero('.$idVuelo.','.$row[id].')"><img src="imagenes/editarPass.png" alt="EDITAR"/></a>';
             }
+
+            if (!$controlVuelo->esFechaValida($rowVuelo[fecha], date("Y-m-d"), $rowVuelo[hora], date("H:i:s"))){
+                $boton = '<a onClick=""><img src="imagenes/editarPass_rojo.png" alt="EDITAR NO DISPONIBLE"/></a>';
+            }
+            
             $resultado.= '<td>'.$boton.'</td>';
             $resultado.= '<td>' . $row[id] . '</td>';
             $resultado.= '<td>' . $row[solicitud] . '</td>';
