@@ -533,7 +533,7 @@ function procesarNuevoEncargado ($datos) {
     else {
         $respuesta .= '<div class="advertencia">
                           <div class="textoMensaje">
-                          No se pudo completar la operacion. Verifique que el formulario ha sido completado correctamente. ERROR FGE02.
+                          No se pudo completar la operacion. Verifique que el formulario ha sido completado correctamente y el correo este bien en la repeticion. ERROR FGE02.
                           </div>
                           <div class="botonCerrar">
                             <input type="image" src="iconos/cerrar.png" alt="x" onclick="xajax_borrarMensaje()">
