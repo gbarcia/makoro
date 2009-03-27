@@ -1,4 +1,52 @@
 <?php
+
+function generarComboBoxLugar(){
+    $objResponse = new xajaxResponse();
+    $combo = '<select name="ruta"><option value="">TODAS</option>';
+    $controladorRutas = new ControlRutaLogicaclass();
+    $recurso = $controladorRutas->consultarTodasLasRutas();
+    foreach ($recurso as $row) {
+        $combo.= '<option value="' . $row->getSitioSalida() .'-'. $row->getSitioLlegada() . '">'
+        . $row->getAbreviaturaSalida() .' - '. $row->getAbreviaturaLlegada() . '</option>';
+    }
+    $combo.= '</select>';
+    $objResponse->addAssign("comboBoxRuta", "innerHTML", "$combo");
+    return $objResponse;
+}
+
+function generarComboBoxServicio(){
+    $combo = '<select name="servicio">';
+    $controladorServicio = new ControlTipoServicioLogicaclass();
+    $recurso = $controladorServicio->consultarServicios();
+    while ($row = mysql_fetch_array($recurso)) {
+        $combo.= '<option value="' . $row[id] .'">' . $row[nombre] . '</option>';
+    }
+    $combo.= '</select>';
+    return $combo;
+}
+
+function generarComboBoxPosada(){
+    $combo = '<select name="posada"><option value="">NINGUNA</option>';
+    $controladorPosada = new controladorPosadaBDclass();
+    $recurso = $controladorPosada->consultarPosadas();
+    while ($row = mysql_fetch_array($recurso)){
+        $combo.= '<option value="' . $row[id] .'">' . $row[nombrePosada] . '</option>';
+    }
+    $combo.= '</select>';
+    return $combo;
+}
+
+function generarComboBoxMoneda(){
+    $combo = '<select name="moneda">';
+    $controladorMoneda = new controladorMonedaBDclass();
+    $recurso = $controladorMoneda->consultarMonedas();
+    while ($row = mysql_fetch_array($recurso)){
+        $combo.= '<option value="' . $row[id] .'">' . $row[tipo] . '</option>';
+    }
+    $combo.= '</select>';
+    return $combo;
+}
+
 function detalles($idVuelo){
     $controlVuelo = new ControlVueloLogicaclass();
     $datos = $controlVuelo->consultarInformacionVuelo($idVuelo);
@@ -51,7 +99,7 @@ function detalles($idVuelo){
             if (!$controlVuelo->esFechaValida($rowVuelo[fecha], date("Y-m-d"), $rowVuelo[hora], date("H:i:s"))){
                 $boton = '<a onClick=""><img src="imagenes/editarPass_rojo.png" alt="EDITAR NO DISPONIBLE"/></a>';
             }
-            
+
             $resultado.= '<td>'.$boton.'</td>';
             $resultado.= '<td>' . $row[id] . '</td>';
             $resultado.= '<td>' . $row[solicitud] . '</td>';
@@ -132,12 +180,12 @@ function generarFormularioNuevaReserva($idVuelo) {
             <tr class="r1">
             <td><input type="radio" name="grupo" value="juridico" checked="checked" />Juridico</td>
             <td>RIF</td>
-            <td><input type="text" name="rif" id="rif"></td>
+            <td><input type="text" name="rif" id="rif" onkeyup="this.value=this.value.toUpperCase();"></td>
             </tr>
             <tr class="r0">
             <td><input type="radio" name="grupo" value="particular" />Particular</td>
             <td>Cedula</td>
-            <td><input type="text" name="cedula" id="cedula"></td>
+            <td><input type="text" name="cedula" id="cedula" onKeyPress="return acceptNum(event)"></td>
             </tr>
             <tr class="r1">
             <td colspan="3" align="center">
@@ -358,7 +406,8 @@ function generarFormularioAgregarClienteParticular($datos) {
 }
 
 function tablaVacia(){
-    $resultado = '<table class="scrollTable" cellspacing="0">';
+    $resultado = '<div class="tableContainer">';
+    $resultado.= '<table class="scrollTable" cellspacing="0">';
     $resultado.= '<thead>';
     $resultado.= '<tr>';
     $resultado.= '<th>&nbsp</th>';
@@ -383,6 +432,7 @@ function tablaVacia(){
     $resultado.= '</tr>';
     $resultado.= '</tbody>';
     $resultado.= '</table>';
+    $resultado.= '</div>';
     return $resultado;
 }
 
@@ -440,7 +490,7 @@ function generarFormularioCambiarEstado2($datos){
             </tr>
             <tr>
             <td>Nro Transaccion</td>
-            <td><input type="text" name="transaccion" value="" onkeyup="this.value=this.value.toUpperCase();"/></td>
+            <td><input type="text" name="transaccion" value="" onKeyPress="return acceptNum(event)"/></td>
             </tr>
             <tr>
             <td colspan="2" align="center"><input name="button" type="button" id="button" value="VOLVER" onclick= "xajax_desplegarFormularioCambiarEstado('.$datos[idVuelo].')" />
@@ -474,7 +524,7 @@ function generarFormularioAsignarPasajero($idVuelo, $idReserva) {
             </tr>
             <tr class="r0">
             <td>Cedula/Pasaporte</td>
-            <td><input type="text" name="idPasajero" id="idPasajero"></td>
+            <td><input type="text" name="idPasajero" id="idPasajero" onkeyup="this.value=this.value.toUpperCase();"></td>
             </tr>
             <tr class="r1">
             <td colspan="2" align="center">
@@ -567,25 +617,25 @@ function generarFormularioCrearPasajero ($datos) {
             <tr class="r1">
             <td>Cedula</td>
             <td><label>
-            <input type="text" name="cedula" id="cedula" value="'.$datos[cedula].'"/>
+            <input type="text" name="cedula" id="cedula" value="'.$datos[cedula].'" onKeyPress="return acceptNum(event)"/>
             </label></td>
             </tr>
             <tr class="r0">
             <td>Pasaporte</td>
             <td><label>
-            <input type="text" name="pasaporte" id="pasaporte" value="'.$datos[pasaporte].'"/>
+            <input type="text" name="pasaporte" id="pasaporte" value="'.$datos[pasaporte].'" onkeyup="this.value=this.value.toUpperCase();"/>
             </label></td>
             </tr>
             <tr class="r1">
             <td>Nombre</td>
             <td><label>
-            <input type="text" name="nombre" id="nombre" value=""/>
+            <input type="text" name="nombre" id="nombre" value="" onkeyup="this.value=this.value.toUpperCase();"/>
             </label></td>
             </tr>
             <tr class="r0">
             <td>Apellido</td>
             <td><label>
-            <input type="text" name="apellido" id="apellido" value=""/>
+            <input type="text" name="apellido" id="apellido" value="" onkeyup="this.value=this.value.toUpperCase();"/>
             </label></td>
             </tr>
             <tr class="r1">
@@ -615,13 +665,13 @@ function generarObservaciones($idVuelo){
                     <input type="hidden" name="idVuelo" value="'.$idVuelo.'" />
                     <table border="0">
                     <tr>
-                    <td><div class="tituloNegro1">Notas</div></td>
+                    <td><div class="tituloNegro1" align="center">Notas del Vuelo '.$idVuelo.'</div></td>
                     </tr>
                     <tr>
-                    <td><textarea class="nota" name="observaciones" rows="6" cols="40">'.$obs.'</textarea></td>
+                    <td><textarea class="nota" name="observaciones" rows="6" cols="60">'.$obs.'</textarea></td>
                     </tr>
                     <tr>
-                    <td><input type="button" value="GUARDAR" onclick="xajax_guardarObservaciones(xajax.getFormValues(\'formObservaciones\'))"/></td>
+                    <td align="center"><input type="button" value="GUARDAR" onclick="xajax_guardarObservaciones(xajax.getFormValues(\'formObservaciones\'))"/></td>
                     </tr>
                     </table>
                     </form>
@@ -656,8 +706,17 @@ function generarPanelOperaciones(){
                     <hr width="98%" size="1" color="#067AC2">
                     <div class="tituloNegro1">GENERAR BOLETO PARA UNA SOLICITUD</div>
                     <div id="generarBoleto"  class="textoNegro1"></div>
-                </div>';
+                </div><br>';
     return $contenido;
+}
+
+function generarLeyenda(){
+    return '<cite class="textoNegro1">Leyenda: Para editar detalles del pasajero haga click en su icono. -
+              <img src="../gui/imagenes/editarPass.png" width="16" height="16" alt="editarPass"/> Pasajero por asignar -
+              <img src="../gui/imagenes/editarPass_gris.png" width="16" height="16" alt="editarPass_gris"/> Pasajero asignado -
+              <img src="../gui/imagenes/editarPass_rojo.png" width="16" height="16" alt="editarPass_rojo"/> Vuelo anterior -
+            </cite>
+            <hr width="98%" size="1" color="#067AC2">';
 }
 
 ?>
