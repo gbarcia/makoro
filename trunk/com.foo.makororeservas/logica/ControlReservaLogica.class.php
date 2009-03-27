@@ -188,6 +188,13 @@ class ControlReservaLogicaclass {
         return "";
     }
 
+    /**
+     * Metodo para eliminar una reserva en el sistema
+     * @param <type> $arrayAdl Arreglo de adultos
+     * @param <type> $arrayInf Arreglo de infantes
+     * @param <type> $arrayIdInf Arreglo con el id del infante 
+     * @return <type> El resultado de la operacion 
+     */
     function rollBackReserva($arrayAdl, $arrayInf, $arrayIdInf){
         foreach ($arrayAdl as $variable) {
             $this->controlBD->eliminarReserva($variable);
@@ -419,6 +426,12 @@ class ControlReservaLogicaclass {
         return $idReservas;
     }
 
+    /**
+     * Metodo que dada una solicitud, edita la cantidad de infantes relacionados
+     * a la misma
+     * @param <type> $solicitud La solicitud a la cual se desea editar la cantidad
+     * de infantes 
+     */
     function editarCantidadInfantes($solicitud){
         $arregloIda = $this->obtenerIdVueloInfantesIda($solicitud);
         if(!is_null($arregloIda[0])){
@@ -732,6 +745,12 @@ class ControlReservaLogicaclass {
         return $arrayInf;
     }
 
+    /**
+     * Metodo para obtener el identificador de los infantes en un vuelo que es de
+     * tipo 'vuelta'
+     * @param <type> $solicitud La solicitud a consultar
+     * @return <type> Arreglo que contiene el id del vuelo y la cantidad de infantes 
+     */
     function obtenerIdVueloInfantesVuelta($solicitud){
         $arrayInf = array();
         $recurso = $this->controlBD->obtenerIdVueloInfantesVuelta($solicitud);
@@ -743,6 +762,11 @@ class ControlReservaLogicaclass {
         return $arrayInf;
     }
 
+    /**
+     * Metodo para obtener la cantidad de infantes en un vuelo
+     * @param <type> $idVuelo El id del vuelo a consultar
+     * @return <type> La cantidad de infantes
+     */
     function obtenerCantInfVuelo($idVuelo){
         $recurso = $this->controlBD->obtenerCantInfVuelo($idVuelo);
         $row = mysql_fetch_array($recurso);
@@ -750,6 +774,13 @@ class ControlReservaLogicaclass {
         return $cantidadInfantes;
     }
 
+    /**
+     * Metodo para verificar que la cantidad de pasajeros de ida sea igual a la de vuelta
+     * @param <type> $solicitud La solicitud a consultar
+     * @param <type> $cantAdl La cantidad de adultos a comparar con las del vuelo de ida
+     * @param <type> $cantInf La cantidad de infantes a comparar con las del vuelo de ida 
+     * @return <type>
+     */
     function verificarCantidadPasajeros($solicitud,$cantAdl,$cantInf){
         $cantidadAdultos = $this->cantidadAdlChlIda($solicitud);
         $cantidadInfantes = $this->cantidadInfantesIda($solicitud);
