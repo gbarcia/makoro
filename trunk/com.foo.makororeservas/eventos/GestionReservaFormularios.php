@@ -1,6 +1,9 @@
 <?php
 function detalles($idVuelo){
     $controlVuelo = new ControlVueloLogicaclass();
+    $datos = $controlVuelo->consultarInformacionVuelo($idVuelo);
+    $row = mysql_fetch_array($datos);
+    $controlVuelo = new ControlVueloLogicaclass();
     $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
     $resultado = '<div class="tableContainer">';
     $resultado.= '<form id="formularioEditarMarcar">';
@@ -25,7 +28,6 @@ function detalles($idVuelo){
     $resultado.= '</tr>';
     $resultado.= '</thead>';
     $resultado.= '<tbody>';
-
     $cant = mysql_num_rows($recurso);
     if($cant == 0){
         $resultado = tablaVacia();
@@ -39,7 +41,9 @@ function detalles($idVuelo){
             } else{
                 $resultado.= '<tr class="r1">';
             }
-            if (($row[tipoPasajero] == 'INF') || ($row[cedulaPasaporte] != '')){
+            if ($controlVuelo->esFechaValida($row[fecha], date("Y-m-d"), $row[hora], date("H:i:s"))){
+                $boton = '<a onClick=""><img src="imagenes/editarPass_rojo.png" alt="EDITAR NO DISPONIBLE"/></a>';
+            } else if (($row[tipoPasajero] == 'INF') || ($row[cedulaPasaporte] != '')) {
                 $boton = '<a onClick=""><img src="imagenes/editarPass_gris.png" alt="EDITAR NO DISPONIBLE"/></a>';
             } else {
                 $boton = '<a onClick="xajax_desplegarFormularioAsignarPasajero('.$idVuelo.','.$row[id].')"><img src="imagenes/editarPass.png" alt="EDITAR"/></a>';

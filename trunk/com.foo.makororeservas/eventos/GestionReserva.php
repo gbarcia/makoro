@@ -139,10 +139,12 @@ function procesarFiltros($datos){
         } else {
             $resultado.= '<tr class="r1">';
         }
-        if ($_SESSION['EncargadoTipo'] != 'AG'){
+        if ($_SESSION['EncargadoTipo'] == 'AG'){
+            $resultado.= '<td><a onclick=""><img src="iconos/detalles_gris.png" alt="EDITAR NO DISPONIBLE"/></a></td>';
+        } else if ($controlVuelo->esFechaValida($recursoDetalles->getFecha(), date("Y-m-d"), $recursoDetalles->getHora(), date("H:i:s"))){
             $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"><img src="iconos/detalles.png" alt="EDITAR"/></a></td>';
         } else {
-            $resultado.= '<td><a onclick=""><img src="iconos/detalles_gris.png" alt="EDITAR NO DISPONIBLE"/></a></td>';
+            $resultado.= '<td><a onclick="xajax_desplegarDetalles(' . $idVuelo . ')"><img src="iconos/detalles_rojo.png" alt="EDITAR"/></a></td>';
         }
         $resultado.= '<td>' . $idVuelo. '</td>';
         $resultado.= '<td>' . $recursoDetalles->getFecha(). '</td>';
