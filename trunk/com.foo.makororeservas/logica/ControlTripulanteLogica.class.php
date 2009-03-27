@@ -19,19 +19,19 @@ class ControlTripulanteLogicaclass {
         $this->controlBD = new controladorTripulanteBDclass();
     }
 
-/**
- * Metodo para agregar un nuevo tripulante al sistema
- * @param <Integer> $cedula
- * @param <String> $nombre
- * @param <String> $apellido
- * @param <String> $sexo
- * @param <String> $telefono
- * @param <String> $estado
- * @param <String> $ciudad
- * @param <String> $direccion
- * @param <Integer> $cargo
- * @return <boolean> resultado de la operacion
- */
+    /**
+     * Metodo para agregar un nuevo tripulante al sistema
+     * @param <Integer> $cedula
+     * @param <String> $nombre
+     * @param <String> $apellido
+     * @param <String> $sexo
+     * @param <String> $telefono
+     * @param <String> $estado
+     * @param <String> $ciudad
+     * @param <String> $direccion
+     * @param <Integer> $cargo
+     * @return <boolean> resultado de la operacion
+     */
     function nuevoTripulante($cedula, $nombre, $apellido, $sexo, $telefono, $estado, $ciudad, $direccion,$cargo){
         $tripulante = new Tripulanteclass();
         $tripulante->setCedula($cedula);
@@ -47,19 +47,19 @@ class ControlTripulanteLogicaclass {
 
         return ($resultado);
     }
-/**
- * Metodo para actualizar los datos del tripulante
- * @param <String> $nombre
- * @param <String> $apellido
- * @param <String> $sexo
- * @param <String> $telefono
- * @param <String> $estado
- * @param <String> $ciudad
- * @param <String> $direccion
- * @param <boolean> $habilitado
- * @param <Integer> $cargo
- * @return <boolean> resultado de la operacion
- */
+    /**
+     * Metodo para actualizar los datos del tripulante
+     * @param <String> $nombre
+     * @param <String> $apellido
+     * @param <String> $sexo
+     * @param <String> $telefono
+     * @param <String> $estado
+     * @param <String> $ciudad
+     * @param <String> $direccion
+     * @param <boolean> $habilitado
+     * @param <Integer> $cargo
+     * @return <boolean> resultado de la operacion
+     */
     function actualizarTripulante($cedula, $nombre, $apellido, $sexo, $telefono, $estado, $ciudad, $direccion, $habilitado, $cargo){
         $tripulante = new Tripulanteclass();
         $tripulante->setCedula($cedula);
@@ -75,10 +75,11 @@ class ControlTripulanteLogicaclass {
         $resultado = $this->controlBD->editarPersonal($tripulante);
         return ($resultado);
     }
-/**
- * Metodo para consultar todos los tripulantes del sistema
- * @return <Coleccion> coleccion de objeto tripulante
- */
+
+    /**
+     * Metodo para consultar todos los tripulantes del sistema
+     * @return <Coleccion> coleccion de objeto tripulante
+     */
     function consultarTodoPersonal($habilitado){
         $resultado = new ArrayObject();
         $recurso = $this->controlBD->consultarPersonal($habilitado);
@@ -100,35 +101,37 @@ class ControlTripulanteLogicaclass {
         }
         return $resultado;
     }
-/**
- * Metodo para consultar el detalle del pago de los tripulantes
- * @param <Date> $fechaini
- * @param <Date> $fechafin
- * @param <Integer> $cedula
- * @return <recurso> recurso de objeto tripulante con el detalle del pago
- */
+    /**
+     * Metodo para consultar el detalle del pago de los tripulantes
+     * @param <Date> $fechaini
+     * @param <Date> $fechafin
+     * @param <Integer> $cedula
+     * @return <recurso> recurso de objeto tripulante con el detalle del pago
+     */
     function consultarDetallePago($fechaini, $fechafin, $cedula){
         $recurso = false;
         $recurso = $this->controlBD->consultarDetallesPagoPersonal($fechaini, $fechafin, $cedula);
         return $recurso;
     }
-/**
- * Metodo para consultar a un tripulante segun busqueda
- * @param <String, Integer> $busqueda
- * @return <recurso> recurso de objeto tripulante
- */
+
+    /**
+     * Metodo para consultar a un tripulante segun busqueda
+     * @param <String, Integer> $busqueda
+     * @return <recurso> recurso de objeto tripulante
+     */
     function consultarTripulanteCedulaNombreApellido($busqueda){
         $recurso = false;
         $recurso = $this->controlBD->consultarPersonaCedulaNombreApellido($busqueda);
         return $recurso;
     }
-/**
- * Metodo para consultar el pago total del tripulante
- * @param <Date> $fechaini
- * @param <Date> $fechafin
- * @param <Integer> $cedula
- * @return <total> suma total del pago tripulante
- */
+
+    /**
+     * Metodo para consultar el pago total del tripulante
+     * @param <Date> $fechaini
+     * @param <Date> $fechafin
+     * @param <Integer> $cedula
+     * @return <total> suma total del pago tripulante
+     */
     function consultarMontoTotal($fechaini, $fechafin, $cedula){
         $controlTipoCargo = new controladorTipoCargoBDclass();
         $tarifaPiloto = $controlTipoCargo->obtenerSueldoTipoCargo(1);
@@ -139,12 +142,12 @@ class ControlTripulanteLogicaclass {
         return (round($total, 2));
     }
 
-/**
- * Metodo para consultar todos los tripulantes con el pago total, segun sus rutas
- * @param <Date> $fechaini
- * @param <Date> $fechafin
- * @return <Coleccion> coleccion de tripulantes con los detalles y pago
- */
+    /**
+     * Metodo para consultar todos los tripulantes con el pago total, segun sus rutas
+     * @param <Date> $fechaini
+     * @param <Date> $fechafin
+     * @return <Coleccion> coleccion de tripulantes con los detalles y pago
+     */
     function consultarSueldoNominaTripulantesDetalles ($fechaini, $fechafin){
         $coleccionPersonal = $this->consultarTodoPersonal(TRUE);
         $coleccionResultado = new ArrayObject();
@@ -164,7 +167,6 @@ class ControlTripulanteLogicaclass {
                 $coleccionResultado ->append($Objeto);
             }
         }
-
         return $coleccionResultado;
     }
 }
