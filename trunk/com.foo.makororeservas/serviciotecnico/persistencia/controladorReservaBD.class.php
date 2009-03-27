@@ -113,7 +113,7 @@ class controladorReservaBDclass {
                              (SELECT CONCAT(PAS.id,', ',PAS.pasaporte,', ',PAS.nombre,', ',PAS.apellido,', ',PAS.sexo,
                                             ', ',PAS.nacionalidad,', ',PAS.TIPO_PASAJERO_id)
                               FROM PASAJERO PAS
-                              WHERE PAS.pasaporte = ".$pasaporte."),
+                              WHERE PAS.pasaporte = '".$pasaporte."'),
                              NULL) as pasajero
                       FROM PASAJERO PA
                       WHERE PA.pasaporte  = '".$pasaporte."'";
