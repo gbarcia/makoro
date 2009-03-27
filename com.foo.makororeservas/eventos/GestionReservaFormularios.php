@@ -2,7 +2,7 @@
 function detalles($idVuelo){
     $controlVuelo = new ControlVueloLogicaclass();
     $datos = $controlVuelo->consultarInformacionVuelo($idVuelo);
-    $row = mysql_fetch_array($datos);
+    $rowVuelo = mysql_fetch_array($datos);
     $controlVuelo = new ControlVueloLogicaclass();
     $recurso = $controlVuelo->consultarVuelosDetalles($idVuelo);
     $resultado = '<div class="tableContainer">';
@@ -41,7 +41,7 @@ function detalles($idVuelo){
             } else{
                 $resultado.= '<tr class="r1">';
             }
-            if ($controlVuelo->esFechaValida($row[fecha], date("Y-m-d"), $row[hora], date("H:i:s"))){
+            if ($controlVuelo->esFechaValida($rowVuelo[fecha], date("Y-m-d"), $rowVuelo[hora], date("H:i:s"))){
                 $boton = '<a onClick=""><img src="imagenes/editarPass_rojo.png" alt="EDITAR NO DISPONIBLE"/></a>';
             } else if (($row[tipoPasajero] == 'INF') || ($row[cedulaPasaporte] != '')) {
                 $boton = '<a onClick=""><img src="imagenes/editarPass_gris.png" alt="EDITAR NO DISPONIBLE"/></a>';
