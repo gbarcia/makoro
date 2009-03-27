@@ -567,13 +567,13 @@ function generarFormularioCrearPasajero ($datos) {
             <tr class="r1">
             <td>Cedula</td>
             <td><label>
-            <input type="text" name="cedula" id="cedula" value=""/>
+            <input type="text" name="cedula" id="cedula" value="'.$datos[cedula].'"/>
             </label></td>
             </tr>
             <tr class="r0">
             <td>Pasaporte</td>
             <td><label>
-            <input type="text" name="pasaporte" id="pasaporte" value=""/>
+            <input type="text" name="pasaporte" id="pasaporte" value="'.$datos[pasaporte].'"/>
             </label></td>
             </tr>
             <tr class="r1">

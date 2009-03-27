@@ -942,6 +942,15 @@ function buscarPasajero($datos){
     $row = mysql_fetch_array($recurso);
     $row["idReserva"] = $datos[idReserva];
     $row["idVuelo"] = $datos[idVuelo];
+
+    if(is_numeric($id)){
+        $row["cedula"] = $id;
+        $row["pasaporte"] = '';
+    } else {
+        $row["cedula"] = '';
+        $row["pasaporte"] = $id;
+    }
+
     if (mysql_num_rows($recurso) <= 0){
         return desplegarFormularioCrearPasajero($row);
     } else {
