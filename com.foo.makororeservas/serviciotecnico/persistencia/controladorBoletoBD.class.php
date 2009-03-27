@@ -150,5 +150,17 @@ class controladorBoletoBDclass {
         $resultado = $this->transaccion->realizarTransaccion($query);
         return $resultado;
     }
+
+    function boletoPago ($solicitud) {
+        $result = false;
+        $query = "SELECT r.id FROM RESERVA r WHERE r.solicitud = '".$solicitud."' AND (r.estado = 'PP' OR r.estado = 'CA')";
+        $resultado = $this->transaccion->realizarTransaccion($query);
+        $can = mysql_num_rows($resultado);
+        if ($can > 0)
+        $result = false;
+        else
+        $result = true;
+        return $result;
+    }
 }
 ?>
