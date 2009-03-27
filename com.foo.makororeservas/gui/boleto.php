@@ -98,7 +98,7 @@ foreach ($Coleccion as $var) {
                                             <td width="214"><span class="style5">VOUCHERS ELECTRONICOS:</span></td>
                                             <td colspan="2"><span class="style5">
                                               <?=$cantidadPasajeros?>
-                                              Boletos OW
+                                              Boletos <?=$servicio?>
                                               <?=$cantidadAdultos?>
                                               ADL
                                               <?=$cantidadNinos?>
