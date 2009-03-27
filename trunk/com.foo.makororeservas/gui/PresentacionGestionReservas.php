@@ -67,7 +67,7 @@ $xajax->processRequests();
             <img src="imagenes/encabezado.png" width="900" height="65" alt="encabezado"/>
         </div>
         <div class="panelSesion">
-            <? echo $_SESSION['EncargadoLogin']; ?> | <? echo $_SESSION['FechaActual']; ?> | salir
+        <? echo $_SESSION['EncargadoLogin']; ?> | <? echo $_SESSION['FechaActual']; ?> | <input type="button" name="button2" id="button2" value="SALIR" onclick="xajax_salirDelSistema();" />
         </div>
         <div id="sesion" class="cuerpo">
             <?
@@ -86,7 +86,7 @@ $xajax->processRequests();
                                 <td><input name="fechaInicio" type="text" id="f_date_c" size="15" /><img src="jscalendar/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" alt="Seleccione una fecha"/></td>
                                 <td>Ruta:</td>
                                 <td><div id="comboBoxRuta">
-                                        <script language="javascript">
+                                        <script type="text/javascript">
                                             xajax_generarComboBoxLugar();
                                         </script>
                                 </div></td>
