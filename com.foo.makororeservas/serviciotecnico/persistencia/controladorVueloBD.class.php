@@ -535,6 +535,12 @@ class controladorVueloBDclass {
         return $resultado;
     }
 
+    /**
+     * Metodo para verificar la existencia de una solicitud en un vuelo 
+     * @param <type> $idVuelo El id del vuelo a consultar
+     * @param <type> $solitud La solicitud a verificar
+     * @return <type> El resultado de la operacion 
+     */
     function existeReservaVuelo($idVuelo,$solitud){
         $query = "SELECT R.id
                   FROM RESERVA R, VUELO_RESERVA VR, VUELO V

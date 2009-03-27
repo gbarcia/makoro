@@ -16,7 +16,7 @@ class ControlVueloLogicaclass {
     }
 
     /**
-     * Metodo para agregar un nuevo vuelo
+     * Metodo para crear un nuevo vuelo en el sistema 
      * @param <DATE> $fecha Fecha del nuevo vuelo
      * @param <TIME> $hora Hora del nuevo vuelo
      * @param <STRING> $avionMatricula La matricula del avion que realizara el vuelo
@@ -36,7 +36,7 @@ class ControlVueloLogicaclass {
     }
 
     /**
-     * Metodo para actualizar los datos de un vuelo
+     * Metodo para actualizar los datos de un vuelo en el sistema
      * @param <INTEGER> $id El id del vuelo a actualizar
      * @param <DATE> $fecha La nueva fecha del vuelo
      * @param <TIME> $hora La neuva hora del vuelo
@@ -72,8 +72,8 @@ class ControlVueloLogicaclass {
 
     /**
      * Metodo para consultar los asientos disponibles
-     * @param <INTEGER> $id
-     * @return <RECURSO> recurso con la cantidad disponible
+     * @param <INTEGER> $id El id del vuelo a consultar
+     * @return <RECURSO> recurso con la cantidad disponible 
      */
     function calculoAsientosDisponibles($id) {
         $recurso = $this->controlBD->consultarVueloCantidadReserva($id);
@@ -363,6 +363,12 @@ class ControlVueloLogicaclass {
         return $recurso;
     }
 
+    /**
+     * Metodo para verificar la existencia de una solicitud en un vuelo
+     * @param <type> $idVuelo El id del vuelo a consultar
+     * @param <type> $solitud La solicitud a verificar
+     * @return <type> El resultado de la operacion 
+     */
     function existeReservaVuelo($idVuelo,$solitud) {
         $recurso = $this->controlBD->existeReservaVuelo($idVuelo, $solitud);
         return $recurso;
