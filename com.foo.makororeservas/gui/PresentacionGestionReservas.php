@@ -2,6 +2,7 @@
 session_start();
 require $_SERVER['DOCUMENT_ROOT'] .'/com.foo.makororeservas/serviciotecnico/utilidades/xajax/xajax.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/GestionReserva.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/CerrarSesion.php';
 $xajax = new xajax();
 $xajax->registerFunction("generarComboBoxLugar");
 $xajax->registerFunction("desplegarInicio");
@@ -28,6 +29,7 @@ $xajax->registerFunction("borrarFormPasajero");
 $xajax->registerFunction("asignarPasajero");
 $xajax->registerFunction("crearPasajero");
 $xajax->registerFunction("generarBoletoGui");
+$xajax->registerFunction("salirDelSistema");
 $xajax->processRequests();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
