@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!(session_is_registered('EncargadoValido')) && !(session_is_registered('EncargadoTipo'))){
+    die ("<script>location.href='../index.php'</script>");
+}
+else {
+    if ($_SESSION['EncargadoValido'] == true ){
 require $_SERVER['DOCUMENT_ROOT'] .'/com.foo.makororeservas/serviciotecnico/utilidades/xajax/xajax.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/GestionReserva.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/com.foo.makororeservas/eventos/CerrarSesion.php';
@@ -249,3 +254,10 @@ $xajax->processRequests();
 
     </body>
 </html>
+<?php
+}
+else {
+die ("<script>location.href='../index.php'</script>");
+}
+}
+?>
