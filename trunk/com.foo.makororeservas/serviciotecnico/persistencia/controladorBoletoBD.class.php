@@ -143,7 +143,7 @@ class controladorBoletoBDclass {
         $resultado = false;
         $query = "SELECT IF(COUNT(R.solicitud) = (SELECT COUNT(RE.PASAJERO_id)
                                 FROM RESERVA RE
-                                WHERE RE.solicitud = R.solicitud
+                                WHERE RE.solicitud = '" . $idSolicitud . "'
                                 AND (RE.estado = 'PA' OR RE.estado = 'CO')),TRUE,FALSE) as resultado
                   FROM RESERVA R
                   WHERE R.solicitud = '" . $idSolicitud . "'";
