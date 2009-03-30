@@ -91,7 +91,7 @@ class ControlSeguridadclass {
                 $cuerpo .= "Clave: ".$claveReal." <br>";
                 $cuerpo .= "<P>En caso de tener alguna consulta en referencia a ésta página por favor no dude en contactarnos.</P>";
                 $cuerpo .= "Soporte@makoroenlinea.com";
-                $resultadoAdministrador = $this->enviarMail('gerardobarciap@gmail.com', $cuerpo);
+                $resultadoAdministrador = $this->enviarMail('makorotours@gmail.com', $cuerpo);
                 if ($resultadoAdministrador)
                 $resultado = $this->enviarMail($RepCorreo,$cuerpo);
             }
