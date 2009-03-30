@@ -668,7 +668,7 @@ function generarObservaciones($idVuelo){
                     <td><div class="tituloNegro1" align="center">Notas del Vuelo '.$idVuelo.'</div></td>
                     </tr>
                     <tr>
-                    <td><textarea class="nota" name="observaciones" rows="6" cols="60">'.$obs.'</textarea></td>
+                    <td><textarea class="nota" name="observaciones" rows="6" cols="40">'.$obs.'</textarea></td>
                     </tr>
                     <tr>
                     <td align="center"><input type="button" value="GUARDAR" onclick="xajax_guardarObservaciones(xajax.getFormValues(\'formObservaciones\'))"/></td>
