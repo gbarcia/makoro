@@ -41,7 +41,7 @@ class controladorSeguridadBDclass {
                                                   '".$encargado->getCiudad()."',
                                                   '".$encargado->getDireccion()."',
                                                   '".$encargado->getTelefono()."',
-                                                   ".$encargado->getHabilitado().",
+                                                   1,
                                                    ".$encargado->getSucursalDondeTrabaja().",
                                                   '".$encargado->getCorreo()."')";
         $resultado = $this->transaccion->realizarTransaccion($query);
